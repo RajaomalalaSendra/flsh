@@ -32,8 +32,9 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
+		model.addAttribute("page", "dashboard.jsp" );
 		
-		return "home";
+		return "_layout";
 	}
 	
 }

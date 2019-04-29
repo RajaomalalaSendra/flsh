@@ -1,14 +1,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<html>
+<!doctype html>
+<html class="no-js" lang="en">
 <head>
-	<title>Home</title>
+	<%@include file="common/_header.jsp" %>
 </head>
 <body>
-<h1>
-	Hello world!  
-</h1>
+	
+    
+    <!-- Start Welcome area -->
+    <div class="all-content-wrapper">
+    </div>
 
-<P>  The time on the server is ${serverTime}. </P>
+<%@include file="common/_script.jsp" %>
 </body>
 </html>
