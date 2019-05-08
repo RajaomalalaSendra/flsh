@@ -1,4 +1,4 @@
-package com.flsh.scolarLMD;
+package com.flsh.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
