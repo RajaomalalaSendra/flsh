@@ -15,6 +15,25 @@
 		<org.slf4j-version>1.6.6</org.slf4j-version>
     </properties>
     <dependencies>
+    	<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- Spring Security (used for CSRF protection only) -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
 	  	<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
 	    <dependency>
 	        <groupId>org.springframework</groupId>

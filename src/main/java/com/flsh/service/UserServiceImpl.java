@@ -14,11 +14,15 @@ import com.flsh.model.Login;
 import com.flsh.model.User;
 
 public class UserServiceImpl implements UserService {
-	@Autowired
-	DataSource datasource;
-
-	@Autowired
+	DataSource dataSource;
 	JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	public UserServiceImpl(DataSource dsrc) {
+		jdbcTemplate = new JdbcTemplate(dsrc);
+	}
+	
+
 	public void register(User user) {
 		String sql = "insert into users values(?,?,?,?,?,?,?)";
 		jdbcTemplate.update(sql, new Object[] { user.getUsername(), user.getPassword(), user.getFirstname(),
