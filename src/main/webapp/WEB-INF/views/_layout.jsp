@@ -10,6 +10,7 @@
     <%@include file="common/_sidebar.jsp" %>
     <!-- Start Welcome area -->
     <div class="all-content-wrapper">
+    	<h2  class="admin-name" style="${empty username ? 'display: none' : ''}">${username}</h2>
     	<%@include file="common/_menu.jsp" %>
     	<%@include file="dashboard.jsp" %>
     	<%@include file="common/_footer.jsp" %>

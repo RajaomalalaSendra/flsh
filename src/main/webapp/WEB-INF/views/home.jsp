@@ -10,6 +10,7 @@
     
     <!-- Start Welcome area -->
     <div class="all-content-wrapper">
+    
     </div>
 
 <%@include file="common/_script.jsp" %>

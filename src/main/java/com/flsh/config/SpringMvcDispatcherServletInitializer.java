@@ -9,8 +9,9 @@ public class SpringMvcDispatcherServletInitializer extends AbstractAnnotationCon
 
     @Override
     protected Class < ? > [] getRootConfigClasses() {
-        // TODO Auto-generated method stub
-        return null;
+        return new Class[] {
+        	WebSecurityConfig.class
+        };
     }
 
     @Override
