@@ -2,7 +2,9 @@ package com.flsh.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -13,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.flsh.controller.HomeController;
+import com.flsh.model.Authorities;
 import com.flsh.model.Login;
 import com.flsh.model.User;
 
@@ -40,6 +43,14 @@ public class UserServiceImpl implements UserService {
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users.size() > 0 ? users.get(0) : null;
 	}
+
+
+	@Override
+	public User findByUsername(String username) {
+		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_login='" + username + "' or uti_email='" + username + "'";
+		List<User> users = jdbcTemplate.query(sql, new UserMapper());
+		return users.size() > 0 ? users.get(0) : null;
+	}
 }
 
 class UserMapper implements RowMapper<User> {
@@ -49,6 +60,9 @@ class UserMapper implements RowMapper<User> {
 	    user.setPassword(rs.getString("uti_passwd"));
 	    user.setEmail(rs.getString("uti_email"));
 	    user.setType(rs.getString("uti_type"));
+	    Set<Authorities> authorities = new HashSet();
+	    authorities.add(new Authorities(rs.getString("rol_libelle")));
+	    user.setAuthorities(authorities);
 	    return user;
 	}
 }
