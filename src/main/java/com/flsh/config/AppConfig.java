@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -13,8 +14,10 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UrlPathHelper;
 
+import com.flsh.service.UserDetailsServiceImp;
 import com.flsh.service.UserService;
 import com.flsh.service.UserServiceImpl;
+import com.flsh.utils.Config;
 
 /**
  * @author Danielson Andriaritiana
@@ -54,15 +57,16 @@ public class AppConfig implements WebMvcConfigurer {
         return usr;
     }
 	
+	
+	
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 	 
 	    dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-	    dataSource.setUsername("sendra");
-	    dataSource.setPassword("sendra93");
-	    dataSource.setUrl(
-	      "jdbc:mysql://localhost:3306/db_anglais?createDatabaseIfNotExist=true"); 
+	    dataSource.setUsername(Config.DB_USER);
+	    dataSource.setPassword(Config.DB_PASSWORD);
+	    dataSource.setUrl("jdbc:mysql://"+Config.DB_URL); 
  
         return dataSource;
 	}
