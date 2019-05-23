@@ -30,6 +30,12 @@ public class Periods {
 	public void setLevelId(int level_id) {
 		this.level_id = level_id;
 	}
+	public String getPeriodsLibellecourt() {
+		return periods_libellecourt;
+	}
+	public void setPeriodsLibellecourt(String  periods_libellecourt) {
+		this.periods_libellecourt = periods_libellecourt;
+	}
 	public String getPeriodsLibellelong() {
 		return periods_libellelong;
 	}

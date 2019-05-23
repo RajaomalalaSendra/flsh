@@ -1,21 +1,15 @@
 package com.flsh.model;
 
 public class Professors {
-	private int professor_id;
 	private String professor_login;
 	private String professor_password;
 	private String professor_name;
+	private String professor_last_name;
 	private String professor_adresse;
 	private String professor_email;
 	private String professor_contact;
 	private int user_id;
 	
-	public int getProfessorId() {
-		return this.professor_id;
-	}
-	public void setProfessorId(int professor_id) {
-		this.professor_id = professor_id;
-	}
 	public String getProfessorLogin() {
 		return this.professor_login;
 	}
@@ -33,6 +27,12 @@ public class Professors {
 	}
 	public void setProfessorName(String professor_name) {
 		this.professor_name = professor_name;
+	}
+	public String getProfessorLastName() {
+		return this.professor_last_name;
+	}
+	public void setProfessorLastName(String professor_last_name) {
+		this.professor_last_name = professor_last_name;
 	}
 	public String getProfessorAdresse() {
 		return this.professor_adresse;
