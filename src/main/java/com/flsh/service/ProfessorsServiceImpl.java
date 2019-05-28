@@ -28,7 +28,7 @@ public class ProfessorsServiceImpl {
 	}
 
 	public Professors validateProfessor(Login login) {
-		String sql = "select * from professors where prof_login='" + login.getUsername() + "' and  	prof_password='" + login.getPassword()
+		String sql = "select * from professeur where prof_login='" + login.getUsername() + "' and  	prof_password='" + login.getPassword()
 		    + "'";
 		List<Professors> professors = jdbcTemplate.query(sql, new ProfessorMapper());
 		return professors.size() > 0 ? professors.get(0) : null;
