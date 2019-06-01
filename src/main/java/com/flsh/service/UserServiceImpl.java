@@ -39,7 +39,6 @@ public class UserServiceImpl implements UserService {
 		logger.info(login.getUsername()+"      "+ login.getPassword());
 		String sql = "select * from Utilisateur where ( uti_login='" + login.getUsername() + "' or uti_email='" + login.getUsername() + "') and uti_passwd=sha1('" + login.getPassword()
 		    + "')";
-		logger.info(sql);
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users.size() > 0 ? users.get(0) : null;
 	}

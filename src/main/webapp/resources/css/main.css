@@ -185,6 +185,35 @@ textarea {
     clear: both;
 }
 
+.btn-group .btn.btn-sm {
+	margin-right: 5px;
+}
+.btn-group.pull-right .btn.btn-sm {
+	margin-left: 5px;
+}
+
+small.error {
+    display: none;
+    color: #f30d0d !important;
+    text-align: right;
+    width: 100%;
+    padding-right: 7%;
+}
+form input.hasError {
+    border: 1px solid #f30d0d;
+}
+.header-list {
+    margin-bottom: 50px;
+}
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
 /* ==========================================================================
    EXAMPLE Media Queries for Responsive Design.
    These examples override the primary ('mobile first') styles.

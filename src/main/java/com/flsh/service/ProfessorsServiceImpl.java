@@ -20,7 +20,6 @@ public class ProfessorsServiceImpl {
 	public ProfessorsServiceImpl(DataSource dsrc) {
 		jdbcTemplate = new JdbcTemplate(dsrc);
 	}
-	
 
 	public void register_professor(Professors prof) {
 		String sql = "insert into professeur values(?,?,?,?,?,?,?,?)";

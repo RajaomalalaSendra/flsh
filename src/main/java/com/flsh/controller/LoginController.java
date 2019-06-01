@@ -33,7 +33,7 @@ public class LoginController {
 
 	  @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
 	  public ModelAndView loginProcess(HttpSession session, HttpServletRequest request, HttpServletResponse response, @ModelAttribute("login") Login login) {
-
+		  System.out.print(login);
 	    ModelAndView mav = null;
 	    User user = userService.validateUser(login);
 	    if (null != user) {;  

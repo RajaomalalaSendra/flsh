@@ -24,4 +24,8 @@ public class Parcours {
 	public void setParcoursLibelle(String parcours_libelle) {
 		this.parcours_libelle = parcours_libelle;
 	}
+	
+	public String toString() {
+		return "parcours_id: "+ this.parcours_id +" | parcours_libelle: "+ this.parcours_libelle;
+	}
 }
