@@ -11,49 +11,49 @@ public class Professors {
 	private int user_id;
 	
 	public String getProfessorLogin() {
-		return this.professor_login;
+		return professor_login;
 	}
 	public void setProfessorLogin( String professor_login) {
 		this.professor_login = professor_login;
 	}
 	public String getProfessorPassword() {
-		return this.professor_password;
+		return professor_password;
 	}
 	public void setProfessorPassword(String professor_password) {
 		this.professor_password = professor_password;
 	}
 	public String getProfessorName() {
-		return this.professor_name;
+		return professor_name;
 	}
 	public void setProfessorName(String professor_name) {
 		this.professor_name = professor_name;
 	}
 	public String getProfessorLastName() {
-		return this.professor_last_name;
+		return professor_last_name;
 	}
 	public void setProfessorLastName(String professor_last_name) {
 		this.professor_last_name = professor_last_name;
 	}
 	public String getProfessorAdresse() {
-		return this.professor_adresse;
+		return professor_adresse;
 	}
 	public void setProfessorAdresse(String professor_adresse) {
 		this.professor_adresse = professor_adresse;
 	}
 	public String getProfessorEmail() {
-		return this.professor_email;
+		return professor_email;
 	}
 	public void setProfessorEmail(String professor_email) {
 		this.professor_email = professor_email;
 	}
 	public String getProfessorContact() {
-		return this.professor_contact;
+		return professor_contact;
 	}
 	public void setProfessorContact(String professor_contact) {
 		this.professor_contact = professor_contact;
 	}
 	public int getUserId() {
-		return this.user_id;
+		return user_id;
 	}
 	public void setUserId(int user_id) {
 		this.user_id = user_id;

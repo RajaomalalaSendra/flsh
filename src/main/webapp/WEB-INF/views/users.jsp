@@ -11,7 +11,7 @@
     <!-- Start Welcome area -->
     <div class="all-content-wrapper">
     	<%@include file="common/_menu.jsp" %>
-    	<%@include file="users/professors/_professors.jsp" %>
+    	<%@include file="users/users/_users.jsp" %>
     	<%@include file="common/_footer.jsp" %>
     </div>
 
