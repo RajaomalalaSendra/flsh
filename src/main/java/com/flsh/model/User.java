@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class User {
 	
+	  private int id;
 	  private String username;
 	  private String password;
 	  private String email;
@@ -30,6 +31,17 @@ public class User {
 	
 	  public String getType() {
 		  return type;
+	  }
+	  
+	  public String getTypeComputed() {
+		  switch(type) {
+		  	case "1":
+		  		return "Super Utilisateur";
+		  	case "2":
+		  		return "Adminisatrion";
+		  	default:
+		  		return "Professeur";
+		  }
 	  }
 	
 	  public void setType(String type) {
@@ -58,6 +70,18 @@ public class User {
 	
 	public void setAuthorities(Set<Authorities> authorities) {
 		this.authorities = authorities;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String toString() {
+		return "username "+username+" email "+email+" password "+password+ " type " + type;
 	}
 
 }

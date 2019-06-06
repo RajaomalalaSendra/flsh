@@ -1,4 +1,4 @@
-package com.flsh.service;
+package com.flsh.interfaces;
 
 import com.flsh.model.Login;
 import com.flsh.model.Professors;

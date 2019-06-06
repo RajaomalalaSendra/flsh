@@ -51,9 +51,9 @@
                         </ul>
                     </li>
                     <li>
-                        <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-library icon-wrap"></span> <span class="mini-click-non">Secretaries</span></a>
+                        <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-library icon-wrap"></span> <span class="mini-click-non">Users</span></a>
                         <ul class="submenu-angle" aria-expanded="false">
-                            <li><a title="All Secretaries" href="all-secretaries.html"><span class="mini-sub-pro">All Secretaries</span></a></li>
+                            <li><a title="All Secretaries" href="<c:url value='/users' />"><span class="mini-sub-pro">All users</span></a></li>
                             <li><a title="Add Secretary" href="add-secretary.html"><span class="mini-sub-pro">Add Secretary</span></a></li>
                             <li><a title="Edit Secretary" href="edit-secretary.html"><span class="mini-sub-pro">Edit Secretary</span></a></li>
                         </ul>

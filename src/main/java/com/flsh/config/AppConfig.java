@@ -17,7 +17,7 @@ import org.springframework.web.util.UrlPathHelper;
 import com.flsh.interfaces.EducationService;
 import com.flsh.service.EducationServiceImpl;
 import com.flsh.service.UserDetailsServiceImp;
-import com.flsh.service.UserService;
+import com.flsh.interfaces.UserService;
 import com.flsh.service.UserServiceImpl;
 import com.flsh.utils.Config;
 

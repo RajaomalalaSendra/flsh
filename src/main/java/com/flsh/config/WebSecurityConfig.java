@@ -2,7 +2,7 @@ package com.flsh.config;
 
 import com.flsh.model.User;
 import com.flsh.service.UserDetailsServiceImp;
-import com.flsh.service.UserService;
+import com.flsh.interfaces.UserService;
 import com.flsh.service.UserServiceImpl;
 import com.flsh.utils.Config;
 import com.flsh.utils.Sha1PasswordEncoder;

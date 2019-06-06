@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 // import org.slf4j.Logger;
 // import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 import com.flsh.model.Login;
 import com.flsh.model.User;
-import com.flsh.service.UserService;
+import com.flsh.interfaces.UserService;
 
 @Controller
 public class UserController {
@@ -27,26 +29,31 @@ public class UserController {
 
 	  @RequestMapping(value = "/users", method = RequestMethod.GET)
 	  public ModelAndView showUser(HttpServletRequest request, HttpServletResponse response) {
-		  List<User> users=userService.getEmployees();
-		  ModelAndView m = new ModelAndView("users");
+		  List<User> users=userService.getAllUser();
+		  ModelAndView m = new ModelAndView("users/users");
 	      m.addObject("users",users);  
 	      return m;    
 	  }
-
-	  @RequestMapping(value = "/user/save", method = RequestMethod.POST)
-	  public ModelAndView userProcess(HttpSession session, HttpServletRequest request, HttpServletResponse response, @ModelAttribute("users") User User) {
-
-	    ModelAndView mav = null;
-	    /*User user = userService.validateUser(login);
-	    if (null != user) {;  
-	         session.setAttribute("username", user.getUsername());  
-	         logger.info("User infos is .", session.getAttribute("username"));
-	    	 mav = new ModelAndView("redirect:/");
-	    } else {
-		    mav = new ModelAndView("login");
-		    mav.addObject("message", "Username or Password is wrong!!");
-	    }
-	    */
-	    return mav;
+	  
+	  @RequestMapping(value = "/user/details", method = RequestMethod.GET)
+	  @ResponseBody
+	  public String getUserDetails(HttpServletRequest request, HttpServletResponse response) {
+		  int id = request.getParameter("id") == null || request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
+		  User user = userService.getUserDetails(id);
+		  JSONObject rtn = new JSONObject();
+		  rtn.put("id", user.getId());
+		  rtn.put("username", user.getUsername());
+		  rtn.put("email", user.getEmail());
+		  rtn.put("type", user.getType());
+		  rtn.put("typecomputed", user.getTypeComputed());
+		  return rtn.toString();
 	  }
+	  
+      @RequestMapping(value = "/user/save", method = RequestMethod.POST)
+	  @ResponseBody
+	  public String saveUser(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("user") User user) {
+  		JSONObject rtn = userService.saveUser(user);
+  		return rtn.toString();
+	  }
+	  
 }

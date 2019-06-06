@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.flsh.model.Login;
 import com.flsh.model.User;
-import com.flsh.service.UserService;
+import com.flsh.interfaces.UserService;
 
 @Controller
 public class LoginController {

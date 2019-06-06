@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.flsh.model.Professors;
-import com.flsh.service.ProfessorsService;
+import com.flsh.interfaces.ProfessorsService;
 
 @Controller
 public class ProfessorController {
