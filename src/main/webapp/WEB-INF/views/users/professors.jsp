@@ -15,34 +15,34 @@
     	<h2  class="admin-name" style="${empty username ? 'display: none' : ''}">${username}</h2>
     	<div class="main-wrapper">
 	    	<div class = "header-list">
-				<button class = "btn btn-primary pull-right" id = "add-user" title = "Ajouter un nouveau utilisateur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
-				<h3>Ajouter un nouveau utilisateur</h3>
+				<button class = "btn btn-primary pull-right" id = "add-professor" title = "Ajouter un nouveau professeur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
+				<h3>Ajouter un nouveau professeur</h3>
 			</div>
-    		<h1>Users List</h1>  
+    		<h1>Professors List</h1>  
 			<table class="table table-striped">
 			  <thead>
 			    <tr>
 			      <th scope="col">Id</th>
 			      <th scope="col">Name</th>
+			      <th scope="col">Last Name</th>
 			      <th scope="col">Mail</th>
-			      <th scope="col">Type</th>
 			      <th scope="col">Action</th>
 			    </tr>
 			  </thead>
 			  <tbody>  
-			   <c:forEach var="user" items="${users}">   
+			   <c:forEach var="professor" items="${professors}">   
 				   <tr>  
-				   <td scope="row">${user.getId()}</td>  
-				   <td>${user.getUsername()}</td>  
-				   <td>${user.getEmail()}</td>  
-				   <td>${user.getTypeComputed()}</td>  
-				   <td><a class = "detail-user" href="user/details?id=${user.getId()}">Detail</a></td>
+				   <td scope="row">${professor.getProfessorId()}</td>  
+				   <td>${professor.getProfessorName()}</td>
+				   <td>${professor.getProfessorLastName()}</td>  
+				   <td>${professor.getProfessorEmail()}</td>    
+				   <td><a class = "detail-professor" href="professor/details?id=${professor.getProfessorId()}">Detail</a></td>
 				   <td>
 				   		<span class = "btn-group pull-right">
-				        	<button class = "btn btn-sm btn-primary edit-user" title = "Edit cycle">
+				        	<button class = "btn btn-sm btn-primary edit-professor" title = "Edit cycle">
 				        		<i class = "glyphicon glyphicon-pencil"></i>
 				        	</button> 
-				        	<button class = "btn btn-sm btn-danger delete-user" title = "Delete cycle">
+				        	<button class = "btn btn-sm btn-danger delete-professor" title = "Delete cycle">
 				        		<i class = "glyphicon glyphicon-trash"></i>
 				        	</button>
 				        </span>
@@ -52,12 +52,12 @@
 			  </tbody>  
 			</table>  
     	</div>
-    	<%@include file="userdetails.jsp" %>
-    	<%@include file="user_forms.jsp" %>
+    	<%@include file="professordetails.jsp" %>
+    	<%@include file="professor_forms.jsp" %>
     	<%@include file="../common/_footer.jsp" %>
     </div>
 
 <%@include file="../common/_script.jsp" %>
-<script src="<c:url value="/resources/js/user.js" />"></script>
+<script src="<c:url value="/resources/js/professor.js" />"></script>
 </body>
 </html>

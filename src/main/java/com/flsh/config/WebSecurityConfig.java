@@ -39,12 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UserService usr = new UserServiceImpl(dataSource());
         return usr;
     }
-/*	@Bean
-    public UserService userService() {
-        UserService usr = new UserServiceImpl(dataSource());
-        return usr;
-    }
-    */
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();

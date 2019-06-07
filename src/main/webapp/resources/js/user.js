@@ -20,12 +20,6 @@ $(document).ready(function() {
 		})
 	})
 	$('#add-user').on('click', function() {
-		/*$('#userAddModal').html("Ajouter Utilisateur")
-		$('#type').val("cycle")
-		$('#idCycle').val("")
-		$('#idLevel').val("")
-		$('#idParcours').val("")
-		$('#labelCycle').val("")*/
 		$('#userAddModal').modal('show')
 	})
 	$('#save-user').on('click', function(){

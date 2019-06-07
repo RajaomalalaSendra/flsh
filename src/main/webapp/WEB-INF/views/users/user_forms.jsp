@@ -30,7 +30,7 @@
 	      	<div class = "form-group form-inline">
 	      		<label>Type:</label>
 	      		<select class="form-control" name="type">
-	      	    	<option value="2">Secretaire</option>
+	      	    	<option value="3">Secretaire</option>
 	      	    	<option value="1">Super Utilisateur</option>
 	      		</select>
 	      	</div>

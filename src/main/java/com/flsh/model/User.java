@@ -38,9 +38,9 @@ public class User {
 		  	case "1":
 		  		return "Super Utilisateur";
 		  	case "2":
-		  		return "Adminisatrion";
-		  	default:
 		  		return "Professeur";
+		  	default:
+		  		return "Administration";
 		  }
 	  }
 	
@@ -85,6 +85,3 @@ public class User {
 	}
 
 }
-
-
-

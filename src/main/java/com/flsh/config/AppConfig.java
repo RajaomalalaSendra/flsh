@@ -19,6 +19,8 @@ import com.flsh.service.EducationServiceImpl;
 import com.flsh.service.UserDetailsServiceImp;
 import com.flsh.interfaces.UserService;
 import com.flsh.service.UserServiceImpl;
+import com.flsh.interfaces.ProfessorService;
+import com.flsh.service.ProfessorServiceImpl;
 import com.flsh.utils.Config;
 
 /**
@@ -64,6 +66,12 @@ public class AppConfig implements WebMvcConfigurer {
 		EducationService esrv = new EducationServiceImpl(dataSource());
 		return esrv;
 	}
+	
+	@Bean
+    public ProfessorService professorService() {
+        ProfessorService prof = new ProfessorServiceImpl(dataSource());
+        return prof;
+    }
 	
 	@Bean
 	public DataSource dataSource() {
