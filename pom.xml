@@ -45,6 +45,13 @@
 	        <version>${org.springframework-version}</version>
 	    </dependency>
 	    
+	    <!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20180813</version>
+		</dependency>
+	    
 	    <!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

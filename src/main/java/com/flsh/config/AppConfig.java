@@ -14,6 +14,8 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UrlPathHelper;
 
+import com.flsh.interfaces.EducationService;
+import com.flsh.service.EducationServiceImpl;
 import com.flsh.service.UserDetailsServiceImp;
 import com.flsh.service.UserService;
 import com.flsh.service.UserServiceImpl;
@@ -57,7 +59,11 @@ public class AppConfig implements WebMvcConfigurer {
         return usr;
     }
 	
-	
+	@Bean
+	public EducationService educationService() {
+		EducationService esrv = new EducationServiceImpl(dataSource());
+		return esrv;
+	}
 	
 	@Bean
 	public DataSource dataSource() {

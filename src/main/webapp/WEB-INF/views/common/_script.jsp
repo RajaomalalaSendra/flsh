@@ -1,17 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<div class="footer-copyright-area">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="footer-copy-right">
-                    <p>Copyright © FLSH 2019. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
   <!-- jquery
 ============================================ -->
 <script src="<c:url value="/resources/js/vendor/jquery-1.12.4.min.js" />"></script>
