@@ -1,5 +1,7 @@
 package com.flsh.interfaces;
 
+import javax.sql.DataSource;
+
 import com.flsh.model.Login;
 import com.flsh.model.User;
 import java.util.List;
