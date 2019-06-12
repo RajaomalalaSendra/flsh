@@ -20,7 +20,7 @@
                         <ul class="submenu-angle" aria-expanded="true">
                             <li><a title="Dashboard" href="dashboard.html"><span class="mini-sub-pro">Dashboard</span></a></li>
                             <li><a title="Cycle&&Level" href="<c:url value='/educations/cyclesandlevel/' />"><span class="mini-sub-pro">Cycle && Level</span></a></li>
-                            <li><a title="Period" href="period.html"><span class="mini-sub-pro">Period</span></a></li>
+                            <li><a title="Period" href="<c:url value='/educations/periods/' />"><span class="mini-sub-pro">Period</span></a></li>
                             <li><a title="Notes" href="notes.html"><span class="mini-sub-pro">Notes</span></a></li>
                         </ul>
                     </li>
