@@ -12,7 +12,6 @@
     <div class="all-content-wrapper">
     	<%@include file="../common/_menu.jsp" %>
     	<br/><br/><br/><br/>
-    	<h2  class="admin-name" style="${empty username ? 'display: none' : ''}">${username}</h2>
     	<div class="main-wrapper">
 	    	<div class = "header-list">
 				<button class = "btn btn-primary pull-right" id = "add-user" title = "Ajouter un nouveau utilisateur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
@@ -23,26 +22,29 @@
 			  <thead>
 			    <tr>
 			      <th scope="col">Id</th>
-			      <th scope="col">Name</th>
+			      <th scope="col">Nom</th>
+			      <th scope="col">Prenom</th>
+			      <th scope="col">Login</th>
 			      <th scope="col">Mail</th>
 			      <th scope="col">Type</th>
-			      <th scope="col">Action</th>
 			    </tr>
 			  </thead>
 			  <tbody>  
 			   <c:forEach var="user" items="${users}">   
-				   <tr>  
+				   <tr id="user-${user.getId()}">  
 				   <td scope="row">${user.getId()}</td>  
+				   <td>${user.getLastname()}</td>
+				   <td>${user.getFirstname()}</td>
 				   <td>${user.getUsername()}</td>  
 				   <td>${user.getEmail()}</td>  
 				   <td>${user.getTypeComputed()}</td>  
-				   <td><a class = "detail-user" href="user/details?id=${user.getId()}">Detail</a></td>
 				   <td>
 				   		<span class = "btn-group pull-right">
-				        	<button class = "btn btn-sm btn-primary edit-user" title = "Edit cycle">
+				   			<a class = "btn btn-sm btn-info detail-user" href="user/details?id=${user.getId()}" title="afficher les details concernant l'utilisateur"><i class = "glyphicon glyphicon-eye-open"></i></a>
+				        	<button class = "btn btn-sm btn-primary edit-user" id-user = "${user.getId()}" title = "Edit user">
 				        		<i class = "glyphicon glyphicon-pencil"></i>
 				        	</button> 
-				        	<button class = "btn btn-sm btn-danger delete-user" title = "Delete cycle">
+				        	<button class = "btn btn-sm btn-danger delete-user" id-user-delete = "${user.getId()}" title = "Delete user">
 				        		<i class = "glyphicon glyphicon-trash"></i>
 				        	</button>
 				        </span>

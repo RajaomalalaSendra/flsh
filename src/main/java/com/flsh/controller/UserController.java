@@ -42,17 +42,26 @@ public class UserController {
 		  User user = userService.getUserDetails(id);
 		  JSONObject rtn = new JSONObject();
 		  rtn.put("id", user.getId());
+		  rtn.put("lastname", user.getLastname());
+		  rtn.put("firstname", user.getFirstname());
 		  rtn.put("username", user.getUsername());
 		  rtn.put("email", user.getEmail());
 		  rtn.put("type", user.getType());
 		  rtn.put("typecomputed", user.getTypeComputed());
 		  return rtn.toString();
 	  }
-	  
+	  @RequestMapping(value = "/user/delete", method = RequestMethod.GET)
+		@ResponseBody
+		public String deleteUser(HttpServletRequest request, HttpServletResponse response) {
+			int id = request.getParameter("id") == ""   ? 0 : Integer.parseInt(request.getParameter("id"));
+			JSONObject rtn = userService.deleteUser(id);
+			return rtn.toString();
+		}
       @RequestMapping(value = "/user/save", method = RequestMethod.POST)
 	  @ResponseBody
 	  public String saveUser(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("user") User user) {
-  		JSONObject rtn = userService.saveUser(user);
+  		System.out.print(user);
+    	JSONObject rtn = userService.saveUser(user);
   		return rtn.toString();
 	  }
 	  

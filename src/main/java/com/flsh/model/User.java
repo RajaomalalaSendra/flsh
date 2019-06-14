@@ -6,6 +6,8 @@ import java.util.Set;
 public class User {
 	
 	  private int id;
+	  private String lastname;
+	  private String firstname;
 	  private String username;
 	  private String password;
 	  private String email;
@@ -81,7 +83,23 @@ public class User {
 	}
 	
 	public String toString() {
-		return "username "+username+" email "+email+" password "+password+ " type " + type;
+		return "id " + id + " lastname " + lastname + " firstname " + firstname +" username "+username+" email "+email+" password "+password+ " type " + type;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
 }

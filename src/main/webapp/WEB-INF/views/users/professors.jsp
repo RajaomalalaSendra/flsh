@@ -26,7 +26,6 @@
 			      <th scope="col">Name</th>
 			      <th scope="col">Last Name</th>
 			      <th scope="col">Mail</th>
-			      <th scope="col">Action</th>
 			    </tr>
 			  </thead>
 			  <tbody>  
@@ -36,10 +35,10 @@
 				   <td>${professor.getProfessorName()}</td>
 				   <td>${professor.getProfessorLastName()}</td>  
 				   <td>${professor.getProfessorEmail()}</td>    
-				   <td><a class = "detail-professor" href="professor/details?id=${professor.getProfessorId()}">Detail</a></td>
 				   <td>
-				   		<span class = "btn-group pull-right">
-				        	<button class = "btn btn-sm btn-primary edit-professor" title = "Edit cycle">
+				   <span class = "btn-group pull-right">
+				   			<a class = "btn btn-sm btn-info detail-professor" href="professor/details?id=${professor.getProfessorId()}" title="afficher les details concernant le professeur"><i class = "glyphicon glyphicon-eye-open"></i></a>
+				        	<button class = "btn btn-sm btn-primary edit-professor" id-prof = "${professor.getProfessorId()}" title = "Edit cycle">
 				        		<i class = "glyphicon glyphicon-pencil"></i>
 				        	</button> 
 				        	<button class = "btn btn-sm btn-danger delete-professor" title = "Delete cycle">

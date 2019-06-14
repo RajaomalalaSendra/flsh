@@ -21,4 +21,6 @@ public interface UserService {
 	
 	JSONObject saveUser(User user);
 	
+	JSONObject deleteUser(int id);
+	
 }

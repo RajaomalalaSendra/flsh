@@ -72,13 +72,19 @@ public class UserServiceImpl implements UserService {
 		return users.size() > 0 ? users.get(0) : null;
 	}
 
-	private boolean checkUsernameExists(String username) {
+	private boolean checkUsernameExists(String username, int id) {
 		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_login = '"+username+"'";
+		if(id != 0) {
+			sql += " and uti_id != " + id;
+		}
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users.size() > 0;
 	}
-	private boolean checkEmailExists(String email) {
+	private boolean checkEmailExists(String email, int id) {
 		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_email = '"+email+"'";
+		if(id != 0) {
+			sql += " and uti_id != " + id;
+		}
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users.size() > 0;
 	}
@@ -87,31 +93,47 @@ public class UserServiceImpl implements UserService {
 	public JSONObject  saveUser(User user) {
 		// TODO Auto-generated method stub
 		JSONObject rtn = new JSONObject();
-		if(this.checkUsernameExists(user.getUsername())) {
+		if(this.checkUsernameExists(user.getUsername(), user.getId())) {
 			rtn.put("status", 0);
-	  	    rtn.put("message", "Echec de l'enregistrement! Le nom d'utilisateur existe");
+	  	    rtn.put("message", user.getId() == 0 ? "Echec de l'enregistrement! Le nom d'utilisateur existe" : "Le nom d'utilisateur déjà utilisé par un autre utilisateur");
 			return rtn;
 		}
-		if (this.checkEmailExists(user.getEmail())) {
+		if (this.checkEmailExists(user.getEmail(), user.getId())) {
 			rtn.put("status", 0);
-	  	    rtn.put("message", "Echec de l'enregistrement! L'email que vous avez entrez existe deja");
+	  	    rtn.put("message", user.getId() == 0 ? "Echec de l'enregistrement! L'email que vous avez entrez existe deja" : "L'email que vous avez entrez est déjà utilisé par un autre utilisateur");
 			return rtn;
 		}
 		
-		String sql = "insert into Utilisateur(uti_login, uti_email, uti_passwd, uti_type) values(?,?,sha1(?),?)";
+		String sql = user.getId() == 0 ? "insert into Utilisateur(uti_nom, uti_prenom, uti_login, uti_email, uti_passwd, uti_type) values(?, ?, ?,?,sha1(?),?)" : 
+										"UPDATE Utilisateur SET uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_passwd = sha1(?), uti_type = ? WHERE uti_id = ?";
 		boolean save = jdbcTemplate.execute (sql, new PreparedStatementCallback<Boolean>() {
 
 			@Override
 			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				ps.setString(1, user.getUsername());
-				ps.setString(2, user.getEmail());
-				ps.setString(3, user.getPassword());
-				ps.setString(4, user.getType());
+				ps.setString(1, user.getLastname());
+				ps.setString(2, user.getFirstname());
+				ps.setString(3, user.getUsername());
+				ps.setString(4, user.getEmail());
+				ps.setString(5, user.getPassword());
+				ps.setString(6, user.getType());
+				if (user.getId() != 0) ps.setInt(7, user.getId());
 				return ps.executeUpdate() > 0 ? true : false;
 			}
 		});
 		rtn.put("status", save ? 1 : 0);
   	    rtn.put("message", save ? "Enregistré avec succès" : "Echec de l'enregistrement! Veuillez réessayer");
+		return rtn;
+	}
+
+
+	@Override
+	public JSONObject deleteUser(int id) {
+		// TODO Auto-generated method stub
+		String sql = "DELETE FROM Utilisateur WHERE uti_id = ?";
+		JSONObject rtn = new JSONObject();
+	    int i = jdbcTemplate.update(sql, id);
+	    rtn.put("status", i >= 0 ? 1 : 0);
+	    rtn.put("message", i >= 0 ? "Supprimé!" : "Echec de la suppression! Veuillez réessayer.");
 		return rtn;
 	}
 }
@@ -120,6 +142,8 @@ class UserMapper implements RowMapper<User> {
 	public User mapRow(ResultSet rs, int arg1) throws SQLException {
 	    User user = new User();
 	    user.setId(rs.getInt("uti_id"));
+	    user.setLastname(rs.getString("uti_nom"));
+	    user.setFirstname(rs.getString("uti_prenom"));
 	    user.setUsername(rs.getString("uti_login"));
 	    user.setPassword(rs.getString("uti_passwd"));
 	    user.setEmail(rs.getString("uti_email"));

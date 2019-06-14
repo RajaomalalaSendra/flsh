@@ -12,6 +12,12 @@
 	      <div class="modal-body">
 		      	<div class = "form-group form-inline">
 		      		<label>Nom d'utilisateur</label>
+		      		<span id = "detail-lastname"></span>
+		      		<br/>
+		      		<label>Prenom Nom d'utilisateur</label>
+		      		<span id = "detail-firstname"></span>
+		      		<br/>
+		      		<label>Login d'utilisateur</label>
 		      		<span id = "detail-username"></span>
 		      		<br/>
 		      		<label>Email de l'utilisateur</label>
