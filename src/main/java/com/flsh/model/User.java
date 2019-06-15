@@ -83,7 +83,7 @@ public class User {
 	}
 	
 	public String toString() {
-		return "id " + id + " lastname " + lastname + " firstname " + firstname +" username "+username+" email "+email+" password "+password+ " type " + type;
+		return "id " + id + " login name " + username + " lastname " + lastname + " firstname " + firstname +" username "+username+" email "+email+" password "+password+ " type " + type;
 	}
 
 	public String getLastname() {

@@ -26,27 +26,31 @@
 			      <th scope="col">Name</th>
 			      <th scope="col">Last Name</th>
 			      <th scope="col">Mail</th>
+			      <th scope="col">Adresse</th>
+			      <th scope="col">Contact</th>
 			    </tr>
 			  </thead>
 			  <tbody>  
 			   <c:forEach var="professor" items="${professors}">   
-				   <tr>  
-				   <td scope="row">${professor.getProfessorId()}</td>  
-				   <td>${professor.getProfessorName()}</td>
-				   <td>${professor.getProfessorLastName()}</td>  
-				   <td>${professor.getProfessorEmail()}</td>    
-				   <td>
-				   <span class = "btn-group pull-right">
-				   			<a class = "btn btn-sm btn-info detail-professor" href="professor/details?id=${professor.getProfessorId()}" title="afficher les details concernant le professeur"><i class = "glyphicon glyphicon-eye-open"></i></a>
-				        	<button class = "btn btn-sm btn-primary edit-professor" id-prof = "${professor.getProfessorId()}" title = "Edit cycle">
-				        		<i class = "glyphicon glyphicon-pencil"></i>
-				        	</button> 
-				        	<button class = "btn btn-sm btn-danger delete-professor" title = "Delete cycle">
-				        		<i class = "glyphicon glyphicon-trash"></i>
-				        	</button>
-				        </span>
-				    </td>  
-			   </tr>  
+				   <tr id="prof-${professor.getProfessorId()}">  
+					   <td scope="row">${professor.getProfessorId()}</td>  
+					   <td>${professor.getProfessorName()}</td>
+					   <td>${professor.getProfessorLastName()}</td>  
+					   <td>${professor.getProfessorEmail()}</td>
+					   <td>${professor.getProfessorAdresse()}</td>
+					   <td>${professor.getProfessorContact()}</td>    
+					   <td>
+					   <span class = "btn-group pull-right">
+					   			<a class = "btn btn-sm btn-info detail-professor" href="professor/details?id=${professor.getProfessorId()}" title="afficher les details concernant le professeur"><i class = "glyphicon glyphicon-eye-open"></i></a>
+					        	<button class = "btn btn-sm btn-primary edit-professor" id-prof = "${professor.getProfessorId()}" id-prof-for-user = "${professor.getUserId()}" title = "Edit Professor">
+					        		<i class = "glyphicon glyphicon-pencil"></i>
+					        	</button> 
+					        	<button class = "btn btn-sm btn-danger delete-professor"  id-profd = "${professor.getProfessorId()}" id-profdelete = "${professor.getUserId()}" title = "Delete Professor">
+					        		<i class = "glyphicon glyphicon-trash"></i>
+					        	</button>
+					        </span>
+					    </td>  
+			   	  </tr>  
 			   </c:forEach>
 			  </tbody>  
 			</table>  

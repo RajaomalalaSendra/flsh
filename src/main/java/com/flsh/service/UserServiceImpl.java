@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> getAllUser() {
-		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type";
+		String sql = "SELECT * FROM Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_type != 2";
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users;
 	}

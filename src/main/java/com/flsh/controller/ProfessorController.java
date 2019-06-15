@@ -39,18 +39,47 @@ public class ProfessorController {
 		  Professors professor = professorService.getProfessorDetails(id);
 		  JSONObject rtn = new JSONObject();
 		  rtn.put("id", professor.getProfessorId());
-		  rtn.put("lastname", professor.getProfessorLastName());
-		  rtn.put("firstname", professor.getProfessorName());
-		  rtn.put("email", professor.getProfessorEmail());
-		  rtn.put("contact", professor.getProfessorContact());
+		  rtn.put("professor_last_name", professor.getProfessorLastName());
+		  rtn.put("professor_name", professor.getProfessorName());
+		  rtn.put("professor_email", professor.getProfessorEmail());
+		  rtn.put("professor_adresse", professor.getProfessorAdresse());
+		  rtn.put("professor_login", professor.getProfessorLogin());
+		  rtn.put("professor_contact", professor.getProfessorContact());
+		  rtn.put("professor_password", professor.getProfessorPassword());
+		  rtn.put("user_type", professor.getUserType());
+		  rtn.put("uti_id", professor.getUserId());
 		  return rtn.toString();
 	  }
 	  @RequestMapping(value = "/professor/save", method = RequestMethod.POST)
 	  @ResponseBody
-	  public String saveProfessor(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("professor") Professors professor) {
-  		System.out.print(professor);
-    	JSONObject rtn = professorService.saveProfessor(professor);
+	  public String saveProfessor(HttpServletRequest request, HttpServletResponse response) {
+		int id = request.getParameter("id") == null || request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
+		String lastname = request.getParameter("professor_last_name");
+		String firstname = request.getParameter("professor_name");
+		String login_name = request.getParameter("professor_login");
+		String email = request.getParameter("professor_email");
+		String passwd = request.getParameter("professor_password");
+		String adresse = request.getParameter("professor_adresse");
+		String contact = request.getParameter("professor_contact");
+		int type = request.getParameter("user_type") == null || request.getParameter("user_type") == "" ? 2 : Integer.parseInt(request.getParameter("user_type"));
+		int user_id = request.getParameter("user_id") == null || request.getParameter("user_id") == "" ? 0 : Integer.parseInt(request.getParameter("user_id"));		
+        Professors professor = new Professors(id, lastname, firstname, login_name, email, passwd, adresse,  contact, type, user_id );
+        System.out.println(professor);
+      	JSONObject rtn = professorService.saveProfessor(professor);
   		return rtn.toString();
 	  }
+	  
+	  @RequestMapping(value = "/professor/delete", method = RequestMethod.GET)
+		@ResponseBody
+		public String deleteProfessor(HttpServletRequest request, HttpServletResponse response) {
+		  int id_before = request.getParameter("id") == ""   ? 0 : Integer.parseInt(request.getParameter("id"));
+		    Professors professor = professorService.getProfessorDetails(id_before);
+		  	int user_id = professor.getUserId();
+		  	int id = professor.getProfessorId();
+			System.out.println("Prof Id: " + id);
+			System.out.println("User Id: " + user_id);
+			JSONObject rtn = professorService.deleteProfessor(id, user_id);
+			return rtn.toString();
+		}
 	  
 }

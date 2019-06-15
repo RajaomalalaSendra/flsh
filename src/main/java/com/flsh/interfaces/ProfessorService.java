@@ -11,4 +11,5 @@ public interface ProfessorService {
 	List<Professors> getAllProfessor();
 	Professors getProfessorDetails(int id);
 	JSONObject saveProfessor(Professors professor);
+	JSONObject deleteProfessor(int id, int user_id);
 }

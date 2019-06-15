@@ -57,7 +57,6 @@ $(document).ready(function() {
 			type: "GET",
 			dataType: "JSON",
 			success: function(data) {
-				console.log(data)
 				$('#lastname').val(data.lastname)
 				$('#firstname').val(data.firstname)
 				$('#name').val(data.username)

@@ -22,6 +22,9 @@
 		      		<br/>
 		      		<label>Contact de Professeur</label>
 		      		<span id = "detail-contact-prof"></span>
+		      		<br/>
+		      		<label>Adresse de Professeur</label>
+		      		<span id = "detail-adresse-prof"></span>
 		      	</div>
 		      	
 	      </div>

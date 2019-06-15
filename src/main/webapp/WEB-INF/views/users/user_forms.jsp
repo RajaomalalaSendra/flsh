@@ -55,7 +55,7 @@
   </div>
 </div>
 
-<!-- Modal SDelete User -->
+<!-- Modal Delete User -->
 <div class="modal fade" id="userDeleteModal" tabindex="-1" role="dialog" aria-labelledby="cycleEditLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
