@@ -41,11 +41,11 @@ $(document).ready(function() {
 					$('#finUA').val(data.infos.year_ending)
 					$('#univYearModal').modal('show')
 				} else {
-					alert(data.message ? data.message : "Echec du chargement des infos de l'année universitaire. Veuillez réessayer")
+					alert(data.message ? data.message : "Echec du chargement des infos de l'ann&eacute;e universitaire. Veuillez r&eacute;essayer")
 				}
 			},
 			error: function() {
-				alert('Une erreur s\'est produite. Veuillez réessayer!')
+				alert('Une erreur s\'est produite. Veuillez r&eacute;essayer!')
 			}
 		})
 	})
@@ -112,7 +112,7 @@ $(document).ready(function() {
 				$('#details-univ-year .table tbody').html(data)
 			},
 			error: function() {
-				alert('Ne peut pas charger les périodes pour le niveau. Veuillez réessayer')
+				alert('Ne peut pas charger les p&eacute;riodes pour le niveau. Veuillez r&eacute;essayer')
 				$('#details-univ-year .table tbody').html("")
 			}
 		})
@@ -152,17 +152,17 @@ $(document).ready(function() {
 				finRattr = new Date($('#finRattr').val())
 			}
 			if(debPer > finPer) {
-				$('#err-save-levelperiod').html('Vérifiez les dates début et fin SVP').show().delay(3000).fadeOut(600)
+				$('#err-save-levelperiod').html('V&eacute;rifiez les dates d&eacute;but et fin SVP').show().delay(3000).fadeOut(600)
 			} else if(debExam > finExam) {
-				$('#err-save-levelperiod').html('Vérifiez les dates d\'examen SVP. Début > Fin!!').show().delay(3000).fadeOut(600)
+				$('#err-save-levelperiod').html('V&eacute;rifiez les dates d\'examen SVP. D&eacute;but > Fin!!').show().delay(3000).fadeOut(600)
 			} else if( debExam < debPer || finPer < debExam) {
-				$('#err-save-levelperiod').html('Vérifiez les dates d\'examen SVP. Date début examen pas comprise dans la période.').show().delay(3000).fadeOut(600)
+				$('#err-save-levelperiod').html('V&eacute;rifiez les dates d\'examen SVP. Date d&eacute;but examen pas comprise dans la p&eacute;riode.').show().delay(3000).fadeOut(600)
 			} else if( finPer < finExam) {
-				$('#err-save-levelperiod').html('Vérifiez les dates d\'examen SVP. Date fin examen pas comprise dans la période.').show().delay(3000).fadeOut(600)
+				$('#err-save-levelperiod').html('V&eacute;rifiez les dates d\'examen SVP. Date fin examen pas comprise dans la p&eacute;riode.').show().delay(3000).fadeOut(600)
 			} else if($('#withRatrappage').is(':checked') && debRattr > finRattr) {
-				$('#err-save-levelperiod').html('Vérifiez les dates de rattrapage SVP. Début > Fin!!').show().delay(3000).fadeOut(600)
+				$('#err-save-levelperiod').html('V&eacute;rifiez les dates de rattrapage SVP. D&eacute;but > Fin!!').show().delay(3000).fadeOut(600)
 			} else if($('#withRatrappage').is(':checked') && debRattr > debPer) {
-				$('#err-save-levelperiod').html('Vérifiez les dates de rattrapage SVP. Début avant le début de la période!').show().delay(3000).fadeOut(600)
+				$('#err-save-levelperiod').html('V&eacute;rifiez les dates de rattrapage SVP. D&eacute;but avant le d&eacute;but de la p&eacute;riode!').show().delay(3000).fadeOut(600)
 			} else {
 				$.ajax({
 					url: getBaseUrl('educations/saveLevelPeriod'),
@@ -170,7 +170,12 @@ $(document).ready(function() {
 					type: 'POST',
 					dataType: 'JSON',
 					success: function(data) {
-						//TODO: treat response
+						if(data.status == 1) {
+							$('#details-univ-year #niveau-period').trigger('change')
+							$('#periodEditModal').modal('hide')
+						} else {
+							$('#err-save-levelperiod').html(data.message ? data.message : 'Echec de l\'enregistrement! Veuillez r&eacute;essayer...').show().delay(3000).fadeOut(600)
+						}
 					},
 					error: function() {
 						$('#err-save-levelperiod').html('Une erreur s\'est produite! Veuillez r&eacute;essayer...').show().delay(3000).fadeOut(600)

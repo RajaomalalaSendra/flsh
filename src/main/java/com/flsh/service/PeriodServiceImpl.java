@@ -149,6 +149,7 @@ public class PeriodServiceImpl implements PeriodService {
 
 	@Override
 	public JSONObject savePeriod(Period period) {
+		JSONObject rtn = new JSONObject();
 		String request_period = "INSERT INTO Periode(au_id, niv_id, per_libellecourt, per_libellelong, per_debut, per_fin, per_aratrappage) values(:au, :niv, :libcourt, :liblong, :perdeb, :perfin, :rattr)";
 		GeneratedKeyHolder holder = new GeneratedKeyHolder();
 		SqlParameterSource parameters = new MapSqlParameterSource()
@@ -160,7 +161,11 @@ public class PeriodServiceImpl implements PeriodService {
 				.addValue("perfin", period.getPeriod_fin())
 				.addValue("rattr", period.isA_ratrappage() ? 1 : 0);
 		int res = namedJdbcTemplate.update(request_period, parameters, holder);
-		System.out.print("First execution "+res);
+		if(res <= 0) {
+			rtn.put("status", 0);
+			rtn.put("message", "Echec de l'insertion de la période dans la base!");
+			return rtn;
+		}
 		int periodid = holder.getKey().intValue();
 		String request_exam = "INSERT INTO Examen(per_id, exam_libelle, exam_sessiontype, exam_datedebut, exam_datefin) values(:per, :lib, 1, :debut, :fin)";
 		parameters = new MapSqlParameterSource()
@@ -169,6 +174,11 @@ public class PeriodServiceImpl implements PeriodService {
 				.addValue("debut", period.getExam_debut())
 				.addValue("fin", period.getExam_fin());
 		res = namedJdbcTemplate.update(request_exam, parameters);
+		if(res <= 0) {
+			rtn.put("status", 0);
+			rtn.put("message", "Echec de l'insertion de l'examen dans la base!");
+			return rtn;
+		}
 		System.out.print("2nd execution "+res);
 		if(period.isA_ratrappage()) {
 			String request_rattr = "INSERT INTO Examen(per_id, exam_libelle, exam_sessiontype, exam_datedebut, exam_datefin) values(:per, :lib, 2, :debut, :fin)";
@@ -179,8 +189,15 @@ public class PeriodServiceImpl implements PeriodService {
 					.addValue("fin", period.getRattr_fin());
 			namedJdbcTemplate.update(request_rattr, parameters);
 			System.out.print("3rd execution "+res);
+			if(res <= 0) {
+				rtn.put("status", 0);
+				rtn.put("message", "Echec de l'insertion du rattrapage dans la base!");
+				return rtn;
+			}
 		}
-		return null;
+		rtn.put("status", 1);
+		rtn.put("message", "Succès de l'enregistrement!");
+		return rtn;
 	}
 	
 	private boolean checkDataEvalExist(String type, int idType) {

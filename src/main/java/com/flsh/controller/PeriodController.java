@@ -89,6 +89,6 @@ public class PeriodController {
 	public String saveLevelPeriod(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("period") Period period ) {
 		System.out.print(period);
 		JSONObject rtn = periodService.savePeriod(period);
-		return "";
+		return rtn.toString();
 	}
 }

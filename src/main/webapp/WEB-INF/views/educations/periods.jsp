@@ -12,6 +12,7 @@
     <!-- Start Welcome area -->
     <div class="all-content-wrapper">
     	<%@include file="../common/_menu.jsp" %>
+    	<br/><br/><br/><br/>
     	<div class = "main-wrapper">
 	    	<div id = "list-univ-year">
 	    		<div class = "header-list">
