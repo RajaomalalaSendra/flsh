@@ -39,7 +39,7 @@ public class TeachingServiceImpl implements TeachingService {
 
 	@Override
 	public List<Courses> getAllComplementary() {
-		String sql = "SELECT * FROM Element_constitutif";
+		String sql = "SELECT * FROM Element_Constitutif";
 		List<Courses> courses = jdbcTemplate.query(sql, new CourseMapper());
 		return courses;
 	}
@@ -56,10 +56,10 @@ public class TeachingServiceImpl implements TeachingService {
 class UnitsMapper implements RowMapper<StudyUnits> {
 	public StudyUnits mapRow(ResultSet rs, int arg1) throws SQLException {
 	    StudyUnits units = new StudyUnits();
-	    units.setStudyUnitsId(rs.getInt("ue_id"));
-	    units.setParcourId(rs.getInt("prc_id"));
-	    units.setStudyunitsLibelle(rs.getString("ue_libelle"));
-	    units.setStudyunitsType(rs.getString("ue_type"));
+	    units.setStudyunits_id(rs.getInt("ue_id"));
+	    units.setParcours_id(rs.getInt("prc_id"));
+	    units.setStudyunits_libelle(rs.getString("ue_libelle"));
+	    units.setStudyunits_type(rs.getString("ue_type"));
 	    return units;
 	}
 }
@@ -67,16 +67,16 @@ class UnitsMapper implements RowMapper<StudyUnits> {
 class CourseMapper implements RowMapper<Courses> {
 	public Courses mapRow(ResultSet rs, int arg1) throws SQLException {
 	    Courses courses = new Courses(); 
-	    courses.setId(rs.getInt("ec_id"));
-	    courses.setStudyUnitId(rs.getInt("ue_id"));
-	    courses.setProfessorId(rs.getInt("prof_id"));
-	    courses.setCourseLibelle(rs.getString("ec_libelle"));
-	    courses.setCourseCredit(rs.getInt("ec_credit"));
-	    courses.setCourseNotation(rs.getInt("ec_notation"));
-	    courses.setCourseCoefficient(rs.getInt("ec_coefficient"));
-	    courses.setCourseVolumehoraire(rs.getString("ec_volumehoraire"));
-	    courses.setCourseTravailpresentiel(rs.getDouble("ec_travailpresenciel"));
-	    courses.setCourseTravailpersonnel(rs.getDouble("ec_travailpersonnel"));
+	    courses.setCourse_id(rs.getInt("ec_id"));
+	    courses.setStudyunit_id(rs.getInt("ue_id"));
+	    courses.setProfessor_id(rs.getInt("prof_id"));
+	    courses.setCourse_libelle(rs.getString("ec_libelle"));
+	    courses.setCourse_credit(rs.getInt("ec_credit"));
+	    courses.setCourse_notation(rs.getInt("ec_notation"));
+	    courses.setCourse_coefficient(rs.getInt("ec_coefficient"));
+	    courses.setCourse_volumehoraire(rs.getString("ec_volumehoraire"));
+	    courses.setCourse_travailpresenciel(rs.getDouble("ec_travailpresenciel"));
+	    courses.setCourse_travailpersonnel(rs.getDouble("ec_travailpersonnel"));
 	    return courses;
 	}
 }
