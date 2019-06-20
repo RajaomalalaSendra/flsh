@@ -26,7 +26,7 @@ $(document).ready(function() {
 		$('#userAddModal').modal('show')
 	})
 	$('#save-user').on('click', function(){
-		if (form_validate('#form-save-user')){
+		if (formValidate('#form-save-user')){
 			$.ajax({
 				url: getBaseUrl('user/save'),
 			    type: 'POST',

@@ -28,7 +28,7 @@ $(document).ready(function() {
 	})
 	$('#save-prof').on('click', function(){
 		updatePasswordStatus()
-		if (form_validate('#form-save-prof')){
+		if (formValidate('#form-save-prof')){
 			console.log("test.....")
 			$.ajax({
 				url: getBaseUrl('professor/save'),

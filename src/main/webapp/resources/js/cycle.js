@@ -69,7 +69,7 @@ $(document).ready(function() {
 	})
 	
 	$('#save-cycle').on('click', function() {
-		if(form_validate('#form-save-cycle')) {
+		if(formValidate('#form-save-cycle')) {
 			$.ajax({
 				url: getBaseUrl('education/saveCycle'),
 				type: 'POST',

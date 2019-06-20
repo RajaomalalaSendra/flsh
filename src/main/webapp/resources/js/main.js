@@ -99,7 +99,7 @@
  
 })(jQuery); 
 
-function form_validate(selector) {
+function formValidate(selector) {
     var form = $(selector)
     var formValide = true
     form.find('input, textarea').each(function() {
@@ -180,7 +180,7 @@ function emptyForm(selector) {
 	form.find('input, textarea').each(function() {
 		var input = $(this)
 		input.removeClass('hasError').val('')
-        input.parent().find('small.error').hide()
+    input.parent().find('small.error').hide()
 	})
 }
 

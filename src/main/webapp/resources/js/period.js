@@ -8,7 +8,7 @@ $(document).ready(function() {
 	})
 	
 	$('#save-au').on('click', function() {
-		if(form_validate('#form-save-ua')) {
+		if(formValidate('#form-save-ua')) {
 			$.ajax({
 				url: getBaseUrl('educations/saveAU'),
 				type: 'POST',
@@ -142,7 +142,7 @@ $(document).ready(function() {
 		formData['university_year_id'] = $('#au-edit').val()
 		formData['level_id'] = $('#niveau-period').val()
 //		formData += "&niv="+$('#niveau-period').val()+"&au="+$('#au-edit').val()+'&a_ratrappage='+($('#withRatrappage').is(':checked') ? "1" : "0")
-		if(form_validate(this)){
+		if(formValidate(this)){
 			var debPer = new Date($('#debPeriod').val()),
 				finPer = new Date($('#finPeriod').val()),
 				debExam = new Date($('#debExam').val()),
