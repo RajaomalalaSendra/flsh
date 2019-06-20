@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.flsh.model.Professors;
+import com.flsh.model.Professor;
 import com.flsh.model.User;
 import com.flsh.interfaces.ProfessorService;
 
@@ -26,7 +26,7 @@ public class ProfessorController {
 
 	  @RequestMapping(value = "/professors", method = RequestMethod.GET)
 	  public ModelAndView showProfessor(HttpServletRequest request, HttpServletResponse response) {
-		List<Professors> professors=professorService.getAllProfessor();
+		List<Professor> professors=professorService.getAllProfessor();
 		ModelAndView prof = new ModelAndView("users/professors");
 	    prof.addObject("professors", professors);
 	    return prof;
@@ -36,7 +36,7 @@ public class ProfessorController {
 	  @ResponseBody
 	  public String getUserDetails(HttpServletRequest request, HttpServletResponse response) {
 		  int id = request.getParameter("id") == null || request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
-		  Professors professor = professorService.getProfessorDetails(id);
+		  Professor professor = professorService.getProfessorDetails(id);
 		  JSONObject rtn = new JSONObject();
 		  rtn.put("id", professor.getProfessorId());
 		  rtn.put("professor_last_name", professor.getProfessorLastName());
@@ -63,7 +63,7 @@ public class ProfessorController {
 		String contact = request.getParameter("professor_contact");
 		int type = request.getParameter("user_type") == null || request.getParameter("user_type") == "" ? 2 : Integer.parseInt(request.getParameter("user_type"));
 		int user_id = request.getParameter("user_id") == null || request.getParameter("user_id") == "" ? 0 : Integer.parseInt(request.getParameter("user_id"));		
-        Professors professor = new Professors(id, lastname, firstname, login_name, email, passwd, adresse,  contact, type, user_id );
+        Professor professor = new Professor(id, lastname, firstname, login_name, email, passwd, adresse,  contact, type, user_id );
         System.out.println(professor);
       	JSONObject rtn = professorService.saveProfessor(professor);
   		return rtn.toString();
@@ -72,8 +72,8 @@ public class ProfessorController {
 	  @RequestMapping(value = "/professor/delete", method = RequestMethod.GET)
 		@ResponseBody
 		public String deleteProfessor(HttpServletRequest request, HttpServletResponse response) {
-		  int id_before = request.getParameter("id") == ""   ? 0 : Integer.parseInt(request.getParameter("id"));
-		    Professors professor = professorService.getProfessorDetails(id_before);
+		  	int id_before = request.getParameter("id") == ""   ? 0 : Integer.parseInt(request.getParameter("id"));
+		    Professor professor = professorService.getProfessorDetails(id_before);
 		  	int user_id = professor.getUserId();
 		  	int id = professor.getProfessorId();
 			System.out.println("Prof Id: " + id);

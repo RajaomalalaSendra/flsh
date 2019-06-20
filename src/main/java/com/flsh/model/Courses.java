@@ -62,7 +62,7 @@ public class Courses{
 	public double getCourseTravailpresenciel() {
 		return this.course_travailpresenciel;
 	}
-	public void setCourse(double course_travailpresenciel) {
+	public void setCourseTravailpresentiel(double course_travailpresenciel) {
 		this.course_travailpresenciel = course_travailpresenciel;
 	}
 	public double getCourseTravailpersonnel() {

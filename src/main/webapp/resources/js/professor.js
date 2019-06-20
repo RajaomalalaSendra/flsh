@@ -23,9 +23,11 @@ $(document).ready(function() {
 	$('#add-professor').on('click', function() {
 		$('#profAddLabel').html('Ajouter un professeur')
 		$('#prof_id').val('0')
+		$('#lastname-prof').val("")
 		$('#profAddModal').modal('show')
 	})
 	$('#save-prof').on('click', function(){
+		updatePasswordStatus()
 		if (form_validate('#form-save-prof')){
 			console.log("test.....")
 			$.ajax({
@@ -66,6 +68,7 @@ $(document).ready(function() {
 				$('#firstname-prof').val(data.professor_name)
 				$('#loginname-prof').val(data.professor_login)
 				$('#email-prof').val(data.professor_email)
+				$('#pass-prof').val("")
 				$('#contact-prof').val(data.professor_contact)
 				$('#adresse-prof').val(data.professor_adresse)
 				$('#uti-type').val("2")
@@ -108,3 +111,15 @@ $(document).ready(function() {
 		})
 	})
 })
+
+function updatePasswordStatus() {
+	if($('#prof_id').val() == 0) {
+		$('#pass-prof').attr("required")
+	} else {
+		if($('#pass-prof').val() == "") {
+			$('#pass-prof').removeAttr("required")
+		} else {
+			$('#pass-prof').attr("required")
+		}
+	}
+}

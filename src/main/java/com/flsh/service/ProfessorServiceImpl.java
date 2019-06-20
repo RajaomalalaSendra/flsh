@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.flsh.model.Authorities;
-import com.flsh.model.Professors;
+import com.flsh.model.Professor;
 import com.flsh.model.User;
 import com.mysql.jdbc.Statement;
 import com.flsh.interfaces.ProfessorService;
@@ -36,16 +36,16 @@ public class ProfessorServiceImpl implements ProfessorService {
 	}
 
 	@Override
-	public List<Professors> getAllProfessor() {
+	public List<Professor> getAllProfessor() {
 		String sql_prof = "SELECT * FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id WHERE Utilisateur.uti_type = 2 ";		
-		List<Professors> professors = jdbcTemplate.query(sql_prof, new ProfessorMapper());
+		List<Professor> professors = jdbcTemplate.query(sql_prof, new ProfessorMapper());
 		return professors;
 	}
 
 	@Override
-	public Professors getProfessorDetails(int id) {
+	public Professor getProfessorDetails(int id) {
 		String sql = "SELECT * FROM Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id WHERE prof_id = " + id ;
-		List<Professors> professors = jdbcTemplate.query(sql, new ProfessorMapper());
+		List<Professor> professors = jdbcTemplate.query(sql, new ProfessorMapper());
 		return professors.size() > 0 ? professors.get(0) : null;
 	}
 	private boolean checkUsernameExists(String username, int uti_id) {
@@ -53,7 +53,7 @@ public class ProfessorServiceImpl implements ProfessorService {
 		if(uti_id != 0) {
 			sql += " and Professeur.uti_id != " + uti_id;
 		}
-		List<Professors> prof = jdbcTemplate.query(sql, new ProfessorMapper());
+		List<Professor> prof = jdbcTemplate.query(sql, new ProfessorMapper());
 		return prof.size() > 0;
 	}
 	private boolean checkEmailExists(String email, int uti_id) {
@@ -61,12 +61,12 @@ public class ProfessorServiceImpl implements ProfessorService {
 		if(uti_id != 0) {
 			sql += " and Professeur.uti_id != " + uti_id;
 		}
-		List<Professors> prof = jdbcTemplate.query(sql, new ProfessorMapper());
+		List<Professor> prof = jdbcTemplate.query(sql, new ProfessorMapper());
 		return prof.size() > 0;
 	}
 
 	@Override
-	public JSONObject saveProfessor(Professors professor) {
+	public JSONObject saveProfessor(Professor professor) {
 		// TODO Auto-generated method stub
 		JSONObject rtn = new JSONObject();
 		if(this.checkUsernameExists(professor.getProfessorName(), professor.getUserId())) {
@@ -81,8 +81,12 @@ public class ProfessorServiceImpl implements ProfessorService {
 		}
 		
 		// the sql for the utilisateur table
-		String sql_user = professor.getUserId() == 0 ? "INSERT INTO Utilisateur(uti_nom, uti_prenom, uti_login, uti_email, uti_passwd, uti_type) VALUES(?, ?, ?, ?, sha1(?), ?)" : 
-			"UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_passwd = sha1(?), uti_type = ? WHERE uti_id = ?";
+		String sql_user;
+		if (professor.getUserId() == 0) {
+			sql_user = "INSERT INTO Utilisateur(uti_nom, uti_prenom, uti_login, uti_email, uti_type, uti_passwd) VALUES(?, ?, ?, ?, sha1(?), ?)";
+		} else {
+			sql_user = professor.getProfessorPassword().equals("") ? "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ? WHERE uti_id = ?" : "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, uti_passwd = sha1(?) WHERE uti_id = ?";
+		}
 		
 		System.out.println(" Professor Id: " + professor.getProfessorId());
 		System.out.println("||||||||User Type: " + professor.getUserType()+"|||||||||||");
@@ -95,9 +99,9 @@ public class ProfessorServiceImpl implements ProfessorService {
 		        statement.setString(2, professor.getProfessorName());
 		        statement.setString(3, professor.getProfessorLogin());
 		        statement.setString(4, professor.getProfessorEmail());
-		        statement.setString(5, professor.getProfessorPassword());
-		        statement.setInt(6, professor.getUserType());
-		        if (professor.getUserId() != 0) statement.setInt(7, professor.getUserId());
+		        statement.setInt(5, professor.getUserType());
+		        if(!professor.getProfessorPassword().equals("")) statement.setString(6, professor.getProfessorPassword());
+		        if (professor.getUserId() != 0) statement.setInt( professor.getProfessorPassword().equals("") ? 6 : 7, professor.getUserId());
 		        return statement;
 		    }
 		}, holder);
@@ -142,9 +146,9 @@ public class ProfessorServiceImpl implements ProfessorService {
 	}
 }
 
-class ProfessorMapper implements RowMapper<Professors> {
-	public Professors mapRow(ResultSet rs, int arg1) throws SQLException {
-		Professors prof = new Professors();
+class ProfessorMapper implements RowMapper<Professor> {
+	public Professor mapRow(ResultSet rs, int arg1) throws SQLException {
+		Professor prof = new Professor();
 		prof.setProfessorId(rs.getInt("prof_id"));
 		prof.setProfessorLastName(rs.getString("uti_nom"));
 		prof.setProfessorName(rs.getString("uti_prenom"));

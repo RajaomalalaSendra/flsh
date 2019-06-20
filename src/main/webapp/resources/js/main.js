@@ -157,15 +157,16 @@ function form_validate(selector) {
             }
         } else if(input.attr('type') == "password" && input.is(':visible')) {
             var strongPassRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/
-            if($.trim(input.val()) == "") {
+            if($.trim(input.val()) == "" && input.attr('required')) {
                 input.addClass('hasError')
                 input.parent().find('small.error').html('Champ requis').show()
                 formValide = false
-            } else if(!$.trim(input.val()).match(strongPassRegex)) {
+            }
+            if($.trim(input.val()) != "" && !$.trim(input.val()).match(strongPassRegex)) {
                 input.addClass('hasError')
                 input.parent().find('small.error').html('Un mot de passe doit être composé de lettres minuscules, majuscules, au moins un chiffre et de longueur 8 caractères minimum').show()
                 formValide = false
-            } else {
+            } else if(($.trim(input.val()) == "" && !input.attr('required')) || $.trim(input.val()).match(strongPassRegex)) {
                 input.removeClass('hasError')
                 input.parent().find('small.error').hide()
             }

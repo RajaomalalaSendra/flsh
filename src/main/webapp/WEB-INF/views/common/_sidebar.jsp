@@ -45,9 +45,7 @@
                     <li>
                         <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Courses</span></a>
                         <ul class="submenu-angle" aria-expanded="false">
-                            <li><a title="All UE/EC" href="all-ue-ec.html"><span class="mini-sub-pro">All UE/EC</span></a></li>
-                            <li><a title="Add UE/EC" href="add-ue-ec.html"><span class="mini-sub-pro">Add UE/EC</span></a></li>
-                            <li><a title="Edit UE/EC" href="edit-ue-ec.html"><span class="mini-sub-pro">Edit UE/EC</span></a></li>
+                            <li><a title="All UE/EC" href="<c:url value='/uece' />"><span class="mini-sub-pro">All UE/EC</span></a></li>
                         </ul>
                     </li>
                     <li>

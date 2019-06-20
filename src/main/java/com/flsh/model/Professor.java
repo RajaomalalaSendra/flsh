@@ -1,6 +1,6 @@
 package com.flsh.model;
 
-public class Professors {
+public class Professor {
 	private int professor_id;
 	private String professor_password;
 	private String professor_name;
@@ -12,10 +12,10 @@ public class Professors {
 	private int user_id;
 	private int user_type;
 	
-	public Professors() {
+	public Professor() {
 		/// Professors for us
 	}
-	public Professors(int id, String name, String first, String log, String mail, String passwd, String adr, String contact, int type, int usid ) {
+	public Professor(int id, String name, String first, String log, String mail, String passwd, String adr, String contact, int type, int usid ) {
 		this.professor_id = id;
 		this.professor_last_name = name;
 		this.professor_name = first;

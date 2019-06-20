@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import com.flsh.model.Professors;
+import com.flsh.model.Professor;
 
 
 public interface ProfessorService {
-	List<Professors> getAllProfessor();
-	Professors getProfessorDetails(int id);
-	JSONObject saveProfessor(Professors professor);
+	List<Professor> getAllProfessor();
+	Professor getProfessorDetails(int id);
+	JSONObject saveProfessor(Professor professor);
 	JSONObject deleteProfessor(int id, int user_id);
 }

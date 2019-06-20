@@ -1,5 +1,5 @@
 <!-- Modal See the detail of the user-->
-<div class="modal fade" id="userDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailLabel" aria-hidden="true">
+<div class="modal fade" id="userDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailLabel" aria-hidden="true" style="z-index: 10010;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form method = "GET" >

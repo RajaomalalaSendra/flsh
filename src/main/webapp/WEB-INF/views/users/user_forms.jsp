@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="userAddModal" tabindex="-1" role="dialog" aria-labelledby="cycleEditLabel" aria-hidden="true">
+<div class="modal fade" id="userAddModal" tabindex="-1" role="dialog" aria-labelledby="cycleEditLabel" aria-hidden="true" style="z-index: 10010;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -56,7 +56,7 @@
 </div>
 
 <!-- Modal Delete User -->
-<div class="modal fade" id="userDeleteModal" tabindex="-1" role="dialog" aria-labelledby="cycleEditLabel" aria-hidden="true">
+<div class="modal fade" id="userDeleteModal" tabindex="-1" role="dialog" aria-labelledby="cycleEditLabel" aria-hidden="true" style="z-index: 10010;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form method = "POST" id = "form-delete-user" action = "<c:url value = '/user/delete' />">

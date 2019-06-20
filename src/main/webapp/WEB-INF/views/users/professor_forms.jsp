@@ -1,5 +1,5 @@
 <!-- Modal Add new Professor-->
-<div class="modal fade" id="profAddModal" tabindex="-1" role="dialog" aria-labelledby="profEditLabel" aria-hidden="true">
+<div class="modal fade" id="profAddModal" tabindex="-1" role="dialog" aria-labelledby="profEditLabel" aria-hidden="true" style="z-index: 10010;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -36,7 +36,7 @@
 		    </div>
 	        <div class = "form-group form-inline">
 	      		<label>Password:</label>
-	      		<input class="form-control" type="password" name = "professor_password" id = "pass-prof" required>
+	      		<input class="form-control" type="password" name = "professor_password" id = "pass-prof">
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
@@ -60,7 +60,7 @@
   </div>
 </div>
 <!-- Modal Delete Professor -->
-<div class="modal fade" id="profDeleteModal" tabindex="-1" role="dialog" aria-labelledby="profEditLabel" aria-hidden="true">
+<div class="modal fade" id="profDeleteModal" tabindex="-1" role="dialog" aria-labelledby="profDeleteLabel" aria-hidden="true" style="z-index: 10010;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form method = "POST" id = "form-delete-prof" action = "<c:url value = '/professor/delete' />">

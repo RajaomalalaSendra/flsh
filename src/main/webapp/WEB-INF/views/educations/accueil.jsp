@@ -12,6 +12,7 @@
     <!-- Start Welcome area -->
     <div class="all-content-wrapper">
     	<%@include file="../common/_menu.jsp" %>
+    	<br/><br/><br/><br/>
     	<div id = "main-wrapper">
     		<div class = "header-list">
     			<button class = "btn btn-primary pull-right" id = "add-cycle" title = "Ajouter un cycle"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
