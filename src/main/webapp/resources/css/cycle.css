@@ -2,3 +2,9 @@
 	background: #fff;
     padding: 10px;
 }
+.btn-group.pull-right .btn {
+	margin-left: 10px !important
+}
+#period-tab, #exam-tab {
+	padding-top: 10px;
+}

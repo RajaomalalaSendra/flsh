@@ -306,7 +306,7 @@ public class EducationServiceImpl implements EducationService {
 				}
 			});
 			rtn.put("status", res ? 1 : 0);
-		    rtn.put("message", res ? "Suppression réussie" : "Echec de la suppression des parcours dans le niveau! Veuillez réessayer");
+		    rtn.put("message", res ? "Suppression réussie" : "Echec de la suppression du parcours! Veuillez réessayer");
 		} else {
 			rtn.put("status", 0);
 		    rtn.put("message", "Echec de la suppression des étudiants dans le parcours! Veuillez réessayer");

@@ -15,7 +15,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.flsh.interfaces.EducationService;
+import com.flsh.interfaces.PeriodService;
 import com.flsh.service.EducationServiceImpl;
+import com.flsh.service.PeriodServiceImpl;
 import com.flsh.service.UserDetailsServiceImp;
 import com.flsh.interfaces.UserService;
 import com.flsh.service.UserServiceImpl;
@@ -56,7 +58,10 @@ public class AppConfig implements WebMvcConfigurer {
 		configurer.setUrlPathHelper(pathHelper);
 	}
 
-	
+	/**
+	 * Beans configuration
+	 * @return @Bean
+	 */
 	@Bean
     public UserService userService() {
         UserService usr = new UserServiceImpl(dataSource());
@@ -81,6 +86,16 @@ public class AppConfig implements WebMvcConfigurer {
 		return teaching;
 	}
 	
+	@Bean
+	public PeriodService periodService() {
+		PeriodService ps = new PeriodServiceImpl(dataSource());
+		return ps;
+	}
+	
+	/**
+	 * DataSource configuration
+	 * @return dataSource
+	 */
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();

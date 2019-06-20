@@ -34,7 +34,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="cycleDeleteModal" tabindex="-1" role="dialog" aria-labelledby="cycleEditLabel" aria-hidden="true">
+<div class="modal fade" id="cycleDeleteModal" tabindex="-1" role="dialog" aria-labelledby="cycleDeleteLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form method = "POST" id = "form-delete-cycle" action = "<c:url value = '/education/saveCycle' />">

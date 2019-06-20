@@ -214,6 +214,11 @@ form input.hasError {
   line-height: 1.428571429;
   border-radius: 15px;
 }
+.footer-copyright-area {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
 /* ==========================================================================
    EXAMPLE Media Queries for Responsive Design.
    These examples override the primary ('mobile first') styles.

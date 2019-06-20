@@ -102,9 +102,9 @@
 function form_validate(selector) {
     var form = $(selector)
     var formValide = true
-    form.find('input').each(function() {
+    form.find('input, textarea').each(function() {
         var input = $(this)
-        if(input.attr('type') == "text") {
+        if(input.attr('type') == "text" || input.attr('type') == "date" || !input.attr('type')) {
             if(input.attr('required') && $.trim(input.val()) == "") {
                 input.addClass('hasError')
                 input.parent().find('small.error').html('Champ requis').show()
@@ -175,6 +175,26 @@ function form_validate(selector) {
     return formValide
 }
 
+function emptyForm(selector) {
+	var form = $(selector)
+	form.find('input, textarea').each(function() {
+		var input = $(this)
+		input.removeClass('hasError').val('')
+        input.parent().find('small.error').hide()
+	})
+}
+
 function getBaseUrl(path) {
 	return $('#base-url').val()+''+path
+}
+
+function getFormData($form){
+    var unindexed_array = $form.serializeArray();
+    var indexed_array = {};
+
+    $.map(unindexed_array, function(n, i){
+        indexed_array[n['name']] = n['value'];
+    });
+
+    return indexed_array;
 }
