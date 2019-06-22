@@ -22,4 +22,8 @@ public interface PeriodService {
 	public List<Period> getNiveauPeriodsById(int id, int idAU);
 	
 	public JSONObject savePeriod(Period period);
+	
+	public JSONObject deletePeriod(int id);
+	
+	public Period getPeriodById(int idPeriod);
 }

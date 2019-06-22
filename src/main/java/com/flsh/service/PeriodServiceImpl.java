@@ -38,6 +38,7 @@ public class PeriodServiceImpl implements PeriodService {
 		this.dataSource = dsrc;
 		jdbcTemplate = new JdbcTemplate(dsrc);
 		namedJdbcTemplate = new NamedParameterJdbcTemplate(dsrc);
+		logger.info("Init period service");
 	}
 
 	@Override
@@ -150,7 +151,8 @@ public class PeriodServiceImpl implements PeriodService {
 	@Override
 	public JSONObject savePeriod(Period period) {
 		JSONObject rtn = new JSONObject();
-		String request_period = "INSERT INTO Periode(au_id, niv_id, per_libellecourt, per_libellelong, per_debut, per_fin, per_aratrappage) values(:au, :niv, :libcourt, :liblong, :perdeb, :perfin, :rattr)";
+		String request_period = period.getPeriod_id() == 0 ? "INSERT INTO Periode(au_id, niv_id, per_libellecourt, per_libellelong, per_debut, per_fin, per_aratrappage) values(:au, :niv, :libcourt, :liblong, :perdeb, :perfin, :rattr)"
+															: "UPDATE Periode SET au_id = :au, niv_id = :niv, per_libellecourt = :libcourt, per_libellelong = :liblong, per_debut = :perdeb, per_fin = :perfin, per_aratrappage = :rattr WHERE per_id = :perId";
 		GeneratedKeyHolder holder = new GeneratedKeyHolder();
 		SqlParameterSource parameters = new MapSqlParameterSource()
 				.addValue("au", period.getUniversity_year_id())
@@ -160,16 +162,29 @@ public class PeriodServiceImpl implements PeriodService {
 				.addValue("perdeb", period.getPeriod_debut())
 				.addValue("perfin", period.getPeriod_fin())
 				.addValue("rattr", period.isA_ratrappage() ? 1 : 0);
+		if(period.getPeriod_id() != 0) {
+			parameters = new MapSqlParameterSource()
+					.addValue("au", period.getUniversity_year_id())
+					.addValue("niv", period.getLevel_id())
+					.addValue("libcourt", period.getPeriod_libellecourt())
+					.addValue("liblong", period.getPeriod_libellelong())
+					.addValue("perdeb", period.getPeriod_debut())
+					.addValue("perfin", period.getPeriod_fin())
+					.addValue("rattr", period.isA_ratrappage() ? 1 : 0)
+					.addValue("perId", period.getPeriod_id());
+		}
 		int res = namedJdbcTemplate.update(request_period, parameters, holder);
 		if(res <= 0) {
 			rtn.put("status", 0);
 			rtn.put("message", "Echec de l'insertion de la période dans la base!");
 			return rtn;
 		}
-		int periodid = holder.getKey().intValue();
-		String request_exam = "INSERT INTO Examen(per_id, exam_libelle, exam_sessiontype, exam_datedebut, exam_datefin) values(:per, :lib, 1, :debut, :fin)";
+		int periodid = 0;
+		if(period.getPeriod_id() == 0) periodid = holder.getKey().intValue();
+		String request_exam = period.getPeriod_id() == 0 ? "INSERT INTO Examen(per_id, exam_libelle, exam_sessiontype, exam_datedebut, exam_datefin) values(:per, :lib, 1, :debut, :fin)" 
+														: "UPDATE Examen SET exam_libelle = :lib, exam_datedebut = :debut, exam_datefin = :fin WHERE per_id = :per AND exam_sessiontype = 1";
 		parameters = new MapSqlParameterSource()
-				.addValue("per", periodid)
+				.addValue("per", period.getPeriod_id() == 0 ? periodid : period.getPeriod_id())
 				.addValue("lib", period.getExam_libelle())
 				.addValue("debut", period.getExam_debut())
 				.addValue("fin", period.getExam_fin());
@@ -179,16 +194,31 @@ public class PeriodServiceImpl implements PeriodService {
 			rtn.put("message", "Echec de l'insertion de l'examen dans la base!");
 			return rtn;
 		}
-		System.out.print("2nd execution "+res);
+		// System.out.print("2nd execution "+res);
 		if(period.isA_ratrappage()) {
+			if(period.getPeriod_id() != 0) {
+				String sqlDeleteExam = "DELETE FROM Examen WHERE per_id = ? and exam_sessiontype = 2";
+				boolean b = jdbcTemplate.execute (sqlDeleteExam, new PreparedStatementCallback<Boolean>() {
+					@Override
+					public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+						ps.setInt(1, period.getPeriod_id());
+						return ps.executeUpdate() >= 0 ? true : false;
+					}
+				});
+				if(!b) {
+					rtn.put("status", 0);
+					rtn.put("message", "Echec du traitement du rattrapage!");
+					return rtn;
+				}
+			}
 			String request_rattr = "INSERT INTO Examen(per_id, exam_libelle, exam_sessiontype, exam_datedebut, exam_datefin) values(:per, :lib, 2, :debut, :fin)";
 			parameters = new MapSqlParameterSource()
-					.addValue("per", periodid)
+					.addValue("per", period.getPeriod_id() == 0 ? periodid : period.getPeriod_id())
 					.addValue("lib", period.getRattr_libelle())
 					.addValue("debut", period.getRattr_debut())
 					.addValue("fin", period.getRattr_fin());
 			namedJdbcTemplate.update(request_rattr, parameters);
-			System.out.print("3rd execution "+res);
+			// System.out.print("3rd execution "+res);
 			if(res <= 0) {
 				rtn.put("status", 0);
 				rtn.put("message", "Echec de l'insertion du rattrapage dans la base!");
@@ -200,9 +230,62 @@ public class PeriodServiceImpl implements PeriodService {
 		return rtn;
 	}
 	
+	@Override
+	public JSONObject deletePeriod(int id) {
+		JSONObject rtn = new JSONObject();
+		if(this.checkDataEvalExist("periode", id)) {
+			rtn.put("status", -1);
+		    rtn.put("message", "Vous ne pouvez pas supprimer cette période! Des étudiants ont des évaluations enregistrés dans la base dans cette période.");
+		    return rtn;
+		}
+		boolean res = true;
+		String sqlDeletePeriodExam = "DELETE FROM Examen WHERE Examen.per_id = ? ";
+		String sqlDelete = "DELETE FROM Periode WHERE per_id = ?";
+		res = jdbcTemplate.execute (sqlDeletePeriodExam, new PreparedStatementCallback<Boolean>() {
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setInt(1, id);
+				return ps.executeUpdate() >= 0 ? true : false;
+			}
+		});
+		if(!res) {
+			rtn.put("status", 0);
+		    rtn.put("message", "Echec de la suppression des examens dans la période! Veuillez réessayer");
+		    return rtn;
+		}
+		res = jdbcTemplate.execute (sqlDelete, new PreparedStatementCallback<Boolean>() {
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setInt(1, id);
+				return ps.executeUpdate() >= 0 ? true : false;
+			}
+		});
+		rtn.put("status", res ? 1 : 0);
+	    rtn.put("message", res ? "Suppression période réussie" : "Echec de la suppression de l'année universitaire! Veuillez réessayer");
+		return rtn;
+	}
+
+	@Override
+	public Period getPeriodById(int idPeriod) {
+		String sql = "SELECT Periode.*, "
+				+ "(select exam_libelle from Examen where per_id = Periode.per_id and exam_sessiontype = 1) as exam_libelle, "
+				+ "(select exam_datedebut from Examen where per_id = Periode.per_id and exam_sessiontype = 1) as exam_debut, "
+				+ "(select exam_datefin from Examen where per_id = Periode.per_id and exam_sessiontype = 1) as exam_fin, "
+				+ "(select exam_libelle from Examen where per_id = Periode.per_id and exam_sessiontype = 2) as rattr_libelle, "
+				+ "(select exam_datedebut from Examen where per_id = Periode.per_id and exam_sessiontype = 2) as rattr_debut, "
+				+ "(select exam_datefin from Examen where per_id = Periode.per_id and exam_sessiontype = 2) as rattr_fin "
+				+ "from Periode "
+				+ "where per_id = "+ idPeriod;
+		List<Period> periods = jdbcTemplate.query(sql, new PeriodMapper());
+		return periods.size() > 0 ? periods.get(0) : null;
+	}
+	
 	private boolean checkDataEvalExist(String type, int idType) {
 		String sql ;
 		switch(type) {
+			case "periode":
+				sql = "SELECT COUNT(*) from Evaluation_Etudiant WHERE per_id = "+idType;
+				break;
 			default:
 				sql = "SELECT COUNT(*) from Evaluation_Etudiant WHERE per_id in (SELECT per_id from Periode where au_id = "+idType+")";
 				break;

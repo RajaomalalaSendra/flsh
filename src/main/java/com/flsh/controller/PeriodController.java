@@ -61,8 +61,14 @@ public class PeriodController {
 	@ResponseBody
 	@RequestMapping(value = "/educations/deletePeriod", method = RequestMethod.POST)
 	public String deletePeriod(HttpServletRequest request, HttpServletResponse response) {
-		int idUnivYear = request.getParameter("idItemDeletePeriod") == "" ? 0 : Integer.parseInt(request.getParameter("idItemDeletePeriod"));
-		JSONObject rtn = periodService.deleteUnivYear(idUnivYear);
+		int id = request.getParameter("idItemDeletePeriod") == "" ? 0 : Integer.parseInt(request.getParameter("idItemDeletePeriod"));
+		String type = request.getParameter("typeDeletionPeriod");
+		JSONObject rtn;
+		if(type.equals("periode")) {
+			rtn = periodService.deletePeriod(id);
+		} else {
+			rtn = periodService.deleteUnivYear(id);
+		}
 		return rtn.toString();
 	}
 	
@@ -89,6 +95,33 @@ public class PeriodController {
 	public String saveLevelPeriod(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("period") Period period ) {
 		System.out.print(period);
 		JSONObject rtn = periodService.savePeriod(period);
+		return rtn.toString();
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/educations/detailsPeriod", method = RequestMethod.GET)
+	public String detailsPeriod(HttpServletRequest request, HttpServletResponse response) {
+		int idPer = request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
+		Period per = periodService.getPeriodById(idPer);
+		JSONObject rtn = new JSONObject();
+		rtn.put("status", per == null ? 0 : 1);
+		rtn.put("message", per == null ? "Echec du chargement des infos de la période!" : "Infos récupérées!");
+		if(per != null) {
+			JSONObject infos = new JSONObject();
+			infos.put("per_id", per.getPeriod_id());
+			infos.put("per_libellecourt", per.getPeriod_libellecourt());
+			infos.put("per_libellelong", per.getPeriod_libellelong());
+			infos.put("per_debut", per.getPeriod_debut());
+			infos.put("per_fin", per.getPeriod_fin());
+			infos.put("per_arattr", per.isA_ratrappage());
+			infos.put("exam_libelle", per.getExam_libelle());
+			infos.put("exam_debut", per.getExam_debut());
+			infos.put("exam_fin", per.getExam_fin());
+			infos.put("rattr_libelle", per.getRattr_libelle());
+			infos.put("rattr_debut", per.getRattr_debut());
+			infos.put("rattr_fin", per.getRattr_fin());
+			rtn.put("infos", infos);
+		}
 		return rtn.toString();
 	}
 }

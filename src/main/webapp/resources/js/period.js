@@ -9,22 +9,27 @@ $(document).ready(function() {
 	
 	$('#save-au').on('click', function() {
 		if(formValidate('#form-save-ua')) {
-			$.ajax({
-				url: getBaseUrl('educations/saveAU'),
-				type: 'POST',
-				dataType: 'JSON',
-				data: $("#form-save-ua").serialize(),
-				success: function(data) {
-					if(data.status == 1) {
-						location.reload()
-					} else {
-						$('#err-save-au').html(data.message ? data.message : 'Echec de l\'enregistrement! Veuillez r&eacute;essayer...').show().delay(3000).fadeOut(600)
+			if(new Date($('#').val()) >= new Date($('#').val())) {
+				$('#err-save-au').html('V&eacute;rifier les dates SVP. Début supérieur ou &eacute;gale &agrave; la fin!!').show().delay(3000).fadeOut(600)
+			} else {
+				$.ajax({
+					url: getBaseUrl('educations/saveAU'),
+					type: 'POST',
+					dataType: 'JSON',
+					data: $("#form-save-ua").serialize(),
+					success: function(data) {
+						if(data.status == 1) {
+							location.reload()
+						} else {
+							$('#err-save-au').html(data.message ? data.message : 'Echec de l\'enregistrement! Veuillez r&eacute;essayer...').show().delay(3000).fadeOut(600)
+						}
+					},
+					error: function() {
+						$('#err-save-au').html('Une erreur s\'est produite! Veuillez r&eacute;essayer...').show().delay(3000).fadeOut(600)
 					}
-				},
-				error: function() {
-					$('#err-save-au').html('Une erreur s\'est produite! Veuillez r&eacute;essayer...').show().delay(3000).fadeOut(600)
-				}
-			})
+				})
+			}
+			
 		}
 	})
 	
@@ -54,6 +59,9 @@ $(document).ready(function() {
 		var idAU = $(this).parent().parent().attr('id').split('-')[1]
 		$('#typeDeletionPeriod').val('AU')
 		$('#idItemDeletePeriod').val(idAU)
+		$('#cycleDeleteLabel').html('Supprimer ann&eacute;e universitaire')
+		$('#question-delete').html(`La suppression de l'ann&eacute;e universitaire entrainera la suppression des &eacute;tudiants, des p&eacute;riodes ainsi que des examens dans l'ann&eacute;e universitaire!<br>
+		      	Voulez-vous continuer ? Cette action est irr&eacute;versible`)
 		$('#periodDeleteModal').modal('show')
 	})
 	
@@ -67,6 +75,9 @@ $(document).ready(function() {
 			success: function(data) {
 				if(data.status == 1) {
 					switch($('#typeDeletionPeriod').val()) {
+						case "periode":
+							$('#details-univ-year #niveau-period').trigger('change')
+							break;
 						default:
 							$('#au-'+$('#idItemDeletePeriod').val()).remove()
 							break;
@@ -161,7 +172,7 @@ $(document).ready(function() {
 				$('#err-save-levelperiod').html('V&eacute;rifiez les dates d\'examen SVP. Date fin examen pas comprise dans la p&eacute;riode.').show().delay(3000).fadeOut(600)
 			} else if($('#withRatrappage').is(':checked') && debRattr > finRattr) {
 				$('#err-save-levelperiod').html('V&eacute;rifiez les dates de rattrapage SVP. D&eacute;but > Fin!!').show().delay(3000).fadeOut(600)
-			} else if($('#withRatrappage').is(':checked') && debRattr > debPer) {
+			} else if($('#withRatrappage').is(':checked') && debRattr < debPer) {
 				$('#err-save-levelperiod').html('V&eacute;rifiez les dates de rattrapage SVP. D&eacute;but avant le d&eacute;but de la p&eacute;riode!').show().delay(3000).fadeOut(600)
 			} else {
 				$.ajax({
@@ -199,6 +210,45 @@ $(document).ready(function() {
 				$('#labelRattr').val("Rattrapage "+period)
 			}
 		}
-		
+	})
+	
+	$(document).on('click', '.edit-period', function() {
+		var idPeriod = $(this).parent().parent().attr('id').split('-')[1]
+		$.ajax({
+			url: getBaseUrl('educations/detailsPeriod?id='+idPeriod),
+			dataType: 'JSON',
+			success: function(data) {
+				if(data.status == 1) {
+					$('#period-id').val(data.infos.per_id)
+					$('#labePeriod').val(data.infos.per_libellecourt)
+					$('#labePeriod2').val(data.infos.per_libellelong)
+					$('#debPeriod').val(data.infos.per_debut)
+					$('#finPeriod').val(data.infos.per_fin)
+					$('#withRatrappage').prop("checked", data.infos.per_arattr)
+					$('#labelExam').val(data.infos.exam_libelle)
+					$('#debExam').val(data.infos.exam_debut)
+					$('#finExam').val(data.infos.exam_fin)
+					$('#labelRattr').val(data.infos.rattr_libelle)
+					$('#debRattr').val(data.infos.rattr_debut)
+					$('#finRattr').val(data.infos.rattr_fin)
+					$('#periodEditModal').modal('show')
+				} else {
+					alert(data.message ? data.message : "Echec du chargement des infos de l'ann&eacute;e universitaire. Veuillez r&eacute;essayer")
+				}
+			},
+			error: function() {
+				alert('Une erreur s\'est produite. Veuillez r&eacute;essayer!')
+			}
+		})
+	})
+	
+	$(document).on('click', '.delete-period', function() {
+		var idPer = $(this).parent().parent().attr('id').split('-')[1]
+		$('#typeDeletionPeriod').val('periode')
+		$('#idItemDeletePeriod').val(idPer)
+		$('#cycleDeleteLabel').html('Supprimer p&eacute;riode')
+		$('#question-delete').html(`La suppression de la p&eacute;riode entrainera la suppression des examens dans la p&eacute;riode!<br>
+		      	Voulez-vous continuer ? Cette action est irr&eacute;versible`)
+		$('#periodDeleteModal').modal('show')
 	})
 })
