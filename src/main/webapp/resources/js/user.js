@@ -22,6 +22,7 @@ $(document).ready(function() {
 	})
 	$('#add-user').on('click', function() {
 		$('#userAddLabel').html('Ajouter un utilisateur')
+		emptyForm("#userAddModal")
 		$('#id').val('0')
 		$('#userAddModal').modal('show')
 	})
@@ -57,10 +58,13 @@ $(document).ready(function() {
 			type: "GET",
 			dataType: "JSON",
 			success: function(data) {
+				console.log(data)
 				$('#lastname').val(data.lastname)
 				$('#firstname').val(data.firstname)
 				$('#name').val(data.username)
 				$('#email').val(data.email)
+				$('#pass').val("")
+				$('#type-id').val(data.type)
 				$("#userAddModal").modal('show')
 			},
 			error: function(err) {

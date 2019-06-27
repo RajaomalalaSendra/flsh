@@ -14,9 +14,7 @@
     	<br/><br/><br/><br/>
     	<div class="main-wrapper">
 	    	<div class = "header-list">
-				<button class = "btn btn-primary pull-right" id = "add-user" title = "Ajouter un nouveau utilisateur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
-				<h3>Ajouter un nouveau utilisateur</h3>
-			</div>
+				<button class = "btn btn-primary pull-right" id = "add-user" title = "Ajouter un nouveau utilisateur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>			</div>
     		<h1>Users List</h1>  
 			<table class="table table-striped">
 			  <thead>

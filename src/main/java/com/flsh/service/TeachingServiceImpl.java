@@ -2,7 +2,9 @@ package com.flsh.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -15,8 +17,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.flsh.controller.HomeController;
 import com.flsh.interfaces.TeachingService;
-import com.flsh.model.Courses;
-import com.flsh.model.Professor;
+import com.flsh.model.Course;
 import com.flsh.model.StudyUnits;
 
 public class TeachingServiceImpl implements TeachingService {
@@ -31,18 +32,24 @@ public class TeachingServiceImpl implements TeachingService {
 	}
 
 	@Override
-	public List<StudyUnits> getAllUnity() {
-		String sql = "SELECT * FROM Unite_Enseignement JOIN Parcours ON Parcours.prc_id = Unite_Enseignement.prc_id";
+	public HashSet<StudyUnits> getAllUnits() {
+		HashSet<StudyUnits> listUnits = new HashSet<StudyUnits>();
+		String sql = "SELECT * FROM Unite_Enseignement";
 		List<StudyUnits> units = jdbcTemplate.query(sql, new UnitsMapper());
-		return units;
+		for(StudyUnits unit : units) {
+			Set<Course> listCourses = new HashSet<Course>(this.getCourseById( unit.getStudyunits_id()));
+			unit.setCourses((HashSet<Course>) listCourses);
+		    listUnits.add(unit);
+		}
+		return listUnits;
 	}
-
-	@Override
-	public List<Courses> getAllComplementary() {
-		String sql = "SELECT * FROM Element_Constitutif";
-		List<Courses> courses = jdbcTemplate.query(sql, new CourseMapper());
+	public List<Course> getCourseById(int idUnits) {
+		String sql = "SELECT * FROM  Element_Constitutif WHERE ue_id = "+idUnits;
+		List<Course> courses = jdbcTemplate.query(sql, new CourseMapper());
 		return courses;
 	}
+
+
 
 	@Override
 	public StudyUnits detailsUE(int id) {
@@ -64,9 +71,9 @@ class UnitsMapper implements RowMapper<StudyUnits> {
 	}
 }
 
-class CourseMapper implements RowMapper<Courses> {
-	public Courses mapRow(ResultSet rs, int arg1) throws SQLException {
-	    Courses courses = new Courses(); 
+class CourseMapper implements RowMapper<Course> {
+	public Course mapRow(ResultSet rs, int arg1) throws SQLException {
+	    Course courses = new Course(); 
 	    courses.setCourse_id(rs.getInt("ec_id"));
 	    courses.setStudyunit_id(rs.getInt("ue_id"));
 	    courses.setProfessor_id(rs.getInt("prof_id"));

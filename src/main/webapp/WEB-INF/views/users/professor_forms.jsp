@@ -12,44 +12,44 @@
       	        <div class = "alert alert-danger" style = "display:none" id = "err-save-prof"></div>
 		    <div class = "alert alert-success" style = "display:none" id = "success-save-prof"></div>
       	<form method = "POST" id = "form-save-prof" action = "<c:url value = '/professor/save' />">
-      		<input type="hidden" name = "id" id = "prof-id">
+      		<input type="hidden" name = "professor_id" id = "prof-id">
       		<input type="hidden" name = "user_id" id = "prof-for-user-id">
       		<div class = "form-group form-inline">
-	      	    <label>Nom:</label>
+	      	    <label class="col-sm-3">Nom:</label>
 	      		<input class="form-control" type="text" name = "professor_last_name" id = "lastname-prof" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      	    <label>Prenom:</label>
+	      	    <label class="col-sm-3">Prenom:</label>
 	      		<input class="form-control" type="text" name = "professor_name" id = "firstname-prof">
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      	    <label>Login:</label>
+	      	    <label class="col-sm-3">Login:</label>
 	      		<input class="form-control" type="text" name = "professor_login" id = "loginname-prof">
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      		<label>Email:</label>
+	      		<label class="col-sm-3">Email:</label>
 		      	<input class="form-control" type="email" name = "professor_email" id = "email-prof" required>
 		      	<small class="form-text text-muted error"></small>
 		    </div>
 	        <div class = "form-group form-inline">
-	      		<label>Password:</label>
+	      		<label class="col-sm-3">Password:</label>
 	      		<input class="form-control" type="password" name = "professor_password" id = "pass-prof">
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      	    <label>Contact:</label>
+	      	    <label class="col-sm-3">Contact:</label>
 	      		<input class="form-control" type="text" name = "professor_contact" id = "contact-prof">
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      	    <label>Adresse:</label>
+	      	    <label class="col-sm-3">Adresse:</label>
 	      		<input class="form-control" type="text" name = "professor_adresse" id = "adresse-prof">
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
-	      	<input type="hidden" name = "uti_type" id = "uti-type" value = "2">
+	      	<input type="hidden" name = "user_type" id = "uti-type" value = "2">
         </form>
       </div>
       <div class="modal-footer">

@@ -1,5 +1,6 @@
 package com.flsh.controller;
 
+import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.flsh.interfaces.TeachingService;
 import com.flsh.model.StudyUnits;
-import com.flsh.model.Courses;
+import com.flsh.model.Course;
 
 @Controller
 public class UECEController {
@@ -24,11 +25,9 @@ public class UECEController {
  
 	@RequestMapping(value = "/uece", method = RequestMethod.GET)
 	  public ModelAndView showTeaching(HttpServletRequest request, HttpServletResponse response) {
-		List<StudyUnits> unity=teachingService.getAllUnity();
-		List<Courses> complementary=teachingService.getAllComplementary();
+		HashSet<StudyUnits> units=teachingService.getAllUnits();
 		ModelAndView teaching = new ModelAndView("uece/alluece");
-	    teaching.addObject("units", unity);
-	    teaching.addObject("complementairies", complementary);
+	    teaching.addObject("units", units);
 	    return teaching;
 	  }
 	/*

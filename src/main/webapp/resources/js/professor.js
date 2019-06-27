@@ -22,8 +22,10 @@ $(document).ready(function() {
 	})
 	$('#add-professor').on('click', function() {
 		$('#profAddLabel').html('Ajouter un professeur')
-		$('#prof_id').val('0')
-		$('#lastname-prof').val("")
+		emptyForm("#profAddModal")
+		$('#prof-id').val('0')
+		$('#uti-type').val("2")
+		$('#prof-for-user-id').val('0')
 		$('#profAddModal').modal('show')
 	})
 	$('#save-prof').on('click', function(){
@@ -56,14 +58,13 @@ $(document).ready(function() {
 		var idprof = $(this).attr('id-prof')
 		var idprofforuser = $(this).attr('id-prof-for-user')
 		$('#profAddLabel').html('Editer un Professeur')
-		$('#prof-id').val(idprof)
-		$('#prof-for-user-id').val(idprofforuser)
 		$.ajax({
 			url: getBaseUrl('professor/details?id='+idprof),
 			type: "GET",
 			dataType: "JSON",
 			success: function(data) {
 				console.log(data)
+				$('#prof-id').val(data.professor_id)
 				$('#lastname-prof').val(data.professor_last_name)
 				$('#firstname-prof').val(data.professor_name)
 				$('#loginname-prof').val(data.professor_login)
@@ -72,7 +73,7 @@ $(document).ready(function() {
 				$('#contact-prof').val(data.professor_contact)
 				$('#adresse-prof').val(data.professor_adresse)
 				$('#uti-type').val("2")
-				$('#prof-for-user-id').val(data.uti_id)
+				$('#prof-for-user-id').val(data.user_id)
 				$("#profAddModal").modal('show')
 			},
 			error: function(err) {

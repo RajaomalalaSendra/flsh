@@ -1,0 +1,16 @@
+.ec .libelle {
+	padding-left: 40px;
+}
+.ec td {
+	background-color: #eee;
+}
+.ec i.glyphicon {
+	margin-right: 10px;
+	cursor: pointer;
+}
+.edit-ec {
+	color: #009;
+}
+.delete-ec {
+	color: #900;
+}

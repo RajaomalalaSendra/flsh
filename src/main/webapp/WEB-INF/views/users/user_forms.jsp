@@ -14,33 +14,33 @@
       	<form method = "POST" id = "form-save-user" action = "<c:url value = '/user/save' />">
       		<input type="hidden" name = "id" id = "id">
       		<div class = "form-group form-inline">
-	      	    <label>Nom:</label>
+	      	    <label class="col-sm-3">Nom:</label>
 	      		<input class="form-control" type="text" name = "lastname" id = "lastname" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      	    <label>Prenom:</label>
+	      	    <label class="col-sm-3">Prenom:</label>
 	      		<input class="form-control" type="text" name = "firstname" id = "firstname">
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	 <div class = "form-group form-inline">
-	      	    <label>Login:</label>
+	      	    <label class="col-sm-3">Login:</label>
 	      		<input class="form-control" type="text" name = "username" id = "name" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      		<label>Email:</label>
+	      		<label class="col-sm-3">Email:</label>
 		      	<input class="form-control" type="email" name = "email" id = "email" required>
 		      	<small class="form-text text-muted error"></small>
 		    </div>
 	        <div class = "form-group form-inline">
-	      		<label>Password:</label>
-	      		<input class="form-control" type="password" name = "password" id = "pass" required>
+	      		<label class="col-sm-3">Password:</label>
+	      		<input class="form-control" type="password" name = "password" id = "pass">
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      		<label>Type:</label>
-	      		<select class="form-control" name="type">
+	      		<label class="col-sm-3">Type:</label>
+	      		<select class="form-control" name="type" id="type-id">
 	      	    	<option value="3">Secretaire</option>
 	      	    	<option value="1">Super Utilisateur</option>
 	      		</select>

@@ -69,61 +69,61 @@ public class ProfessorServiceImpl implements ProfessorService {
 	public JSONObject saveProfessor(Professor professor) {
 		// TODO Auto-generated method stub
 		JSONObject rtn = new JSONObject();
-		if(this.checkUsernameExists(professor.getProfessorName(), professor.getUserId())) {
+		if(this.checkUsernameExists(professor.getProfessor_name(), professor.getUser_id())) {
 			rtn.put("status", 0);
-	  	    rtn.put("message", professor.getUserId() == 0 ? "Echec de l'enregistrement! Le nom de professeur existe" : "Le nom de professeur déjà utilisé par un autre utilisateur");
+	  	    rtn.put("message", professor.getUser_id() == 0 ? "Echec de l'enregistrement! Le nom de professeur existe" : "Le nom de professeur déjà utilisé par un autre utilisateur");
 			return rtn;
 		}
-		if (this.checkEmailExists(professor.getProfessorEmail(), professor.getUserId())) {
+		if (this.checkEmailExists(professor.getProfessor_email(), professor.getUser_id())) {
 			rtn.put("status", 0);
-	  	    rtn.put("message", professor.getUserId() == 0 ? "Echec de l'enregistrement! L'email que vous avez entrez existe deja" : "L'email que vous avez entrez est déjà utilisé par un autre utilisateur");
+	  	    rtn.put("message", professor.getUser_id() == 0 ? "Echec de l'enregistrement! L'email que vous avez entrez existe deja" : "L'email que vous avez entrez est déjà utilisé par un autre utilisateur");
 			return rtn;
 		}
 		
 		// the sql for the utilisateur table
 		String sql_user;
-		if (professor.getUserId() == 0) {
-			sql_user = "INSERT INTO Utilisateur(uti_nom, uti_prenom, uti_login, uti_email, uti_type, uti_passwd) VALUES(?, ?, ?, ?, sha1(?), ?)";
+		if (professor.getUser_id() == 0) {
+			sql_user = "INSERT INTO Utilisateur(uti_nom, uti_prenom, uti_login, uti_email, uti_type, uti_passwd) VALUES(?, ?, ?, ?, ?, sha1(?))";
 		} else {
-			sql_user = professor.getProfessorPassword().equals("") ? "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ? WHERE uti_id = ?" : "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, uti_passwd = sha1(?) WHERE uti_id = ?";
+			sql_user = professor.getProfessor_password().equals("") ? "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ? WHERE uti_id = ?" : "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, uti_passwd = sha1(?) WHERE uti_id = ?";
 		}
 		
-		System.out.println(" Professor Id: " + professor.getProfessorId());
-		System.out.println("||||||||User Type: " + professor.getUserType()+"|||||||||||");
+		System.out.println(" Professor Id: " + professor.getProfessor_id());
+		System.out.println("||||||||User Type: " + professor.getUser_type()+"|||||||||||");
 		GeneratedKeyHolder holder = new GeneratedKeyHolder();
 		jdbcTemplate.update(new PreparedStatementCreator() {
 		    @Override
 		    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 		        PreparedStatement statement = con.prepareStatement(sql_user, Statement.RETURN_GENERATED_KEYS);
-		        statement.setString(1, professor.getProfessorLastName());
-		        statement.setString(2, professor.getProfessorName());
-		        statement.setString(3, professor.getProfessorLogin());
-		        statement.setString(4, professor.getProfessorEmail());
-		        statement.setInt(5, professor.getUserType());
-		        if(!professor.getProfessorPassword().equals("")) statement.setString(6, professor.getProfessorPassword());
-		        if (professor.getUserId() != 0) statement.setInt( professor.getProfessorPassword().equals("") ? 6 : 7, professor.getUserId());
+		        statement.setString(1, professor.getProfessor_last_name());
+		        statement.setString(2, professor.getProfessor_name());
+		        statement.setString(3, professor.getProfessor_login());
+		        statement.setString(4, professor.getProfessor_email());
+		        statement.setInt(5, professor.getUser_type());
+		        if(!professor.getProfessor_password().equals("")) statement.setString(6, professor.getProfessor_password());
+		        if (professor.getUser_id() != 0) statement.setInt( professor.getProfessor_password().equals("") ? 6 : 7, professor.getUser_id());
 		        return statement;
 		    }
 		}, holder);
         // get the key of the utilisateur table
 		int uti_id_key;
-		if (professor.getUserId() == 0) {
+		if (professor.getUser_id() == 0) {
 			uti_id_key = holder.getKey().intValue();
 		} else {
-			uti_id_key = professor.getUserId();
+			uti_id_key = professor.getUser_id();
 		}
 		System.out.println(" Uti User Key: " + uti_id_key);
         // the sql for the professeur table
-		String sql_prof = professor.getProfessorId() == 0 ? "INSERT INTO Professeur(prof_adresse, prof_contact, uti_id) values( ?, ?, ?)" : 
+		String sql_prof = professor.getProfessor_id() == 0 ? "INSERT INTO Professeur(prof_adresse, prof_contact, uti_id) values( ?, ?, ?)" : 
 										"UPDATE Professeur SET  prof_adresse = ?, prof_contact = ?, uti_id = ? WHERE prof_id = ?";
 		boolean save_prof = jdbcTemplate.execute (sql_prof, new PreparedStatementCallback<Boolean>() {
 
 			@Override
 			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				ps.setString(1, professor.getProfessorAdresse());
-				ps.setString(2, professor.getProfessorContact());
+				ps.setString(1, professor.getProfessor_adresse());
+				ps.setString(2, professor.getProfessor_contact());
 				ps.setInt(3, uti_id_key);
-				if (professor.getProfessorId() != 0) ps.setInt(4, professor.getProfessorId());
+				if (professor.getProfessor_id() != 0) ps.setInt(4, professor.getProfessor_id());
 				return ps.executeUpdate() > 0 ? true : false;
 			}
 		});
@@ -149,16 +149,16 @@ public class ProfessorServiceImpl implements ProfessorService {
 class ProfessorMapper implements RowMapper<Professor> {
 	public Professor mapRow(ResultSet rs, int arg1) throws SQLException {
 		Professor prof = new Professor();
-		prof.setProfessorId(rs.getInt("prof_id"));
-		prof.setProfessorLastName(rs.getString("uti_nom"));
-		prof.setProfessorName(rs.getString("uti_prenom"));
-		prof.setProfessorEmail(rs.getString("uti_email"));
-		prof.setProfessorLogin(rs.getString("uti_login"));
-		prof.setProfessorPassword(rs.getString("uti_passwd"));
-	    prof.setProfessorAdresse(rs.getString("prof_adresse"));
-	    prof.setProfessorContact(rs.getString("prof_contact"));
-	    prof.setUserId(rs.getInt("uti_id"));
-	    prof.setUserType(rs.getInt("uti_type"));
+		prof.setProfessor_id(rs.getInt("prof_id"));
+		prof.setProfessor_last_name(rs.getString("uti_nom"));
+		prof.setProfessor_name(rs.getString("uti_prenom"));
+		prof.setProfessor_email(rs.getString("uti_email"));
+		prof.setProfessor_login(rs.getString("uti_login"));
+		prof.setProfessor_password(rs.getString("uti_passwd"));
+	    prof.setProfessor_adresse(rs.getString("prof_adresse"));
+	    prof.setProfessor_contact(rs.getString("prof_contact"));
+	    prof.setUser_id(rs.getInt("uti_id"));
+	    prof.setUser_type(rs.getInt("uti_type"));
 	    return prof;
 	}
 

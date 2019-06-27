@@ -104,8 +104,13 @@ public class UserServiceImpl implements UserService {
 			return rtn;
 		}
 		
-		String sql = user.getId() == 0 ? "insert into Utilisateur(uti_nom, uti_prenom, uti_login, uti_email, uti_passwd, uti_type) values(?, ?, ?,?,sha1(?),?)" : 
-										"UPDATE Utilisateur SET uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_passwd = sha1(?), uti_type = ? WHERE uti_id = ?";
+		String sql;
+		if (user.getId() == 0 ) {
+			sql = "INSERT INTO  Utilisateur(uti_nom, uti_prenom, uti_login, uti_email,  uti_type, uti_passwd) values(?, ?, ?, ?, ?, sha1(?))"; 
+		} else {
+			sql = user.getPassword().equals("") ? "UPDATE Utilisateur SET uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?,  uti_type = ? WHERE uti_id = ?" : "UPDATE Utilisateur SET uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, uti_passwd = sha1(?) WHERE uti_id = ?";
+		}
+										
 		boolean save = jdbcTemplate.execute (sql, new PreparedStatementCallback<Boolean>() {
 
 			@Override
@@ -114,9 +119,9 @@ public class UserServiceImpl implements UserService {
 				ps.setString(2, user.getFirstname());
 				ps.setString(3, user.getUsername());
 				ps.setString(4, user.getEmail());
-				ps.setString(5, user.getPassword());
-				ps.setString(6, user.getType());
-				if (user.getId() != 0) ps.setInt(7, user.getId());
+				ps.setString(5, user.getType());
+				if(!user.getPassword().equals("")) ps.setString(6, user.getPassword());
+				if (user.getId() != 0) ps.setInt(user.getPassword().equals("") ? 6 : 7, user.getId());
 				return ps.executeUpdate() > 0 ? true : false;
 			}
 		});

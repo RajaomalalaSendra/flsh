@@ -1,10 +1,13 @@
 package com.flsh.model;
 
+import java.util.HashSet;
+
 public class StudyUnits {
 	private int studyunits_id;
 	private int parcours_id;
 	private String studyunits_libelle;
 	private String studyunits_type;
+	private HashSet<Course> Courses;
 	public int getStudyunits_id() {
 		return studyunits_id;
 	}
@@ -29,6 +32,13 @@ public class StudyUnits {
 	public void setStudyunits_type(String studyunits_type) {
 		this.studyunits_type = studyunits_type;
 	}
+	public HashSet<Course> getCourses() {
+		return Courses;
+	}
+	public void setCourses(HashSet<Course> courses) {
+		Courses = courses;
+	}
+	
 	
 	
 }

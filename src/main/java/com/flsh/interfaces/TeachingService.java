@@ -1,12 +1,11 @@
 package com.flsh.interfaces;
 
-import java.util.List;
+
+import java.util.HashSet;
 
 import com.flsh.model.StudyUnits;
-import com.flsh.model.Courses;
 
 public interface TeachingService {
-	List<StudyUnits> getAllUnity();
-	List<Courses> getAllComplementary();
+	HashSet<StudyUnits> getAllUnits();
 	StudyUnits detailsUE(int id);
 }

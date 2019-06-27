@@ -1,6 +1,6 @@
 package com.flsh.model;
 
-public class Courses{  
+public class Course{  
 	private int course_id;
 	private int studyunit_id;
 	private int professor_id;
