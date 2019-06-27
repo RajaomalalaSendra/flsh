@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -18,12 +17,13 @@ import com.flsh.interfaces.EducationService;
 import com.flsh.interfaces.PeriodService;
 import com.flsh.service.EducationServiceImpl;
 import com.flsh.service.PeriodServiceImpl;
-import com.flsh.service.UserDetailsServiceImp;
 import com.flsh.interfaces.UserService;
 import com.flsh.service.UserServiceImpl;
 import com.flsh.interfaces.ProfessorService;
+import com.flsh.interfaces.StudentService;
 import com.flsh.interfaces.TeachingService;
 import com.flsh.service.ProfessorServiceImpl;
+import com.flsh.service.StudentServiceImpl;
 import com.flsh.service.TeachingServiceImpl;
 import com.flsh.utils.Config;
 
@@ -90,6 +90,12 @@ public class AppConfig implements WebMvcConfigurer {
 	public PeriodService periodService() {
 		PeriodService ps = new PeriodServiceImpl(dataSource());
 		return ps;
+	}
+	
+	@Bean
+	public StudentService studentService() {
+		StudentService stsrv = new StudentServiceImpl(dataSource());
+		return stsrv;
 	}
 	
 	/**

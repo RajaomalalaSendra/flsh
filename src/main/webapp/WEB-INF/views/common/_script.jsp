@@ -38,11 +38,11 @@
 <script src="<c:url value="/resources/js/metisMenu/metisMenu.min.js" />"></script>
 <script src="<c:url value="/resources/js/metisMenu/metisMenu-active.js" />"></script>
 <!-- morrisjs JS
-============================================ -->
+============================================ 
 <script src="<c:url value="/resources/js/morrisjs/raphael-min.js" />"></script>
 <script src="<c:url value="/resources/js/morrisjs/morris.js" />"></script>
 <script src="<c:url value="/resources/js/morrisjs/morris-active.js" />"></script>
-<!-- morrisjs JS
+ morrisjs JS
 ============================================ -->
 <script src="<c:url value="/resources/js/sparkline/jquery.sparkline.min.js" />"></script>
 <script src="<c:url value="/resources/js/sparkline/jquery.charts-sparkline.js" />"></script>

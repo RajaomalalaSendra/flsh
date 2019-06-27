@@ -2,21 +2,36 @@ package com.flsh.model;
 
 public class Student{
 	private int student_id;
+	private int student_civ;
 	private String student_name;
 	private String student_lastname;
+	private String student_birthdate;
 	private String student_nationality;
+	private String student_passport;
+	private String student_cin;
+	private String student_cinlocation;
+	private String student_cindate;
 	private String student_adress;
 	private String student_email;
-	private String student_lasttab;
+	private String student_lastetab;
 	private String student_nameconjoint;
 	private String student_namefather;
+	private String student_jobfather;
 	private String student_namemother;
+	private String student_jobmother;
 	
 	public int getStudent_id() {
 		return student_id;
 	}
 	public void setStudent_id(int student_id) {
 		this.student_id = student_id;
+	}
+	public String getCivilite() {
+		switch(student_civ) {
+			case 2: return "Mlle"; 
+			case 3: return "Mme"; 
+			default: return "Mr";
+		}
 	}
 	public String getStudent_name() {
 		return student_name;
@@ -48,11 +63,11 @@ public class Student{
 	public void setStudent_email(String student_email) {
 		this.student_email = student_email;
 	}
-	public String getStudent_lasttab() {
-		return student_lasttab;
+	public String getStudent_lastetab() {
+		return student_lastetab;
 	}
-	public void setStudent_lasttab(String student_lasttab) {
-		this.student_lasttab = student_lasttab;
+	public void setStudent_lastetab(String student_lasttab) {
+		this.student_lastetab = student_lasttab;
 	}
 	public String getStudent_nameconjoint() {
 		return student_nameconjoint;
@@ -72,4 +87,53 @@ public class Student{
 	public void setStudent_namemother(String student_namemother) {
 		this.student_namemother = student_namemother;
 	}
+	public String getStudent_birthdate() {
+		return student_birthdate;
+	}
+	public void setStudent_birthdate(String student_birthdate) {
+		this.student_birthdate = student_birthdate;
+	}
+	public int getStudent_civ() {
+		return student_civ;
+	}
+	public void setStudent_civ(int student_civ) {
+		this.student_civ = student_civ;
+	}
+	public String getStudent_passport() {
+		return student_passport;
+	}
+	public void setStudent_passport(String student_passport) {
+		this.student_passport = student_passport;
+	}
+	public String getStudent_cin() {
+		return student_cin;
+	}
+	public void setStudent_cin(String student_cin) {
+		this.student_cin = student_cin;
+	}
+	public String getStudent_cinlocation() {
+		return student_cinlocation;
+	}
+	public void setStudent_cinlocation(String student_cinlocation) {
+		this.student_cinlocation = student_cinlocation;
+	}
+	public String getStudent_cindate() {
+		return student_cindate;
+	}
+	public void setStudent_cindate(String student_cindate) {
+		this.student_cindate = student_cindate;
+	}
+	public String getStudent_jobfather() {
+		return student_jobfather;
+	}
+	public void setStudent_jobfather(String student_jobfather) {
+		this.student_jobfather = student_jobfather;
+	}
+	public String getStudent_jobmother() {
+		return student_jobmother;
+	}
+	public void setStudent_jobmother(String student_jobmother) {
+		this.student_jobmother = student_jobmother;
+	}
+	
 }

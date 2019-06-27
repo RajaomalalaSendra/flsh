@@ -48,7 +48,7 @@
 		
 	$('#sidebarCollapse').on('click', function () {
 		$("body").toggleClass("mini-navbar");
-		SmoothlyMenu();
+		if(SmoothlyMenu) SmoothlyMenu();
 	});
 	$(document).on('click', '.header-right-menu .dropdown-menu', function (e) {
 		  e.stopPropagation();
@@ -114,7 +114,7 @@ function formValidate(selector) {
                 input.parent().find('small.error').hide()
             }
 
-            if(input.attr('validation-type')) {//Add here if there is exception of validation
+            if(input.attr('validation-type') && $.trim(input.val()) != "") {//Add here if there is exception of validation
                 if(input.attr('validation-type') == "phone-number") {
                     if(!input.val().match(/^\+\d{12}$/) && !input.val().match(/^0\d{9}$/)) {
                         input.addClass('hasError')
@@ -147,7 +147,7 @@ function formValidate(selector) {
                 input.addClass('hasError')
                 input.parent().find('small.error').html('Champ requis').show()
                 formValide = false
-            } else if(!$.trim(input.val()).match(/\d+\.?\d*/)) {
+            } else if($.trim(input.val()) != "" && !$.trim(input.val()).match(/\d+\.?\d*/)) {
                 input.addClass('hasError')
                 input.parent().find('small.error').html('Valeur incorrect').show()
                 formValide = false

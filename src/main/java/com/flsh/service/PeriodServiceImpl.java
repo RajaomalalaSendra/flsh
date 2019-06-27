@@ -22,6 +22,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import com.flsh.interfaces.PeriodService;
 import com.flsh.model.Level;
+import com.flsh.model.Parcours;
 import com.flsh.model.Period;
 import com.flsh.model.UniversityYear;
 
@@ -292,6 +293,13 @@ public class PeriodServiceImpl implements PeriodService {
 		}
 		int evalNumber = jdbcTemplate.queryForObject(sql, Integer.class);
 		return evalNumber > 0;
+	}
+
+	@Override
+	public List<Parcours> getParcoursByLevelId(int idLevel) {
+		String sql = "SELECT * FROM Parcours WHERE niv_id = "+idLevel;
+		List<Parcours> parcours = jdbcTemplate.query(sql, new ParcoursMapper());
+		return parcours;
 	}
 	
 }

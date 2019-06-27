@@ -222,6 +222,12 @@ form input.hasError {
 #main-wrapper, .main-wrapper {
 	padding: 10px;
 }
+/** Modal **/
+.modal .modal-header {
+	background-color: #006DF0;
+	font-weight: bolder;
+	color: #fff;
+}
 /* ==========================================================================
    EXAMPLE Media Queries for Responsive Design.
    These examples override the primary ('mobile first') styles.
