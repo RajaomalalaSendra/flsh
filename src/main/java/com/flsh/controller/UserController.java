@@ -2,7 +2,7 @@ package com.flsh.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 
 import org.json.JSONObject;
 // import org.slf4j.Logger;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
-import com.flsh.model.Login;
 import com.flsh.model.User;
 import com.flsh.interfaces.UserService;
 

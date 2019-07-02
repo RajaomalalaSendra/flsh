@@ -29,8 +29,6 @@
                         <ul class="submenu-angle" aria-expanded="false">
                             <li><a title="All Professors" href="<c:url value='/professors' />"><span class="mini-sub-pro">All Professors</span></a></li>
                             <li><a title="Add Professor" href="professor/add"><span class="mini-sub-pro">Add Professor</span></a></li>
-                            <!-- <li><a title="Edit Professor" href="/professor/edit"><span class="mini-sub-pro">Edit Professor</span></a></li>
-                            <li><a title="Professor Profile" href="professor-profile.html"><span class="mini-sub-pro">Professor Profile</span></a></li> -->
                         </ul>
                     </li>
                     <li>
@@ -43,7 +41,7 @@
                     <li>
                         <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Courses</span></a>
                         <ul class="submenu-angle" aria-expanded="false">
-                            <li><a title="All UE/EC" href="<c:url value='/uece' />"><span class="mini-sub-pro">All UE/EC</span></a></li>
+                            <li><a title="All UE/EC" href="<c:url value='/ue' />"><span class="mini-sub-pro">All UE/EC</span></a></li>
                         </ul>
                     </li>
                     <li>

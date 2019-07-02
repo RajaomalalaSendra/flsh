@@ -41,7 +41,7 @@
 	      	</div>
 	      	<div class = "form-group form-inline">
 	      	    <label class="col-sm-3">Contact:</label>
-	      		<input class="form-control" type="text" name = "professor_contact" id = "contact-prof">
+	      		<input class="form-control" type="text" validation-type = "phone-number" name = "professor_contact" id = "contact-prof">
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">

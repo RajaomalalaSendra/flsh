@@ -11,6 +11,7 @@ public class Professor {
 	private String professor_contact;
 	private int user_id;
 	private int user_type;
+	private int user_civilite;
 	
 		public int getProfessor_id() {
 		return professor_id;
@@ -96,6 +97,14 @@ public class Professor {
 		return "id: " + professor_id +  " name: " + professor_name + " first name: " + professor_last_name + " login name: " + professor_login +
 				" adresse: " + professor_adresse + " contact " + professor_contact + " professor password " + professor_password + " user Id:  " + user_id
 				+ "  user Type " + user_type + " professor mail " + professor_email;
+	}
+
+	public int getUser_civilite() {
+		return user_civilite;
+	}
+
+	public void setUser_civilite(int user_civilite) {
+		this.user_civilite = user_civilite;
 	}
 	
 }

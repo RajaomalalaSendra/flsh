@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.flsh.model.Login;
+
 import com.flsh.model.Professor;
-import com.flsh.model.User;
 import com.flsh.interfaces.ProfessorService;
 
 @Controller

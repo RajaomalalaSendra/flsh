@@ -72,4 +72,10 @@ public class Course{
 		this.course_travailpersonnel = course_travailpersonnel;
 	}
 	
+	public String toString() {
+		return " \n ==================================================================\n" +
+				"id ec " + course_id + " id ue " + studyunit_id + " professor id " + professor_id + " libelle " + course_libelle 
+				+ " \n ==================================================================\n";
+	}
+	
 }
