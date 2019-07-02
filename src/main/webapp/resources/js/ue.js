@@ -144,10 +144,29 @@ $(document).ready(function() {
 	})
 	
 	$('.delete-ec').on('click', function() {
-		console.log("We are deleting ec....")
 		var idEC = $(this).attr('ec-delete-id')
-		console.log(idEC)
 		$('#idECDelete').val(idEC)
 		$('#ecDeleteModal').modal('show')
 	})
+	$('#form-delete-ec').on('submit', function(e) {
+			e.preventDefault()
+			$.ajax({
+				url: getBaseUrl('ec/delete?id='+$('#idECDelete').val()),
+				type: 'GET',
+				dataType: 'JSON',
+				success: function(data) {
+					console.log(data)
+					if(data.status == 1) {
+						$("#ec-"+$('#idECDelete').val()).remove()
+						$('#success-delete-ue').html('Suppression avec success...').show().delay(3000).fadeOut(600)
+						$('#ecDeleteModal').modal('hide')
+					} else {
+						$('#err-delete-ec').html('Une erreur interne s\'est produite! Veuillez ressayer...').show().delay(3000).fadeOut(600)
+					}
+				},
+				error: function(err) {
+					$('#err-delete-ec').html('Une erreur s\'est produite! Veuillez ressayer...').show().delay(3000).fadeOut(600)
+				}
+			})
+		})
 })

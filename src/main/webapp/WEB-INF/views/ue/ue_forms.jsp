@@ -50,7 +50,7 @@
 	        <h5 class="modal-title" >Supprimer Unite Enseignement ?</h5>
 	      </div>
 	      <div class="modal-body">
-		      	<input type="hidden" name = "idUEDelete" id = "idUEDelete" value = "">
+		      	<input type="hidden" name = "id" id = "idUEDelete" value = "">
 		      	<div class = "alert alert-danger" style = "display:none" id = "err-delete-ue"></div>
 		      	<div class = "alert alert-success" style = "display:none" id = "success-delete-ue"></div>
 		      	<p id = "question-delete-ue">

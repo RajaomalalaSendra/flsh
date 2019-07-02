@@ -74,15 +74,15 @@
 <div class="modal fade" id="ecDeleteModal" tabindex="-1" role="dialog" aria-labelledby="ecEditLabel" aria-hidden="true" style="z-index: 10010;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form method = "POST" id = "form-delete-ue" action = "<c:url value = '/ue/delete' />">
+      <form method = "POST" id = "form-delete-ec" action = "<c:url value = '/ec/delete' />">
 	      <div class="modal-header" style="background-color: #D33;">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
-	        <h5 class="modal-title" >Supprimer Element Constitutif ?</h5>
+	        <h5 class="modal-title" >Supprimer Un Element Constitutif ?</h5>
 	      </div>
 	      <div class="modal-body">
-		      	<input type="hidden" name = "idECDelete" id = "idECDelete" value = "">
+		      	<input type="hidden" name = "id" id = "idECDelete" value = "">
 		      	<div class = "alert alert-danger" style = "display:none" id = "err-delete-ec"></div>
 		      	<div class = "alert alert-success" style = "display:none" id = "success-delete-ec"></div>
 		      	<p id = "question-delete-ec">
