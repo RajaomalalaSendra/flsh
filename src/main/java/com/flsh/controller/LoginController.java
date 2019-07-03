@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,15 @@ public class LoginController {
       @ResponseBody
       @RequestMapping(value = "/saveMyAccount", method = RequestMethod.POST)
 	  public String saveAccount(HttpServletRequest request, HttpServletResponse response) {
-		  
-	      return "";    
+    	  int iduser = request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
+    	  String lastname = request.getParameter("lastname");
+    	  String firstname = request.getParameter("firstname");
+    	  String login = request.getParameter("username");
+    	  String email = request.getParameter("email");
+    	  String type = request.getParameter("type");
+    	  String newpassword = request.getParameter("new_password");
+    	  String password = request.getParameter("password");
+    	  JSONObject rtn = userService.saveAccount(iduser, lastname, firstname, login, email, type, newpassword, password);
+	      return rtn.toString();    
 	  }
 }

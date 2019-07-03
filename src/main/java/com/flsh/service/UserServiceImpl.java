@@ -72,6 +72,7 @@ public class UserServiceImpl implements UserService {
 		return users.size() > 0 ? users.get(0) : null;
 	}
 
+	//Verification functions
 	private boolean checkUsernameExists(String username, int id) {
 		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_login = '"+username+"'";
 		if(id != 0) {
@@ -80,11 +81,18 @@ public class UserServiceImpl implements UserService {
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users.size() > 0;
 	}
+	
 	private boolean checkEmailExists(String email, int id) {
 		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_email = '"+email+"'";
 		if(id != 0) {
 			sql += " and uti_id != " + id;
 		}
+		List<User> users = jdbcTemplate.query(sql, new UserMapper());
+		return users.size() > 0;
+	}
+
+	private boolean checkUserPassword(int id, String password) {
+		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_passwd = sha1('"+password+"') and uti_id = " + id;;
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users.size() > 0;
 	}
@@ -100,7 +108,7 @@ public class UserServiceImpl implements UserService {
 		}
 		if (this.checkEmailExists(user.getEmail(), user.getId())) {
 			rtn.put("status", 0);
-	  	    rtn.put("message", user.getId() == 0 ? "Echec de l'enregistrement! L'email que vous avez entrez existe deja" : "L'email que vous avez entrez est déjà utilisé par un autre utilisateur");
+	  	    rtn.put("message", user.getId() == 0 ? "Echec de l'enregistrement! L'email que vous avez entré existe deja" : "L'email que vous avez entré est déjà utilisé par un autre utilisateur");
 			return rtn;
 		}
 		
@@ -141,6 +149,48 @@ public class UserServiceImpl implements UserService {
 	    rtn.put("message", i >= 0 ? "Supprimé!" : "Echec de la suppression! Veuillez réessayer.");
 		return rtn;
 	}
+
+
+	@Override
+	public JSONObject saveAccount(int id, String lastname, String firstname, String username, String email, String type,
+			String newpassword, String password) {
+		JSONObject rtn = new JSONObject();
+		if(this.checkUsernameExists(username, id)) {
+			rtn.put("status", 0);
+	  	    rtn.put("message", "Le nom d'utilisateur déjà utilisé par un autre utilisateur");
+			return rtn;
+		}
+		if(this.checkEmailExists(email, id)) {
+			rtn.put("status", 0);
+	  	    rtn.put("message", "L'email que vous avez entré est déjà utilisé par un autre utilisateur");
+			return rtn;
+		}
+		if(!newpassword.equals("") && !this.checkUserPassword(id, password) ) {
+			rtn.put("status", 0);
+	  	    rtn.put("message", "Le mot de passe que vous avez entré est incorrect");
+			return rtn;
+		}
+		String sql = newpassword.equals("") ? "UPDATE Utilisateur SET uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?,  uti_type = ? WHERE uti_id = ?" : "UPDATE Utilisateur SET uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, uti_passwd = sha1(?) WHERE uti_id = ?";
+		boolean save = jdbcTemplate.execute (sql, new PreparedStatementCallback<Boolean>() {
+
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setString(1, lastname);
+				ps.setString(2, firstname);
+				ps.setString(3, username);
+				ps.setString(4, email);
+				ps.setString(5, type);
+				if(!newpassword.equals("")) ps.setString(6, newpassword);
+				ps.setInt(newpassword.equals("") ? 6 : 7, id);
+				return ps.executeUpdate() > 0 ? true : false;
+			}
+		});
+		rtn.put("status", save ? 1 : 0);
+  	    rtn.put("message", save ? "Enregistré avec succès" : "Echec de l'enregistrement! Veuillez réessayer");
+		return rtn;
+	}
+
+
 }
 
 class UserMapper implements RowMapper<User> {

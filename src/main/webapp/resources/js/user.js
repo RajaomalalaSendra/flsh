@@ -141,10 +141,12 @@ $(document).ready(function() {
 				$('#err-save-account').html('Le mot de passe de confirmation ne correspond pas au nouveau mot de passe!!').show().delay(4000).fadeOut(600)
 			} 
 			if(proceed) {
+				$('#type-id').removeAttr('disabled');
 				$.ajax({
 					url: getBaseUrl('saveMyAccount'),
 					type: 'POST',
 					data: $('#form-my-account').serialize(),
+					dataType: 'JSON',
 					success: function(data) {
 						if(data.status == 1) {
 							$('#success-save-account').html(data.message).show().delay(2000).fadeOut(600)
@@ -154,8 +156,10 @@ $(document).ready(function() {
 						} else {
 							$('#err-save-account').html(data.message ? data.message : 'Echec de l\'enregistrement des modifications! Veuillez réessayer').show().delay(4000).fadeOut(600)
 						}
+						$('#type-id').attr('disabled', '');
 					},
 					error: function() {
+						$('#type-id').attr('disabled', '');
 						$('#err-save-account').html('Une erreur s\'est produite! Veuillez réessayer').show().delay(4000).fadeOut(600)
 					}
 				})

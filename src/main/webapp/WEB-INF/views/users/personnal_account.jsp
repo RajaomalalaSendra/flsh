@@ -15,7 +15,7 @@
     	<br/><br/><br/><br/>
     	<div class="main-wrapper">
 	    	<form id = "form-my-account" class = "row" autocomplete="off">
-	    		<input type = "hidden" id = "id-account" value = "${ user.getId() }" />
+	    		<input type = "hidden" name = "id" id = "id-account" value = "${ user.getId() }" />
 	    		<div class = "alert alert-danger" style = "display:none" id = "err-save-account"></div>
 				<div class = "alert alert-success" style = "display:none" id = "success-save-account"></div>
 	    		<div class = "pull-right">
