@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.flsh.model.Login;
@@ -46,5 +47,21 @@ public class LoginController {
 	    }
 	    
 	    return mav;
+	  }
+      
+      @RequestMapping(value = "/myAccount", method = RequestMethod.GET)
+	  public ModelAndView editAccount(HttpServletRequest request, HttpServletResponse response) {
+		  ModelAndView m = new ModelAndView("users/personnal_account");
+		  HttpSession session = request.getSession();
+		  m.addObject("username", session.getAttribute("username") );
+		  m.addObject("user", userService.findByUsername( (String) session.getAttribute("username")));
+	      return m;    
+	  }
+      
+      @ResponseBody
+      @RequestMapping(value = "/saveMyAccount", method = RequestMethod.POST)
+	  public String saveAccount(HttpServletRequest request, HttpServletResponse response) {
+		  
+	      return "";    
 	  }
 }

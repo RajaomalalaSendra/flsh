@@ -1,0 +1,10 @@
+#form-my-account input, #form-my-account select {
+	width: 60%;
+}
+.edit-account {
+	display: none;
+}
+#form-my-account h1 {
+	margin-bottom: 20px;
+	margin-left: 15px;
+}

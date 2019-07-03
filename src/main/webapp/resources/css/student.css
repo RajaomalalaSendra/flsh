@@ -4,3 +4,6 @@
 #subscription select {
 	width: 50%;
 }
+#form-save-student input.form-control, #form-save-student select.form-control {
+	width: 45%;
+}

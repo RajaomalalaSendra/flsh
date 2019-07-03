@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="header-advance-area">
     <div class="header-top-area">
         <div class="container-fluid">
@@ -23,12 +24,9 @@
                             <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                                 <div class="header-right-info">
                                     <ul class="nav navbar-nav mai-top-nav header-right-menu">
-                                        <li class="nav-item dropdown">
+                                        <!--<li class="nav-item dropdown">
                                             <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="educate-icon educate-message edu-chat-pro" aria-hidden="true"></i><span class="indicator-ms"></span></a>
                                             <div role="menu" class="author-message-top dropdown-menu animated zoomIn">
-                                                <div class="message-single-top">
-                                                    <h1>Annee Universitaire</h1>
-                                                </div>
                                                 <ul class="message-menu">
                                                     <li>
                                                         <a href="#">
@@ -39,44 +37,18 @@
                                                             </div>
                                                         </a>
                                                     </li>
-                                                    <li>
-                                                        <a href="#">
-                                                            <div class="message-content">
-                                                                <span class="message-date">2017/2018</span>
-                                                                <h2>17/18</h2>
-                                                                <p>All the database of 2018/2019.</p>
-                                                            </div>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">
-                                                            <div class="message-content">
-                                                                <span class="message-date">2015/2016</span>
-                                                                <h2>15/16</h2>
-                                                                <p>All the database of 2018/2019.</p>
-                                                            </div>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">
-                                                            <div class="message-content">
-                                                                <span class="message-date">2014/2015</span>
-                                                                <h2>14/15</h2>
-                                                                <p>All the database of 2018/2019.</p>
-                                                            </div>
-                                                        </a>
-                                                    </li>
                                                 </ul>
+                                            
                                             </div>
-                                        </li>
+                                        </li>-->
                                         <li class="nav-item">
                                             <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
-											<span class="admin-name" style="${empty user.getUsername() ? 'display: none' : ''}">${user.getUsername()}</span>
+											<span class="admin-name" style="${empty username ? 'display: none' : ''}">${username}</span>
 											<i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
 										</a>
                                             <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
-                                                <li><a class = "detail-user" href="user/details?id=${user.getId()}"><span class="edu-icon edu-home-admin author-log-ic"></span>My Account</a></li>
-                                                <li><a href="/scolarLMD/signout"><span class="edu-icon edu-locked author-log-ic"></span>Log Out</a></li>
+                                                <li><a class = "detail-user" href="<c:url value='/myAccount' />"><span class="edu-icon edu-home-admin author-log-ic"></span>My Account</a></li>
+                                                <li><a href="<c:url value='/signout' />"><span class="edu-icon edu-locked author-log-ic"></span>Log Out</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -89,3 +61,55 @@
         </div>
     </div>
  </div>
+ <!-- Mobile Menu start -->
+    <div class="mobile-menu-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="mobile-menu">
+                        <nav id="dropdown">
+                            <ul class="mobile-menu-nav">
+                                <li><a data-toggle="collapse" data-target="#Charts" href="<c:url value='/' />">Education <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                    <ul class="collapse dropdown-header-top">
+                                        <li><a href="<c:url value='/' />">Dashboard</a></li>
+                                        <li><a href="<c:url value='/educations/cyclesandlevel/' />">Cycle & Level</a></li>
+                                        <li><a href="<c:url value='/educations/periods/' />">Periods</a></li>
+                                        <li><a href="<c:url value='/educations/notes/' />">Notes</a></li>
+                                    </ul>
+                                </li>
+                                <li><a data-toggle="collapse" data-target="#demoevent" href="#">Professors <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                    <ul id="demoevent" class="collapse dropdown-header-top">
+                                        <li><a href="<c:url value='/professors' />">All Professors</a>
+                                        </li>
+                                        <li><a href="<c:url value='/professors' />">Add Professor</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a data-toggle="collapse" data-target="#demopro" href="#">Students <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                    <ul id="demopro" class="collapse dropdown-header-top">
+                                        <li><a href="<c:url value='/students' />">All Students</a>
+                                        </li>
+                                        <li><a href="<c:url value='/students/subscriptions' />">Manage subsciptions</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a data-toggle="collapse" data-target="#democrou" href="#">Courses <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                    <ul id="democrou" class="collapse dropdown-header-top">
+                                        <li><a href="<c:url value='/uece' />">UE & EC</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a data-toggle="collapse" data-target="#demodepart" href="#">Users <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                    <ul id="demodepart" class="collapse dropdown-header-top">
+                                        <li><a href="<c:url value='/users' />">All users</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mobile Menu end -->

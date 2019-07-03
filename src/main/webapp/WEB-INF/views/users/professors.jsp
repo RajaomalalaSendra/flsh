@@ -12,7 +12,6 @@
     <div class="all-content-wrapper">
     	<%@include file="../common/_menu.jsp" %>
     	<br/><br/><br/><br/>
-    	<h2  class="admin-name" style="${empty username ? 'display: none' : ''}">${username}</h2>
     	<div class="main-wrapper">
 	    	<div class = "header-list">
 				<button class = "btn btn-primary pull-right" id = "add-professor" title = "Ajouter un nouveau professeur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>

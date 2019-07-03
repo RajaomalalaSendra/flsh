@@ -30,6 +30,8 @@ public class UserController {
 	  public ModelAndView showUser(HttpServletRequest request, HttpServletResponse response) {
 		  List<User> users=userService.getAllUser();
 		  ModelAndView m = new ModelAndView("users/users");
+		  HttpSession session = request.getSession();
+		  m.addObject("username", session.getAttribute("username") );
 	      m.addObject("users",users);  
 	      return m;    
 	  }
@@ -49,13 +51,15 @@ public class UserController {
 		  rtn.put("typecomputed", user.getTypeComputed());
 		  return rtn.toString();
 	  }
+	  
 	  @RequestMapping(value = "/user/delete", method = RequestMethod.GET)
-		@ResponseBody
-		public String deleteUser(HttpServletRequest request, HttpServletResponse response) {
-			int id = request.getParameter("id") == ""   ? 0 : Integer.parseInt(request.getParameter("id"));
-			JSONObject rtn = userService.deleteUser(id);
-			return rtn.toString();
-		}
+	  @ResponseBody
+	  public String deleteUser(HttpServletRequest request, HttpServletResponse response) {
+		  int id = request.getParameter("id") == ""   ? 0 : Integer.parseInt(request.getParameter("id"));
+		  JSONObject rtn = userService.deleteUser(id);
+		  return rtn.toString();
+	  }
+	  
       @RequestMapping(value = "/user/save", method = RequestMethod.POST)
 	  @ResponseBody
 	  public String saveUser(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("user") User user) {

@@ -137,9 +137,12 @@
 			        	<select class = "form-control" id = "subsParcours" name = "subs_parcours">
 			        	</select>
 			        </div>
-			        <div class = "form-group form-inline">
+			        <div class = "from-group form-inline">
 			        	<label for = "subsIsPaid" class = "col-md-6">Frais d'inscription</label>
-			        	<input type = "checkbox" name = "subs_inscription" id = "subsIsPaid" />
+			        	<div class="checkbox checkbox-primary">
+	                        <input  type = "checkbox" class = "styled" name = "subs_inscription" id = "subsIsPaid">
+	                        <label></label>
+	                    </div>
 			        </div>
 			        <div id = "ue-choix-wrapper">
 			        	

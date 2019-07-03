@@ -72,11 +72,13 @@ $(document).ready(function() {
 			}
 		})
 	})
+	
 	$('.delete-user').on('click', function() {
 		var idUser = $(this).attr('id-user-delete')
 		$('#idUserDelete').val(idUser)
 		$('#userDeleteModal').modal('show')
 	})
+	
 	$('#form-delete-user').on('submit', function(e) {
 		e.preventDefault()
 		$.ajax({
@@ -96,5 +98,68 @@ $(document).ready(function() {
 				$('#err-delete-user').html('Une erreur s\'est produite! Veuillez ressayer...').show().delay(3000).fadeOut(600)
 			}
 		})
+	})
+	
+	$('#edit-myaccount').on('click', function(e) {
+		e.preventDefault()
+		$('#form-my-account input:not(#pass-account)').removeAttr('disabled');
+		$('.edit-account').show();
+		$(this).hide();
+	})
+	
+	$('#cancel-editaccount').on('click', function(e) {
+		e.preventDefault()
+		$('#form-my-account input').attr('disabled','');
+		$('.edit-account').hide();
+		$('#edit-myaccount').show();
+	})
+	
+//	$('#show-password').on('click', function() {
+//		if($(this).hasClass('glyphicon-eye-close')) {
+//			$(this).parent().find('input').attr('type', 'text');
+//			$(this).removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+//		} else {
+//			$(this).parent().find('input').attr('type', 'password');
+//			$(this).addClass('glyphicon-eye-close').removeClass('glyphicon-eye-open');
+//		}
+//	})
+	
+	$('#newpass-account').on('keyup', function() {
+		if($(this).val() == "") {
+			$('#pass-account').attr('disabled','')
+		} else {
+			$('#pass-account').removeAttr('disabled')
+		}
+	})
+	
+	$('#form-my-account').on('submit', function(e) {
+		e.preventDefault();
+		if(formValidate('#form-my-account')) {
+			var proceed = true;
+			if($('#newpass-account').val() != "" && $('#newpass-account').val() != $('#confirmpass-account').val()) {
+				proceed = false;
+				$('#err-save-account').html('Le mot de passe de confirmation ne correspond pas au nouveau mot de passe!!').show().delay(4000).fadeOut(600)
+			} 
+			if(proceed) {
+				$.ajax({
+					url: getBaseUrl('saveMyAccount'),
+					type: 'POST',
+					data: $('#form-my-account').serialize(),
+					success: function(data) {
+						if(data.status == 1) {
+							$('#success-save-account').html(data.message).show().delay(2000).fadeOut(600)
+							$('#form-my-account input').attr('disabled','');
+							$('.edit-account').hide();
+							$('#edit-myaccount').show();
+						} else {
+							$('#err-save-account').html(data.message ? data.message : 'Echec de l\'enregistrement des modifications! Veuillez réessayer').show().delay(4000).fadeOut(600)
+						}
+					},
+					error: function() {
+						$('#err-save-account').html('Une erreur s\'est produite! Veuillez réessayer').show().delay(4000).fadeOut(600)
+					}
+				})
+			}
+		}
 	})
 })

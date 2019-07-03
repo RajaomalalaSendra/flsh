@@ -60,6 +60,14 @@ public class StudentServiceImpl implements StudentService {
 															+ "values(:civ, :nom, :prenom, :datenaiss, :nat, :psprt, :cin, :datecin, :lieucin, :adr, :mail, :dernet, :conj, :per, :pper, :mer, :pmer)" :
 															"UPDATE Etudiant SET civ_id = :civ, etd_nom = :nom, etd_prenom = :prenom, etd_datenaissance = :datenaiss, etd_nationalite = :nat, etd_numeropasseport = :psprt, etd_cin = :cin, etd_datecin = :datecin, etd_lieucin = :lieucin, etd_adresse = :adr, etd_email = :mail, etd_dernieretab = :dernet, etd_nomconjoint = :conj, etd_nompere = :per, etd_professionpere = :pper, etd_nommere = :mer, etd_professionmere = :pmer WHERE etd_id = :idEt";
 		JSONObject rtn = new JSONObject();
+		String check = this.checkStudentInfo(student);
+		System.out.print("Request result");
+		System.out.print(check);
+		if(!check.equals("")) {
+			rtn.put("status", 0);
+			rtn.put("message", check);
+			return rtn;
+		}
 		GeneratedKeyHolder holder = new GeneratedKeyHolder();
 		SqlParameterSource parameters = new MapSqlParameterSource()
 				.addValue("civ", student.getStudent_civ())
@@ -116,8 +124,18 @@ public class StudentServiceImpl implements StudentService {
 	public JSONObject saveStudent(Student student, int uy, int level, int prc, int paid) {
 		String queryInsert = "INSERT INTO Etudiant(civ_id, etd_nom, etd_prenom, etd_datenaissance, etd_nationalite, etd_numeropasseport, etd_cin, etd_datecin, etd_lieucin, etd_adresse, etd_email, etd_dernieretab, etd_nomconjoint, etd_nompere, etd_professionpere, etd_nommere, etd_professionmere) "
 								+ "values(:civ, :nom, :prenom, :datenaiss, :nat, :psprt, :cin, :datecin, :lieucin, :adr, :mail, :dernet, :conj, :per, :pper, :mer, :pmer)";
+		
 		GeneratedKeyHolder holder = new GeneratedKeyHolder();
 		JSONObject rtn = new JSONObject();
+		
+		String check = this.checkStudentInfo(student);
+		System.out.print("Request result");
+		System.out.print(check);
+		if(!check.equals("")) {
+			rtn.put("status", 0);
+			rtn.put("message", check);
+			return rtn;
+		}
 		SqlParameterSource parameters = new MapSqlParameterSource()
 											.addValue("civ", student.getStudent_civ())
 											.addValue("nom", student.getStudent_name())
@@ -212,6 +230,38 @@ public class StudentServiceImpl implements StudentService {
 		    rtn.put("message", "Echec de la suppression des niveaux parcouru par l'étudiant! Veuillez réessayer");
 		}
 	    return rtn;
+	}
+	
+	private String checkStudentInfo(Student student) {
+		String ifUpdate = student.getStudent_id() == 0 ? "" : " and etd_id != "+student.getStudent_id();
+		String sql = "SELECT COUNT(*) from Etudiant WHERE etd_nom = '"+student.getStudent_name()+"' and etd_prenom = '"+student.getStudent_lastname()+"'"+ifUpdate;
+		int evalNumber = jdbcTemplate.queryForObject(sql, Integer.class);
+		if(evalNumber > 0) {
+			return "Un étudiant ayant les mêmes nom et prénom existe dans la base!";
+		}
+		if(!student.getStudent_cin().equals("")) {
+			sql = "SELECT COUNT(*) from Etudiant WHERE etd_cin = '"+student.getStudent_cin()+"'"+ifUpdate;
+			evalNumber = jdbcTemplate.queryForObject(sql, Integer.class);
+			if(evalNumber > 0) {
+				return "Le numéro de CIN entré est associé à un étudiant enregistré!";
+			}
+		}
+		if(!student.getStudent_passport().equals("")) {
+			sql = "SELECT COUNT(*) from Etudiant WHERE etd_numeropasseport = '"+student.getStudent_passport()+"'"+ifUpdate;
+			evalNumber = jdbcTemplate.queryForObject(sql, Integer.class);
+			if(evalNumber > 0) {
+				return "Le numéro de passeport entré est associé à un étudiant enregistré!";
+			}
+		}
+		if(!student.getStudent_email().equals("")) {
+			sql = "SELECT COUNT(*) from Etudiant WHERE etd_email = '"+student.getStudent_email()+"'"+ifUpdate;
+			evalNumber = jdbcTemplate.queryForObject(sql, Integer.class);
+			if(evalNumber > 0) {
+				return "L'email entré est associé à un étudiant enregistré!";
+			}
+		}
+		
+		return "";
 	}
 	
 }

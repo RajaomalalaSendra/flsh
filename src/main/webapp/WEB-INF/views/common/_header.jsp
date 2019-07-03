@@ -17,6 +17,7 @@
     <!-- Bootstrap CSS
 		============================================ -->
     <link rel="stylesheet" href="<c:url value="/resources/css/font-awesome.min.css" />">
+    <link rel="stylesheet" href="<c:url value="/resources/css/awesome-bootstrap-checkbox.css" />">
     <!-- owl.carousel CSS
 		============================================ -->
     <link rel="stylesheet" href="<c:url value="/resources/css/owl.carousel.css" />">

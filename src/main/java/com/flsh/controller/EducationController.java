@@ -2,6 +2,7 @@ package com.flsh.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class EducationController {
 	public ModelAndView manageLevels(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav = new ModelAndView("educations/accueil");
 		mav.addObject("listCycle", educationService.getAllCycle());
+		HttpSession session = request.getSession();
+		mav.addObject("username", session.getAttribute("username") );
 		return mav;
 	}
 	

@@ -18,20 +18,22 @@ $(document).ready(function() {
 			$('#dateCinStudent, cinLocationStudent').attr('required', '');
 		}
 		if(formValidate('#form-save-student')) {
+			var formData = getFormData($(this))
+			formData.subs_inscription = $('#subsIsPaid').is(':checked') ? 1 : 0
 			$.ajax({
 				url: getBaseUrl('student/save'),
-				data: $('#form-save-student').serialize(),
+				data: formData,
 				type: 'POST',
 				dataType: 'JSON',
 				success: function(data) {
 					if(data.status == 1) {
 						location.reload()
 					} else {
-						$('#error-save-studdent').html(data.message ? data.message : 'Erreur lors du traitement! Veuillez réessayer').show().delay(3000).fadeOut(600)
+						$('#err-save-student').html(data.message ? data.message : 'Erreur lors du traitement! Veuillez réessayer').show().delay(3000).fadeOut(600)
 					}
 				},
 				error: function() {
-					$('#error-save-studdent').html('Une erreur s\'est produite! Veuillez réessayer').show().delay(3000).fadeOut(600)
+					$('#err-save-student').html('Une erreur s\'est produite! Veuillez réessayer').show().delay(3000).fadeOut(600)
 				}
 			})
 		} 
@@ -131,5 +133,9 @@ $(document).ready(function() {
 				$('#err-delete-student').html('Erreur survenue lors du traitement. Veuillez réessayer').show().delay(3000).fadeOut(600)
 			}
 		})
+	})
+	
+	$('li a[href="#subscription"]').on('click', function() {
+		$('#subsLevel').trigger('change')
 	})
 })
