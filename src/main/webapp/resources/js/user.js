@@ -38,7 +38,7 @@ $(document).ready(function() {
 			    		$('#success-save-user').html(data.message ? data.message : 'Enregistre avec succes.').show().delay(3000).fadeOut(600)
 						window.location.reload()
 					} else {
-						$('#err-save-user').html(data.message ? data.message : 'Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
+						$('#err-save-user').html(data.message ? data.message : 'Echec de la mise à jour! Veuillez reessayer...').show().delay(3000).fadeOut(600)
 					}
 			    },
 			    error: function(err){
@@ -89,10 +89,10 @@ $(document).ready(function() {
 			success: function(data) {
 				if(data.status == 1) {
 					$("#user-"+$('#idUserDelete').val()).remove()
-					$('#success-delete-user').html('Suppression avec success...').show().delay(3000).fadeOut(600)
+					$('#success-delete-user').html(data.message).show().delay(3000).fadeOut(600)
 					$('#userDeleteModal').modal('hide')
 				} else {
-					$('#err-delete-user').html('Une erreur interne s\'est produite! Veuillez ressayer...').show().delay(3000).fadeOut(600)
+					$('#err-delete-user').html(data.message ? data.message : 'Echec de la suppression! Veuillez ressayer...').show().delay(3000).fadeOut(600)
 				}
 			},
 			error: function(err) {

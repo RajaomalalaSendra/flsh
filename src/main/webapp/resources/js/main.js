@@ -162,11 +162,12 @@ function formValidate(selector) {
                 input.parent().find('small.error').html('Champ requis').show()
                 formValide = false
             }
-            if($.trim(input.val()) != "" && !$.trim(input.val()).match(strongPassRegex)) {
+            console.log(input.hasClass('no-check'))
+            if($.trim(input.val()) != "" && !$.trim(input.val()).match(strongPassRegex) && !input.hasClass('no-check')) {
                 input.addClass('hasError')
                 input.parent().find('small.error').html('Un mot de passe doit être composé de lettres minuscules, majuscules, au moins un chiffre et de longueur 8 caractères minimum').show()
                 formValide = false
-            } else if(($.trim(input.val()) == "" && !input.attr('required')) || $.trim(input.val()).match(strongPassRegex)) {
+            } else if(($.trim(input.val()) == "" && !input.attr('required')) || $.trim(input.val()).match(strongPassRegex) || input.hasClass('no-check')) {
                 input.removeClass('hasError')
                 input.parent().find('small.error').hide()
             }

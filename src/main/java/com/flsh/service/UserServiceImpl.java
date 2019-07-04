@@ -92,9 +92,25 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private boolean checkUserPassword(int id, String password) {
-		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_passwd = sha1('"+password+"') and uti_id = " + id;;
+		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_passwd = sha1('"+password+"') and uti_id = " + id;
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users.size() > 0;
+	}
+	
+	private boolean checkCanDeleteUser(int id) {
+		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_type = '1' and uti_id != " + id;
+		List<User> users = jdbcTemplate.query(sql, new UserMapper());
+		return users.size() > 0;
+	}
+
+	private boolean checkCanUpdateProfil(User user) {
+		User lastUser = this.getUserDetails(user.getId());
+		if(!lastUser.getType().equals(user.getType()) && lastUser.getType().equals("1")) {
+			String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_type = '1' and uti_id != " + user.getId();
+			List<User> users = jdbcTemplate.query(sql, new UserMapper());
+			return users.size() > 0;
+		}
+		return true;
 	}
 
 	@Override
@@ -109,6 +125,12 @@ public class UserServiceImpl implements UserService {
 		if (this.checkEmailExists(user.getEmail(), user.getId())) {
 			rtn.put("status", 0);
 	  	    rtn.put("message", user.getId() == 0 ? "Echec de l'enregistrement! L'email que vous avez entré existe deja" : "L'email que vous avez entré est déjà utilisé par un autre utilisateur");
+			return rtn;
+		}
+		
+		if(user.getId() != 0 && !this.checkCanUpdateProfil(user)) {
+			rtn.put("status", 0);
+	  	    rtn.put("message", "On ne peut changer de type un super utilisateur si il n'y a qu'un seul utilisateur de ce type dans la base.");
 			return rtn;
 		}
 		
@@ -139,12 +161,15 @@ public class UserServiceImpl implements UserService {
 		return rtn;
 	}
 
-
 	@Override
 	public JSONObject deleteUser(int id) {
-		// TODO Auto-generated method stub
 		String sql = "DELETE FROM Utilisateur WHERE uti_id = ?";
 		JSONObject rtn = new JSONObject();
+		if(!this.checkCanDeleteUser(id)) {
+			rtn.put("status", 0);
+		    rtn.put("message", "Cet utilisateur ne peut être supprimé. Il doit au moins y avoir un super utilisateur dans la base.");
+		    return rtn;
+		}
 	    int i = jdbcTemplate.update(sql, id);
 	    rtn.put("status", i >= 0 ? 1 : 0);
 	    rtn.put("message", i >= 0 ? "Supprimé!" : "Echec de la suppression! Veuillez réessayer.");

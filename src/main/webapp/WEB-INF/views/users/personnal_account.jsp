@@ -54,17 +54,17 @@
 		      	</div>
 		      	<div class = "form-group form-inline">
 		      		<label class="col-sm-3">New password:</label>
-			      	<input class="form-control password" autocomplete="new-password" type="password" name = "new_password" id = "newpass-account" value = "" disabled>
+			      	<input class="form-control" autocomplete="new-password" type="password" name = "new_password" id = "newpass-account" value = "" disabled>
 		      		<small class="form-text text-muted error"></small>
 		      	</div>
 		      	<div class = "form-group form-inline">
 		      		<label class="col-sm-3">Confirm password:</label>
-		      		<input class="form-control password" autocomplete="new-password" type="password" id = "confirmpass-account" value = "" disabled>
+		      		<input class="form-control no-check" autocomplete="new-password" type="password" id = "confirmpass-account" value = "" disabled>
 		      		<small class="form-text text-muted error"></small>
 		      	</div>
 		        <div class = "form-group form-inline">
 		      		<label class="col-sm-3">Password:</label>
-		      		<input class="form-control password" autocomplete="new-password" type="password" name = "last_password" id = "pass-account" value = "" disabled>
+		      		<input class="form-control no-check" autocomplete="new-password" type="password" name = "last_password" id = "pass-account" value = "" disabled>
 		      		<small class="form-text text-muted error"></small>
 		      	</div>
 	      	</form>

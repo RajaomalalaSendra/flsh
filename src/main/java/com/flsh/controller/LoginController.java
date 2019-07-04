@@ -69,7 +69,7 @@ public class LoginController {
     	  String email = request.getParameter("email");
     	  String type = request.getParameter("type");
     	  String newpassword = request.getParameter("new_password");
-    	  String password = request.getParameter("password");
+    	  String password = request.getParameter("last_password");
     	  JSONObject rtn = userService.saveAccount(iduser, lastname, firstname, login, email, type, newpassword, password);
 	      return rtn.toString();    
 	  }
