@@ -13,10 +13,18 @@ public class Professor {
 	private int user_type;
 	private int user_civilite;
 	
-		public int getProfessor_id() {
+	public int getProfessor_id() {
 		return professor_id;
 	}
-
+	public String getCivilite() {
+		if(user_civilite == 2) {
+			return "Mlle";
+		} else if (user_civilite == 3) {
+				return "Mme"; 
+		} else {
+			return "Mr";
+		}
+	}
 	public void setProfessor_id(int professor_id) {
 		this.professor_id = professor_id;
 	}
@@ -96,7 +104,7 @@ public class Professor {
 		public String toString() {
 		return "id: " + professor_id +  " name: " + professor_name + " first name: " + professor_last_name + " login name: " + professor_login +
 				" adresse: " + professor_adresse + " contact " + professor_contact + " professor password " + professor_password + " user Id:  " + user_id
-				+ "  user Type " + user_type + " professor mail " + professor_email;
+				+ "  user Type " + user_type + " professor mail " + professor_email + " number civilite: " + user_civilite;
 	}
 
 	public int getUser_civilite() {

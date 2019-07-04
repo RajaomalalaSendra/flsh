@@ -21,6 +21,7 @@
 			  <thead>
 			    <tr>
 			      <th scope="col">Id</th>
+			      <th scope="col">Civ.</th>
 			      <th scope="col">Name</th>
 			      <th scope="col">Last Name</th>
 			      <th scope="col">Mail</th>
@@ -31,7 +32,8 @@
 			  <tbody>  
 			   <c:forEach var="professor" items="${professors}">   
 				   <tr id="prof-${professor.getProfessor_id()}">  
-					   <td scope="row">${professor.getProfessor_id()}</td>  
+					   <td scope="row">${professor.getProfessor_id()}</td>
+					   <td>${professor.getCivilite()}</td>  
 					   <td>${professor.getProfessor_name()}</td>
 					   <td>${professor.getProfessor_last_name()}</td>  
 					   <td>${professor.getProfessor_email()}</td>

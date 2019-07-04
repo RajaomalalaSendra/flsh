@@ -37,7 +37,7 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 	@Override
 	public List<Professor> getAllProfessor() {
-		String sql_prof = "SELECT * FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id WHERE Utilisateur.uti_type = 2 ";		
+		String sql_prof = "SELECT * FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id   WHERE Utilisateur.uti_type = 2 ";		
 		List<Professor> professors = jdbcTemplate.query(sql_prof, new ProfessorMapper());
 		return professors;
 	}
@@ -83,9 +83,9 @@ public class ProfessorServiceImpl implements ProfessorService {
 		// the sql for the utilisateur table
 		String sql_user;
 		if (professor.getUser_id() == 0) {
-			sql_user = "INSERT INTO Utilisateur(uti_nom, uti_prenom, uti_login, uti_email, uti_type, uti_passwd) VALUES(?, ?, ?, ?, ?, sha1(?))";
+			sql_user = "INSERT INTO Utilisateur(uti_nom, uti_prenom, uti_login, uti_email, uti_type, civ_id, uti_passwd) VALUES(?, ?, ?, ?, ?, ?, sha1(?))";
 		} else {
-			sql_user = professor.getProfessor_password().equals("") ? "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ? WHERE uti_id = ?" : "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, uti_passwd = sha1(?) WHERE uti_id = ?";
+			sql_user = professor.getProfessor_password().equals("") ? "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, civ_id = ? WHERE uti_id = ?" : "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, civ_id = ?, uti_passwd = sha1(?) WHERE uti_id = ?";
 		}
 		
 		System.out.println(" Professor Id: " + professor.getProfessor_id());
@@ -100,8 +100,9 @@ public class ProfessorServiceImpl implements ProfessorService {
 		        statement.setString(3, professor.getProfessor_login());
 		        statement.setString(4, professor.getProfessor_email());
 		        statement.setInt(5, professor.getUser_type());
-		        if(!professor.getProfessor_password().equals("")) statement.setString(6, professor.getProfessor_password());
-		        if (professor.getUser_id() != 0) statement.setInt( professor.getProfessor_password().equals("") ? 6 : 7, professor.getUser_id());
+		        statement.setInt(6, professor.getUser_civilite());
+		        if(!professor.getProfessor_password().equals("")) statement.setString(7, professor.getProfessor_password());
+		        if (professor.getUser_id() != 0) statement.setInt( professor.getProfessor_password().equals("") ? 7 : 8, professor.getUser_id());
 		        return statement;
 		    }
 		}, holder);
@@ -159,6 +160,7 @@ class ProfessorMapper implements RowMapper<Professor> {
 	    prof.setProfessor_contact(rs.getString("prof_contact"));
 	    prof.setUser_id(rs.getInt("uti_id"));
 	    prof.setUser_type(rs.getInt("uti_type"));
+	    prof.setUser_civilite(rs.getInt("civ_id"));
 	    return prof;
 	}
 

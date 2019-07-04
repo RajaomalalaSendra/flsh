@@ -219,6 +219,11 @@ form input.hasError {
     width: 100%;
     bottom: 0;
 }
+.all-content-wrapper {
+	position: relative;
+	padding-bottom: 50px;
+	min-height: 100%;
+}
 #main-wrapper, .main-wrapper {
 	padding: 10px;
 }

@@ -14,6 +14,7 @@ public class User {
 	  private String type;
 	  private Boolean enabled = true;
 	  private Set<Authorities> authorities = new HashSet<Authorities>();
+	  private int civ;
 	
 	  public String getUsername() {
 		  return username;
@@ -102,4 +103,18 @@ public class User {
 		this.firstname = firstname;
 	}
 
+	public int getCiv() {
+		return civ;
+	}
+
+	public void setCiv(int civ) {
+		this.civ = civ;
+	}
+	public String getCivilite() {
+		switch(civ) {
+		case 2: return "Mlle"; 
+		case 3: return "Mme"; 
+		default: return "Mr";
+		}		
+	}
 }

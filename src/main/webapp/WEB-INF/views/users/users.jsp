@@ -20,6 +20,7 @@
 			  <thead>
 			    <tr>
 			      <th scope="col">Id</th>
+			      <th scope="col">Civ.</th>
 			      <th scope="col">Nom</th>
 			      <th scope="col">Prenom</th>
 			      <th scope="col">Login</th>
@@ -30,7 +31,8 @@
 			  <tbody>  
 			   <c:forEach var="user" items="${users}">   
 				   <tr id="user-${user.getId()}">  
-				   <td scope="row">${user.getId()}</td>  
+				   <td scope="row">${user.getId()}</td>
+				   <td>${user.getCivilite()}</td>  
 				   <td>${user.getLastname()}</td>
 				   <td>${user.getFirstname()}</td>
 				   <td>${user.getUsername()}</td>  

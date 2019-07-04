@@ -16,7 +16,7 @@
       		<input type="hidden" name = "id" id = "idEC">
       		<input type="hidden" name = "id_ue" id = "idUeEc">
       		<div class = "form-group form-inline">
-	      	    <label class="col-sm-3">Professor:</label>
+	      	    <label class="col-md-4">Professor:</label>
 	      		<select class="form-control" name="id_prof" style="width: 50%;">
 	      		    	<c:forEach items="${ profs }" var="prof" varStatus="status">
 							<option value = "${ prof.getProfessor_id() }">${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</option>
@@ -26,37 +26,37 @@
 	      	</div>
 	      	<input type="hidden" id="idProfessorEc">
       		<div class = "form-group form-inline">
-	      	    <label class="col-sm-3">Libelle:</label>
+	      	    <label class="col-md-4">Libelle:</label>
 	      		<input class="form-control" type="text" name = "libelle" id = "ecLibelle" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      	    <label class="col-sm-3">Credit:</label>
+	      	    <label class="col-md-4">Credit:</label>
 	      	    <input class="form-control" type="number" name = "credit" id = "ecCredit" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      	    <label class="col-sm-3">Notation:</label>
+	      	    <label class="col-md-4">Notation:</label>
 	      		<input class="form-control" type="number" name = "notation" id = "ecNotation" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      	    <label class="col-sm-3">Coefficient:</label>
+	      	    <label class="col-md-4">Coefficient:</label>
 	      		<input class="form-control" type="number" name = "coefficient" id = "ecCoefficient" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      	    <label class="col-sm-3">Volume Horaire:</label>
+	      	    <label class="col-md-4">Volume Horaire:</label>
 	      		<input class="form-control" type="text" name = "horaire" id = "ecHoraire" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      	    <label class="col-sm-3">Travail Presentiel:</label>
+	      	    <label class="col-md-4">Travail Presentiel:</label>
 	      		<input class="form-control" type="text" name = "presenciel" id = "ecPresenciel" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
-	      	    <label class="col-sm-3">Travail Personnel:</label>
+	      	    <label class="col-md-4">Travail Personnel:</label>
 	      		<input class="form-control" type="text" name = "personnel" id = "ecPersonnel" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>

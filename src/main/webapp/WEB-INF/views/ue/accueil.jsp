@@ -15,12 +15,16 @@
     	<br/><br/><br/><br/>
     	<div class="main-wrapper">
 	    	<div class = "header-list">
-		    	<div class = "btn-group pull-right form-inline">
-	    			<select class="form-control" name="parcours" id="parcours-ue-id" style="width: 55%; margin-right: 50px;">
-	      		    	<c:forEach items="${ parcours }" var="prc" varStatus="status">
-							<option value = "${ prc.getParcoursId() }">${ prc.getParcoursLibelle() }</option>
-						</c:forEach>
-	      			</select>
+    			<div class = "btn-group pull-right form-inline">
+		        	<label for = "subsLevel" class = "col-md-6"></label>
+		        	<select class = "form-control" id = "subsLevel" name = "subs_level" style="width: 60%; margin-left: -50px;">
+		        		<c:forEach items = "${ levels }" var = "level" varStatus = "status">
+		        			<option value = "${ level.getLevelId() }">${ level.getLevelLibelle() }</option>
+		        		</c:forEach>
+		        	</select>
+		        	<label for = "subsParcours" class = "col-md-6"></label>
+		        	<select class = "form-control" id = "subsParcours" name = "subs_parcours" style = "width:60%; margin-left: -50px;">
+		        	</select>
 					<button class = "btn btn-primary pull-right" id = "add-ue" title = "Ajouter un nouveau unité d'enseignement" style="margin-top: -40px;"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
 				</div>
 			</div>

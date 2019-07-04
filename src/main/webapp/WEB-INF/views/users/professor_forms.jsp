@@ -15,6 +15,14 @@
       		<input type="hidden" name = "professor_id" id = "prof-id">
       		<input type="hidden" name = "user_id" id = "prof-for-user-id">
       		<div class = "form-group form-inline">
+	      		<label class="col-sm-3">Civilite:</label>
+	      		<select class="form-control" for = "civProfessor" name="user_civilite" id="user-civilite-prof">
+	      	    	<option value="1">Mr</option>
+	      	    	<option value="2">Mlle</option>
+	      	    	<option value="3">Mme</option>
+	      		</select>
+	      	</div>
+      		<div class = "form-group form-inline">
 	      	    <label class="col-sm-3">Nom:</label>
 	      		<input class="form-control" type="text" name = "professor_last_name" id = "lastname-prof" required>
 	      		<small class="form-text text-muted error"></small>

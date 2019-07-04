@@ -74,6 +74,7 @@ $(document).ready(function() {
 				$('#adresse-prof').val(data.professor_adresse)
 				$('#uti-type').val("2")
 				$('#prof-for-user-id').val(data.user_id)
+				$('#user-civilite-prof').val(data.user_civilite)
 				$("#profAddModal").modal('show')
 			},
 			error: function(err) {

@@ -114,22 +114,23 @@ public class UserServiceImpl implements UserService {
 		
 		String sql;
 		if (user.getId() == 0 ) {
-			sql = "INSERT INTO  Utilisateur(uti_nom, uti_prenom, uti_login, uti_email,  uti_type, uti_passwd) values(?, ?, ?, ?, ?, sha1(?))"; 
+			sql = "INSERT INTO  Utilisateur(civ_id, uti_nom, uti_prenom, uti_login, uti_email,  uti_type,  uti_passwd) values(?, ?, ?, ?, ?, ?, sha1(?))"; 
 		} else {
-			sql = user.getPassword().equals("") ? "UPDATE Utilisateur SET uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?,  uti_type = ? WHERE uti_id = ?" : "UPDATE Utilisateur SET uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, uti_passwd = sha1(?) WHERE uti_id = ?";
+			sql = user.getPassword().equals("") ? "UPDATE Utilisateur SET civ_id = ?, uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?,  uti_type = ? WHERE uti_id = ? " : "UPDATE Utilisateur SET civ_id = ?, uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?,  uti_passwd = sha1(?) WHERE uti_id = ?";
 		}
 										
 		boolean save = jdbcTemplate.execute (sql, new PreparedStatementCallback<Boolean>() {
 
 			@Override
 			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				ps.setString(1, user.getLastname());
-				ps.setString(2, user.getFirstname());
-				ps.setString(3, user.getUsername());
-				ps.setString(4, user.getEmail());
-				ps.setString(5, user.getType());
-				if(!user.getPassword().equals("")) ps.setString(6, user.getPassword());
-				if (user.getId() != 0) ps.setInt(user.getPassword().equals("") ? 6 : 7, user.getId());
+				ps.setInt(1, user.getCiv());
+				ps.setString(2, user.getLastname());
+				ps.setString(3, user.getFirstname());
+				ps.setString(4, user.getUsername());
+				ps.setString(5, user.getEmail());
+				ps.setString(6, user.getType());
+				if(!user.getPassword().equals("")) ps.setString(7, user.getPassword());
+				if (user.getId() != 0) ps.setInt(user.getPassword().equals("") ? 7 : 8, user.getId());
 				return ps.executeUpdate() > 0 ? true : false;
 			}
 		});
@@ -197,6 +198,7 @@ class UserMapper implements RowMapper<User> {
 	public User mapRow(ResultSet rs, int arg1) throws SQLException {
 	    User user = new User();
 	    user.setId(rs.getInt("uti_id"));
+	    user.setCiv(rs.getInt("civ_id"));
 	    user.setLastname(rs.getString("uti_nom"));
 	    user.setFirstname(rs.getString("uti_prenom"));
 	    user.setUsername(rs.getString("uti_login"));

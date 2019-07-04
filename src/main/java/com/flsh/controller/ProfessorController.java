@@ -48,6 +48,7 @@ public class ProfessorController {
 		  rtn.put("professor_password", professor.getProfessor_password());
 		  rtn.put("user_type", professor.getUser_type());
 		  rtn.put("user_id", professor.getUser_id());
+		  rtn.put("user_civilite", professor.getUser_civilite());
 		  return rtn.toString();
 	  }
 	  @RequestMapping(value = "/professor/save", method = RequestMethod.POST)

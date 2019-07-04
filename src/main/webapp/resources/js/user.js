@@ -65,6 +65,7 @@ $(document).ready(function() {
 				$('#email').val(data.email)
 				$('#pass').val("")
 				$('#type-id').val(data.type)
+				$('#user-civilite-user').val(data.civilite)
 				$("#userAddModal").modal('show')
 			},
 			error: function(err) {

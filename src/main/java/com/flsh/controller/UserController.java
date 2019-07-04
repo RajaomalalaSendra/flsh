@@ -49,6 +49,7 @@ public class UserController {
 		  rtn.put("email", user.getEmail());
 		  rtn.put("type", user.getType());
 		  rtn.put("typecomputed", user.getTypeComputed());
+		  rtn.put("civilite", user.getCiv());
 		  return rtn.toString();
 	  }
 	  

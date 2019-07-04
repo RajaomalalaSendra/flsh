@@ -14,6 +14,14 @@
       	<form method = "POST" id = "form-save-user" action = "<c:url value = '/user/save' />">
       		<input type="hidden" name = "id" id = "id">
       		<div class = "form-group form-inline">
+	      		<label class="col-sm-3">Civilite:</label>
+	      		<select class="form-control" for = "civUser" name="civ" id="user-civilite-user">
+	      	    	<option value="1">Mr</option>
+	      	    	<option value="2">Mlle</option>
+	      	    	<option value="3">Mme</option>
+	      		</select>
+	      	</div>
+      		<div class = "form-group form-inline">
 	      	    <label class="col-sm-3">Nom:</label>
 	      		<input class="form-control" type="text" name = "lastname" id = "lastname" required>
 	      		<small class="form-text text-muted error"></small>
