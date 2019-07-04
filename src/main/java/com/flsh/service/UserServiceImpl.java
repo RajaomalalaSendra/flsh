@@ -27,7 +27,10 @@ import com.flsh.model.User;
 public class UserServiceImpl implements UserService {
 	DataSource dataSource;
 	JdbcTemplate jdbcTemplate;
+<<<<<<< HEAD
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+=======
+>>>>>>> Fix config not working
 	
 	@Autowired
 	public UserServiceImpl(DataSource dsrc) {

@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UrlPathHelper;
 
+<<<<<<< HEAD
 import com.flsh.interfaces.EducationService;
 import com.flsh.interfaces.PeriodService;
 import com.flsh.service.EducationServiceImpl;
@@ -26,6 +27,10 @@ import com.flsh.service.ProfessorServiceImpl;
 import com.flsh.service.StudentServiceImpl;
 import com.flsh.service.TeachingServiceImpl;
 import com.flsh.utils.Config;
+=======
+import com.flsh.service.UserService;
+import com.flsh.service.UserServiceImpl;
+>>>>>>> Fix config not working
 
 /**
  * @author Danielson Andriaritiana
@@ -58,14 +63,19 @@ public class AppConfig implements WebMvcConfigurer {
 		configurer.setUrlPathHelper(pathHelper);
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Beans configuration
 	 * @return @Bean
 	 */
+=======
+	
+>>>>>>> Fix config not working
 	@Bean
     public UserService userService() {
         UserService usr = new UserServiceImpl(dataSource());
         return usr;
+<<<<<<< HEAD
     }
 	
 	@Bean
@@ -103,13 +113,25 @@ public class AppConfig implements WebMvcConfigurer {
 	 * @return dataSource
 	 */
 	@Bean
+=======
+    }
+	
+	@Bean
+>>>>>>> Fix config not working
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 	 
 	    dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+<<<<<<< HEAD
 	    dataSource.setUsername(Config.DB_USER);
 	    dataSource.setPassword(Config.DB_PASSWORD);
 	    dataSource.setUrl("jdbc:mysql://"+Config.DB_URL); 
+=======
+	    dataSource.setUsername("admin");
+	    dataSource.setPassword("admin");
+	    dataSource.setUrl(
+	      "jdbc:mysql://localhost:3306/db_anglais?createDatabaseIfNotExist=true"); 
+>>>>>>> Fix config not working
  
         return dataSource;
 	}
