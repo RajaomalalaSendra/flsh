@@ -98,18 +98,6 @@ public class AppConfig implements WebMvcConfigurer {
 		return stsrv;
 	}
 	
-	@Bean
-	public NoteService noteService() {
-		NoteService notesrv = new NoteServiceImpl(dataSource());
-		return notesrv;
-	}
-	
-	@Bean
-	public DeliberationService delibService() {
-		DeliberationService delib = new DeliberationServiceImpl(dataSource());
-		return delib;
-	}
-	
 	/**
 	 * DataSource configuration
 	 * @return dataSource
