@@ -4,3 +4,16 @@
 #choix-delib-wrapper .btn{
 	margin-left: 20px;
 }
+
+#student-delib-marg {
+	margin-bottom: 20px;
+}
+
+.pull-right {
+	margin-left: 100px;
+}
+
+.pull-right-buttom {
+	margin-left: 800px;
+	margin-bottom: 10px;
+}

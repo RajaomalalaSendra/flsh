@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	
 	$('.detail-user').on('click', function(event) {
 		event.preventDefault()
 		var url = getBaseUrl($(this).attr('href'))
@@ -20,12 +21,14 @@ $(document).ready(function() {
 			}
 		})
 	})
+	
 	$('#add-user').on('click', function() {
 		$('#userAddLabel').html('Ajouter un utilisateur')
 		emptyForm("#userAddModal")
 		$('#id').val('0')
 		$('#userAddModal').modal('show')
 	})
+	
 	$('#save-user').on('click', function(){
 		if (formValidate('#form-save-user')){
 			$.ajax({
@@ -47,6 +50,7 @@ $(document).ready(function() {
 			})
 		}
 	})
+	
 	
 	$('.edit-user').on('click', function(){
 		console.log('test edit user')
@@ -114,16 +118,6 @@ $(document).ready(function() {
 		$('.edit-account').hide();
 		$('#edit-myaccount').show();
 	})
-	
-//	$('#show-password').on('click', function() {
-//		if($(this).hasClass('glyphicon-eye-close')) {
-//			$(this).parent().find('input').attr('type', 'text');
-//			$(this).removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
-//		} else {
-//			$(this).parent().find('input').attr('type', 'password');
-//			$(this).addClass('glyphicon-eye-close').removeClass('glyphicon-eye-open');
-//		}
-//	})
 	
 	$('#newpass-account').on('keyup', function() {
 		if($(this).val() == "") {
