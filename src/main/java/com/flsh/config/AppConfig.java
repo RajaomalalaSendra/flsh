@@ -13,9 +13,11 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UrlPathHelper;
 
+import com.flsh.interfaces.DeliberationService;
 import com.flsh.interfaces.EducationService;
 import com.flsh.interfaces.NoteService;
 import com.flsh.interfaces.PeriodService;
+import com.flsh.service.DeliberationServiceImpl;
 import com.flsh.service.EducationServiceImpl;
 import com.flsh.service.NoteServiceImpl;
 import com.flsh.service.PeriodServiceImpl;
@@ -100,6 +102,12 @@ public class AppConfig implements WebMvcConfigurer {
 	public NoteService noteService() {
 		NoteService notesrv = new NoteServiceImpl(dataSource());
 		return notesrv;
+	}
+	
+	@Bean
+	public DeliberationService delibService() {
+		DeliberationService delib = new DeliberationServiceImpl(dataSource());
+		return delib;
 	}
 	
 	/**

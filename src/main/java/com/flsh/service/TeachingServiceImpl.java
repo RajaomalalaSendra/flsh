@@ -168,8 +168,10 @@ public class TeachingServiceImpl implements TeachingService {
 	public JSONObject deleteStudyUnit(int id) {
 		JSONObject rtn = new JSONObject();
 		String sql_element = "DELETE  FROM  Element_Constitutif WHERE Element_Constitutif.ue_id = ?";
-		String sql = "DELETE FROM Unite_Enseignement  WHERE Unite_Enseignement.ue_id = ?";
+		String sql_prof = "DELETE FROM Prof_Ue WHERE Prof_Ue.ue_id = ?";
+		String sql = "DELETE FROM Unite_Enseignement  WHERE  Unite_Enseignement.ue_id = ?";
 		jdbcTemplate.update(sql_element, id);
+		jdbcTemplate.update(sql_prof, id);
 		int template = jdbcTemplate.update(sql, id);
 	    rtn.put("status", template >= 0 ? 1 : 0);
 	    rtn.put("message", template >= 0 ? "Supprimé!" : "Echec de la suppression! Veuillez réessayer.");

@@ -39,4 +39,6 @@ public interface StudentService {
 
 	public Object getStudentsByUnivYearAndLevelAndCriteria(int idUY, int idLevel, String searchCriteria, int numPage);
 
+	List<Student> getStudentsByUnivYearAndParcours(int idUY, int idParcours);
+
 }
