@@ -39,7 +39,7 @@ $(document).ready(function() {
 		}
 	})
 	
-	$('.edit-ue').on('click', function(){
+	$(document).on('click','.edit-ue', function(){
 		console.log('test edit user')
 		var idUE = $(this).attr('ue-edit-id')
 		$('#ueAddLabel').html('Editer unite d\'enseignement')
@@ -61,11 +61,12 @@ $(document).ready(function() {
 		})
 	})
 	
-	$('.delete-ue').on('click', function() {
+	$(document).on('click','.delete-ue', function() {
 		var idUE = $(this).attr('ue-delete-id')
 		$('#idUEDelete').val(idUE)
 		$('#ueDeleteModal').modal('show')
 	})
+	
 	$('#form-delete-ue').on('submit', function(e) {
 			e.preventDefault()
 			$.ajax({
@@ -87,7 +88,7 @@ $(document).ready(function() {
 			})
 		})
 	// all the crud of ec
-		$('.add-ec').on('click', function() {
+		$(document).on('click', '.add-ec', function() {
 			$('#ecAddLabel').html('Ajouter un Element constitutif')
 			emptyForm("#ecAddModal")
 			var idUeEc = $(this).attr('ec-add-id')
@@ -99,6 +100,7 @@ $(document).ready(function() {
 			console.log("hello")
 			console.log(idProfEc)
 		})
+		
 		$('#save-ec').on('click', function(){
 			console.log("here I am ....... III")
 			console.log($("#form-save-ec").serialize())
@@ -123,7 +125,8 @@ $(document).ready(function() {
 				})
 			}
 		})
-		$('.edit-ec').on('click', function(){
+		
+	$(document).on('click', '.edit-ec', function(){
 		var idEC = $(this).attr('ec-edit-id')
 		$('#ecAddLabel').html('Editer enseignement constitutif')
 		$('#idEC').val(idEC)
@@ -150,7 +153,7 @@ $(document).ready(function() {
 		})
 	})
 	
-	$('.delete-ec').on('click', function() {
+	$(document).on('click', '.delete-ec', function() {
 		var idEC = $(this).attr('ec-delete-id')
 		$('#idECDelete').val(idEC)
 		$('#ecDeleteModal').modal('show')
