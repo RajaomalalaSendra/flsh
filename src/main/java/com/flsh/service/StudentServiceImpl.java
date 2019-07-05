@@ -3,7 +3,9 @@ package com.flsh.service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -21,8 +23,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import com.flsh.interfaces.StudentService;
+import com.flsh.model.Course;
 import com.flsh.model.Period;
 import com.flsh.model.Student;
+import com.flsh.model.StudyUnit;
 
 public class StudentServiceImpl implements StudentService {
 
@@ -121,7 +125,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public JSONObject saveStudent(Student student, int uy, int level, int prc, int paid) {
+	public JSONObject saveStudent(Student student, int uy, int level, int prc, int paid, String dateInscription, String choixprc) {
 		String queryInsert = "INSERT INTO Etudiant(civ_id, etd_nom, etd_prenom, etd_datenaissance, etd_nationalite, etd_numeropasseport, etd_cin, etd_datecin, etd_lieucin, etd_adresse, etd_email, etd_dernieretab, etd_nomconjoint, etd_nompere, etd_professionpere, etd_nommere, etd_professionmere) "
 								+ "values(:civ, :nom, :prenom, :datenaiss, :nat, :psprt, :cin, :datecin, :lieucin, :adr, :mail, :dernet, :conj, :per, :pper, :mer, :pmer)";
 		
@@ -161,13 +165,15 @@ public class StudentServiceImpl implements StudentService {
 			return rtn;
 		} else {
 			int idStud = holder.getKey().intValue();
-			queryInsert = "INSERT INTO Niveau_Etudiant(au_id, niv_id, etd_id, prc_id, net_inscription) values(:uy, :lvl, :id, :prc, :paid)";
+			queryInsert = "INSERT INTO Niveau_Etudiant(au_id, niv_id, etd_id, prc_id, net_inscription, net_dateinscription, net_ecchoisis) values(:uy, :lvl, :id, :prc, :paid, :date, :choix)";
 			parameters = new MapSqlParameterSource()
 							.addValue("uy", uy)
 							.addValue("lvl", level)
 							.addValue("id", idStud)
 							.addValue("prc", prc)
-							.addValue("paid", paid);
+							.addValue("paid", paid)
+							.addValue("date", dateInscription)
+							.addValue("choix", choixprc);
 			res = namedJdbcTemplate.update(queryInsert, parameters);
 			if(res <= 0) {
 				rtn.put("status", 0);
@@ -230,6 +236,25 @@ public class StudentServiceImpl implements StudentService {
 		    rtn.put("message", "Echec de la suppression des niveaux parcouru par l'étudiant! Veuillez réessayer");
 		}
 	    return rtn;
+	}
+	
+	@Override
+	public HashSet<StudyUnit> getParcoursChoiceUnits(int idParcours) {
+		HashSet<StudyUnit> listUnits = new HashSet<StudyUnit>();
+		String sql = "SELECT * FROM Unite_Enseignement where ue_type = 'AU CHOIX' and prc_id = "+idParcours;
+		List<StudyUnit> units = jdbcTemplate.query(sql, new UnitsMapper());
+		for(StudyUnit unit : units) {
+			Set<Course> listCourses = new HashSet<Course>(this.getCourseById( unit.getStudyunit_id()));
+			unit.setCourses((HashSet<Course>) listCourses);
+		    listUnits.add(unit);
+		}
+		return listUnits;
+	}
+	
+	private List<Course> getCourseById(int idUnits) {
+		String sql = "SELECT * FROM  Element_Constitutif WHERE ue_id = "+idUnits;
+		List<Course> courses = jdbcTemplate.query(sql, new CourseMapper());
+		return courses;
 	}
 	
 	private String checkStudentInfo(Student student) {

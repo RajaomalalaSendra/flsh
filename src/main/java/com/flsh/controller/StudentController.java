@@ -1,5 +1,7 @@
 package com.flsh.controller;
 
+import java.util.HashSet;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.flsh.interfaces.PeriodService;
 import com.flsh.interfaces.StudentService;
 import com.flsh.model.Student;
+import com.flsh.model.StudyUnit;
 
 @Controller
 public class StudentController {
@@ -76,7 +79,17 @@ public class StudentController {
 			int idLevel = !request.getParameter("subs_level").equals("") ? Integer.parseInt(request.getParameter("subs_level")) : 0;
 			int idPrc = !request.getParameter("subs_parcours").equals("") ? Integer.parseInt(request.getParameter("subs_parcours")) : 0;
 			int paid = !request.getParameter("subs_inscription").equals("") ? Integer.parseInt(request.getParameter("subs_inscription")) : 0;
-			rtn = studentService.saveStudent(student, idUY, idLevel, idPrc, paid);
+			String dateInscription = request.getParameter("subs_date");
+			HashSet<StudyUnit> ueList = studentService.getParcoursChoiceUnits(idPrc);
+			String choixprc = "";
+			for(StudyUnit ue : ueList) {
+				if(choixprc.equals("")) {
+					choixprc = ue.getStudyunit_id()+"_"+request.getParameter(""+ue.getStudyunit_id());
+				} else {
+					choixprc += ";"+ue.getStudyunit_id()+"_"+request.getParameter(""+ue.getStudyunit_id());
+				}
+			}
+			rtn = studentService.saveStudent(student, idUY, idLevel, idPrc, paid, dateInscription, choixprc);
 		} else {
 			rtn = studentService.saveStudent(student);
 		}
@@ -94,7 +107,9 @@ public class StudentController {
 	@RequestMapping(value = "/student/loadUEToChooseByParcours", method = RequestMethod.GET)
 	public ModelAndView loadUEChoiceByParcours(HttpServletRequest request, HttpServletResponse response) {
 		int idParcours = !request.getParameter("id").equals("") ? Integer.parseInt(request.getParameter("id")) : 0;
+		HashSet<StudyUnit> ueList = studentService.getParcoursChoiceUnits(idParcours);
 		ModelAndView mav = new ModelAndView("students/ue_choice");
+		mav.addObject("ueList", ueList);
 		return mav;
 	}
 	

@@ -49,18 +49,31 @@ public class TeachingServiceImpl implements TeachingService {
 		}
 		return listUnits;
 	}
+
+	@Override
+	public HashSet<StudyUnit> getUnitsByParcours(int idParcours) {
+		HashSet<StudyUnit> listUnits = new HashSet<StudyUnit>();
+		String sql = "SELECT * FROM Unite_Enseignement where prc_id = "+idParcours;
+		List<StudyUnit> units = jdbcTemplate.query(sql, new UnitsMapper());
+		for(StudyUnit unit : units) {
+			Set<Course> listCourses = new HashSet<Course>(this.getCourseById( unit.getStudyunit_id()));
+			unit.setCourses((HashSet<Course>) listCourses);
+		    listUnits.add(unit);
+		}
+		return listUnits;
+	}
+	
 	public List<Course> getCourseById(int idUnits) {
 		String sql = "SELECT * FROM  Element_Constitutif WHERE ue_id = "+idUnits;
 		List<Course> courses = jdbcTemplate.query(sql, new CourseMapper());
 		return courses;
 	}
+	
 	public List<Parcours> getAllParcours(){
 		String sql = "SELECT * FROM Parcours";
 		List<Parcours> parcours = jdbcTemplate.query(sql, new ParcourMapper());
 		return parcours;
 	}
-
-
 
 	@Override
 	public JSONObject saveStudyUnit(StudyUnit studyUnit) {

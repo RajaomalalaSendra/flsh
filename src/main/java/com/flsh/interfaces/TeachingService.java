@@ -13,12 +13,22 @@ import com.flsh.model.Professor;
 
 public interface TeachingService {
 	HashSet<StudyUnit> getAllUnits();
+	
 	List<Parcours> getAllParcours();
+	
 	JSONObject saveStudyUnit(StudyUnit studyUnit);
+	
 	StudyUnit getUeDetails(int id);
+	
 	JSONObject deleteStudyUnit(int id);
+	
 	JSONObject saveCourse(Course course);
+	
 	Course getEcDetails(int id);
+	
 	List<Professor> getAllProfessor();
+	
 	JSONObject deleteCourse(int id);
+
+	HashSet<StudyUnit> getUnitsByParcours(int idParcours);
 }

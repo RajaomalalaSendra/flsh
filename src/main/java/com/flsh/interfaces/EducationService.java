@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import com.flsh.model.Cycles;
 
 public interface EducationService {
+	
 	public HashSet<Cycles> getAllCycle();
 	
 	public boolean saveCycle(String libelle, int id);

@@ -1,15 +1,22 @@
 $(document).ready(function() {
+	//first loading
+	//Trigger change level
+	$(function() {
+		$('#choixLevel').trigger('change');
+	})
+	
 	// all the crud of ue
 	$('#add-ue').on('click', function() {
 		$('#ueAddLabel').html('Ajouter un Unite d\'enseignement')
 		emptyForm("#ueAddModal")
-		idParcours = $("#parcours-ue-id").val()
+		idParcours = $("#choixParcours").val()
 		$('#idUE').val('0')
 		$("#idParcoursUE").val(idParcours)
 		$('#ueAddModal').modal('show')
 	})
+	
 	$('#save-ue').on('click', function(){
-		console.log("here I am")
+		console.log("here I am to worship")
 		if (formValidate('#form-save-ue')){
 			$.ajax({
 				url: getBaseUrl('ue/save'),
@@ -148,25 +155,53 @@ $(document).ready(function() {
 		$('#idECDelete').val(idEC)
 		$('#ecDeleteModal').modal('show')
 	})
+	
 	$('#form-delete-ec').on('submit', function(e) {
-			e.preventDefault()
-			$.ajax({
-				url: getBaseUrl('ec/delete?id='+$('#idECDelete').val()),
-				type: 'GET',
-				dataType: 'JSON',
-				success: function(data) {
-					console.log(data)
-					if(data.status == 1) {
-						$("#ec-"+$('#idECDelete').val()).remove()
-						$('#success-delete-ue').html('Suppression avec success...').show().delay(3000).fadeOut(600)
-						$('#ecDeleteModal').modal('hide')
-					} else {
-						$('#err-delete-ec').html('Une erreur interne s\'est produite! Veuillez ressayer...').show().delay(3000).fadeOut(600)
-					}
-				},
-				error: function(err) {
-					$('#err-delete-ec').html('Une erreur s\'est produite! Veuillez ressayer...').show().delay(3000).fadeOut(600)
+		e.preventDefault()
+		$.ajax({
+			url: getBaseUrl('ec/delete?id='+$('#idECDelete').val()),
+			type: 'GET',
+			dataType: 'JSON',
+			success: function(data) {
+				console.log(data)
+				if(data.status == 1) {
+					$("#ec-"+$('#idECDelete').val()).remove()
+					$('#success-delete-ue').html('Suppression avec success...').show().delay(3000).fadeOut(600)
+					$('#ecDeleteModal').modal('hide')
+				} else {
+					$('#err-delete-ec').html('Une erreur interne s\'est produite! Veuillez ressayer...').show().delay(3000).fadeOut(600)
 				}
-			})
+			},
+			error: function(err) {
+				$('#err-delete-ec').html('Une erreur s\'est produite! Veuillez ressayer...').show().delay(3000).fadeOut(600)
+			}
 		})
+	})
+	
+	$('#choixLevel').on('change', function() {
+		var idLevel = $(this).val()
+		$.ajax({
+			url: getBaseUrl('student/loadParcoursByLevel?id='+idLevel),
+			success: function(data) {
+				$('#choixParcours').html(data).trigger('change')
+			}, 
+			error: function() {
+				$('#choixParcours').html("").trigger('change')
+			}
+		})
+	})
+	
+	$('#choixParcours').on('change', function() {
+		$('tbody').html('loading...');
+		var id = $(this).val();
+		$.ajax({
+			url: getBaseUrl('ue/list?idParcours='+id),
+			success: function(data) {
+				$('tbody').html(data);
+			},
+			error: function() {
+				alert('Echec du chargement des UEs!!!!')
+			}
+		})
+	})
 })

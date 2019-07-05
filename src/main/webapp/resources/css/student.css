@@ -7,3 +7,6 @@
 #form-save-student input.form-control, #form-save-student select.form-control {
 	width: 45%;
 }
+.card {
+	padding: 12px;
+}

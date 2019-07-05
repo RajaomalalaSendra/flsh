@@ -15,28 +15,42 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import com.flsh.interfaces.PeriodService;
 import com.flsh.interfaces.TeachingService;
 import com.flsh.model.StudyUnit;
 import com.flsh.model.Course;
+import com.flsh.model.Level;
 import com.flsh.model.Parcours;
 import com.flsh.model.Professor;
 
 @Controller
 public class TeachingController {
+	
 	@Autowired
 	TeachingService teachingService;
+	
+	@Autowired
+	PeriodService periodService;
+	
 	@RequestMapping(value = "/ue", method = RequestMethod.GET)
-	  public ModelAndView showTeaching(HttpServletRequest request, HttpServletResponse response) {
-		HashSet<StudyUnit> units=teachingService.getAllUnits();
-		List<Parcours> parcours=teachingService.getAllParcours();
+	public ModelAndView showTeaching(HttpServletRequest request, HttpServletResponse response) {
+		List<Level> levels = periodService.getAllLevels();
 		List<Professor> profs = teachingService.getAllProfessor();
 		ModelAndView teaching = new ModelAndView("ue/accueil");
-	    teaching.addObject("units", units);
-	    teaching.addObject("parcours", parcours);
+	    teaching.addObject("levels", levels);
 	    teaching.addObject("profs", profs);
 	    return teaching;
-	  }
+	}
+	
+	@RequestMapping(value = "/ue/list", method = RequestMethod.GET)
+	public ModelAndView loadUEList(HttpServletRequest request, HttpServletResponse response) {
+		int idParcours = request.getParameter("idParcours") == null || request.getParameter("idParcours") == "" ? 0 : Integer.parseInt(request.getParameter("idParcours"));
+		HashSet<StudyUnit> units = teachingService.getUnitsByParcours(idParcours);
+		ModelAndView teaching = new ModelAndView("ue/parcours_list");
+	    teaching.addObject("units", units);
+	    return teaching;
+	}
+	
 	@RequestMapping(value = "/ue/details", method = RequestMethod.GET)
 	@ResponseBody
 	public String getUeDetails(HttpServletRequest request, HttpServletResponse response) {
@@ -48,7 +62,8 @@ public class TeachingController {
 	  rtn.put("type", teaching_detail.getStudyunit_type());
 	  rtn.put("libelle", teaching_detail.getStudyunit_libelle());
 	  return rtn.toString();
-  }
+	}
+	
 	@RequestMapping(value = "/ue/save", method = RequestMethod.POST)
 	@ResponseBody   
 	public String saveTeaching(HttpServletRequest request, HttpServletResponse response) {
@@ -66,6 +81,7 @@ public class TeachingController {
 		JSONObject rtn = teachingService.saveStudyUnit(studyunit);
   		return rtn.toString();
 	}
+	
 	@RequestMapping(value = "/ue/delete", method = RequestMethod.GET)
 	@ResponseBody
 	public String deleteTeaching(HttpServletRequest request, HttpServletResponse response) {
@@ -90,7 +106,8 @@ public class TeachingController {
 	  rtn.put("libelle", course_detail.getCourse_libelle());
 	  rtn.put("horaire", course_detail.getCourse_volumehoraire());
 	  return rtn.toString();
-	  }
+	}
+	
 	@RequestMapping(value = "/ec/save", method = RequestMethod.POST)
 	@ResponseBody   
 	public String saveCourse(HttpServletRequest request, HttpServletResponse response) {
@@ -120,6 +137,7 @@ public class TeachingController {
 		JSONObject rtn = teachingService.saveCourse(course);
   		return rtn.toString();
 	}
+	
 	@RequestMapping(value = "/ec/delete", method = RequestMethod.GET)
 	@ResponseBody
 	public String deleteCourse(HttpServletRequest request, HttpServletResponse response) {

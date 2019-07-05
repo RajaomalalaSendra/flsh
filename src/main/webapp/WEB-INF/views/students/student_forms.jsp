@@ -137,6 +137,11 @@
 			        	<select class = "form-control" id = "subsParcours" name = "subs_parcours">
 			        	</select>
 			        </div>
+			        <div class = "form-group form-inline">
+			        	<label for = "dateSubsStudent" class = "col-md-6">Date d'inscription</label>
+			        	<input type = "date" class = "form-control" name = "subs_date" id = "dateSubsStudent" />
+			        	<small class="form-text text-muted error"></small>
+			        </div>
 			        <div class = "from-group form-inline">
 			        	<label for = "subsIsPaid" class = "col-md-6">Frais d'inscription</label>
 			        	<div class="checkbox checkbox-primary">

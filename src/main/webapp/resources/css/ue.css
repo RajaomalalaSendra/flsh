@@ -14,3 +14,6 @@
 .delete-ec {
 	color: #900;
 }
+.form-inline select {
+	margin-right: 20px;
+}
