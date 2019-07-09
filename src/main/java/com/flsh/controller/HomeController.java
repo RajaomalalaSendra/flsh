@@ -37,7 +37,8 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		model.addAttribute("username", session.getAttribute("username") );
 		model.addAttribute("page", "dashboard.jsp" );
-		
+		model.addAttribute("menu", "home");
+		model.addAttribute("submenu", "dashboard");
 		return "_layout";
 	}
 	

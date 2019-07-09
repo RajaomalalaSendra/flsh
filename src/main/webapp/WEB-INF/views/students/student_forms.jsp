@@ -168,7 +168,7 @@
 <div class="modal fade" id="studentDeleteModal" tabindex="-1" role="dialog" aria-labelledby="studentDeleteLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form method = "POST" id = "form-delete-student" action = "<c:url value = '/education/saveCycle' />">
+      <form method = "POST" id = "form-delete-student" action = "<c:url value = '/student/delete' />">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
@@ -180,7 +180,89 @@
 		      	<div class = "alert alert-danger" style = "display:none" id = "err-delete-student"></div>
 		      	<div class = "alert alert-success" style = "display:none" id = "success-delete-student"></div>
 		      	<p id = "question-delete">
-		      	La suppression du cycle engendrera la suppression des inscriptions et tous les évaluations.<br/>
+		      	La suppression de l'étudiant engendrera la suppression des inscriptions et tous les évaluations.<br/>
+		      	Voulez-vous vraiment supprimer ? Cette action est irréversible
+		      	</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+	        <button type="submit" class="btn btn-primary" id = "delete-student">Supprimer</button>
+	      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal subscription -->
+<div class="modal fade" id="studentSubscribeModal" tabindex="-1" role="dialog" aria-labelledby="studenSubscribeLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method = "POST" id = "form-subscribe-student" action = "<c:url value = '/student/subscribe' />">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	        <h5 class="modal-title" id="studenSubscribeLabel">Inscrire <span id = "student-name"></span></h5>
+	      </div>
+	      <div class="modal-body">
+	      	<div class = "alert alert-danger" style = "display:none" id = "err-subscribe-student"></div>
+		    <div class = "alert alert-success" style = "display:none" id = "success-subscribe-student"></div>
+		    <input type = "hidden" id = "id-student-subscribe" name = "subs_idstudent" />
+		    <div class = "form-group form-inline">
+	        	<label for = "studentSubsLevel" class = "col-md-6">Niveau</label>
+	        	<select class = "form-control" id = "studentSubsLevel" name = "subs_level" required>
+	        		<c:forEach items = "${ levels }" var = "level" varStatus = "status">
+	        			<option value = "${ level.getLevelId() }">${ level.getLevelLibelle() }</option>
+	        		</c:forEach>
+	        	</select>
+	        </div>
+	        <div class = "form-group form-inline">
+	        	<label for = "studentSubsParcours" class = "col-md-6">Parcours</label>
+	        	<select class = "form-control" id = "studentSubsParcours" name = "subs_parcours" required>
+	        	</select>
+	        </div>
+	        <div class = "form-group form-inline">
+	        	<label for = "dateStudentSubs" class = "col-md-6">Date d'inscription</label>
+	        	<input type = "date" class = "form-control" name = "subs_date" id = "dateStudentSubs" required/>
+	        	<small class="form-text text-muted error"></small>
+	        </div>
+	        <div class = "from-group form-inline">
+	        	<label for = "studentSubsIsPaid" class = "col-md-6">Frais d'inscription</label>
+	        	<div class="checkbox checkbox-primary">
+                       <input  type = "checkbox" class = "styled" name = "subs_inscription" id = "studentSubsIsPaid">
+                       <label></label>
+                   </div>
+	        </div>
+	        <div id = "subscribe-ue-choix-wrapper">
+	        	
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+	        <button type="submit" class="btn btn-primary" id = "subscribe-student">Inscrire</button>
+	      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal unsubscribe -->
+<div class="modal fade" id="removeSubscriptionStudentModal" tabindex="-1" role="dialog" aria-labelledby="removeSubscriptionStudentLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method = "POST" id = "form-unsubscribe-student" action = "<c:url value = '/student/saveSubscription' />">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	        <h5 class="modal-title" id="cycleDeleteLabel">Désinscrire l'étudiant ?</h5>
+	      </div>
+	      <div class="modal-body">
+		      	<input type="hidden" name = "student_id" id = "idStudentUnsubscribe" value = "">
+		      	<div class = "alert alert-danger" style = "display:none" id = "err-unsubscribe-student"></div>
+		      	<div class = "alert alert-success" style = "display:none" id = "success-unsubscribe-student"></div>
+		      	<p id = "question-delete">
+		      	La suppression de l'inscription entraine la suppression des évaluations par rapport à cette année scolaire.<br/>
 		      	Voulez-vous vraiment supprimer ? Cette action est irréversible
 		      	</p>
 	      </div>

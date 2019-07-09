@@ -27,6 +27,8 @@ public class PeriodController {
 	public ModelAndView accueilPeriods(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav = new ModelAndView("educations/periods");
 		mav.addObject("listAnneeU", periodService.getAllUnivYears()); 
+		mav.addObject("menu", "home");
+		mav.addObject("submenu", "periods");
 		return mav;
 	}
 

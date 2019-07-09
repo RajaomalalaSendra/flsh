@@ -16,14 +16,14 @@
     	<div class="main-wrapper">
 	    	<div class = "header-list">
     			<div class = "btn-group pull-right form-inline">
-		        	<label for = "choixLevel" class =>Niveau</label>
-		        	<select class = "form-control" id = "choixLevel" name = "subs_level" >
+		        	<label for = "choixLevel" class =>Niveau :</label>
+		        	<select class = "form-control" id = "choixLevel" >
 		        		<c:forEach items = "${ levels }" var = "level" varStatus = "status">
 		        			<option value = "${ level.getLevelId() }">${ level.getLevelLibelle() }</option>
 		        		</c:forEach>
 		        	</select>
-		        	<label for = "choixParcours" >Parcours</label>
-		        	<select class = "form-control" id = "choixParcours" name = "subs_parcours" >
+		        	<label for = "choixParcours" >Parcours :</label>
+		        	<select class = "form-control" id = "choixParcours">
 		        	</select>
 					<button class = "btn btn-primary pull-right" id = "add-ue" title = "Ajouter un nouveau unité d'enseignement"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
 				</div>

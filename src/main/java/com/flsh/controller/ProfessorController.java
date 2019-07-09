@@ -28,6 +28,8 @@ public class ProfessorController {
 	  public ModelAndView showProfessor(HttpServletRequest request, HttpServletResponse response) {
 		List<Professor> professors=professorService.getAllProfessor();
 		ModelAndView prof = new ModelAndView("users/professors");
+		prof.addObject("menu", "professor");
+		prof.addObject("submenu", "all_professors");
 	    prof.addObject("professors", professors);
 	    return prof;
 	  }

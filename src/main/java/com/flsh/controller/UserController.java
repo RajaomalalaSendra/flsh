@@ -31,6 +31,8 @@ public class UserController {
 		  List<User> users=userService.getAllUser();
 		  ModelAndView m = new ModelAndView("users/users");
 		  HttpSession session = request.getSession();
+		  m.addObject("menu", "system");
+		  m.addObject("submenu", "all_users");
 		  m.addObject("username", session.getAttribute("username") );
 	      m.addObject("users",users);  
 	      return m;    

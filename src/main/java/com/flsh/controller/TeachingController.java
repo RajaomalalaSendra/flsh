@@ -39,6 +39,8 @@ public class TeachingController {
 		ModelAndView teaching = new ModelAndView("ue/accueil");
 	    teaching.addObject("levels", levels);
 	    teaching.addObject("profs", profs);
+	    teaching.addObject("menu", "course");
+	    teaching.addObject("submenu", "ue_ec");
 	    return teaching;
 	}
 	

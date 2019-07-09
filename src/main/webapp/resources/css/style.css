@@ -3672,6 +3672,12 @@ div#sparklinehome canvas {
 	-webkit-box-shadow: 0 1px 4px rgba(0,0,0,.175);
     box-shadow: 0 1px 4px rgba(0,0,0,.175);
 }
+ul.submenu-angle li.active {
+	background-color: #bbb;
+}
+ul.submenu-angle li.active  a{
+	color: #fff;
+}
 #sidebar.active .sidebar-nav .metismenu a:hover, #sidebar.active .sidebar-nav .metismenu a:focus, #sidebar.active .sidebar-nav .metismenu a:active{
 	background:#F6F8FA;
 }

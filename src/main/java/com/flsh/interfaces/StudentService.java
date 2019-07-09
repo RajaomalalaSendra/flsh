@@ -22,4 +22,13 @@ public interface StudentService {
 
 	HashSet<StudyUnit> getParcoursChoiceUnits(int idParcours);
 
+	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel);
+
+	public JSONObject saveSubscriptionStudent(int idStudent, int idUY, int idLevel, int idPrc, int paid,
+			String dateInscription, String choixprc);
+
+	public JSONObject getSubscriptionInfos(int idStudent, int idUY, int idLevel);
+
+	public JSONObject deleteSubscriptionStudent(int idStudent, int idUY);
+
 }

@@ -26,6 +26,8 @@ public class EducationController {
 		mav.addObject("listCycle", educationService.getAllCycle());
 		HttpSession session = request.getSession();
 		mav.addObject("username", session.getAttribute("username") );
+		mav.addObject("menu", "home");
+		mav.addObject("submenu", "cycle_level_parcours");
 		return mav;
 	}
 	

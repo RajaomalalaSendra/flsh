@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -24,7 +25,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import com.flsh.interfaces.StudentService;
 import com.flsh.model.Course;
-import com.flsh.model.Period;
 import com.flsh.model.Student;
 import com.flsh.model.StudyUnit;
 
@@ -47,6 +47,16 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<Student> getAllStudents() {
 		String queryStudent = "SELECT * FROM Etudiant ORDER BY etd_id";
+		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
+		return students;
+	}
+
+	@Override
+	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel) {
+		String queryStudent = idLevel == 0 ? "SELECT * FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+")" 
+								: "SELECT * FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id"
+								+ " where au_id = "+idUY+" and niv_id = "+idLevel;
+		System.out.print(queryStudent);
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
 		return students;
 	}
@@ -165,16 +175,7 @@ public class StudentServiceImpl implements StudentService {
 			return rtn;
 		} else {
 			int idStud = holder.getKey().intValue();
-			queryInsert = "INSERT INTO Niveau_Etudiant(au_id, niv_id, etd_id, prc_id, net_inscription, net_dateinscription, net_ecchoisis) values(:uy, :lvl, :id, :prc, :paid, :date, :choix)";
-			parameters = new MapSqlParameterSource()
-							.addValue("uy", uy)
-							.addValue("lvl", level)
-							.addValue("id", idStud)
-							.addValue("prc", prc)
-							.addValue("paid", paid)
-							.addValue("date", dateInscription)
-							.addValue("choix", choixprc);
-			res = namedJdbcTemplate.update(queryInsert, parameters);
+			res = this.saveDataSubscription(idStud, uy, level, prc, paid, dateInscription, choixprc);
 			if(res <= 0) {
 				rtn.put("status", 0);
 				rtn.put("message", "Echec de l'enregistrement de l'inscription!!");
@@ -287,6 +288,105 @@ public class StudentServiceImpl implements StudentService {
 		}
 		
 		return "";
+	}
+
+	@Override
+	public JSONObject saveSubscriptionStudent(int idStudent, int idUY, int idLevel, int idPrc, int paid, String dateInscription, String choixprc) {
+		JSONObject rtn = new JSONObject();
+		int res = this.saveDataSubscription(idStudent, idUY, idLevel, idPrc, paid, dateInscription, choixprc);
+		if(res <= 0) {
+			rtn.put("status", 0);
+			rtn.put("message", "Echec de l'enregistrement de l'inscription!!");
+		} else {
+			rtn.put("status", 1);
+			rtn.put("message", "Inscription enregistrée avec succès!");
+		}
+		return rtn;
+	}
+	
+	private int saveDataSubscription(int idStudent, int idUY, int idLevel, int idPrc, int paid, String dateInscription, String choixprc) {
+		String queryInsert = "INSERT INTO Niveau_Etudiant(au_id, niv_id, etd_id, prc_id, net_inscription, net_dateinscription, net_ecchoisis) values(:uy, :lvl, :id, :prc, :paid, :date, :choix)";
+		String sqlDeleteSubs = "DELETE FROM Niveau_Etudiant WHERE etd_id = ? and au_id = ?";
+		
+		jdbcTemplate.execute (sqlDeleteSubs, new PreparedStatementCallback<Boolean>() {
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setInt(1, idStudent);
+				ps.setInt(2, idUY);
+				return ps.executeUpdate() >= 0 ? true : false;
+			}
+		});
+		
+		SqlParameterSource parameters = new MapSqlParameterSource()
+						.addValue("uy", idUY)
+						.addValue("lvl", idLevel)
+						.addValue("id", idStudent)
+						.addValue("prc", idPrc)
+						.addValue("paid", paid)
+						.addValue("date", dateInscription)
+						.addValue("choix", choixprc);
+		return namedJdbcTemplate.update(queryInsert, parameters);
+	}
+
+	@Override
+	public JSONObject getSubscriptionInfos(int idStudent, int idUY, int idLevel) {
+		String sql = "SELECT * FROM Niveau_Etudiant where au_id = "+idUY+" and niv_id = "+idLevel+" and etd_id = "+idStudent;
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		System.out.print(sql);
+		System.out.print(rows);
+		JSONObject rtn = new JSONObject();
+		if(rows.size() == 0) {
+			rtn.put("status", 0);
+			rtn.put("message", "Cet étudiant n'est pas inscrit à ce niveau");
+		} else {
+			JSONObject infos = new JSONObject();
+			Map<String, Object> subs = rows.get(0);
+			infos.put("idUY", idUY);
+			infos.put("idLevel", idLevel);
+			infos.put("idStudent", idLevel);
+			infos.put("parcours", subs.get("prc_id"));
+			infos.put("inscrit", subs.get("net_inscription"));
+			infos.put("date", subs.get("net_dateinscription"));
+			infos.put("choix", subs.get("net_ecchoisis"));
+			rtn.put("infos", infos);
+			rtn.put("status", 1);
+			rtn.put("message", "Infos récupérées");
+		}
+		return rtn;
+	}
+
+	@Override
+	public JSONObject deleteSubscriptionStudent(int idStudent, int idUY) {
+		String sqlDeleteSubs = "DELETE FROM Niveau_Etudiant WHERE etd_id = ? and au_id = ?";
+		String sqlDeleteEvals = "DELETE Evaluation_Etudiant.*, Moyenne_Ue.* from Evaluation_Etudiant, Moyenne_Ue WHERE Evaluation_Etudiant.etd_id = Moyenne_Ue.etd_id and Evaluation_Etudiant.per_id = Moyenne_Ue.per_id and Moyenne_Ue.etd_id = ? and Moyenne_Ue.per_id in (select per_id from Periode where au_id = ?) ";
+		JSONObject rtn = new JSONObject();
+		boolean res = true;
+		res = jdbcTemplate.execute (sqlDeleteEvals, new PreparedStatementCallback<Boolean>() {
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setInt(1, idStudent);
+				ps.setInt(2, idUY);
+				return ps.executeUpdate() >= 0 ? true : false;
+			}
+		});
+		
+		if(!res) {
+			rtn.put("status", 0);
+		    rtn.put("message", "Echec de la suppression des évaluations de l'étudiant! Veuillez réessayer");
+		    return rtn;
+		}
+		
+		res = jdbcTemplate.execute (sqlDeleteSubs, new PreparedStatementCallback<Boolean>() {
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setInt(1, idStudent);
+				ps.setInt(2, idUY);
+				return ps.executeUpdate() >= 0 ? true : false;
+			}
+		});
+		rtn.put("status", res ? 1 : 0);
+	    rtn.put("message", res ? "Suppression réussie" : "Echec de la désinscription! Veuillez réessayer");
+		return rtn;
 	}
 	
 }
