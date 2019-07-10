@@ -19,7 +19,7 @@
     			<h3>Etudiants</h3>
     		</div>
     		<div class = "table-wrapper">
-    			<table class = "table table-bordered">
+    			<table class = "table table-bordered" id = "table-students">
 					<thead>
 						<tr>
 							<th>Civ.</th>
@@ -34,28 +34,27 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${ students }" var="student" varStatus="status">
-							<tr id = "stud-${ student.getStudent_id() }">
-								<td>${ student.getCivilite() }</td>
-								<td>${ student.getStudent_name() }</td>
-								<td>${ student.getStudent_lastname() }</td>
-								<td>${ student.getStudent_birthdate() }</td>
-								<td>${ student.getStudent_nationality() }</td>
-								<td>${ student.getStudent_adress() }</td>
-								<td>${ student.getStudent_email() }</td>
-								<td>${ student.getStudent_lastetab() }</td>
-								<td>
-									<button class = "btn btn-sm btn-primary edit-student">
-										<i class = "glyphicon glyphicon-pencil"></i>
-									</button>
-									<button class = "btn btn-sm btn-danger delete-student">
-										<i class = "glyphicon glyphicon-trash"></i>
-									</button>
-								</td>
-							</tr>
-						</c:forEach>
+						<%@include file="list_students.jsp" %>
 					</tbody>
 				</table>
+    		</div>
+    		<div class = "pagination">
+			  <ul class="pagination">
+			    <li class="page-item">
+			      <a class="page-link" href="#" id = "previous-page" aria-label="Previous">
+			        <span aria-hidden="true">&laquo;</span>
+			      </a>
+			    </li>
+			    
+			    <c:forEach var="i" begin="1" end="${ Math.ceil(number/100) }" step="1">
+				    <li class="page-item ${ i == 1 ? 'active' : ''}"><a class="page-link" page-target = "${ i }" href="#"><c:out value="${ i }" /></a></li>
+				</c:forEach>
+			    <li class="page-item">
+			      <a class="page-link" href="#" id = "next-page" aria-label="Next">
+			        <span aria-hidden="true">&raquo;</span>
+			      </a>
+			    </li>
+			  </ul>
     		</div>
     	</div>
     	<div id = "modals-wrapper">

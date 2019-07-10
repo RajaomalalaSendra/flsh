@@ -46,10 +46,25 @@ public class StudentServiceImpl implements StudentService {
 	
 	@Override
 	public List<Student> getAllStudents() {
-		String queryStudent = "SELECT * FROM Etudiant ORDER BY etd_id";
+		String queryStudent = "SELECT * FROM Etudiant ORDER BY etd_id limit 100";
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
 		return students;
 	}
+
+	@Override
+	public int getStudentsNumber() {
+		String sql = "SELECT COUNT(*) from Etudiant WHERE 1";
+		int studentsNumber = jdbcTemplate.queryForObject(sql, Integer.class);
+		return studentsNumber;
+	}
+
+	@Override
+	public List<Student> getStudentsByPage(int numPage) {
+		String queryStudent = "SELECT * FROM Etudiant ORDER BY etd_id limit 100 offset "+ (100 * (numPage - 1));
+		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
+		return students;
+	}
+	
 
 	@Override
 	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel) {
@@ -388,7 +403,6 @@ public class StudentServiceImpl implements StudentService {
 	    rtn.put("message", res ? "Suppression réussie" : "Echec de la désinscription! Veuillez réessayer");
 		return rtn;
 	}
-	
 }
 
 class StudentMapper implements RowMapper<Student> {

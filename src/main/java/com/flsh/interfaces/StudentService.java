@@ -31,4 +31,8 @@ public interface StudentService {
 
 	public JSONObject deleteSubscriptionStudent(int idStudent, int idUY);
 
+	public int getStudentsNumber();
+
+	public List<Student> getStudentsByPage(int numPage);
+
 }

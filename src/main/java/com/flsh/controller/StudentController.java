@@ -36,6 +36,15 @@ public class StudentController {
 		mav.addObject("univYears", periodService.getAllUnivYears());
 		mav.addObject("levels", periodService.getAllLevels());
 		mav.addObject("students", studentService.getAllStudents());
+		mav.addObject("number", studentService.getStudentsNumber());
+		return mav;
+	}
+	
+	@RequestMapping(value = "/students/bypage", method = RequestMethod.GET)
+	public ModelAndView listStudentsByPage(HttpServletRequest request, HttpServletResponse response) {
+		int numPage = !request.getParameter("page").equals("") ? Integer.parseInt(request.getParameter("page")) : 0;
+		ModelAndView mav = new ModelAndView("students/list_students");
+		mav.addObject("students", studentService.getStudentsByPage(numPage));
 		return mav;
 	}
 	

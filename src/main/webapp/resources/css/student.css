@@ -13,3 +13,7 @@
 #choixUY {
 	margin-right: 20px;
 }
+div.pagination {
+	text-align: right;
+    width: 100%;
+}

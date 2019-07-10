@@ -46,13 +46,13 @@ $(document).ready(function() {
 		} 
 	})
 	
-	$('.delete-student').on('click', function() {
+	$(document).on('click', '.delete-student', function() {
 		var idStudent = $(this).parent().parent().attr('id').split('-')[1]
 		$('#idStudentDelete').val(idStudent)
 		$('#studentDeleteModal').modal('show')
 	})
 	
-	$('.edit-student').on('click', function() {
+	$(document).on('click', '.edit-student', function() {
 		var idStudent = $(this).parent().parent().attr('id').split('-')[1]
 		showDetailsStudent(idStudent);
 	})
@@ -213,6 +213,39 @@ $(document).ready(function() {
 				$('#err-unsubscribe-student').html("Erreur lors du traitement de l'op&eactue;ration. Veuillez actualiser puis réessayer.").show().delay(3000).fadeOut(600)
 			}
 		})
+	})
+	
+	$(document).on('click', 'li.page-item a', function(e) {
+		e.preventDefault()
+		var parent = $(this).parent()
+		if($(this).attr('id') == "previous-page") {
+			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) - 1
+			console.log('next page ', pageNext)
+			if(!$('li.page-item.active a').attr('page-target') != "1") {
+				$('a[page-target='+pageNext+']').trigger('click')
+			}
+		} else if($(this).attr('id') == "next-page") {
+			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) + 1
+			console.log('next page ', pageNext)
+			if($('a[page-target='+pageNext+']').html()) {
+				$('a[page-target='+pageNext+']').trigger('click')
+			}
+		} else {
+			if(!parent.hasClass('active')) {
+				var numPage = $.trim( $(this).html())
+				$.ajax({
+					url: getBaseUrl('students/bypage?page='+numPage),
+					success: function(data) {
+						$('#table-students tbody').html(data)
+						$('li.page-item').removeClass('active')
+						parent.addClass('active')
+					},
+					error: function() {
+						alert('Erreur lors du chargement de la page')
+					}
+				})
+			}
+		}
 	})
 })
 
