@@ -1,6 +1,7 @@
 package com.flsh.model;
 
 import java.util.HashSet;
+import java.util.List;
 
 public class StudyUnit {
 	private int studyunit_id;
@@ -8,6 +9,8 @@ public class StudyUnit {
 	private String studyunit_libelle;
 	private String studyunit_type;
 	private HashSet<Course> Courses;
+	private List<Professor> Responsables;
+	
 	public int getStudyunit_id() {
 		return studyunit_id;
 	}
@@ -40,6 +43,12 @@ public class StudyUnit {
 	}
 	public String toString() {
 		return " \n==========================\n" + "id parcours: " + parcours_id + " id ue: " + studyunit_id + "type: " + studyunit_type + " libelle: " + studyunit_libelle + " \n==========================\n";
+	}
+	public List<Professor> getResponsables() {
+		return Responsables;
+	}
+	public void setResponsables(List<Professor> responsables) {
+		Responsables = responsables;
 	}
 	
 }

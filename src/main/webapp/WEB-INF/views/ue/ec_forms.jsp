@@ -19,7 +19,7 @@
 	      	    <label class="col-md-4">Professor:</label>
 	      		<select class="form-control" name="id_prof" style="width: 50%;">
 	      		    	<c:forEach items="${ profs }" var="prof" varStatus="status">
-							<option value = "${ prof.getProfessor_id() }">${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</option>
+							<option value = "${ prof.getProfessor_id() }">${ prof.getCivilite() } ${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</option>
 						</c:forEach>
 	      		</select>
 	      		<small class="form-text text-muted error"></small>
@@ -32,32 +32,32 @@
 	      	</div>
 	      	<div class = "form-group form-inline">
 	      	    <label class="col-md-4">Credit:</label>
-	      	    <input class="form-control" type="number" name = "credit" id = "ecCredit" required>
+	      	    <input class="form-control" type="number" name = "credit" min = "0" id = "ecCredit" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
 	      	    <label class="col-md-4">Notation:</label>
-	      		<input class="form-control" type="number" name = "notation" id = "ecNotation" required>
+	      		<input class="form-control" type="number" name = "notation" min = "0" id = "ecNotation" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
 	      	    <label class="col-md-4">Coefficient:</label>
-	      		<input class="form-control" type="number" name = "coefficient" id = "ecCoefficient" required>
+	      		<input class="form-control" type="number" name = "coefficient" min = "0" id = "ecCoefficient" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
 	      	    <label class="col-md-4">Volume Horaire:</label>
-	      		<input class="form-control" type="text" name = "horaire" id = "ecHoraire" required>
+	      		<input class="form-control" type="number" min = "0" step = ".1" name = "horaire" id = "ecHoraire" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
 	      	    <label class="col-md-4">Travail Presentiel:</label>
-	      		<input class="form-control" type="text" name = "presenciel" id = "ecPresenciel" required>
+	      		<input class="form-control" type="number" min = "0" step = ".1" name = "presenciel" id = "ecPresenciel" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
 	      	    <label class="col-md-4">Travail Personnel:</label>
-	      		<input class="form-control" type="text" name = "personnel" id = "ecPersonnel" required>
+	      		<input class="form-control" type="number" min = "0" step = ".1" name = "personnel" id = "ecPersonnel" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
         </form>

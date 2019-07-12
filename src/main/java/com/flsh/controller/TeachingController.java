@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.flsh.interfaces.PeriodService;
+import com.flsh.interfaces.ProfessorService;
 import com.flsh.interfaces.TeachingService;
 import com.flsh.model.StudyUnit;
 import com.flsh.model.UniversityYear;
@@ -33,6 +34,9 @@ public class TeachingController {
 	
 	@Autowired
 	PeriodService periodService;
+	
+	@Autowired 
+	ProfessorService professorService;
 	
 	@RequestMapping(value = "/ue", method = RequestMethod.GET)
 	public ModelAndView showTeaching(HttpServletRequest request, HttpServletResponse response) {
@@ -76,13 +80,15 @@ public class TeachingController {
 		int idParcoursUE = request.getParameter("id_parcours") == "" ? 0 : Integer.parseInt(request.getParameter("id_parcours"));
 		String type = request.getParameter("type");
 		String libelle = request.getParameter("libelle");
+		String profResponsable = request.getParameter("profResponsable");
+		
 		// using the setter method
 		studyunit.setStudyunit_id(idUE);
 		studyunit.setParcours_id(idParcoursUE);
 		studyunit.setStudyunit_libelle(libelle);
 		studyunit.setStudyunit_type(type);
 		System.out.print(studyunit);
-		JSONObject rtn = teachingService.saveStudyUnit(studyunit);
+		JSONObject rtn = teachingService.saveStudyUnit(studyunit, profResponsable);
   		return rtn.toString();
 	}
 	

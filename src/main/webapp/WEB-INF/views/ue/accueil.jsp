@@ -33,6 +33,7 @@
 			  <thead>
 			  	<tr>
 			      <th scope="col" >UE (Type)/EC</th>
+			      <th scope="col">Professeur</th>
 			      <th scope="col">Crédit</th>
 			      <th scope="col">Notation</th>
 			      <th scope="col">Coéfficient</th>

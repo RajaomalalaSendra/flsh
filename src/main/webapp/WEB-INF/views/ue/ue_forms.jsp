@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- Modal -->
 <div class="modal fade" id="ueAddModal" tabindex="-1" role="dialog" aria-labelledby="ueEditLabel" aria-hidden="true" style="z-index: 10010;">
   <div class="modal-dialog" role="document">
@@ -14,19 +15,43 @@
       	<form method = "POST" id = "form-save-ue" action = "<c:url value = '/ue/save' />">
       		<input type="hidden" name = "id" id = "idUE">
       		<input type="hidden" name = "id_parcours" id = "idParcoursUE">
-      		<div class = "form-group form-inline">
-	      	    <label class="col-sm-3">Libelle:</label>
-	      		<input class="form-control" type="text" name = "libelle" id = "ueLibelle" required>
-	      		<small class="form-text text-muted error"></small>
-	      	</div>
-	      	<div class = "form-group form-inline">
-	      	    <label class="col-sm-3">Type:</label>
-	      		<select class="form-control" name="type" id="ueType">
-	      	    	<option value="OBLIGATOIRE">Obligatoire</option>
-	      	    	<option value="FACULTATIF">Facultatif</option>
-	      	    	<option value="AU CHOIX">Au choix</option>
-	      		</select>
-	      		<small class="form-text text-muted error"></small>
+      		<ul class="nav nav-tabs">
+			  <li class="active"><a data-toggle="tab" href="#infos">Infos</a></li>
+			  <li><a data-toggle="tab" href="#responsqbles">Responsables</a></li>
+			</ul>
+			 <div class="tab-content">
+		    	<div class = "tab-pane fade in active" id = "infos">
+      		
+		      		<div class = "form-group form-inline ue-margin">
+			      	    <label class="col-sm-3">Libelle:</label>
+			      		<input class="form-control" type="text" name = "libelle" id = "ueLibelle" required>
+			      		<small class="form-text text-muted error"></small>
+			      	</div>
+			      	<div class = "form-group form-inline">
+			      	    <label class="col-sm-3">Type:</label>
+			      		<select class="form-control" name="type" id="ueType">
+			      	    	<option value="OBLIGATOIRE">Obligatoire</option>
+			      	    	<option value="FACULTATIF">Facultatif</option>
+			      	    	<option value="AU CHOIX">Au choix</option>
+			      		</select>
+			      		<small class="form-text text-muted error"></small>
+			      	</div>
+	      		</div>
+	      		<div class = "tab-pane fade in ue-margin" id = "responsqbles">
+		      	    <div class="list-group">
+                        <c:forEach items="${ profs }" var="prof" varStatus="status">
+	                        <div class="list-group-item">
+								<label for  = "profResponsable-${ prof.getProfessor_id()}">${ prof.getCivilite() } ${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</label>
+								<div class="pull-right">
+									<div class="checkbox checkbox-success">
+										<input type = "checkbox" class = "styled" name = "prof_responsable" id = "profResponsable-${ prof.getProfessor_id()}"/>
+										<label></label>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+	                </div>
+	      		</div>
 	      	</div>
         </form>
       </div>

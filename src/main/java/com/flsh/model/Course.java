@@ -1,5 +1,7 @@
 package com.flsh.model;
 
+import java.util.List;
+
 public class Course{  
 	private int course_id;
 	private int studyunit_id;
@@ -11,8 +13,9 @@ public class Course{
 	private String course_volumehoraire;
 	private double course_travailpresenciel;
 	private double course_travailpersonnel;
-	
+	private String professor;
 	private String idPeriods;
+	
 	public int getCourse_id() {
 		return course_id;
 	}
@@ -79,6 +82,18 @@ public class Course{
 				"id ec " + course_id + " id ue " + studyunit_id + " professor id " + professor_id + " libelle " + course_libelle 
 				+ " \n ==================================================================\n";
 	}
+	public String getProfName(int id) {
+		Professor prof = new Professor();
+		prof.setProfessor_id(id);
+		return prof.getCivilite() + " "+ prof.getProfessor_last_name() + " " +  prof.getProfessor_name();
+	}
+	public String getProfessor() {
+		return professor;
+	}
+	public void setProfessor(String professor) {
+		this.professor = professor;
+	}
+
 	public String getIdPeriods() {
 		return idPeriods;
 	}

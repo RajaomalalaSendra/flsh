@@ -1,5 +1,6 @@
 package com.flsh.service;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import com.flsh.controller.HomeController;
 import com.flsh.interfaces.TeachingService;
@@ -26,6 +29,7 @@ import com.flsh.model.Parcours;
 import com.flsh.model.Professor;
 import com.flsh.model.StudyUnit;
 import com.flsh.model.User;
+import com.mysql.jdbc.Statement;
 
 public class TeachingServiceImpl implements TeachingService {
 	
@@ -84,7 +88,10 @@ public class TeachingServiceImpl implements TeachingService {
 	}
 	
 	public List<Course> getCourseById(int idUnits) {
-		String sql = "SELECT * FROM  Element_Constitutif WHERE ue_id = "+idUnits;
+		String sql = "SELECT Element_Constitutif.*, civ_libellecourt, uti_nom, uti_prenom  FROM  Element_Constitutif "
+				+ "JOIN Professeur ON Professeur.prof_id = Element_Constitutif.prof_id "
+				+ "JOIN Utilisateur ON Professeur.uti_id = Utilisateur.uti_id "
+				+ "JOIN Civilite ON Civilite.civ_id = Utilisateur.civ_id WHERE ue_id = "+idUnits;
 		List<Course> courses = jdbcTemplate.query(sql, new CourseMapper());
 		return courses;
 	}
@@ -96,22 +103,47 @@ public class TeachingServiceImpl implements TeachingService {
 	}
 
 	@Override
-	public JSONObject saveStudyUnit(StudyUnit studyUnit) {
+	public JSONObject saveStudyUnit(StudyUnit studyUnit, String profResponsable) {
 		JSONObject rtn = new JSONObject();
+		GeneratedKeyHolder holder = new GeneratedKeyHolder();
 		
 		String  sql = studyUnit.getStudyunit_id() == 0 ? "INSERT INTO  Unite_Enseignement(prc_id, ue_libelle, ue_type)  VALUES(?, ?, ?)" : 
 		"UPDATE Unite_Enseignement SET prc_id = ?, ue_libelle = ?, ue_type = ? WHERE ue_id = ?";
-		boolean save = jdbcTemplate.execute (sql, new PreparedStatementCallback<Boolean>() {
-
+		
+		jdbcTemplate.update(new PreparedStatementCreator() {
+		    
+			@Override
+		    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+		        PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		        statement.setInt(1, studyUnit.getParcours_id());
+		        statement.setString(2, studyUnit.getStudyunit_libelle());
+		        statement.setString(3, studyUnit.getStudyunit_type());
+				if (studyUnit.getStudyunit_id() != 0) statement.setInt(4, studyUnit.getStudyunit_id());
+		        return statement;
+		    }
+		}, holder);
+		
+		if (studyUnit.getStudyunit_id() == 0) {
+			studyUnit.setStudyunit_id(holder.getKey().intValue());
+		}
+		
+		String sql_profresp = "DELETE FROM Prof_Ue WHERE ue_id = " + studyUnit.getStudyunit_id();
+		jdbcTemplate.update(sql_profresp);
+		
+		String[] listIdProfResponsable = profResponsable.split(";");
+		for(int i = 0; i < listIdProfResponsable.length; i++) {
+			String idProf = listIdProfResponsable[i];
+			String insert = "INSERT INTO Prof_Ue (ue_id, prof_id) VALUES (?,?)";
+			jdbcTemplate.execute(insert, new PreparedStatementCallback<Boolean>() {
 			@Override
 			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				ps.setInt(1, studyUnit.getParcours_id());
-				ps.setString(2, studyUnit.getStudyunit_libelle());
-				ps.setString(3, studyUnit.getStudyunit_type());
-				if (studyUnit.getStudyunit_id() != 0) ps.setInt(4, studyUnit.getStudyunit_id());
+				ps.setInt(1, studyUnit.getStudyunit_id());
+				ps.setInt(2, Integer.parseInt(idProf));
 				return ps.executeUpdate() > 0 ? true : false;
-			}
-		});
+			}});
+		}
+		
+		boolean save = true;
 		rtn.put("status", save ? 1 : 0);
   	    rtn.put("message", save ? "Enregistré avec succès" : "Echec de l'enregistrement! Veuillez réessayer");
 		return rtn;
@@ -223,6 +255,15 @@ public class TeachingServiceImpl implements TeachingService {
 		}
 		return rtn;
 	}
+
+	@Override
+	public JSONObject getProfessorById(int ue) {
+		// TODO Auto-generated method stub
+		JSONObject rtn = new JSONObject();
+		String sql = "SELECT * FROM Prof_Ue WHERE ue_id = " + ue;
+		int i = jdbcTemplate.update(sql);
+		return rtn;
+	}
 }
 
 class UnitsMapper implements RowMapper<StudyUnit> {
@@ -255,6 +296,7 @@ class CourseMapper implements RowMapper<Course> {
 	    } catch(Exception e) {
 	    	System.out.print("No period data");
 	    }
+	    courses.setProfessor(rs.getString("civ_libellecourt") + " " + rs.getString("uti_nom") + " " + rs.getString("uti_prenom"));
 	    return courses;
 	}
 }

@@ -16,7 +16,7 @@ public interface TeachingService {
 	
 	List<Parcours> getAllParcours();
 	
-	JSONObject saveStudyUnit(StudyUnit studyUnit);
+	JSONObject saveStudyUnit(StudyUnit studyUnit, String profResponsable);
 	
 	StudyUnit getUeDetails(int id);
 	
@@ -25,6 +25,8 @@ public interface TeachingService {
 	JSONObject saveCourse(Course course);
 	
 	Course getEcDetails(int id);
+	
+	JSONObject getProfessorById(int ue);
 	
 	List<Professor> getAllProfessor();
 	

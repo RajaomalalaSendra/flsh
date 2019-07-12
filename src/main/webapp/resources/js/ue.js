@@ -19,24 +19,37 @@ $(document).ready(function() {
 	$('#save-ue').on('click', function(){
 		console.log("here I am to worship")
 		if (formValidate('#form-save-ue')){
-			$.ajax({
-				url: getBaseUrl('ue/save'),
-			    type: 'POST',
-			    data: $('#form-save-ue').serialize(),
-			    dataType : 'JSON',
-			    success: function(data){
-			    	console.log(data)
-			    	if(data.status == 1) {
-			    		$('#success-save-ue').html(data.message ? data.message : 'Enregistre avec succes.').show().delay(3000).fadeOut(600)
-						window.location.reload()
-					} else {
-						$('#err-save-ue').html(data.message ? data.message : 'Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
-					}
-			    },
-			    error: function(err){
-			    	$('#err-save-user').html('Une erreur s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
-			    }
+			var profResponsable = ""
+			$("#responsqbles input[type=checkbox]").each(function(){
+				if($(this).is(":checked")) {
+					var idProf = $(this).attr("id").split("-")[1]
+					profResponsable += profResponsable == "" ? idProf : ";" + idProf
+				}
 			})
+			if (profResponsable == ""){
+				$('#err-save-user').html('Une erreur s\'est produite!\nVous devrez choisir au moin un professeur responsable.\nVeuillez reessayer...').show().delay(3000).fadeOut(600)
+			} else {
+				var formData = getFormData($('#form-save-ue'))
+				formData.profResponsable = profResponsable
+				$.ajax({
+					url: getBaseUrl('ue/save'),
+				    type: 'POST',
+				    data: formData,
+				    dataType : 'JSON',
+				    success: function(data){
+				    	console.log(data)
+				    	if(data.status == 1) {
+				    		$('#success-save-ue').html(data.message ? data.message : 'Enregistre avec succes.').show().delay(3000).fadeOut(600)
+							window.location.reload()
+						} else {
+							$('#err-save-ue').html(data.message ? data.message : 'Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
+						}
+				    },
+				    error: function(err){
+				    	$('#err-save-user').html('Une erreur s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
+				    }
+				})
+			}
 		}
 	})
 	
