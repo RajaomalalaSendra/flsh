@@ -18,9 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.flsh.interfaces.PeriodService;
 import com.flsh.interfaces.TeachingService;
 import com.flsh.model.StudyUnit;
+import com.flsh.model.UniversityYear;
 import com.flsh.model.Course;
 import com.flsh.model.Level;
 import com.flsh.model.Parcours;
+import com.flsh.model.Period;
 import com.flsh.model.Professor;
 
 @Controller
@@ -145,6 +147,43 @@ public class TeachingController {
 	public String deleteCourse(HttpServletRequest request, HttpServletResponse response) {
 		int id = request.getParameter("id") == ""   ? 0 : Integer.parseInt(request.getParameter("id"));
 		JSONObject rtn = teachingService.deleteCourse(id);
+		return rtn.toString();
+	}
+	
+	@RequestMapping(value = "/course/byPeriod", method = RequestMethod.GET)
+	public ModelAndView showPeriodicalTeaching(HttpServletRequest request, HttpServletResponse response) {
+		List<Level> levels = periodService.getAllLevels();
+		List<UniversityYear> univYears = periodService.getAllUnivYears();
+		ModelAndView teaching = new ModelAndView("ue/period_courses");
+	    teaching.addObject("levels", levels);
+	    teaching.addObject("univYears", univYears);
+	    teaching.addObject("menu", "course");
+	    teaching.addObject("submenu", "period_course");
+	    return teaching;
+	}
+	
+	@RequestMapping(value = "/ue/listCoursePeriod", method = RequestMethod.GET)
+	public ModelAndView getListCourseByPeriod(HttpServletRequest request, HttpServletResponse response) {
+		int idParcours = request.getParameter("idParcours") == null || request.getParameter("idParcours") == "" ? 0 : Integer.parseInt(request.getParameter("idParcours"));
+		int idUY = request.getParameter("idUY") == null || request.getParameter("idUY") == "" ? 0 : Integer.parseInt(request.getParameter("idUY"));
+		int idLevel = request.getParameter("idLevel") == null || request.getParameter("idLevel") == "" ? 0 : Integer.parseInt(request.getParameter("idLevel"));
+		
+		HashSet<StudyUnit> units = teachingService.getUnitsByParcoursWithPeriods(idParcours, idUY, idLevel);
+		List<Period> periods = periodService.getNiveauPeriodsById(idLevel, idUY);
+		ModelAndView teaching = new ModelAndView("ue/periodcourses_list");
+	    teaching.addObject("units", units);
+	    teaching.addObject("periods", periods);
+	    return teaching;
+	}
+	
+	@RequestMapping(value = "/ec/saveCoursePeriod", method = RequestMethod.POST)
+	@ResponseBody
+	public String saveCoursePeriod(HttpServletRequest request, HttpServletResponse response) {
+		int idUE = request.getParameter("idUE") == ""   ? 0 : Integer.parseInt(request.getParameter("idUE"));
+		int idPer = request.getParameter("idPer") == ""   ? 0 : Integer.parseInt(request.getParameter("idPer"));
+		int idEC = request.getParameter("idEC") == ""   ? 0 : Integer.parseInt(request.getParameter("idEC"));
+		String add = request.getParameter("add");
+		JSONObject rtn = teachingService.saveCoursePeriod(idEC, idPer, add);
 		return rtn.toString();
 	}
 }

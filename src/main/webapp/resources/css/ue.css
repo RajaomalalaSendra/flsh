@@ -17,3 +17,9 @@
 .form-inline select {
 	margin-right: 20px;
 }
+.alert-course-period {
+	position: fixed;
+    top: 130px;
+    left: 40%;
+    display: none;
+}

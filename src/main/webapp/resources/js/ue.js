@@ -3,6 +3,7 @@ $(document).ready(function() {
 	//Trigger change level
 	$(function() {
 		$('#choixLevel').trigger('change');
+		$('#choixPeriodLevel').trigger('change');
 	})
 	
 	// all the crud of ue
@@ -183,15 +184,7 @@ $(document).ready(function() {
 	
 	$('#choixLevel').on('change', function() {
 		var idLevel = $(this).val()
-		$.ajax({
-			url: getBaseUrl('student/loadParcoursByLevel?id='+idLevel),
-			success: function(data) {
-				$('#choixParcours').html(data).trigger('change')
-			}, 
-			error: function() {
-				$('#choixParcours').html("").trigger('change')
-			}
-		})
+		addParcoursData(idLevel, '#choixParcours')
 	})
 	
 	$('#choixParcours').on('change', function() {
@@ -207,4 +200,97 @@ $(document).ready(function() {
 			}
 		})
 	})
+	
+	$('#choixPeriodLevel').on('change', function() {
+		var idLevel = $(this).val()
+		addParcoursData(idLevel, '#choixPeriodParcours')
+	})
+	
+	$('#choixPeriodParcours, #choixPeriodUY').on('change', function() {
+		$('tbody').html('loading...')
+		var id = $('#choixPeriodParcours').val()
+		var idLevel = $('#choixPeriodLevel').val()
+		var idUY = $('#choixPeriodUY').val()
+		$.ajax({
+			url: getBaseUrl('ue/listCoursePeriod?idParcours='+id+'&idLevel='+idLevel+'&idUY='+idUY),
+			success: function(data) {
+				$('thead th.period').remove()
+				$('tbody').html(data);
+				$('th.period').appendTo('#table-period-courses thead tr')
+				$('.check-ue').each(function() {
+					var idUE = $(this).attr('id').split('-')[1]
+					var idPer = $(this).attr('id').split('-')[2]
+					if(checkAllChecked(idUE, idPer)) {
+						$(this).prop('checked', true)
+					} else {
+						$(this).prop('checked', false)
+					}
+				})
+			},
+			error: function() {
+				alert('Echec du chargement des UEs!!!!')
+			}
+		})
+	})
+	
+	$(document).on('change', '.check-ue', function() {
+		var idUE = $(this).attr('id').split('-')[1]
+		var idPer = $(this).attr('id').split('-')[2]
+		if($(this).is(':checked')) {
+			$('.check-'+idUE+'-'+idPer).prop('checked', true).trigger('change')
+		} else {
+			$('.check-'+idUE+'-'+idPer).prop('checked', false).trigger('change')
+		}
+	})
+	
+	$(document).on('change', '.check-ec', function() {
+		var idEC = $(this).attr('id').split('-')[1]
+		var idPer = $(this).attr('id').split('-')[2]
+		var idUE = $(this).attr('id').split('-')[3]
+		var add = $(this).is(':checked')
+		$.ajax({
+			url: getBaseUrl('ec/saveCoursePeriod'),
+			type: 'POST',
+			dataType: 'JSON',
+			data: {idEC, idPer, idUE, add},
+			success: function(data) {
+				if(data.status == 1) {
+					if(checkAllChecked(idUE, idPer)) {
+						$('#checkperiod-'+idUE+'-'+idPer).prop('checked', true)
+					} else {
+						$('#checkperiod-'+idUE+'-'+idPer).prop('checked', false)
+					}
+					$('#success-save-periodcourse').html(data.message).show().delay(3000).fadeOut(500)
+				} else {
+					$('#error-save-periodcourse').html(data.message ? data.message : "Echec de l'op&eacute;ration. Veuillez r&eacute;essayer").show().delay(3000).fadeOut(500)
+				}
+			},
+			error: function() {
+				$('#error-save-periodcourse').html("Une erreur s'est produite lors du traitement;. Veuillez actualiser puis r&eacute;essayer").show().delay(3000).fadeOut(500)
+			}
+		})
+	})
 })
+
+function checkAllChecked(idUE, idPer) {
+	var allChecked = true
+	$('.check-'+idUE+'-'+idPer).each(function() {
+		if(!$(this).is(':checked')) {
+			allChecked = false
+		}
+	})
+	console.log("all checked ", allChecked)
+	return allChecked
+}
+
+function addParcoursData(idLevel, selectorParcours) {
+	$.ajax({
+		url: getBaseUrl('student/loadParcoursByLevel?id='+idLevel),
+		success: function(data) {
+			$(selectorParcours).html(data).trigger('change')
+		}, 
+		error: function() {
+			$(selectorParcours).html("").trigger('change')
+		}
+	})
+}

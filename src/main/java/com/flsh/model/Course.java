@@ -11,6 +11,8 @@ public class Course{
 	private String course_volumehoraire;
 	private double course_travailpresenciel;
 	private double course_travailpersonnel;
+	
+	private String idPeriods;
 	public int getCourse_id() {
 		return course_id;
 	}
@@ -76,6 +78,12 @@ public class Course{
 		return " \n ==================================================================\n" +
 				"id ec " + course_id + " id ue " + studyunit_id + " professor id " + professor_id + " libelle " + course_libelle 
 				+ " \n ==================================================================\n";
+	}
+	public String getIdPeriods() {
+		return idPeriods;
+	}
+	public void setIdPeriods(String idPeriods) {
+		this.idPeriods = idPeriods;
 	}
 	
 }

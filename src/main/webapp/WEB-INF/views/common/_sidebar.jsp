@@ -44,6 +44,7 @@
                         <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Courses</span></a>
                         <ul class="submenu-angle" aria-expanded="${ menu == 'course'? 'true' : 'false' }">
                             <li class = "${ submenu == 'ue_ec'? 'active' : '' }"><a title="All UE/EC" href="<c:url value='/ue' />"><span class="mini-sub-pro">All UE/EC</span></a></li>
+                            <li class = "${ submenu == 'period_course'? 'active' : '' }"><a title="Cours périodique" href="<c:url value='/course/byPeriod' />"><span class="mini-sub-pro">Periodical courses</span></a></li>
                         </ul>
                     </li>
                     <li class = "${ menu == 'system'? 'active' : '' }">

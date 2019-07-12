@@ -31,4 +31,8 @@ public interface TeachingService {
 	JSONObject deleteCourse(int id);
 
 	HashSet<StudyUnit> getUnitsByParcours(int idParcours);
+
+	HashSet<StudyUnit> getUnitsByParcoursWithPeriods(int idParcours, int idUY, int idLevel);
+
+	JSONObject saveCoursePeriod(int idEC, int idPer, String add);
 }

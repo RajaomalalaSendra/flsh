@@ -3,6 +3,7 @@ package com.flsh.service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +49,25 @@ public class TeachingServiceImpl implements TeachingService {
 		    listUnits.add(unit);
 		}
 		return listUnits;
+	}
+
+	@Override
+	public HashSet<StudyUnit> getUnitsByParcoursWithPeriods(int idParcours, int idUY, int idLevel) {
+		HashSet<StudyUnit> listUnits = new HashSet<StudyUnit>();
+		String sql = "SELECT * FROM Unite_Enseignement where prc_id = "+idParcours;
+		List<StudyUnit> units = jdbcTemplate.query(sql, new UnitsMapper());
+		for(StudyUnit unit : units) {
+			Set<Course> listCourses = new HashSet<Course>(this.getCourseByIdWithPeriods( unit.getStudyunit_id(), idUY, idLevel));
+			unit.setCourses((HashSet<Course>) listCourses);
+		    listUnits.add(unit);
+		}
+		return listUnits;
+	}
+
+	private List<Course> getCourseByIdWithPeriods(int idUnit, int idUY, int idLevel) {
+		String sql = "SELECT Element_Constitutif.*, (select group_concat(per_id) from Periode_EC where Periode_EC.ec_id = Element_Constitutif.ec_id and per_id in (select per_id from Periode where niv_id = "+idLevel+" and au_id = "+idUY+")) as cours_period  FROM  Element_Constitutif WHERE ue_id = "+idUnit;
+		List<Course> courses = jdbcTemplate.query(sql, new CourseMapper());
+		return courses;
 	}
 
 	@Override
@@ -98,7 +118,6 @@ public class TeachingServiceImpl implements TeachingService {
 	}
 	@Override
 	public StudyUnit getUeDetails(int id) {
-		// TODO Auto-generated method stub
 		String sql = "SELECT * FROM Unite_Enseignement JOIN Parcours ON Parcours.prc_id = Unite_Enseignement.prc_id  WHERE ue_id=" + id ;
 		List<StudyUnit> units = jdbcTemplate.query(sql, new UnitsMapper());
 		return units.size() > 0 ? units.get(0) : null;
@@ -106,7 +125,6 @@ public class TeachingServiceImpl implements TeachingService {
 
 	@Override
 	public JSONObject deleteStudyUnit(int id) {
-		// TODO Auto-generated method stub
 		JSONObject rtn = new JSONObject();
 		String sql_element = "DELETE  FROM  Element_Constitutif WHERE Element_Constitutif.ue_id = ?";
 		String sql = "DELETE FROM Unite_Enseignement  WHERE Unite_Enseignement.ue_id = ?";
@@ -152,7 +170,6 @@ public class TeachingServiceImpl implements TeachingService {
 	}
 	@Override
 	public Course getEcDetails(int id) {
-		// TODO Auto-generated method stub
 		String sql = "SELECT * FROM Element_Constitutif  WHERE ec_id=" + id ;
 		List<Course> courses = jdbcTemplate.query(sql, new CourseMapper());
 		return courses.size() > 0 ? courses.get(0) : null;
@@ -166,12 +183,44 @@ public class TeachingServiceImpl implements TeachingService {
 
 	@Override
 	public JSONObject deleteCourse(int id) {
-		// TODO Auto-generated method stub
 		JSONObject rtn = new JSONObject();
 		String sql = "DELETE  FROM  Element_Constitutif WHERE ec_id = ?";
 		int i = jdbcTemplate.update(sql, id);
 	    rtn.put("status", i >= 0 ? 1 : 0);
 	    rtn.put("message", i >= 0 ? "Supprimé!" : "Echec de la suppression! Veuillez réessayer.");
+		return rtn;
+	}
+
+	@Override
+	public JSONObject saveCoursePeriod(int idEC, int idPer, String add) {
+		System.out.print(add);
+		JSONObject rtn = new JSONObject();
+		if(add.equals("true")) {
+			String  sql = "INSERT INTO  Periode_EC(per_id, ec_id)  VALUES(?, ?)";
+			boolean save = jdbcTemplate.execute (sql, new PreparedStatementCallback<Boolean>() {
+
+				@Override
+				public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+					ps.setInt(1, idPer);
+					ps.setInt(2, idEC);
+					return ps.executeUpdate() > 0 ? true : false;
+				}
+			});
+			rtn.put("status", save ? 1 : 0);
+	  	    rtn.put("message", save ? "Enregistré avec succès" : "Echec de l'enregistrement! Veuillez réessayer");
+		} else {
+			String sql = "DELETE  FROM  Periode_EC WHERE ec_id = ? and per_id = ?";
+			boolean res = jdbcTemplate.execute (sql, new PreparedStatementCallback<Boolean>() {
+				@Override
+				public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+					ps.setInt(1, idEC);
+					ps.setInt(2, idPer);
+					return ps.executeUpdate() >= 0 ? true : false;
+				}
+			});
+		    rtn.put("status", res ? 1 : 0);
+		    rtn.put("message", res ? "Supprimé!" : "Echec de la suppression! Veuillez réessayer.");
+		}
 		return rtn;
 	}
 }
@@ -200,6 +249,12 @@ class CourseMapper implements RowMapper<Course> {
 	    courses.setCourse_volumehoraire(rs.getString("ec_volumehoraire"));
 	    courses.setCourse_travailpresenciel(rs.getDouble("ec_travailpresenciel"));
 	    courses.setCourse_travailpersonnel(rs.getDouble("ec_travailpersonnel"));
+	    try {
+	    	System.out.print(rs.getString("cours_period"));
+	    	courses.setIdPeriods(rs.getString("cours_period"));
+	    } catch(Exception e) {
+	    	System.out.print("No period data");
+	    }
 	    return courses;
 	}
 }
