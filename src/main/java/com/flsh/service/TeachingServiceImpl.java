@@ -309,7 +309,11 @@ class CourseMapper implements RowMapper<Course> {
 	    } catch(Exception e) {
 	    	System.out.print("No period data");
 	    }
-	    courses.setProfessor(rs.getString("civ_libellecourt") + " " + rs.getString("uti_nom") + " " + rs.getString("uti_prenom"));
+	    try {
+	    	courses.setProfessor(rs.getString("civ_libellecourt") + " " + rs.getString("uti_nom") + " " + rs.getString("uti_prenom"));
+	    } catch(Exception e) {
+	    	System.out.print("No prof data");
+	    }
 	    return courses;
 	}
 }

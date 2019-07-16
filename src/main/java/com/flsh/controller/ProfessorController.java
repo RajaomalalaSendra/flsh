@@ -35,6 +35,8 @@ public class ProfessorController {
 		List<Professor> professors=professorService.getAllProfessor();
 		ModelAndView prof = new ModelAndView("users/professors");
 	    prof.addObject("professors", professors);
+	    prof.addObject("menu", "professor");
+	    prof.addObject("submenu", "all_professors");
 	    return prof;
 	  }
 	  
@@ -89,6 +91,9 @@ public class ProfessorController {
 		prof.addObject("professors_ue", professorsUe);
 		prof.addObject("professors", professors);
 		prof.addObject("study_units", studyUnits);
+		
+		prof.addObject("menu", "professor");
+	    prof.addObject("submenu", "prof_courses");
 		return prof;
 	  }
 }

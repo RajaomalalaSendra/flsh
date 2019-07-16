@@ -83,7 +83,7 @@
                                     <ul id="demoevent" class="collapse dropdown-header-top">
                                         <li><a href="<c:url value='/professors' />">All Professors</a>
                                         </li>
-                                        <li><a href="<c:url value='/professors' />">Add Professor</a>
+                                        <li><a href="<c:url value='/professor/courses' />">Professor courses</a>
                                         </li>
                                     </ul>
                                 </li>
