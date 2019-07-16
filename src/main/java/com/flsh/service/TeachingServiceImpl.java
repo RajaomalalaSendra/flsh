@@ -262,7 +262,7 @@ public class TeachingServiceImpl implements TeachingService {
 	}
 
 	@Override
-	public JSONObject getProfessorById(int ue) {
+	public List<ProfessorStudyUnit> getProfessorById(int ue) {
 		// TODO Auto-generated method stub
 		String sql = "SELECT * FROM Prof_Ue WHERE ue_id = " + ue;
 		List<ProfessorStudyUnit> profsUe = jdbcTemplate.query(sql, new ProfessorStudyUnitMapper());
@@ -277,24 +277,6 @@ public class TeachingServiceImpl implements TeachingService {
 		return Study;
 	}
 
-	@Override
-	public JSONObject saveProfessorStudyUnit(ProfessorStudyUnit professor_study_unit) {
-		// TODO Auto-generated method stub
-		JSONObject rtn = new JSONObject();
-		String sql_insert = "INSERT INTO Prof_Ue (ue_id, prof_id) VALUES (?,?)";
-		boolean save = jdbcTemplate.execute (sql_insert, new PreparedStatementCallback<Boolean>() {
-			@Override
-			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				ps.setInt(1, professor_study_unit.getStudy_unit_id());
-				ps.setInt(2, professor_study_unit.getProfessor_id());
-				if(professor_study_unit.get != 0) ps.setInt(10, course.getCourse_id());
-				return ps.executeUpdate() > 0 ? true : false;
-			}
-		});
-		rtn.put("status", save ? 1 : 0);
-  	    rtn.put("message", save ? "Enregistré avec succès" : "Echec de l'enregistrement! Veuillez réessayer");
-		return rtn;
-	}
 }
 
 class UnitsMapper implements RowMapper<StudyUnit> {

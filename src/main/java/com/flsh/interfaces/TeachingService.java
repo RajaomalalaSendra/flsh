@@ -21,7 +21,6 @@ public interface TeachingService {
 	
 	JSONObject saveStudyUnit(StudyUnit studyUnit, String profResponsable);
 	
-	JSONObject saveProfessorStudyUnit(ProfessorStudyUnit professor_study_unit);
 	
 	StudyUnit getUeDetails(int id);
 	

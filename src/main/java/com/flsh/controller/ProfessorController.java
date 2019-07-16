@@ -91,12 +91,4 @@ public class ProfessorController {
 		prof.addObject("study_units", studyUnits);
 		return prof;
 	  }
-	  
-	  @RequestMapping(value = "/professor/course/save", method = RequestMethod.POST)
-	  @ResponseBody
-	  public String saveProfessorCourse(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("professeur_study_unit") ProfessorStudyUnit professor_study_unit) {
-        System.out.println(professor_study_unit);
-      	JSONObject rtn = teachingService.saveProfessorStudyUnit(professor_study_unit);
-  		return rtn.toString();
-	  }
 }
