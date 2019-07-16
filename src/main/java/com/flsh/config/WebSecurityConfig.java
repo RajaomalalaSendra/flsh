@@ -91,6 +91,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		         logger.info("Successfully logged "+auth.getName());
 		         User userLogged = userService.findByUsername(auth.getName());
 		         req.getSession().setAttribute("username", userLogged.getUsername());
+		         req.getSession().setAttribute("user", userLogged);
 		         res.sendRedirect("/scolarLMD/"); // Redirect user to index/home page
 		     })
 			.failureHandler((req,res,exp)->{  // Failure handler invoked after authentication failure

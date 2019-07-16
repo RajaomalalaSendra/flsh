@@ -11,6 +11,7 @@ public class UniversityYear {
 	private String university_year_libelle;
 	private String university_year_beginning;
 	private String university_year_ending;
+	private boolean isActual = false;
 	
 	private DateUtils dateUtils = new DateUtils();
 	
@@ -47,6 +48,12 @@ public class UniversityYear {
 	
 	public String toString() {
 		return "id "+university_year_id +" libelle "+university_year_libelle+" debut "+university_year_beginning+" fin "+university_year_ending; 
+	}
+	public boolean isActual() {
+		return isActual;
+	}
+	public void setActual(boolean isActual) {
+		this.isActual = isActual;
 	}
 	
 }

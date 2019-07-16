@@ -14,8 +14,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.flsh.interfaces.EducationService;
+import com.flsh.interfaces.NoteService;
 import com.flsh.interfaces.PeriodService;
 import com.flsh.service.EducationServiceImpl;
+import com.flsh.service.NoteServiceImpl;
 import com.flsh.service.PeriodServiceImpl;
 import com.flsh.interfaces.UserService;
 import com.flsh.service.UserServiceImpl;
@@ -94,6 +96,16 @@ public class AppConfig implements WebMvcConfigurer {
 		return stsrv;
 	}
 	
+	@Bean
+	public NoteService noteService() {
+		NoteService notesrv = new NoteServiceImpl(dataSource());
+		return notesrv;
+	}
+	
+	/**
+	 * DataSource configuration
+	 * @return dataSource
+	 */
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();

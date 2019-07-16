@@ -1,0 +1,14 @@
+#choix-saisie-wrapper {
+	padding-top: 20px;
+}
+#choix-saisie-wrapper select {
+	width: 50%;
+}
+.box-starter {
+	padding: 10px;
+	margin: 20px;
+	border: 1px solid;
+}
+#saisie-niveau {
+	margin-left: 13%;
+}

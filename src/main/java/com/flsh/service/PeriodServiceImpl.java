@@ -44,7 +44,7 @@ public class PeriodServiceImpl implements PeriodService {
 
 	@Override
 	public List<UniversityYear> getAllUnivYears() {
-		String sql = "select * from Annee_Universitaire order by au_debut asc";
+		String sql = "select Annee_Universitaire.*, (au_debut <= now() and now() <= au_fin ) as annee_encours from Annee_Universitaire order by au_debut asc";
 		List<UniversityYear> aus = jdbcTemplate.query(sql, new AUMapper());
 		return aus;
 	}
@@ -311,6 +311,14 @@ class AUMapper implements RowMapper<UniversityYear> {
 	    AU.setUniversity_year_libelle(rs.getString("au_libelle"));
 	    AU.setUniversity_year_beginning( rs.getString("au_debut"));
 	    AU.setUniversity_year_ending(rs.getString("au_fin"));
+	    try {
+	    	System.out.print("Champ encours");
+	    	System.out.print(rs.getBoolean("annee_encours"));
+	    	AU.setActual(rs.getBoolean("annee_encours"));
+	    } catch(Exception e) {
+	    	System.out.print("Erreur");
+	    	e.printStackTrace();
+	    }
 	    return AU;
 	}
 }
