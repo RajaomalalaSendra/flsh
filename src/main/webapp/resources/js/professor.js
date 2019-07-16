@@ -112,6 +112,39 @@ $(document).ready(function() {
 			}
 		})
 	})
+	
+	// edit and add new professor for the study unit
+	$('#add-professor-ue').on('click', function() {
+		$('#ueProfAddLabel').html('Ajouter un professeur pour un unite d\'enseignement')
+		$('#prof-ue-id').val('0')
+		$('#').val("2")
+		$('#prof-for-user-id').val('0')
+		$('#ueProfAddModal').modal('show')
+	})
+	
+	$('#save-prof-ue').on('click', function(){
+		if (formValidate('#form-save-prof-ue')){
+			console.log("test.....")
+			$.ajax({
+				url: getBaseUrl('professor/course/save'),
+			    type: 'POST',
+			    data: $('#form-save-prof-ue').serialize(),
+			    dataType : 'JSON',
+			    success: function(data){
+			    	console.log("test inside.....")
+			    	console.log(data)
+			    	if(data.status == 1) {
+						window.location.reload()
+					} else {
+						$('#err-save-prof-ue').html(data.message ? data.message : 'Une erreur interne s\'est produite! Veuillez r&eacute;essayer...').show().delay(3000).fadeOut(600)
+					}
+			    },
+			    error: function(err){
+			    	$('#err-save-prof-ue').html('Une erreur s\'est produite! Veuillez r&eacute;essayer...').show().delay(3000).fadeOut(600)
+			    }
+			})
+		}
+	})
 })
 
 function updatePasswordStatus() {

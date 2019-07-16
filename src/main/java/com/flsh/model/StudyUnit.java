@@ -10,6 +10,7 @@ public class StudyUnit {
 	private String studyunit_type;
 	private HashSet<Course> Courses;
 	private List<Professor> Responsables;
+	private List<ProfessorStudyUnit> ResponsablesId;
 	
 	public int getStudyunit_id() {
 		return studyunit_id;
@@ -49,6 +50,12 @@ public class StudyUnit {
 	}
 	public void setResponsables(List<Professor> responsables) {
 		Responsables = responsables;
+	}
+	public List<ProfessorStudyUnit> getResponsablesId() {
+		return ResponsablesId;
+	}
+	public void setResponsablesId(List<ProfessorStudyUnit> responsablesId) {
+		ResponsablesId = responsablesId;
 	}
 	
 }

@@ -17,19 +17,23 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import com.flsh.model.Professor;
+import com.flsh.model.ProfessorStudyUnit;
+import com.flsh.model.StudyUnit;
 import com.flsh.interfaces.ProfessorService;
+import com.flsh.interfaces.TeachingService;
 
 @Controller
 public class ProfessorController {
 	  @Autowired
 	  ProfessorService professorService;
 
+	  @Autowired
+	  TeachingService teachingService;
+	  
 	  @RequestMapping(value = "/professors", method = RequestMethod.GET)
 	  public ModelAndView showProfessor(HttpServletRequest request, HttpServletResponse response) {
 		List<Professor> professors=professorService.getAllProfessor();
 		ModelAndView prof = new ModelAndView("users/professors");
-		prof.addObject("menu", "professor");
-		prof.addObject("submenu", "all_professors");
 	    prof.addObject("professors", professors);
 	    return prof;
 	  }
@@ -53,6 +57,7 @@ public class ProfessorController {
 		  rtn.put("user_civilite", professor.getUser_civilite());
 		  return rtn.toString();
 	  }
+	  
 	  @RequestMapping(value = "/professor/save", method = RequestMethod.POST)
 	  @ResponseBody
 	  public String saveProfessor(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("professor") Professor professor) {
@@ -74,4 +79,24 @@ public class ProfessorController {
 			return rtn.toString();
 		}
 	  
+	  @RequestMapping(value = "/professor/courses", method = RequestMethod.GET)
+	  public ModelAndView showProfessorCourses(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView prof = new ModelAndView("users/professor_courses");
+		List<ProfessorStudyUnit> professorsUe = professorService.getAllProfessorUnitStudy();
+		List<Professor> professors = professorService.getAllProfessor();
+		List<StudyUnit> studyUnits = teachingService.getALLUnits();
+		
+		prof.addObject("professors_ue", professorsUe);
+		prof.addObject("professors", professors);
+		prof.addObject("study_units", studyUnits);
+		return prof;
+	  }
+	  
+	  @RequestMapping(value = "/professor/course/save", method = RequestMethod.POST)
+	  @ResponseBody
+	  public String saveProfessorCourse(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("professeur_study_unit") ProfessorStudyUnit professor_study_unit) {
+        System.out.println(professor_study_unit);
+      	JSONObject rtn = teachingService.saveProfessorStudyUnit(professor_study_unit);
+  		return rtn.toString();
+	  }
 }

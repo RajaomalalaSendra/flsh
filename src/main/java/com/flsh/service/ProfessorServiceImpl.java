@@ -22,6 +22,7 @@ import java.util.Set;
 
 import com.flsh.model.Authorities;
 import com.flsh.model.Professor;
+import com.flsh.model.ProfessorStudyUnit;
 import com.flsh.model.User;
 import com.mysql.jdbc.Statement;
 import com.flsh.interfaces.ProfessorService;
@@ -145,6 +146,17 @@ public class ProfessorServiceImpl implements ProfessorService {
 	    rtn.put("message", j >= 0 ? "Supprimé!" : "Echec de la suppression! Veuillez réessayer.");
 		return rtn;
 	}
+
+	@Override
+	public List<ProfessorStudyUnit> getAllProfessorUnitStudy() {
+		// TODO Auto-generated method stub
+		String sql = "SELECT *, Utilisateur.*, Unite_Enseignement.*  FROM Prof_Ue "
+				+ "JOIN Professeur ON Professeur.prof_id = Prof_Ue.prof_id "
+				+ "JOIN Utilisateur ON Professeur.uti_id = Utilisateur.uti_id "
+				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Prof_Ue.ue_id";
+		List<ProfessorStudyUnit> profsUe = jdbcTemplate.query(sql, new ProfessorResponsableMapper());
+		return profsUe;
+	}
 }
 
 class ProfessorMapper implements RowMapper<Professor> {
@@ -164,4 +176,16 @@ class ProfessorMapper implements RowMapper<Professor> {
 	    return prof;
 	}
 
+}
+class ProfessorResponsableMapper implements RowMapper<ProfessorStudyUnit> {
+	public ProfessorStudyUnit mapRow(ResultSet rs, int arg1) throws SQLException {
+		ProfessorStudyUnit profUnitStudy = new ProfessorStudyUnit();
+		profUnitStudy.setProfessor_id(rs.getInt("prof_id"));
+		profUnitStudy.setStudy_unit_id(rs.getInt("ue_id"));
+		profUnitStudy.setProfessor_name(rs.getString("uti_nom"));
+		profUnitStudy.setProfessor_civilite(rs.getInt("civ_id"));
+		profUnitStudy.setProfessor_last_name(rs.getString("uti_prenom"));
+		profUnitStudy.setStudy_unit_libelle(rs.getString("ue_libelle"));
+		return profUnitStudy;
+	}
 }

@@ -27,6 +27,7 @@ import com.flsh.interfaces.TeachingService;
 import com.flsh.model.Course;
 import com.flsh.model.Parcours;
 import com.flsh.model.Professor;
+import com.flsh.model.ProfessorStudyUnit;
 import com.flsh.model.StudyUnit;
 import com.flsh.model.User;
 import com.mysql.jdbc.Statement;
@@ -54,6 +55,8 @@ public class TeachingServiceImpl implements TeachingService {
 		}
 		return listUnits;
 	}
+	
+	
 
 	@Override
 	public HashSet<StudyUnit> getUnitsByParcoursWithPeriods(int idParcours, int idUY, int idLevel) {
@@ -87,6 +90,7 @@ public class TeachingServiceImpl implements TeachingService {
 		return listUnits;
 	}
 	
+	
 	public List<Course> getCourseById(int idUnits) {
 		String sql = "SELECT Element_Constitutif.*, civ_libellecourt, uti_nom, uti_prenom  FROM  Element_Constitutif "
 				+ "JOIN Professeur ON Professeur.prof_id = Element_Constitutif.prof_id "
@@ -101,6 +105,7 @@ public class TeachingServiceImpl implements TeachingService {
 		List<Parcours> parcours = jdbcTemplate.query(sql, new ParcourMapper());
 		return parcours;
 	}
+	
 
 	@Override
 	public JSONObject saveStudyUnit(StudyUnit studyUnit, String profResponsable) {
@@ -259,9 +264,35 @@ public class TeachingServiceImpl implements TeachingService {
 	@Override
 	public JSONObject getProfessorById(int ue) {
 		// TODO Auto-generated method stub
-		JSONObject rtn = new JSONObject();
 		String sql = "SELECT * FROM Prof_Ue WHERE ue_id = " + ue;
-		int i = jdbcTemplate.update(sql);
+		List<ProfessorStudyUnit> profsUe = jdbcTemplate.query(sql, new ProfessorStudyUnitMapper());
+		return profsUe;
+	}
+
+	@Override
+	public List<StudyUnit> getALLUnits() {
+		// TODO Auto-generated method stub
+		String sql = "SELECT * FROM Unite_Enseignement";
+		List<StudyUnit> Study = jdbcTemplate.query(sql, new UnitsMapper());
+		return Study;
+	}
+
+	@Override
+	public JSONObject saveProfessorStudyUnit(ProfessorStudyUnit professor_study_unit) {
+		// TODO Auto-generated method stub
+		JSONObject rtn = new JSONObject();
+		String sql_insert = "INSERT INTO Prof_Ue (ue_id, prof_id) VALUES (?,?)";
+		boolean save = jdbcTemplate.execute (sql_insert, new PreparedStatementCallback<Boolean>() {
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setInt(1, professor_study_unit.getStudy_unit_id());
+				ps.setInt(2, professor_study_unit.getProfessor_id());
+				if(professor_study_unit.get != 0) ps.setInt(10, course.getCourse_id());
+				return ps.executeUpdate() > 0 ? true : false;
+			}
+		});
+		rtn.put("status", save ? 1 : 0);
+  	    rtn.put("message", save ? "Enregistré avec succès" : "Echec de l'enregistrement! Veuillez réessayer");
 		return rtn;
 	}
 }
@@ -308,5 +339,13 @@ class ParcourMapper implements RowMapper<Parcours> {
 		prc.setParcoursId(rs.getInt("prc_id"));
 		prc.setParcoursLibelle(rs.getString("prc_libelle"));
 		return prc;
+	}
+}
+class ProfessorStudyUnitMapper implements RowMapper<ProfessorStudyUnit> {
+	public ProfessorStudyUnit mapRow(ResultSet rs, int arg1) throws SQLException {
+		ProfessorStudyUnit profStdUnt = new ProfessorStudyUnit();
+		profStdUnt.setStudy_unit_id(rs.getInt("ue_id"));
+		profStdUnt.setProfessor_id(rs.getInt("prof_id"));
+		return profStdUnt;
 	}
 }

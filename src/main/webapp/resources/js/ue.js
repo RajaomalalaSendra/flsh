@@ -27,7 +27,7 @@ $(document).ready(function() {
 				}
 			})
 			if (profResponsable == ""){
-				$('#err-save-user').html('Une erreur s\'est produite!\nVous devrez choisir au moin un professeur responsable.\nVeuillez reessayer...').show().delay(3000).fadeOut(600)
+				$('#err-save-ue').html('Une erreur s\'est produite!\nVous devrez choisir au moin un professeur responsable.\nVeuillez reessayer...').show().delay(3000).fadeOut(600)
 			} else {
 				var formData = getFormData($('#form-save-ue'))
 				formData.profResponsable = profResponsable
@@ -46,7 +46,7 @@ $(document).ready(function() {
 						}
 				    },
 				    error: function(err){
-				    	$('#err-save-user').html('Une erreur s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
+				    	$('#err-save-ue').html('Une erreur s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
 				    }
 				})
 			}
@@ -56,14 +56,24 @@ $(document).ready(function() {
 	$(document).on('click','.edit-ue', function(){
 		console.log('test edit user')
 		var idUE = $(this).attr('ue-edit-id')
+		var listProfId = []
 		$('#ueAddLabel').html('Editer unite d\'enseignement')
 		$('#idUE').val(idUE)
+		$("#responsqbles input[type=checkbox]").each(function(){
+			listProfId.push($(this).attr("id").split("-")[1])
+		})
 		$.ajax({
 			url: getBaseUrl('ue/details?id='+idUE),
 			type: "GET",
 			dataType: "JSON",
 			success: function(data) {
-				console.log(data)
+				for(i=0; i < data.prof_id.length; i++){
+					for(j=0; j < listProfId.length; j++) {
+						if (data.prof_id[i]["professor_id"] ==  listProfId[j]){
+							$("#profResponsable-"+data.prof_id[i]["professor_id"]).prop('checked', true)
+						}
+					}
+				}
 				$('#idParcoursUE').val(data.id_parcours)
 				$('#ueLibelle').val(data.libelle)
 				$('#ueType').val(data.type)

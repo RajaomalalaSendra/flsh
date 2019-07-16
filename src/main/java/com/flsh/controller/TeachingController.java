@@ -25,6 +25,7 @@ import com.flsh.model.Level;
 import com.flsh.model.Parcours;
 import com.flsh.model.Period;
 import com.flsh.model.Professor;
+import com.flsh.model.ProfessorStudyUnit;
 
 @Controller
 public class TeachingController {
@@ -63,12 +64,16 @@ public class TeachingController {
 	@ResponseBody
 	public String getUeDetails(HttpServletRequest request, HttpServletResponse response) {
 	  int id = request.getParameter("id") == null || request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
-	  StudyUnit teaching_detail = teachingService.getUeDetails(id);
+	  StudyUnit teaching_detail = teachingService.getUeDetails(id); 
+	  List<ProfessorStudyUnit> profStdUnt = teachingService.getProfessorById(id);
+	  teaching_detail.setResponsablesId(profStdUnt);
+	  
 	  JSONObject rtn = new JSONObject();
 	  rtn.put("id", teaching_detail.getStudyunit_id());
 	  rtn.put("id_parcours", teaching_detail.getParcours_id());
 	  rtn.put("type", teaching_detail.getStudyunit_type());
 	  rtn.put("libelle", teaching_detail.getStudyunit_libelle());
+	  rtn.put("prof_id", teaching_detail.getResponsablesId());
 	  return rtn.toString();
 	}
 	

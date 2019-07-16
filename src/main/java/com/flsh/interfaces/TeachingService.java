@@ -10,13 +10,18 @@ import com.flsh.model.StudyUnit;
 import com.flsh.model.Course;
 import com.flsh.model.Parcours;
 import com.flsh.model.Professor;
+import com.flsh.model.ProfessorStudyUnit;
 
 public interface TeachingService {
 	HashSet<StudyUnit> getAllUnits();
 	
+	List<StudyUnit> getALLUnits();
+	
 	List<Parcours> getAllParcours();
 	
 	JSONObject saveStudyUnit(StudyUnit studyUnit, String profResponsable);
+	
+	JSONObject saveProfessorStudyUnit(ProfessorStudyUnit professor_study_unit);
 	
 	StudyUnit getUeDetails(int id);
 	
@@ -26,7 +31,7 @@ public interface TeachingService {
 	
 	Course getEcDetails(int id);
 	
-	JSONObject getProfessorById(int ue);
+	List<ProfessorStudyUnit> getProfessorById(int ue);
 	
 	List<Professor> getAllProfessor();
 	
