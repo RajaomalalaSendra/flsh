@@ -13,9 +13,6 @@
     	<%@include file="../common/_menu.jsp" %>
     	<br/><br/><br/><br/>
     	<div class="main-wrapper">
-	    	<div class = "header-list">
-				<button class = "btn btn-default pull-right" id = "add-professor-ue" title = "Ajouter un nouveau professeur d'un unite Enseignement"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
-			</div>
     		<h1>Listes des Professeurs d'Unite d'enseignement</h1>  
 			<table class="table table-striped">
 			  <thead>
