@@ -19,4 +19,6 @@ public interface ProfessorService {
 	JSONObject deleteProfessor(int id, int user_id);
 	
 	List<ProfessorStudyUnit> getAllProfessorUnitStudy();
+
+	List<String> getListProfUntStd();
 }

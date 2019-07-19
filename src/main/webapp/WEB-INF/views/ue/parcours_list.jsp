@@ -1,7 +1,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
  <c:forEach var="unit" items="${units}">   
    <tr id="ue-${unit.getStudyunit_id()}">  
-	   <td scope="row">${unit.getStudyunit_libelle()} (${unit.getStudyunit_type()})</td>  
+	   <td scope="row">${unit.getStudyunit_libelle()} (${unit.getStudyunit_type()})</td>
+	   <td>  
+	   	<c:forEach var="professor_ue" items="${professors_ue}">
+			<c:if test="${professor_ue.getStudy_unit_id() == unit.getStudyunit_id()}">
+			 	<c:out value="${professor_ue.getCivilite()} ${professor_ue.getProfessor_last_name()} ${professor_ue.getProfessor_name()} ${'<br/>'}" escapeXml="false"/>
+			</c:if>
+	   	</c:forEach>
+	   </td>
 	   <td colspan = "6" align = "right" ></td>
 	   <td>
 	   		<span class = "btn-group pull-right">

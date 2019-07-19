@@ -44,8 +44,10 @@ public class TeachingController {
 		List<Level> levels = periodService.getAllLevels();
 		List<Professor> profs = teachingService.getAllProfessor();
 		ModelAndView teaching = new ModelAndView("ue/accueil");
-	    teaching.addObject("levels", levels);
+	    
+		teaching.addObject("levels", levels);
 	    teaching.addObject("profs", profs);
+	    
 	    teaching.addObject("menu", "course");
 	    teaching.addObject("submenu", "ue_ec");
 	    return teaching;
@@ -55,8 +57,11 @@ public class TeachingController {
 	public ModelAndView loadUEList(HttpServletRequest request, HttpServletResponse response) {
 		int idParcours = request.getParameter("idParcours") == null || request.getParameter("idParcours") == "" ? 0 : Integer.parseInt(request.getParameter("idParcours"));
 		HashSet<StudyUnit> units = teachingService.getUnitsByParcours(idParcours);
+		List<ProfessorStudyUnit> professorsUe = professorService.getAllProfessorUnitStudy();
 		ModelAndView teaching = new ModelAndView("ue/parcours_list");
-	    teaching.addObject("units", units);
+		
+		teaching.addObject("units", units);
+		teaching.addObject("professors_ue", professorsUe);
 	    return teaching;
 	}
 	

@@ -61,6 +61,7 @@ $(document).ready(function() {
 		$('#idUE').val(idUE)
 		$("#responsqbles input[type=checkbox]").each(function(){
 			listProfId.push($(this).attr("id").split("-")[1])
+			$(this).prop('checked', false)
 		})
 		$.ajax({
 			url: getBaseUrl('ue/details?id='+idUE),

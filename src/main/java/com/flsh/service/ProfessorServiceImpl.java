@@ -16,14 +16,11 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import com.flsh.model.Authorities;
 import com.flsh.model.Professor;
 import com.flsh.model.ProfessorStudyUnit;
-import com.flsh.model.User;
 import com.mysql.jdbc.Statement;
 import com.flsh.interfaces.ProfessorService;
 public class ProfessorServiceImpl implements ProfessorService {
@@ -150,12 +147,22 @@ public class ProfessorServiceImpl implements ProfessorService {
 	@Override
 	public List<ProfessorStudyUnit> getAllProfessorUnitStudy() {
 		// TODO Auto-generated method stub
-		String sql = "SELECT *, Utilisateur.*, Unite_Enseignement.*  FROM Prof_Ue "
+		String sql = "SELECT *, Utilisateur.uti_nom, Utilisateur.uti_prenom, Utilisateur.civ_id, Unite_Enseignement.ue_libelle  FROM Prof_Ue "
 				+ "JOIN Professeur ON Professeur.prof_id = Prof_Ue.prof_id "
 				+ "JOIN Utilisateur ON Professeur.uti_id = Utilisateur.uti_id "
 				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Prof_Ue.ue_id";
 		List<ProfessorStudyUnit> profsUe = jdbcTemplate.query(sql, new ProfessorResponsableMapper());
 		return profsUe;
+	}
+	
+	@Override
+	public List<String> getListProfUntStd(){
+		List<ProfessorStudyUnit> getAllProf = getAllProfessorUnitStudy();
+		List<String> allProfList = new ArrayList<String>();
+		
+		getAllProf.forEach(prof ->  allProfList.add(prof.getStudy_unit_id(), prof.getCivilite() + " " + prof.getProfessor_last_name() + " " + prof.getProfessor_name()));
+		System.out.print("Here is: " + allProfList);
+		return allProfList;
 	}
 }
 
@@ -183,8 +190,8 @@ class ProfessorResponsableMapper implements RowMapper<ProfessorStudyUnit> {
 		profUnitStudy.setProfessor_id(rs.getInt("prof_id"));
 		profUnitStudy.setStudy_unit_id(rs.getInt("ue_id"));
 		profUnitStudy.setProfessor_name(rs.getString("uti_nom"));
+		profUnitStudy.setProfessor_last_name(rs.getString("uti_prenom")); 
 		profUnitStudy.setProfessor_civilite(rs.getInt("civ_id"));
-		profUnitStudy.setProfessor_last_name(rs.getString("uti_prenom"));
 		profUnitStudy.setStudy_unit_libelle(rs.getString("ue_libelle"));
 		return profUnitStudy;
 	}

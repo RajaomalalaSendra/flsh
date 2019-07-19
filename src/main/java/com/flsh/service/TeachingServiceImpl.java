@@ -280,6 +280,31 @@ public class TeachingServiceImpl implements TeachingService {
 		List<StudyUnit> Study = jdbcTemplate.query(sql, new UnitsMapper());
 		return Study;
 	}
+	
+	@Override
+	public List<Course> getAllCourses(){
+		String sql = "SELECT * FROM Element_Constitutif";
+		List<Course> Courses = jdbcTemplate.query(sql,  new CourseMapper());
+		return Courses;
+	}
+
+	@Override
+	public List<ProfessorStudyUnit> getStudyUntsByProfId(int id) {
+		// TODO Auto-generated method stub
+		String sql = "SELECT *, Unite_Enseignement.ue_libelle FROM Prof_Ue "
+				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Prof_Ue.ue_id "
+				+ "WHERE prof_id = " + id;
+		List<ProfessorStudyUnit> profsUe = jdbcTemplate.query(sql, new ProfessorStudyUnitMapper());
+		return profsUe;
+	}
+
+	@Override
+	public List<Course> getEcDetailsByProfId(int id) {
+		// TODO Auto-generated method stub
+		String sql = "SELECT * FROM Element_Constitutif WHERE prof_id = " + id;
+		List<Course> Courses = jdbcTemplate.query(sql,  new CourseMapper());
+		return Courses;
+	}
 
 }
 
@@ -344,6 +369,11 @@ class ProfessorStudyUnitMapper implements RowMapper<ProfessorStudyUnit> {
 		ProfessorStudyUnit profStdUnt = new ProfessorStudyUnit();
 		profStdUnt.setStudy_unit_id(rs.getInt("ue_id"));
 		profStdUnt.setProfessor_id(rs.getInt("prof_id"));
+		try {
+			profStdUnt.setStudy_unit_libelle(rs.getString("ue_libelle"));
+		} catch(Exception e) {
+			System.out.print("No ue Libelle");
+		}
 		return profStdUnt;
 	}
 }

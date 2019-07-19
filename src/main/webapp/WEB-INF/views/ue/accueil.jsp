@@ -40,7 +40,7 @@
 			      <th scope="col">V. horaire</th>
 			      <th scope="col">T. présenciel</th>
 			      <th scope="col">T. personnel</th>
-			      <th scope="col" width="15%">Actions</th>
+			      <th scope="col"></th>
 			    </tr>
 			  </thead>
 			  <tbody>  

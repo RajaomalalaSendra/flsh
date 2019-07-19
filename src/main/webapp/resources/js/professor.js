@@ -1,4 +1,10 @@
 $(document).ready(function() {
+	//first loading
+	//Trigger change in professor courses
+	$(function() {
+		$('#professorsAndUes').trigger('change');
+	})
+	
 	$('.detail-professor').on('click', function(event) {
 		event.preventDefault()
 		var url = getBaseUrl($(this).attr('href'))
@@ -144,6 +150,21 @@ $(document).ready(function() {
 			    }
 			})
 		}
+	})
+	
+	$('#professorsAndUes').on('change', function() {
+		console.log("hello")
+		$('tbody').html('loading...');
+		var id = $(this).val();
+		$.ajax({
+			url: getBaseUrl('professor/courses/list?id='+id),
+			success: function(data) {
+				$('tbody').html(data);
+			},
+			error: function() {
+				alert('Echec du chargement des UEs!!!!')
+			}
+		})
 	})
 })
 

@@ -41,4 +41,10 @@ public interface TeachingService {
 	HashSet<StudyUnit> getUnitsByParcoursWithPeriods(int idParcours, int idUY, int idLevel);
 
 	JSONObject saveCoursePeriod(int idEC, int idPer, String add);
+
+	List<Course> getAllCourses();
+	
+	List<ProfessorStudyUnit> getStudyUntsByProfId(int id);
+	
+	List<Course> getEcDetailsByProfId(int id);
 }

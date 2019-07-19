@@ -1,5 +1,6 @@
 package com.flsh.controller;
 
+import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import com.flsh.model.Course;
 import com.flsh.model.Professor;
 import com.flsh.model.ProfessorStudyUnit;
 import com.flsh.model.StudyUnit;
@@ -84,16 +85,26 @@ public class ProfessorController {
 	  @RequestMapping(value = "/professor/courses", method = RequestMethod.GET)
 	  public ModelAndView showProfessorCourses(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView prof = new ModelAndView("users/professor_courses");
-		List<ProfessorStudyUnit> professorsUe = professorService.getAllProfessorUnitStudy();
 		List<Professor> professors = professorService.getAllProfessor();
-		List<StudyUnit> studyUnits = teachingService.getALLUnits();
 		
-		prof.addObject("professors_ue", professorsUe);
 		prof.addObject("professors", professors);
-		prof.addObject("study_units", studyUnits);
 		
 		prof.addObject("menu", "professor");
 	    prof.addObject("submenu", "prof_courses");
 		return prof;
 	  }
+	  
+	  @RequestMapping(value = "/professor/courses/list", method = RequestMethod.GET)
+		public ModelAndView loadUEList(HttpServletRequest request, HttpServletResponse response) {
+			int id = request.getParameter("id") == null || request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
+			Professor prof = professorService.getProfessorDetails(id);
+			List<ProfessorStudyUnit> stdUnts = teachingService.getStudyUntsByProfId(id);
+			List<Course> courses = teachingService.getEcDetailsByProfId(id);
+			ModelAndView profView = new ModelAndView("users/professor_course_list");
+			
+			profView.addObject("prof", prof);
+			profView.addObject("stdUnts", stdUnts);
+			profView.addObject("courses", courses);
+		    return profView;
+		}
 }
