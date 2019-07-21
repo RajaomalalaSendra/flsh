@@ -13,8 +13,28 @@
     	<%@include file="../common/_menu.jsp" %>
     	<br/><br/><br/><br/>
     	<div class="main-wrapper">
-			<h1>Saisie de note professeur ()</h1>
-			
+    		<div class = "form-group form-inline pull-right">
+    			<input type = "hidden" id = "uy-id" value = "${ infos_uy.getUniversity_year_id()  }" />
+    			<a class = "btn btn-default" title = "Retour au choix saisie" href = "<c:url value='/educations/notes' />"><i class = "glyphicon glyphicon-arrow-left"></i></a>
+    			<label for = "select-prof-saisie">Professeur : </label>
+    			<select name = "select-prof-saisie" id = "select-prof-saisie" class = "form-control">
+    				<c:forEach items="${ professors }" var="prof" varStatus="status">
+						<option value = "${ prof.getProfessor_id() }" ${ prof.getProfessor_id() == profSelected ? "selected" : "" }>${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</option>
+					</c:forEach>
+    			</select>
+    			<label for = "select-ec-saisie">Element constitutif : </label>
+    			<select name = "select-ec" id = "select-ec" class = "form-control">
+    				<c:forEach items = "${ ecs }" var = "ec" >
+    					<option value = "${ ec.getCourse_id() }">${ ec.getCourse_libelle() } ( ${ ec.getUeNiveau() } )</option>
+    				</c:forEach>
+    			</select>
+    		</div>
+			<h1>Note professeur (${ infos_uy.getUniversity_year_libelle() })</h1>
+			<div class = "alert alert-success" id = "success-saisie">Success</div>
+			<div class = "alert alert-danger" id = "error-saisie">Error</div>
+			<div id = "saisie-wrapper">
+				
+			</div>
     	</div>
     	<%@include file="../common/_footer.jsp" %>
     </div>

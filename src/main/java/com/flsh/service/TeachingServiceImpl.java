@@ -72,7 +72,10 @@ public class TeachingServiceImpl implements TeachingService {
 	}
 
 	private List<Course> getCourseByIdWithPeriods(int idUnit, int idUY, int idLevel) {
-		String sql = "SELECT Element_Constitutif.*, (select group_concat(per_id) from Periode_EC where Periode_EC.ec_id = Element_Constitutif.ec_id and per_id in (select per_id from Periode where niv_id = "+idLevel+" and au_id = "+idUY+")) as cours_period  FROM  Element_Constitutif WHERE ue_id = "+idUnit;
+		String sql = "SELECT Element_Constitutif.*, civ_libellecourt, uti_nom, uti_prenom, (select group_concat(per_id) from Periode_EC where Periode_EC.ec_id = Element_Constitutif.ec_id and per_id in (select per_id from Periode where niv_id = "+idLevel+" and au_id = "+idUY+")) as cours_period  FROM  Element_Constitutif " + 
+						" JOIN Professeur ON Professeur.prof_id = Element_Constitutif.prof_id " + 
+						" JOIN Utilisateur ON Professeur.uti_id = Utilisateur.uti_id " + 
+						" JOIN Civilite ON Civilite.civ_id = Utilisateur.civ_id WHERE ue_id = "+idUnit;
 		List<Course> courses = jdbcTemplate.query(sql, new CourseMapper());
 		return courses;
 	}
@@ -205,6 +208,7 @@ public class TeachingServiceImpl implements TeachingService {
   	    rtn.put("message", save ? "Enregistré avec succès" : "Echec de l'enregistrement! Veuillez réessayer");
 		return rtn;
 	}
+	
 	@Override
 	public Course getEcDetails(int id) {
 		String sql = "SELECT * FROM Element_Constitutif  WHERE ec_id=" + id ;
@@ -314,6 +318,14 @@ class CourseMapper implements RowMapper<Course> {
 	    } catch(Exception e) {
 	    	System.out.print("No prof data");
 	    }
+	    String infosUeLevl = "";
+	    try {
+	    	infosUeLevl = rs.getString("ue_libelle");
+	    	infosUeLevl += " - " + rs.getString("niv_libelle");
+	    } catch(Exception e) {
+	    	System.out.print("No niveau data");
+	    }
+	    courses.setUeNiveau(infosUeLevl);
 	    return courses;
 	}
 }

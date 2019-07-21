@@ -14,7 +14,7 @@
 	   <c:forEach var="course" items="${unit.getCourses()}">
 	   		<tr class = "ec" id = "ec-${course.getCourse_id()}">
 	   			<td class = "libelle">${course.getCourse_libelle()}</td>
-	   			<td></td>
+	   			<td>${course.getProfessor()}</td>
 	   			<td>${course.getCourse_credit()}</td>
 	   			<td>${course.getCourse_notation()}</td>
 	   			<td>${course.getCourse_coefficient()}</td>

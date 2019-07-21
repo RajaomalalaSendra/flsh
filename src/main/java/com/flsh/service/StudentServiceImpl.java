@@ -3,6 +3,7 @@ package com.flsh.service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -428,6 +429,18 @@ class StudentMapper implements RowMapper<Student> {
 		student.setStudent_cinlocation(rs.getString("etd_lieucin"));
 		student.setStudent_jobfather(rs.getString("etd_professionpere"));
 		student.setStudent_jobmother(rs.getString("etd_professionmere"));
+		try {
+			String evaluations = rs.getString("evaluations");
+			String[] tmpEvals = evaluations.split(";");
+			HashMap<String, String> listEvaluations = new HashMap<String, String>();
+			for(String eval : tmpEvals) {
+				String[] tmp = eval.split("_");
+				listEvaluations.put(tmp[0]+"-"+tmp[1], tmp[2]);
+			}
+			student.setEvaluations(listEvaluations);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return student;
 	}
 	

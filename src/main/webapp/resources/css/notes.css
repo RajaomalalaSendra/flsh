@@ -12,3 +12,56 @@
 #saisie-niveau {
 	margin-left: 13%;
 }
+.form-group.form-inline label{
+	margin-left: 20px;
+}
+#success-saisie, #error-saisie {
+	position: fixed;
+    padding: 5px;
+    left: 40%;
+    display: none;
+}
+#table-saisie {
+	width: auto;
+}
+#table-saisie th {
+	background-color: #17a2b8;
+	color: #fff;
+}
+#table-saisie .nom_prenom {
+	width: 300px;
+}
+#table-saisie .exam {
+	width: 100px;
+	text-align: center;
+}
+#table-saisie input {
+	width: 90px;
+	border: none;
+	background: none;
+	text-align: right;
+}
+#table-saisie input:focus {
+	background: #fff;
+}
+#table-saisie .row-student.active td {
+	background-color: #d2dff3;
+}
+#table-saisie .row-student input.hasError {
+	border: 1px solid #b00 !important;
+    color: #b00 !important;
+}
+.input-wrapper {
+	position: relative;
+}
+.input-wrapper .glyphicon {
+	position: absolute;
+    top: 30%;
+    display: none;
+}
+.input-wrapper .glyphicon-ok-sign {
+	color: #090;
+}
+.input-wrapper .glyphicon-warning-sign {
+	color: #b00;
+}

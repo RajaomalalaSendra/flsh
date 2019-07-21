@@ -28,8 +28,8 @@
 						<label for = "select-prof" class = "col-md-6">Professeur :</label>
 						<select id = "select-prof" class = "form-control">
 							<c:forEach items="${ professors }" var="prof" varStatus="status">
-							<option value = "${ prof.getProfessor_id() }">${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</option>
-						</c:forEach>
+								<option value = "${ prof.getProfessor_id() }">${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</option>
+							</c:forEach>
 						</select>
 					</div>
 					<button class = "pull-right btn btn-info" id = "start-saisie-prof">Saisir les notes</button>

@@ -1,5 +1,7 @@
 package com.flsh.model;
 
+import java.util.HashMap;
+
 public class Student{
 	private int student_id;
 	private int student_civ;
@@ -19,6 +21,7 @@ public class Student{
 	private String student_jobfather;
 	private String student_namemother;
 	private String student_jobmother;
+	private HashMap<String, String> evaluations;
 	
 	public int getStudent_id() {
 		return student_id;
@@ -134,6 +137,20 @@ public class Student{
 	}
 	public void setStudent_jobmother(String student_jobmother) {
 		this.student_jobmother = student_jobmother;
+	}
+	public String getEvaluation(String examPeriode) {
+		try {
+			return evaluations.get(examPeriode);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+	public HashMap<String, String> getEvaluations() {
+		return evaluations;
+	}
+	public void setEvaluations(HashMap<String, String> evaluations) {
+		this.evaluations = evaluations;
 	}
 	
 }

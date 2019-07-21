@@ -15,6 +15,7 @@ public class Course{
 	private double course_travailpersonnel;
 	private String professor;
 	private String idPeriods;
+	private String ueNiveau;
 	
 	public int getCourse_id() {
 		return course_id;
@@ -99,6 +100,12 @@ public class Course{
 	}
 	public void setIdPeriods(String idPeriods) {
 		this.idPeriods = idPeriods;
+	}
+	public String getUeNiveau() {
+		return ueNiveau;
+	}
+	public void setUeNiveau(String ueNiveau) {
+		this.ueNiveau = ueNiveau;
 	}
 	
 }
