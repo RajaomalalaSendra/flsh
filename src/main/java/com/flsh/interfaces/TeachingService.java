@@ -50,4 +50,6 @@ public interface TeachingService {
 	List<Course> getEcDetailsByProfId(int id);
 
 	List<ProfessorCourse> getProfessorCourses(int id);
+
+	Professor getProfessorByUserId(int id);
 }

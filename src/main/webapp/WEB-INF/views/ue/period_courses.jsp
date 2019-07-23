@@ -19,7 +19,7 @@
     				<label for = "choixPeriodUY" class =>Année universitaire :</label>
 		        	<select class = "form-control" id = "choixPeriodUY" >
 		        		<c:forEach items = "${ univYears }" var = "uy" varStatus = "status">
-		        			<option value = "${ uy.getUniversity_year_id() }">${ uy.getUniversity_year_libelle() }</option>
+		        			<option value = "${ uy.getUniversity_year_id() }" ${ uy.isActual() ? "selected" : "" }>${ uy.getUniversity_year_libelle() }</option>
 		        		</c:forEach>
 		        	</select>
 		        	<label for = "choixPeriodLevel" class =>Niveau :</label>

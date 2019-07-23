@@ -16,6 +16,7 @@ import com.flsh.interfaces.EducationService;
 import com.flsh.interfaces.NoteService;
 import com.flsh.interfaces.PeriodService;
 import com.flsh.interfaces.TeachingService;
+import com.flsh.model.Professor;
 import com.flsh.model.User;
 
 @Controller
@@ -33,14 +34,25 @@ public class NotesController {
 	@RequestMapping(value = "/educations/notes", method = RequestMethod.GET)
 	public ModelAndView manageNotes(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		ModelAndView mav = new ModelAndView("notes/accueil");
+		User user = (User) session.getAttribute("user");
 		if(request.getParameter("saisie_mode") == null || request.getParameter("univYear") == null || (request.getParameter("prof") == null && request.getParameter("level") == null)) {
 			mav.addObject("univYears", periodService.getAllUnivYears());
 			mav.addObject("professors", teachingService.getAllProfessor());
 			mav.addObject("levels", periodService.getAllLevels());
+			mav.addObject("isProf", user == null ? false : user.getType().equals("2"));
+			if(user != null && user.getType().equals("2")) {
+				mav.addObject("prof", teachingService.getProfessorByUserId(user.getId()));
+			}
 		} else if(request.getParameter("saisie_mode").equals("prof") && !request.getParameter("univYear").equals("") && !request.getParameter("prof").equals("")) {
 			int idProf = Integer.parseInt(request.getParameter("prof"));
 			int idUY = Integer.parseInt(request.getParameter("univYear"));
+			
 			mav = new ModelAndView("notes/saisie_prof");
+			mav.addObject("isProf", user == null ? false : user.getType().equals("2"));
+			if(user != null && user.getType().equals("2")) {
+				Professor prof = teachingService.getProfessorByUserId(user.getId());
+				idProf = prof.getProfessor_id();
+			}
 			mav.addObject("infos_uy", periodService.getUnivYearById(idUY));
 			mav.addObject("ecs", noteService.getECProfessor(idProf));
 			mav.addObject("professors", teachingService.getAllProfessor());

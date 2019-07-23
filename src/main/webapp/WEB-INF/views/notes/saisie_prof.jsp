@@ -16,12 +16,14 @@
     		<div class = "form-group form-inline pull-right">
     			<input type = "hidden" id = "uy-id" value = "${ infos_uy.getUniversity_year_id()  }" />
     			<a class = "btn btn-default" title = "Retour au choix saisie" href = "<c:url value='/educations/notes' />"><i class = "glyphicon glyphicon-arrow-left"></i></a>
-    			<label for = "select-prof-saisie">Professeur : </label>
-    			<select name = "select-prof-saisie" id = "select-prof-saisie" class = "form-control">
-    				<c:forEach items="${ professors }" var="prof" varStatus="status">
-						<option value = "${ prof.getProfessor_id() }" ${ prof.getProfessor_id() == profSelected ? "selected" : "" }>${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</option>
-					</c:forEach>
-    			</select>
+    			<c:if test="${ !isProf }">
+    				<label for = "select-prof-saisie">Professeur : </label>
+	    			<select name = "select-prof-saisie" id = "select-prof-saisie" class = "form-control">
+	    				<c:forEach items="${ professors }" var="prof" varStatus="status">
+							<option value = "${ prof.getProfessor_id() }" ${ prof.getProfessor_id() == profSelected ? "selected" : "" }>${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</option>
+						</c:forEach>
+	    			</select>
+    			</c:if>
     			<label for = "select-ec-saisie">Element constitutif : </label>
     			<select name = "select-ec" id = "select-ec" class = "form-control">
     				<c:forEach items = "${ ecs }" var = "ec" >

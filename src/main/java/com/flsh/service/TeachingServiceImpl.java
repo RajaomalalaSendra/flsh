@@ -326,6 +326,13 @@ public class TeachingServiceImpl implements TeachingService {
 		return Courses;
 	}
 
+	@Override
+	public Professor getProfessorByUserId(int id) {
+		String sql_prof = "SELECT * FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id WHERE Utilisateur.uti_type = 2 and Professeur.uti_id = "+id;		
+		List<Professor> professors = jdbcTemplate.query(sql_prof, new ProfessorMapper());
+		return professors.size() > 0 ? professors.get(0) : null;
+	}
+
 }
 
 class UnitsMapper implements RowMapper<StudyUnit> {

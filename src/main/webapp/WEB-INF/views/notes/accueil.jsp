@@ -27,32 +27,39 @@
 					<div class = "form-group form-inline">
 						<label for = "select-prof" class = "col-md-6">Professeur :</label>
 						<select id = "select-prof" class = "form-control">
-							<c:forEach items="${ professors }" var="prof" varStatus="status">
+							<c:if test="${ !isProf }">
+								<c:forEach items="${ professors }" var="prof" varStatus="status">
+									<option value = "${ prof.getProfessor_id() }">${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</option>
+								</c:forEach>
+							</c:if>
+							<c:if test="${ isProf }">
 								<option value = "${ prof.getProfessor_id() }">${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</option>
-							</c:forEach>
+							</c:if>
 						</select>
 					</div>
 					<button class = "pull-right btn btn-info" id = "start-saisie-prof">Saisir les notes</button>
 				</div>
-				<div id = "saisie-niveau" class = "col-md-5 box-starter">
-					<div class = "form-group form-inline">
-						<label for = "select-uy-level" class = "col-md-6">Année universitaire :</label>
-						<select id = "select-uy-level" class = "form-control">
-							<c:forEach items = "${ univYears }" var = "uy" varStatus = "status">
-			        			<option value = "${ uy.getUniversity_year_id() }" ${ uy.isActual() ? "selected" : ""}>${ uy.getUniversity_year_libelle() }</option>
-			        		</c:forEach>
-						</select>
+				<c:if test="${ !isProf }">
+					<div id = "saisie-niveau" class = "col-md-5 box-starter">
+						<div class = "form-group form-inline">
+							<label for = "select-uy-level" class = "col-md-6">Année universitaire :</label>
+							<select id = "select-uy-level" class = "form-control">
+								<c:forEach items = "${ univYears }" var = "uy" varStatus = "status">
+				        			<option value = "${ uy.getUniversity_year_id() }" ${ uy.isActual() ? "selected" : ""}>${ uy.getUniversity_year_libelle() }</option>
+				        		</c:forEach>
+							</select>
+						</div>
+						<div class = "form-group form-inline">
+							<label for = "select-level" class = "col-md-6">Niveau :</label>
+							<select id = "select-level" class = "form-control">
+								<c:forEach items = "${ levels }" var = "level" varStatus = "status">
+				        			<option value = "${ level.getLevelId() }">${ level.getLevelLibelle() }</option>
+				        		</c:forEach>
+							</select>
+						</div>
+						<button class = "pull-right btn btn-info" id = "start-saisie-niveau">Saisir les notes</button>
 					</div>
-					<div class = "form-group form-inline">
-						<label for = "select-level" class = "col-md-6">Niveau :</label>
-						<select id = "select-level" class = "form-control">
-							<c:forEach items = "${ levels }" var = "level" varStatus = "status">
-			        			<option value = "${ level.getLevelId() }">${ level.getLevelLibelle() }</option>
-			        		</c:forEach>
-						</select>
-					</div>
-					<button class = "pull-right btn btn-info" id = "start-saisie-niveau">Saisir les notes</button>
-				</div>
+				</c:if>
 			</div>
     	</div>
     	<%@include file="../common/_footer.jsp" %>
