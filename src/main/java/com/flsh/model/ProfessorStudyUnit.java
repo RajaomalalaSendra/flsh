@@ -5,10 +5,14 @@ public class ProfessorStudyUnit {
 	private int prof_std_unt_id;
 	private int study_unit_id;
 	private int professor_id;
+	private int professor_civilite;
+	private int isresponsable;
+
 	private String professor_name;
 	private String professor_last_name;
-	private int professor_civilite;
 	private String study_unit_libelle;
+	private String parcours_libelle;
+	private String level_libelle;
 	
 	public int getStudy_unit_id() {
 		return study_unit_id;
@@ -75,6 +79,38 @@ public class ProfessorStudyUnit {
 	public void setProf_std_unt_id(int prof_std_unt_id) {
 		this.prof_std_unt_id = prof_std_unt_id;
 	}
+
+	public String getParcours_libelle() {
+		return parcours_libelle;
+	}
+
+	public void setParcours_libelle(String parcours_libelle) {
+		this.parcours_libelle = parcours_libelle;
+	}
+
+	public String getLevel_libelle() {
+		return level_libelle;
+	}
+
+	public void setLevel_libelle(String level_libelle) {
+		this.level_libelle = level_libelle;
+	}
 	
+	public String getResponsability() {
+		return "Responsable";
+	}
+	public String getNonResponsability() {
+		return "-";
+	}
 	
+	public String getIsResponsable() {
+		String responsable;
+		responsable = isresponsable == 0 ? "Non Responsable" : "Responsable";
+		return responsable;
+	}
+	
+	public void setIsResponsable(int i) {
+		this.isresponsable = i;
+	}
+
 }

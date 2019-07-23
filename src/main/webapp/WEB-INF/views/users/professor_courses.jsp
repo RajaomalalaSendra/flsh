@@ -23,9 +23,11 @@
 			<table class="table table-striped">
 			  <thead>
 			    <tr>
-			      <th scope="col">Civ. Nom et Prenom</th>
-			      <th scope="col">Resp. Unite d'enseignement</th>
-			      <th scope="col">Prof. Element Constitutif</th>
+			      <th scope="col">Niveau</th>
+			      <th scope="col">Parcours</th>
+			      <th scope="col">Unite d'enseignement</th>
+				  <th scope="col">Element Constitutif</th>
+				  <th scope="col">Responsabilite</th>
 			    </tr>
 			  </thead>
 			  <tbody>  

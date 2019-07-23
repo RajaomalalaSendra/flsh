@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import com.flsh.model.StudyUnit;
+import com.flsh.model.ProfessorCourse;
 import com.flsh.model.Course;
 import com.flsh.model.Parcours;
 import com.flsh.model.Professor;
@@ -47,4 +48,6 @@ public interface TeachingService {
 	List<ProfessorStudyUnit> getStudyUntsByProfId(int id);
 	
 	List<Course> getEcDetailsByProfId(int id);
+
+	List<ProfessorCourse> getProfessorCourses(int id);
 }

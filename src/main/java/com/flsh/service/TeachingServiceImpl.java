@@ -27,6 +27,7 @@ import com.flsh.interfaces.TeachingService;
 import com.flsh.model.Course;
 import com.flsh.model.Parcours;
 import com.flsh.model.Professor;
+import com.flsh.model.ProfessorCourse;
 import com.flsh.model.ProfessorStudyUnit;
 import com.flsh.model.StudyUnit;
 import com.flsh.model.User;
@@ -288,11 +289,14 @@ public class TeachingServiceImpl implements TeachingService {
 		return Courses;
 	}
 
+	
 	@Override
 	public List<ProfessorStudyUnit> getStudyUntsByProfId(int id) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT *, Unite_Enseignement.ue_libelle FROM Prof_Ue "
+		String sql = "SELECT *, Unite_Enseignement.ue_libelle, Parcours.prc_libelle, Niveau.niv_libelle FROM Prof_Ue "
 				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Prof_Ue.ue_id "
+				+ "JOIN Parcours ON Parcours.prc_id = Unite_Enseignement.prc_id "
+				+ "JOIN Niveau ON Niveau.niv_id = Parcours.niv_id "
 				+ "WHERE prof_id = " + id;
 		List<ProfessorStudyUnit> profsUe = jdbcTemplate.query(sql, new ProfessorStudyUnitMapper());
 		return profsUe;
@@ -301,8 +305,24 @@ public class TeachingServiceImpl implements TeachingService {
 	@Override
 	public List<Course> getEcDetailsByProfId(int id) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT * FROM Element_Constitutif WHERE prof_id = " + id;
+		String sql = "SELECT ec_libelle, ue_libelle, niv_libelle, prc_libelle FROM Element_Constitutif "
+				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Element_Constitutif.ue_id "
+				+ "JOIN Parcours ON Parcours.prc_id = Unite_Enseignement.prc_id  "
+				+ "JOIN Niveau ON Niveau.niv_id = Parcours.niv_id "
+				+ "WHERE prof_id =" + id;
 		List<Course> Courses = jdbcTemplate.query(sql,  new CourseMapper());
+		return Courses;
+	}
+	
+	@Override
+	public List<ProfessorCourse> getProfessorCourses(int id) {
+		// TODO Auto-generated method stub
+		String sql = "SELECT ec_libelle, ue_libelle, niv_libelle, prc_libelle FROM Element_Constitutif "
+				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Element_Constitutif.ue_id "
+				+ "JOIN Parcours ON Parcours.prc_id = Unite_Enseignement.prc_id  "
+				+ "JOIN Niveau ON Niveau.niv_id = Parcours.niv_id "
+				+ "WHERE prof_id =" + id;
+		List<ProfessorCourse> Courses = jdbcTemplate.query(sql,  new ProfessorCourseMapper());
 		return Courses;
 	}
 
@@ -374,6 +394,27 @@ class ProfessorStudyUnitMapper implements RowMapper<ProfessorStudyUnit> {
 		} catch(Exception e) {
 			System.out.print("No ue Libelle");
 		}
+		try {
+			profStdUnt.setLevel_libelle(rs.getString("niv_libelle"));
+		} catch(Exception e) {
+			System.out.print("No Level Libelle");
+		}
+		try {
+			profStdUnt.setParcours_libelle(rs.getString("prc_libelle"));
+		} catch(Exception e) {
+			System.out.print("No Parcours Libelle");
+		}
 		return profStdUnt;
+	}
+}
+
+class ProfessorCourseMapper implements RowMapper<ProfessorCourse> {
+	public ProfessorCourse mapRow(ResultSet rs, int arg1) throws SQLException {
+		ProfessorCourse prof_course = new ProfessorCourse();
+		prof_course.setParcours_libelle(rs.getString("prc_libelle"));
+		prof_course.setLevel_libelle(rs.getString("niv_libelle"));
+		prof_course.setStudy_unit_libelle(rs.getString("ue_libelle"));
+		prof_course.setCourse_libelle(rs.getString("ec_libelle"));
+	    return prof_course;
 	}
 }

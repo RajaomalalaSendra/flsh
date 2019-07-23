@@ -17,7 +17,6 @@ $(document).ready(function() {
 	})
 	
 	$('#save-ue').on('click', function(){
-		console.log("here I am to worship")
 		if (formValidate('#form-save-ue')){
 			var profResponsable = ""
 			$("#responsqbles input[type=checkbox]").each(function(){
