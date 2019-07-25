@@ -293,11 +293,21 @@ public class TeachingServiceImpl implements TeachingService {
 	@Override
 	public List<ProfessorStudyUnit> getStudyUntsByProfId(int id) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT *, Unite_Enseignement.ue_libelle, Parcours.prc_libelle, Niveau.niv_libelle FROM Prof_Ue "
+		String sql = "SELECT *, Unite_Enseignement.ue_libelle, Parcours.prc_libelle, Niveau.niv_libelle, 1 as is_responsable, "
+				+ "(SELECT GROUP_CONCAT(ec_libelle separator '<br/>') FROM Element_Constitutif WHERE Element_Constitutif.ue_id = Unite_Enseignement.ue_id AND Element_Constitutif.prof_id = "+id+") as ecs "
+				+ "FROM Prof_Ue "
 				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Prof_Ue.ue_id "
 				+ "JOIN Parcours ON Parcours.prc_id = Unite_Enseignement.prc_id "
 				+ "JOIN Niveau ON Niveau.niv_id = Parcours.niv_id "
-				+ "WHERE prof_id = " + id;
+				+ "WHERE prof_id = " + id+" "
+				+ "UNION "
+				+ "SELECT *, Unite_Enseignement.ue_libelle, Parcours.prc_libelle, Niveau.niv_libelle, 0 as is_responsable, "
+				+ "(SELECT GROUP_CONCAT(ec_libelle separator '<br/>') FROM Element_Constitutif WHERE Element_Constitutif.ue_id = Unite_Enseignement.ue_id AND Element_Constitutif.prof_id = "+id+") as ecs "
+				+ "FROM Prof_Ue "
+				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Prof_Ue.ue_id "
+				+ "JOIN Parcours ON Parcours.prc_id = Unite_Enseignement.prc_id "
+				+ "JOIN Niveau ON Niveau.niv_id = Parcours.niv_id "
+				+ "WHERE prof_id != "+id+" AND Prof_Ue.ue_id in (select ue_id from Element_Constitutif WHERE prof_id = "+id+")";
 		List<ProfessorStudyUnit> profsUe = jdbcTemplate.query(sql, new ProfessorStudyUnitMapper());
 		return profsUe;
 	}
@@ -399,17 +409,29 @@ class ProfessorStudyUnitMapper implements RowMapper<ProfessorStudyUnit> {
 		try {
 			profStdUnt.setStudy_unit_libelle(rs.getString("ue_libelle"));
 		} catch(Exception e) {
-			System.out.print("No ue Libelle");
+			System.out.print("\nNo ue Libelle");
 		}
 		try {
 			profStdUnt.setLevel_libelle(rs.getString("niv_libelle"));
 		} catch(Exception e) {
-			System.out.print("No Level Libelle");
+			System.out.print("\nNo Level Libelle");
 		}
 		try {
 			profStdUnt.setParcours_libelle(rs.getString("prc_libelle"));
 		} catch(Exception e) {
-			System.out.print("No Parcours Libelle");
+			System.out.print("\nNo Parcours Libelle");
+		}
+		try {
+			profStdUnt.setIsResponsable(rs.getInt("is_responsable"));
+			System.out.print(rs.getInt("is_responsable"));
+			
+		} catch(Exception e) {
+			System.out.print("\nNo responsibility data");
+		}
+		try {
+			profStdUnt.setEcs_libelle(rs.getString("ecs"));
+		} catch(Exception e) {
+			System.out.print("\nNo Ecs Libelle");
 		}
 		return profStdUnt;
 	}

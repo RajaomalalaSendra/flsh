@@ -13,6 +13,7 @@ public class ProfessorStudyUnit {
 	private String study_unit_libelle;
 	private String parcours_libelle;
 	private String level_libelle;
+	private String ecs_libelle;
 	
 	public int getStudy_unit_id() {
 		return study_unit_id;
@@ -96,21 +97,27 @@ public class ProfessorStudyUnit {
 		this.level_libelle = level_libelle;
 	}
 	
-	public String getResponsability() {
-		return "Responsable";
-	}
 	public String getNonResponsability() {
 		return "-";
 	}
 	
 	public String getIsResponsable() {
 		String responsable;
+		System.out.print("\n is responsable "+isresponsable);
 		responsable = isresponsable == 0 ? "Non Responsable" : "Responsable";
 		return responsable;
 	}
 	
 	public void setIsResponsable(int i) {
 		this.isresponsable = i;
+	}
+
+	public String getEcs_libelle() {
+		return ecs_libelle;
+	}
+
+	public void setEcs_libelle(String ecs_libelle) {
+		this.ecs_libelle = ecs_libelle;
 	}
 
 }

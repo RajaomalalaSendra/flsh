@@ -5,17 +5,8 @@
 			<td>${stdUnt.getLevel_libelle()}</td>
 			<td>${stdUnt.getParcours_libelle()}</td>
 			<td>${stdUnt.getStudy_unit_libelle()}</td>
-			<td>${stdUnt.getNonResponsability()}</td>
-			<td>${stdUnt.getResponsability()}</td>
-		</tr>
-	</c:forEach>
-	<c:forEach var="course" items="${courses}">
-		<tr>  
-		  <td>${course.getLevel_libelle()}</td>
-		  <td>${course.getParcours_libelle()}</td>
-		  <td>${course.getStudy_unit_libelle()}</td>
-		  <td>${course.getCourse_libelle()}</td>
-		  <td>${course.getProfessorCourse()}</td>  
+			<td>${stdUnt.getEcs_libelle()}</td>
+			<td>${stdUnt.getIsResponsable()}</td>
 		</tr>
 	</c:forEach>
 </div>
