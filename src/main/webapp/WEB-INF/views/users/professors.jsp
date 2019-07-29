@@ -15,8 +15,8 @@
     	<div class="main-wrapper">
 	    	<div class = "header-list">
 				<button class = "btn btn-primary pull-right" id = "add-professor" title = "Ajouter un nouveau professeur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
+    			<h1>Professors List</h1>  
 			</div>
-    		<h1>Professors List</h1>  
 			<table class="table table-striped">
 			  <thead>
 			    <tr>

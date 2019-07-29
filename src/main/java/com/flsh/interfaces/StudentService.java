@@ -35,4 +35,6 @@ public interface StudentService {
 
 	public List<Student> getStudentsByPage(int numPage);
 
+	public List<Student> getStudentsByCriteria(String criteria, int numPage);
+
 }

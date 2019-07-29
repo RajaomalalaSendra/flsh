@@ -17,6 +17,10 @@
     		<div class = "header-list">
     			<button class = "btn btn-primary pull-right" id = "add-student" title = "Ajouter un étudiant"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
     			<h3>Etudiants</h3>
+    			<div class = "form-group" id = "search-container">
+    				<input type = "text" id = "search-student" placeholder = "Rechercher étudiant..." class = "form-control" />
+    				<label for = "search-student"><i class = "glyphicon glyphicon-search"></i></label>
+    			</div>
     		</div>
     		<div class = "table-wrapper">
     			<table class = "table table-bordered" id = "table-students">

@@ -17,3 +17,19 @@ div.pagination {
 	text-align: right;
     width: 100%;
 }
+#search-container {
+	position: absolute;
+    width: 40%;
+    top: 0;
+    left: 30%;
+}
+.header-list {
+	position: relative;
+}
+#search-container label {
+	position: absolute;
+    right: 10px;
+    top: 30%;
+    color: #999;
+    cursor: pointer;
+}

@@ -22,6 +22,7 @@ public class Student{
 	private String student_namemother;
 	private String student_jobmother;
 	private HashMap<String, String> evaluations;
+	private int number;
 	
 	public int getStudent_id() {
 		return student_id;
@@ -151,6 +152,12 @@ public class Student{
 	}
 	public void setEvaluations(HashMap<String, String> evaluations) {
 		this.evaluations = evaluations;
+	}
+	public int getNumber() {
+		return number;
+	}
+	public void setNumber(int number) {
+		this.number = number;
 	}
 	
 }

@@ -42,9 +42,19 @@ public class StudentController {
 	
 	@RequestMapping(value = "/students/bypage", method = RequestMethod.GET)
 	public ModelAndView listStudentsByPage(HttpServletRequest request, HttpServletResponse response) {
-		int numPage = !request.getParameter("page").equals("") ? Integer.parseInt(request.getParameter("page")) : 0;
+		int numPage = !request.getParameter("page").equals("") ? Integer.parseInt(request.getParameter("page")) : 1;
 		ModelAndView mav = new ModelAndView("students/list_students");
 		mav.addObject("students", studentService.getStudentsByPage(numPage));
+		return mav;
+	}
+	
+	@RequestMapping(value = "/students/search", method = RequestMethod.GET)
+	public ModelAndView searchStudentsByPage(HttpServletRequest request, HttpServletResponse response) {
+		int numPage = request.getParameter("page") != null && !request.getParameter("page").equals("") ? Integer.parseInt(request.getParameter("page")) : 1;
+		String criteria = request.getParameter("criteria");
+		ModelAndView mav = new ModelAndView("students/list_students");
+		mav.addObject("students", studentService.getStudentsByCriteria(criteria, numPage));
+		if(numPage == 1) mav.addObject("isSearch", true);
 		return mav;
 	}
 	

@@ -1,4 +1,5 @@
 var infosSubscription
+var inSearch = false
 $(document).ready(function() {
 	
 	$(function() {
@@ -233,18 +234,54 @@ $(document).ready(function() {
 		} else {
 			if(!parent.hasClass('active')) {
 				var numPage = $.trim( $(this).html())
-				$.ajax({
-					url: getBaseUrl('students/bypage?page='+numPage),
-					success: function(data) {
-						$('#table-students tbody').html(data)
-						$('li.page-item').removeClass('active')
-						parent.addClass('active')
-					},
-					error: function() {
-						alert('Erreur lors du chargement de la page')
-					}
-				})
+				var criteria = $('#search-student').val()
+				if(criteria == "" || !inSearch) {
+					$.ajax({
+						url: getBaseUrl('students/bypage?page='+numPage),
+						success: function(data) {
+							$('#table-students tbody').html(data)
+							$('li.page-item').removeClass('active')
+							parent.addClass('active')
+						},
+						error: function() {
+							alert('Erreur lors du chargement de la page')
+						}
+					})
+				} else {
+					$.ajax({
+						url: getBaseUrl('students/search?criteria='+criteria+'&page='+numPage),
+						success: function(data) {
+							$('#table-students tbody').html(data)
+							$('li.page-item').removeClass('active')
+							parent.addClass('active')
+						},
+						error: function() {
+							alert('Erreur lors du chargement de la page')
+						}
+					})
+				}
 			}
+		}
+	})
+	
+	$(document).on('keyup', '#search-student', function(e) {
+		if(e.keyCode == 13) {
+			inSearch = true
+			console.log('Start search')
+			var criteria = $(this).val()
+			$.ajax({
+				url: getBaseUrl('students/search?criteria='+criteria),
+				success: function(data) {
+					var paginationContent = data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") > -1 ? data.substring(data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") + 55, data.length - 7) : undefined
+					$.when($('#table-students tbody').html(data)).then(function() {
+						$('div.pagination ul').html(paginationContent)
+					})
+					if($.trim(criteria) == "") inSearch = false
+				},
+				error: function() {
+					alert('Erreur lors du chargement des étudiants')
+				}
+			})
 		}
 	})
 })

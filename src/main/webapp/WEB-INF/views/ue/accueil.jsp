@@ -27,8 +27,8 @@
 		        	</select>
 					<button class = "btn btn-primary pull-right" id = "add-ue" title = "Ajouter un nouveau unité d'enseignement"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
 				</div>
+    			<h1>Unite D'enseignement</h1>  
 			</div>
-    		<h1>Unite D'enseignement</h1>  
 			<table class="table table-striped">
 			  <thead>
 			  	<tr>

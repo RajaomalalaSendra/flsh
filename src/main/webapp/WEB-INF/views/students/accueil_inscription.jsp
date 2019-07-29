@@ -31,6 +31,10 @@
 		        	</select>
 				</div>
     			<h3>Etudiants</h3>
+    			<div class = "form-group" id = "search-container">
+    				<input type = "text" id = "search-student-subscribe" placeholder = "Rechercher étudiant..." class = "form-control" />
+    				<label for = "search-student"><i class = "glyphicon glyphicon-search"></i></label>
+    			</div>
     		</div>
     		<div class = "table-wrapper">
     			<table class = "table table-bordered">

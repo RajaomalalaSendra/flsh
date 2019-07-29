@@ -65,7 +65,58 @@ public class StudentServiceImpl implements StudentService {
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
 		return students;
 	}
-	
+
+	@Override
+	public List<Student> getStudentsByCriteria(String criteria, int numPage) {
+		String queryIntro = "SELECT *, (SELECT COUNT(*) ";
+		String querySearch = "FROM Etudiant ";
+		if(!criteria.equals("")) {
+			if(criteria.matches("-?\\d+(\\.\\d+)?")) {
+				querySearch += "WHERE etd_cin LIKE '%"+criteria+"%' OR etd_numeropasseport LIKE '%"+criteria+"%' ";
+			} else {
+				String[] tmpCriteria = criteria.split(" ");
+				switch(tmpCriteria.length) {
+					case 2:
+						querySearch += "WHERE ( etd_nom LIKE '%"+tmpCriteria[0]+"%' AND etd_prenom LIKE '%"+tmpCriteria[1]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' ";
+						break;
+					case 3:
+						querySearch += "WHERE ( etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[2]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_nom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%' AND etd_nom LIKE '%"+tmpCriteria[2]+"%')";
+						querySearch += " OR etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' ";
+						break;
+					case 4:
+						querySearch += "WHERE ( etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[3]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[3]+"%' AND etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[2]+"%' AND etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%' AND etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[2]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[0]+"%' AND etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_prenom LIKE '%"+tmpCriteria[3]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_nom LIKE '%"+tmpCriteria[3]+"%')";
+						querySearch += " OR etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' ";
+						break;
+					default:
+						querySearch += "WHERE etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' ";
+						break;
+				}
+			}
+		}
+		String query = queryIntro +" "+querySearch+") as maxnumber "+querySearch+" limit 100 offset "+ (100 * (numPage - 1));
+		List<Student> students = jdbcTemplate.query(query, new StudentMapper());
+		return students;
+	}
 
 	@Override
 	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel) {
@@ -429,6 +480,12 @@ class StudentMapper implements RowMapper<Student> {
 		student.setStudent_cinlocation(rs.getString("etd_lieucin"));
 		student.setStudent_jobfather(rs.getString("etd_professionpere"));
 		student.setStudent_jobmother(rs.getString("etd_professionmere"));
+		try {
+			System.out.print("\n Max number : "+rs.getInt("maxnumber")+"\n");
+			student.setNumber(rs.getInt("maxnumber"));
+		} catch (Exception e) {
+			System.out.print("\n No max number \n");
+		}
 		try {
 			String evaluations = rs.getString("evaluations");
 			String[] tmpEvals = evaluations.split(";");
