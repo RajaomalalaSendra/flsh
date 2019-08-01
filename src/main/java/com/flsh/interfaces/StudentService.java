@@ -22,7 +22,7 @@ public interface StudentService {
 
 	HashSet<StudyUnit> getParcoursChoiceUnits(int idParcours);
 
-	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel);
+	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel, int numPage);
 
 	public JSONObject saveSubscriptionStudent(int idStudent, int idUY, int idLevel, int idPrc, int paid,
 			String dateInscription, String choixprc);

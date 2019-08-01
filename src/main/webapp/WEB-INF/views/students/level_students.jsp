@@ -28,4 +28,24 @@
 	      	</c:if>
 		</td>
 	</tr>
-</c:forEach>					
+</c:forEach>	
+<c:if test="${ showPage != null && students.size() > 0 }">
+	<c:set var="pagenumber" value="${ students.get(0).getNumber() != null ? Math.ceil(students.get(0).getNumber()/2) : 1 }" scope="page" />
+	
+	<!-- Do not touch to the next line pls -->
+	<div id = "pagination-search" style = "display:none;">
+		<li class="page-item">
+	      <a class="page-link" href="#" id = "previous-page" aria-label="Previous">
+	        <span aria-hidden="true">&laquo;</span>
+	      </a>
+	    </li>
+		<c:forEach var="i" begin="1" end="${ pagenumber }" step="1">
+		    <li class="page-item ${ i == 1 ? 'active' : ''}"><a class="page-link" page-target = "${ i }" href="#"><c:out value="${ i }" /></a></li>
+		</c:forEach>
+		<li class="page-item">
+	      <a class="page-link" href="#" id = "next-page" aria-label="Next">
+	        <span aria-hidden="true">&raquo;</span>
+	      </a>
+	    </li>
+	</div>
+</c:if>				

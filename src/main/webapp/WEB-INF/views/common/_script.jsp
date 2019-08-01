@@ -58,6 +58,3 @@
 <!-- main JS
 ============================================ -->
 <script src="<c:url value="/resources/js/main.js" />"></script>
-<!-- tawk chat JS
-============================================ -->
-<script src="<c:url value="/resources/js/tawk-chat.js" />"></script>

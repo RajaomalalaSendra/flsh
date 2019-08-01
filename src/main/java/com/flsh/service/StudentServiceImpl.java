@@ -119,10 +119,10 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel) {
-		String queryStudent = idLevel == 0 ? "SELECT * FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+")" 
-								: "SELECT * FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id"
-								+ " where au_id = "+idUY+" and niv_id = "+idLevel;
+	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel, int numPage) {
+		String queryStudent = idLevel == 0 ? "SELECT Etudiant.*, ( select count(*) FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+") ) as maxnumber FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+") LIMIT 100 OFFSET "+(100 * (numPage - 1)) 
+								: "SELECT Etudiant.*, (SELECT count(*) FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id where au_id = "+idUY+" and niv_id = "+idLevel+") as maxnumber FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id"
+								+ " where au_id = "+idUY+" and niv_id = "+idLevel+" LIMIT 100 OFFSET "+(100 * (numPage - 1));
 		System.out.print(queryStudent);
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
 		return students;
@@ -496,7 +496,8 @@ class StudentMapper implements RowMapper<Student> {
 			}
 			student.setEvaluations(listEvaluations);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.print("No evaluation data");
+			//e.printStackTrace();
 		}
 		return student;
 	}
