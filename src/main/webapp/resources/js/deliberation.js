@@ -40,10 +40,10 @@ $(document).ready(function() {
 	})
 	
 	$('#choixElevesDelib').on('change', function(){
-		$('thead').html('loading...')
 		var idStudent = $(this).val()
 		var idLevel = $('#choixLevelDelib').val()
 		var idUnivYear = $("#IdUnivYear").val()
+		var idPrc = $('#choixParcoursDelib').val()
 	
 		$.ajax({
 			url: getBaseUrl("deliberation/student_detail?idStudent=" + idStudent),
@@ -56,35 +56,16 @@ $(document).ready(function() {
 		})
 		
 		$.ajax({
-			url: getBaseUrl("deliberation/periods_list?idLevel=" + idLevel),
+			url: getBaseUrl("deliberation/getEvaluationData"),
+			type: 'POST',
+			data: {idUnivYear, idLevel, idStudent, idPrc},
 			success: function(data) {
-				$("#changeFromPeriod").html(data).trigger('change')
+				$('#info-evaluation thead .head-period').remove()
+				$("#info-evaluation tbody").html(data)
+				$('.head-period').appendTo('#info-evaluation thead tr')
 			}, 
 			error: function() {
-				$("#changeFromPeriod").html("There is an error").trigger('change')
-			}
-		})
-		
-	})
-	
-	$('#changeFromPeriod').on('change', function(){
-		var valPeriod = $(this).html();
-		var idUnivYear = $("#IdUnivYear").val()
-		var idStudent = $("#choixElevesDelib").val()
-		var valPeriodByQuote = valPeriod.split("\"")
-		// To get all the two periods'id
-		var idPeriodOne = valPeriodByQuote[3]
-		var idPeriodTwo = valPeriodByQuote[7]
-		
-		$.ajax({
-			url: getBaseUrl("/deliberation/deliberation_list?univYear=" + idUnivYear + 
-					"&idStudent=" + idStudent + "&idPeriodOne="+ idPeriodOne + "&idPeriodTwo="
-					+ idPeriodTwo),
-			success: function(data) {
-				$("tbody").html(data).trigger('change')
-			}, 
-			error: function() {
-				$("tbody").html("There is an error").trigger('change')
+				$("#info-evaluation tbody").html("There is an error")
 			}
 		})
 		

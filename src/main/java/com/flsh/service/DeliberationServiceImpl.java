@@ -46,7 +46,7 @@ public class DeliberationServiceImpl implements DeliberationService{
 	}
 
 	@Override
-	public List<Deliberation> getDelibByUYAndStdAndPerId(int univYearId, int idStudent, int idPeriod) {
+	public List<Deliberation> getInfosEvaluationsByStudentLevelUnivYearAndParcours(int univYearId, int idStudent, int idLevel, int idPrc) {
 		// TODO Auto-generated method stub
 		String sql = "SELECT Evaluation_Etudiant.*, Element_Constitutif.ec_libelle, Element_Constitutif.ec_notation , Unite_Enseignement.ue_libelle , " 
 				+ "Periode.per_libellecourt, Periode.per_aratrappage "
@@ -57,7 +57,7 @@ public class DeliberationServiceImpl implements DeliberationService{
 				+ "JOIN Annee_Universitaire ON Annee_Universitaire.au_id = Periode.au_id "
 				+ "WHERE etd_id = " + idStudent  
 				+ " AND Annee_Universitaire.au_id = " + univYearId
-				+ " AND Periode.per_id = " + idPeriod;
+				+ " AND Periode.per_id = " + idLevel;
 		
 		List<Deliberation> delibs = jdbcTemplate.query(sql, new DeliberationMapper());
 		return delibs;
