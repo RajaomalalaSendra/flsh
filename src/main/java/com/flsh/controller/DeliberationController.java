@@ -78,22 +78,20 @@ public class DeliberationController {
 	    return mav;
 	}
 	
-	@RequestMapping(value = "/deliberation/deliberation_list", method = RequestMethod.GET)
+	@RequestMapping(value = "/deliberation/getEvaluationData", method = RequestMethod.POST)
 	@ResponseBody
 	ModelAndView getDelibList(HttpServletRequest request, HttpServletResponse response) {
-		int univYearId = request.getParameter("univYear") == ""   ? 0 : Integer.parseInt(request.getParameter("univYear"));
+		int univYearId = request.getParameter("idUnivYear") == ""   ? 0 : Integer.parseInt(request.getParameter("idUnivYear"));
 		int idStudent = request.getParameter("idStudent") == "" ? 0 : Integer.parseInt(request.getParameter("idStudent"));
-		int idPeriodOne = request.getParameter("idPeriodOne") == "" ? 0 : Integer.parseInt(request.getParameter("idPeriodOne"));
-		int idPeriodTwo = request.getParameter("idPeriodTwo") == "" ? 0 : Integer.parseInt(request.getParameter("idPeriodTwo"));
+		int idLevel = request.getParameter("idLevel") == "" ? 0 : Integer.parseInt(request.getParameter("idLevel"));
+		int idPrc = request.getParameter("idPrc") == "" ? 0 : Integer.parseInt(request.getParameter("idPrc"));
 		
 		ModelAndView mav = new ModelAndView("deliberation/deliberation_list");
 	    
-		List<Deliberation> delibPeriodOne = delibService.getDelibByUYAndStdAndPerId(univYearId, idStudent, idPeriodOne);
-		List<Deliberation> delibPeriodTwo = delibService.getDelibByUYAndStdAndPerId(univYearId, idStudent, idPeriodTwo);
+		List<Deliberation> delibPeriodOne = delibService.getInfosEvaluationsByStudentLevelUnivYearAndParcours(univYearId, idStudent, idLevel, idPrc);
         TotalCredit totalCredit = delibService.getTotalCredit(univYearId, idStudent);
-		
-		mav.addObject("delibs_period_one", delibPeriodOne);
-		mav.addObject("delibs_period_two", delibPeriodTwo);
+		mav.addObject("periodes", periodService.getNiveauPeriodsById(idLevel, univYearId));
+		mav.addObject("dataEvaluations", delibPeriodOne);
 		mav.addObject("total", totalCredit);
 	    return mav;
 	}

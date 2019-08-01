@@ -13,7 +13,7 @@ public interface DeliberationService {
 
 	UniversityYear getDetailUnivYear(int univYearId);
 
-	List<Deliberation> getDelibByUYAndStdAndPerId(int univYearId, int idStudent, int idPeriod);
+	List<Deliberation> getInfosEvaluationsByStudentLevelUnivYearAndParcours(int univYearId, int idStudent, int idLevel, int idPrc);
 
 	List<PeriodLibelle> getDelibByIdLevel(int idLevel);
 

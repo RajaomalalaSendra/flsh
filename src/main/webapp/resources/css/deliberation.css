@@ -1,3 +1,4 @@
+
 #choix-delib-wrapper {
 	padding-left: 20px;
 }
@@ -16,4 +17,19 @@
 .pull-right-buttom {
 	margin-left: 800px;
 	margin-bottom: 10px;
+}
+#deliberation-wrapper .header-list {
+	background-color: #006df0;
+	color: #fff;
+	height: 42px;
+    padding-left: 10px;
+}
+#deliberation-wrapper .header-list h4 {
+	padding-top: 10px;
+}
+#deliberation-wrapper .header-list label[for=choixParcoursDelib] {
+	margin-left: 20px;
+}
+#deliberation-wrapper .header-list select {
+	color: #000;
 }
