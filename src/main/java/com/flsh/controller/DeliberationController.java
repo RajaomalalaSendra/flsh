@@ -19,7 +19,7 @@ import com.flsh.interfaces.PeriodService;
 import com.flsh.interfaces.StudentService;
 import com.flsh.interfaces.TeachingService;
 import com.flsh.model.Course;
-import com.flsh.model.Deliberation;
+import com.flsh.model.EvaluationUEECStudent;
 import com.flsh.model.Level;
 import com.flsh.model.PeriodLibelle;
 import com.flsh.model.Student;
@@ -88,11 +88,10 @@ public class DeliberationController {
 		
 		ModelAndView mav = new ModelAndView("deliberation/deliberation_list");
 	    
-		List<Deliberation> delibPeriodOne = delibService.getInfosEvaluationsByStudentLevelUnivYearAndParcours(univYearId, idStudent, idLevel, idPrc);
-        TotalCredit totalCredit = delibService.getTotalCredit(univYearId, idStudent);
+		List<EvaluationUEECStudent> dataEvaluations = delibService.getInfosEvaluationsByStudentLevelUnivYearAndParcours(univYearId, idStudent, idLevel, idPrc);
+        
 		mav.addObject("periodes", periodService.getNiveauPeriodsById(idLevel, univYearId));
-		mav.addObject("dataEvaluations", delibPeriodOne);
-		mav.addObject("total", totalCredit);
+		mav.addObject("dataEvaluations", dataEvaluations);
 	    return mav;
 	}
 	
@@ -106,16 +105,5 @@ public class DeliberationController {
 		mav.addObject("student", student);
 	    return mav;
 	}
-	
-	@RequestMapping(value = "/deliberation/periods_list", method = RequestMethod.GET)
-	@ResponseBody
-	ModelAndView getPeriodsList(HttpServletRequest request, HttpServletResponse response) {
-		int idLevel = request.getParameter("idLevel") == "" ? 0 : Integer.parseInt(request.getParameter("idLevel"));
-	    ModelAndView mav = new ModelAndView("deliberation/periods_list");
-	    
-	    List<PeriodLibelle> periods = delibService.getDelibByIdLevel(idLevel);
-		mav.addObject("periods", periods);
-	    return mav;
-	}	
 
 }

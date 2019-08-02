@@ -18,7 +18,9 @@ import org.springframework.jdbc.core.RowMapper;
 import com.flsh.interfaces.DeliberationService;
 import com.flsh.model.Authorities;
 import com.flsh.model.Course;
-import com.flsh.model.Deliberation;
+import com.flsh.model.EvaluationCourseStudent;
+import com.flsh.model.EvaluationUEECStudent;
+import com.flsh.model.Parcours;
 import com.flsh.model.PeriodLibelle;
 import com.flsh.model.Student;
 import com.flsh.model.TotalCredit;
@@ -46,49 +48,14 @@ public class DeliberationServiceImpl implements DeliberationService{
 	}
 
 	@Override
-	public List<Deliberation> getInfosEvaluationsByStudentLevelUnivYearAndParcours(int univYearId, int idStudent, int idLevel, int idPrc) {
+	public List<EvaluationUEECStudent> getInfosEvaluationsByStudentLevelUnivYearAndParcours(int univYearId, int idStudent, int idLevel, int idPrc) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT Evaluation_Etudiant.*, Element_Constitutif.ec_libelle, Element_Constitutif.ec_notation , Unite_Enseignement.ue_libelle , " 
-				+ "Periode.per_libellecourt, Periode.per_aratrappage "
-				+ "FROM `Evaluation_Etudiant` " 
-				+ "JOIN Element_Constitutif ON Element_Constitutif.ec_id = Evaluation_Etudiant.ec_id "
-				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Element_Constitutif.ue_id "
-				+ "JOIN Periode ON Periode.per_id = Evaluation_Etudiant.per_id "
-				+ "JOIN Annee_Universitaire ON Annee_Universitaire.au_id = Periode.au_id "
-				+ "WHERE etd_id = " + idStudent  
-				+ " AND Annee_Universitaire.au_id = " + univYearId
-				+ " AND Periode.per_id = " + idLevel;
-		
-		List<Deliberation> delibs = jdbcTemplate.query(sql, new DeliberationMapper());
+		String sql = "SELECT Unite_Enseignement.* "
+				+ "FROM Unite_Enseignement " 
+				+ "WHERE prc_id = " + idPrc;
+		System.out.print("\n"+sql+"\n");
+		List<EvaluationUEECStudent> delibs = jdbcTemplate.query(sql, new DeliberationMapper(dataSource, jdbcTemplate, univYearId, idStudent, idLevel, idPrc));
 		return delibs;
-	}
-
-	@Override
-	public List<PeriodLibelle> getDelibByIdLevel(int idLevel) {
-		// TODO Auto-generated method stub
-		String sql = "SELECT Periode.per_libellecourt, Periode.per_id FROM Periode WHERE Periode.niv_id = "+ idLevel;
-		List<PeriodLibelle> list_delib =  jdbcTemplate.query(sql, new DeliberationPeriodeMapper());
-		return list_delib;
-	}
-
-	@Override
-	public List<Course> getAllCourses() {
-		// TODO Auto-generated method stub
-		String sql = "SELECT ec_libelle FROM Element_Constitutif";
-		List<Course> list_delib =  jdbcTemplate.query(sql, new DeliberationCourseMapper());
-		return list_delib;
-	}
-
-	@Override
-	public TotalCredit getTotalCredit(int univYearId, int idStudent) {
-		// TODO Auto-generated method stub
-		String sql = "SELECT SUM(evale_creditobtenu) as total_credit FROM `Evaluation_Etudiant` " + 
-				"JOIN Periode ON Periode.per_id = Evaluation_Etudiant.per_id " + 
-				"JOIN Annee_Universitaire ON Annee_Universitaire.au_id = Periode.au_id " + 
-				"WHERE etd_id = " + idStudent 
-				+ " AND Annee_Universitaire.au_id = " + univYearId;
-		List<TotalCredit> totalCredit =  jdbcTemplate.query(sql, new TotalCreditMapper()); 
-		return totalCredit.size() > 0 ? totalCredit.get(0) : null;
 	}
 
 }
@@ -104,47 +71,57 @@ class UnivYearMapper implements RowMapper<UniversityYear> {
 	}
 }
 
-class DeliberationMapper implements RowMapper<Deliberation>{
-	public Deliberation mapRow(ResultSet rs, int arg1) throws SQLException {
-		Deliberation delibs = new Deliberation();
+class DeliberationMapper implements RowMapper<EvaluationUEECStudent>{
+	
+	DataSource dataSource;
+	JdbcTemplate jdbcTemplate;
+	int univYearId;
+	int idStudent;
+	int idLevel;
+	int idPrc;
+	
+	public DeliberationMapper(DataSource dataSource, JdbcTemplate jdbcTemplate, int univYearId, int idStudent, int idLevel, int idPrc) {
+		super();
+		this.dataSource = dataSource;
+		this.jdbcTemplate = jdbcTemplate;
+		this.univYearId = univYearId;
+		this.idStudent = idStudent;
+		this.idLevel = idLevel;
+		this.idPrc = idPrc;
+	}
+	
+	public EvaluationUEECStudent mapRow(ResultSet rs, int arg1) throws SQLException {
+		EvaluationUEECStudent delibs = new EvaluationUEECStudent();
 		// other than student
-		delibs.setCredit(rs.getString("evale_creditobtenu"));
-		delibs.setPeriod_id(rs.getInt("per_id"));
-		delibs.setEc_notation(rs.getInt("ec_notation"));
-		delibs.setEc_libelle(rs.getString("ec_libelle"));
-		delibs.setEvaluation(rs.getString("avale_evaluation"));
-		delibs.setPeriod_libelle(rs.getString("per_libellecourt"));
-		delibs.setPeriod_rattrapage(rs.getInt("per_aratrappage"));
-		delibs.setUe_libelle(rs.getString("ue_libelle"));
+		delibs.setStudyunit_id(rs.getInt("ue_id"));
+		delibs.setParcours_id(rs.getInt("prc_id"));
+		delibs.setStudyunit_libelle(rs.getString("ue_libelle"));
+		delibs.setStudyunit_type(rs.getString("ue_type"));
 		return delibs;
 	}
 	
-}
-
-class DeliberationPeriodeMapper implements RowMapper<PeriodLibelle>{
-	public PeriodLibelle mapRow(ResultSet rs, int arg1) throws SQLException {
-		PeriodLibelle delibs = new PeriodLibelle();
-		delibs.setPeriod_libelle(rs.getString("per_libellecourt"));
-		delibs.setPeriod_id(rs.getInt("per_id"));
-		return delibs;
+	private List<EvaluationCourseStudent> getEvaluationsCourseByUE(int ueId, int univYearId, int idStudent, int idLevel, int idPrc ) {
+		String sql = "SELECT Element_Constitutif.* "
+				+ "FROM Element_Constitutif "
+				+ "WHERE ue_id = "+ueId;
+		List<EvaluationCourseStudent> evaluationsCourses = jdbcTemplate.query(sql, new EvaluationCourseMapper());
+		return evaluationsCourses;
 	}
-	
 }
 
-class DeliberationCourseMapper implements RowMapper<Course>{
-	public Course mapRow(ResultSet rs, int arg1) throws SQLException {
-		Course course = new Course();
+
+class EvaluationCourseMapper implements RowMapper<EvaluationCourseStudent>{
+	public EvaluationCourseStudent mapRow(ResultSet rs, int arg1) throws SQLException {
+		EvaluationCourseStudent course = new EvaluationCourseStudent();
 		course.setCourse_libelle(rs.getString("ec_libelle"));
+		course.setStudyunit_id(rs.getInt("ue_id"));
+		course.setProfessor_id(rs.getInt("prof_id"));
+		course.setCourse_libelle(rs.getString("ec_libelle"));
+		course.setCourse_credit(rs.getInt("ec_credit"));
+	    course.setCourse_notation(rs.getInt("ec_notation"));
+	    course.setCourse_coefficient(rs.getInt("ec_coefficient"));
+	    
 		return course;
-	}
-	
-}
-
-class TotalCreditMapper implements RowMapper<TotalCredit>{
-	public TotalCredit mapRow(ResultSet rs, int arg1) throws SQLException {
-		TotalCredit totalCredit = new TotalCredit();
-		totalCredit.setTotalCredit(rs.getInt("total_credit"));
-		return totalCredit;
 	}
 	
 }
