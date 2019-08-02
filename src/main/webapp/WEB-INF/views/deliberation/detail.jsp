@@ -37,7 +37,9 @@
 						<thead>
 							<tr>
 								<th>U.E / E.C</th>
+								<th>Type</th>
 								<th>Notation</th>
+								<th>Coef</th>
 								<th>Crédit (max)</th>
 							</tr>
 						</thead>
