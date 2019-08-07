@@ -33,3 +33,18 @@
 #deliberation-wrapper .header-list select {
 	color: #000;
 }
+
+.input-ue-credit {
+	width: 80px;
+	text-align: right;
+}
+
+.ec-row td.ec-delib {
+	padding-left: 20px !important;
+}
+tr.ue-row, tr.ue-row td {
+	background-color: #f9f9f9;
+}
+tr.ec-row, tr.ec-row td {
+	background-color: #f6f8fa;
+}

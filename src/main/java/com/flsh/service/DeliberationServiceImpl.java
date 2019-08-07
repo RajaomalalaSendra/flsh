@@ -2,10 +2,8 @@ package com.flsh.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -16,16 +14,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.flsh.interfaces.DeliberationService;
-import com.flsh.model.Authorities;
 import com.flsh.model.Course;
 import com.flsh.model.EvaluationCourseStudent;
 import com.flsh.model.EvaluationUEECStudent;
 import com.flsh.model.Parcours;
-import com.flsh.model.PeriodLibelle;
-import com.flsh.model.Student;
-import com.flsh.model.TotalCredit;
 import com.flsh.model.UniversityYear;
-import com.flsh.model.User;
+
 
 public class DeliberationServiceImpl implements DeliberationService{
 	
@@ -97,16 +91,19 @@ class DeliberationMapper implements RowMapper<EvaluationUEECStudent>{
 		delibs.setParcours_id(rs.getInt("prc_id"));
 		delibs.setStudyunit_libelle(rs.getString("ue_libelle"));
 		delibs.setStudyunit_type(rs.getString("ue_type"));
+		
+		delibs.setCoursesEvaluations(this.getEvaluationsCourseByUE(rs.getInt("ue_id"), univYearId, idStudent, idLevel, idPrc));
 		return delibs;
 	}
 	
 	private List<EvaluationCourseStudent> getEvaluationsCourseByUE(int ueId, int univYearId, int idStudent, int idLevel, int idPrc ) {
 		String sql = "SELECT Element_Constitutif.* "
 				+ "FROM Element_Constitutif "
-				+ "WHERE ue_id = "+ueId;
+				+ "WHERE ue_id = " + ueId;
 		List<EvaluationCourseStudent> evaluationsCourses = jdbcTemplate.query(sql, new EvaluationCourseMapper());
 		return evaluationsCourses;
 	}
+	
 }
 
 
@@ -120,8 +117,9 @@ class EvaluationCourseMapper implements RowMapper<EvaluationCourseStudent>{
 		course.setCourse_credit(rs.getInt("ec_credit"));
 	    course.setCourse_notation(rs.getInt("ec_notation"));
 	    course.setCourse_coefficient(rs.getInt("ec_coefficient"));
-	    
-		return course;
+	    course.setCourse_id(rs.getInt("ec_id"));
+		
+	    return course;
 	}
 	
 }

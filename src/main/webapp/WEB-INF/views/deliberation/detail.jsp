@@ -22,11 +22,11 @@
 		        	<select class = "form-control" id = "choixParcoursDelib">
 		        	</select>
 		        	<div class = "pull-right">
-		        		<a class = "btn btn-default" title = "Retour au choix saisie" href = "<c:url value='/educations/notes' />"><i class = "glyphicon glyphicon-step-backward"></i></a>
+		        		<a class = "btn btn-default" id = "delib-eleve-precedent" title = "eleve precedent"><i class = "glyphicon glyphicon-step-backward"></i></a>
 		        		<label for = "choixElevesDelib">Eleves :</label>
 		        		<select class = "form-control"  id = "choixElevesDelib" >
 			        	</select> 
-		        		<a class = "btn btn-default" title = "Retour au choix saisie" href = "<c:url value='/educations/notes' />"><i class = "glyphicon glyphicon-step-forward"></i></a>
+		        		<a class = "btn btn-default" id = "delib-eleve-suivant" title = "eleve suivant"><i class = "glyphicon glyphicon-step-forward"></i></a>
 		        	</div>
 				</div>
 				<h4>Deliberation  ${univ_year.getUniversity_year_libelle() }</h4>
@@ -43,7 +43,7 @@
 								<th>Crédit (max)</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody class = "row-delib">
 						
 						</tbody>
 					</table>
