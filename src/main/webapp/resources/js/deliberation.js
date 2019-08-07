@@ -1,8 +1,7 @@
+var listStudents = []
 $(document).ready(function() {
 	$(function() {
 		$('#choixLevelDelib').trigger('change');
-		$('#choixParcoursDelib').trigger('change');
-		$('#choixElevesDelib').trigger('change');
 	})
 	
 	
@@ -30,7 +29,11 @@ $(document).ready(function() {
 		$.ajax({
 			url: getBaseUrl('deliberation/students_list?univYear='+ idUnivYear + '&idParcours=' + idParcours),
 			success: function(data) {
-				$("#choixElevesDelib").html(data).trigger('change')
+				$("#choixElevesDelib").html(data).trigger('change')		
+				listStudents = []
+				$("#choixElevesDelib option").each(function() {
+					listStudents.push($(this).attr('value'))
+				})
 			}, 
 			error: function() {
 				$("#choixElevesDelib").html("There is error").trigger('change')
@@ -49,6 +52,10 @@ $(document).ready(function() {
 			url: getBaseUrl("deliberation/student_detail?idStudent=" + idStudent),
 			success: function(data) {
 				$("#Detail-Student-Deliberation").html(data)
+					$("#delib-eleve-precedent").on('click', function(e){
+						e.preventDefault()
+						console.log($("select#choixElevesDelib.form-control option"))
+					})
 			}, 
 			error: function() {
 				$("#Detail-Student-Deliberation").html("There is an error")
@@ -71,4 +78,50 @@ $(document).ready(function() {
 		
 	})
 	
+	$("#delib-eleve-suivant").on('click', function(e){
+		e.preventDefault()
+		var i = listStudents.indexOf($("#choixElevesDelib").val())
+		if(listStudents[i+1]) {
+			$("#choixElevesDelib").val(listStudents[i+1]).trigger('change')
+		}
+	})
+	
+	$("#delib-eleve-precedent").on('click', function(e){
+		e.preventDefault()
+		var i = listStudents.indexOf($("#choixElevesDelib").val())
+		if(listStudents[i-1]) {
+			$("#choixElevesDelib").val(listStudents[i-1]).trigger('change')
+		}
+	})
+	
+	$(document).on('keyup', '.row-delib input', function(e) {
+		console.log(e.keyCode)
+		var message = validateNote()
+		if(message == "") {
+			console.log("It is a number conform")
+		} else {
+			console.log("It is a number not conform")
+		}
+	})
+	
 })
+
+
+function validateNote(val) {
+
+	if(val == "") {
+		return "";
+	}
+	if(isNaN(parseFloat(val))) {
+		return "Valeur incorrect";
+	} else {
+		var nb = parseFloat(val)
+		if(val < 0) {
+			return "Credit négatif";
+		} else if(val > notation) {
+			return "Crédit obténu supérieur au Crédit(max)";
+		} else {
+			return "";
+		}
+	}
+}

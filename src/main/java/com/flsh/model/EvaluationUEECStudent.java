@@ -8,7 +8,7 @@ public class EvaluationUEECStudent {
 	private int parcours_id;
 	private String studyunit_libelle;
 	private String studyunit_type;
-	private HashSet<EvaluationCourseStudent> CoursesEvaluations;
+	private List<EvaluationCourseStudent> CoursesEvaluations;
 	
 	public int getStudyunit_id() {
 		return studyunit_id;
@@ -34,10 +34,10 @@ public class EvaluationUEECStudent {
 	public void setStudyunit_type(String studyunit_type) {
 		this.studyunit_type = studyunit_type;
 	}
-	public HashSet<EvaluationCourseStudent> getCoursesEvaluations() {
+	public List<EvaluationCourseStudent> getCoursesEvaluations() {
 		return CoursesEvaluations;
 	}
-	public void setCoursesEvaluations(HashSet<EvaluationCourseStudent> coursesEvaluations) {
+	public void setCoursesEvaluations(List<EvaluationCourseStudent> coursesEvaluations) {
 		CoursesEvaluations = coursesEvaluations;
 	}
 }
