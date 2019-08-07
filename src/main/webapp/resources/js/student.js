@@ -336,7 +336,7 @@ $(document).ready(function() {
 						type: 'POST',
 						data: {page: numPage, idUY, idLevel},
 						success: function(data) {
-							$('#table-students tbody').html(data)
+							$('#table-subscribed tbody').html(data)
 							$('li.page-item').removeClass('active')
 							parent.addClass('active')
 						},
@@ -348,7 +348,7 @@ $(document).ready(function() {
 					$.ajax({
 						url: getBaseUrl('students/searchSubscribed?criteria='+criteria+'&page='+numPage+'&idUY='+$('#choixUY').val()+'&idLevel='+$('#choixLevel').val()),
 						success: function(data) {
-							$('#table-students tbody').html(data)
+							$('#table-subscribed tbody').html(data)
 							$('li.page-item').removeClass('active')
 							parent.addClass('active')
 						},

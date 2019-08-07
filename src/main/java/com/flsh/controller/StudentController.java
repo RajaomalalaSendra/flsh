@@ -171,7 +171,7 @@ public class StudentController {
 		String searchCriteria = request.getParameter("criteria");
 		int numPage = request.getParameter("page") != null && !request.getParameter("page").equals("") ? Integer.parseInt(request.getParameter("page")) : 1;
 		ModelAndView mav = new ModelAndView("students/level_students");
-		mav.addObject("students", studentService.getStudentsByUnivYearAndLevel(idUY, idLevel, numPage));
+		mav.addObject("students", studentService.getStudentsByUnivYearAndLevelAndCriteria(idUY, idLevel, searchCriteria, numPage));
 		if(numPage == 1) mav.addObject("showPage", true);
 		mav.addObject("idLevel", idLevel);
 		return mav;

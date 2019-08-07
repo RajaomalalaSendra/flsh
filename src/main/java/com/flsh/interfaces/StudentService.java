@@ -37,4 +37,6 @@ public interface StudentService {
 
 	public List<Student> getStudentsByCriteria(String criteria, int numPage);
 
+	public Object getStudentsByUnivYearAndLevelAndCriteria(int idUY, int idLevel, String searchCriteria, int numPage);
+
 }

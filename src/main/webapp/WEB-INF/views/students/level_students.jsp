@@ -30,7 +30,7 @@
 	</tr>
 </c:forEach>	
 <c:if test="${ showPage != null && students.size() > 0 }">
-	<c:set var="pagenumber" value="${ students.get(0).getNumber() != null ? Math.ceil(students.get(0).getNumber()/2) : 1 }" scope="page" />
+	<c:set var="pagenumber" value="${ students.get(0).getNumber() != null ? Math.ceil(students.get(0).getNumber()/100) : 1 }" scope="page" />
 	
 	<!-- Do not touch to the next line pls -->
 	<div id = "pagination-search" style = "display:none;">

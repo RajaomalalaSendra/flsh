@@ -4,6 +4,7 @@
 <html class="no-js" lang="en">
 <head>
 	<%@include file="../common/_header.jsp" %>
+	<link rel="stylesheet" href="<c:url value="/resources/css/professor.css" />">
 </head>
 <body>
 	
@@ -16,6 +17,10 @@
 	    	<div class = "header-list">
 				<button class = "btn btn-primary pull-right" id = "add-professor" title = "Ajouter un nouveau professeur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
     			<h1>Professors List</h1>  
+    			<div class = "form-group" id = "search-container">
+    				<input type = "text" id = "search-prof" placeholder = "Rechercher prof..." class = "form-control" />
+    				<label for = "search-prof"><i class = "glyphicon glyphicon-search"></i></label>
+    			</div>
 			</div>
 			<table class="table table-striped">
 			  <thead>
