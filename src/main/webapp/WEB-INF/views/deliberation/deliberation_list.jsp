@@ -23,11 +23,8 @@
 			<td>${ ec.getCourse_notation() }</td><!-- notation -->
 			<td>${ ec.getCourse_coefficient() }</td><!-- coefficient -->
 			<td>${ ec.getCourse_credit() }</td><!-- Crédit -->
-			<c:forEach items = "${ periodes }" var = "period">
-				<td> --- </td>
-				<c:if test="${ period.isA_ratrappage() }">
-					<td>--</td>
-				</c:if>
+			<c:forEach items = "${ evaluation_note }" var = "note">
+				<td> ${ note.getEvaluations() }</td>
 			</c:forEach>
 			<td><input class = "input-ue-credit"></td>
 			<td><button class = "btn btn-sm btn-danger"><i class= "glyphicon glyphicon-remove"></i></button></td>
