@@ -19,6 +19,7 @@ import com.flsh.interfaces.PeriodService;
 import com.flsh.interfaces.StudentService;
 import com.flsh.interfaces.TeachingService;
 import com.flsh.model.Course;
+import com.flsh.model.EvaluationNote;
 import com.flsh.model.EvaluationUEECStudent;
 import com.flsh.model.Level;
 import com.flsh.model.PeriodLibelle;
@@ -85,13 +86,14 @@ public class DeliberationController {
 		int idStudent = request.getParameter("idStudent") == "" ? 0 : Integer.parseInt(request.getParameter("idStudent"));
 		int idLevel = request.getParameter("idLevel") == "" ? 0 : Integer.parseInt(request.getParameter("idLevel"));
 		int idPrc = request.getParameter("idPrc") == "" ? 0 : Integer.parseInt(request.getParameter("idPrc"));
-		
+	
 		ModelAndView mav = new ModelAndView("deliberation/deliberation_list");
 	    
 		List<EvaluationUEECStudent> dataEvaluations = delibService.getInfosEvaluationsByStudentLevelUnivYearAndParcours(univYearId, idStudent, idLevel, idPrc);
-        
-		mav.addObject("periodes", periodService.getNiveauPeriodsById(idLevel, univYearId));
+		List<EvaluationNote> evaluation_note = delibService.getEvaluationCourseByStdAnsCrsId(idStudent);
+        mav.addObject("periodes", periodService.getNiveauPeriodsById(idLevel, univYearId));
 		mav.addObject("dataEvaluations", dataEvaluations);
+		mav.addObject("evaluation_note", evaluation_note);
 	    return mav;
 	}
 	

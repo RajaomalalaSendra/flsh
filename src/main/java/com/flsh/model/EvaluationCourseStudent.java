@@ -1,5 +1,7 @@
 package com.flsh.model;
 
+import java.util.HashMap;
+
 public class EvaluationCourseStudent {
 	private int course_id;
 	private int studyunit_id;
@@ -65,5 +67,4 @@ public class EvaluationCourseStudent {
 	public void setPeriodicalEvaluations(String periodicalEvaluations) {
 		this.periodicalEvaluations = periodicalEvaluations;
 	}
-	
 }

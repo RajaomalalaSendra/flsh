@@ -52,10 +52,6 @@ $(document).ready(function() {
 			url: getBaseUrl("deliberation/student_detail?idStudent=" + idStudent),
 			success: function(data) {
 				$("#Detail-Student-Deliberation").html(data)
-					$("#delib-eleve-precedent").on('click', function(e){
-						e.preventDefault()
-						console.log($("select#choixElevesDelib.form-control option"))
-					})
 			}, 
 			error: function() {
 				$("#Detail-Student-Deliberation").html("There is an error")

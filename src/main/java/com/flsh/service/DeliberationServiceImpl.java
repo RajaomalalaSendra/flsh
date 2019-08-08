@@ -2,6 +2,7 @@ package com.flsh.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -16,8 +17,10 @@ import org.springframework.jdbc.core.RowMapper;
 import com.flsh.interfaces.DeliberationService;
 import com.flsh.model.Course;
 import com.flsh.model.EvaluationCourseStudent;
+import com.flsh.model.EvaluationNote;
 import com.flsh.model.EvaluationUEECStudent;
 import com.flsh.model.Parcours;
+import com.flsh.model.Student;
 import com.flsh.model.UniversityYear;
 
 
@@ -39,6 +42,17 @@ public class DeliberationServiceImpl implements DeliberationService{
 		String sql = "SELECT * FROM Annee_Universitaire  WHERE au_id=" + univYearId ;
 		List<UniversityYear> univYears = jdbcTemplate.query(sql, new UnivYearMapper());
 		return univYears.size() > 0 ? univYears.get(0) : null;
+	}
+	
+	@Override 
+	public List<EvaluationNote> getEvaluationCourseByStdAnsCrsId(int stdId){
+		String query_evaluation = "SELECT GROUP_CONCAT(concat(Evaluation_Etudiant.per_id, \"_\", Examen.exam_sessiontype, \"_\", avale_evaluation) SEPARATOR \";\") " + 
+				"as evaluations FROM `Evaluation_Etudiant`  " + 
+				"JOIN Examen ON Examen.exam_id = Evaluation_Etudiant.exam_id " + 
+				"WHERE etd_id = " + stdId;
+		List<EvaluationNote> student_evaluation = jdbcTemplate.query(query_evaluation, new EvaluationNoteMapper());
+		
+		return student_evaluation;
 	}
 
 	@Override
@@ -122,4 +136,19 @@ class EvaluationCourseMapper implements RowMapper<EvaluationCourseStudent>{
 	    return course;
 	}
 	
+}
+
+class EvaluationNoteMapper implements RowMapper<EvaluationNote> {
+	public EvaluationNote mapRow(ResultSet rs, int arg1) throws SQLException {
+		EvaluationNote note = new EvaluationNote();
+		String evaluations = rs.getString("evaluations");
+		String[] tmpEvals = evaluations.split(";");
+		HashMap<String, String> listEvaluations = new HashMap<String, String>();
+		for(String eval : tmpEvals) {
+			String[] tmp = eval.split("_");
+			listEvaluations.put(tmp[1], tmp[2]);
+		}
+		note.setEvaluations(listEvaluations);
+	    return note;
+	}
 }
