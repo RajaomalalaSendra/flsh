@@ -13,7 +13,7 @@
 				<td>--</td>
 			</c:if>
 		</c:forEach>
-		<td><input class = "input-ue-credit"></td>
+		<td><input class = "input-ue-credit" type = "text" disabled></td>
 		<td><button class = "btn btn-sm btn-danger"><i class= "glyphicon glyphicon-remove"></i></button></td>
 	</tr>	
 	<c:forEach items = "${ delib.getCoursesEvaluations() }" var = "ec">
@@ -23,14 +23,28 @@
 			<td>${ ec.getCourse_notation() }</td><!-- notation -->
 			<td>${ ec.getCourse_coefficient() }</td><!-- coefficient -->
 			<td>${ ec.getCourse_credit() }</td><!-- Crédit -->
-			<c:forEach items = "${ evaluation_note }" var = "note">
-				<td> ${ note.getEvaluations() }</td>
+			<c:forEach items = "${ periodes }" var = "period">
+				<td> ${ ec.getPeriodNoteBySessionTypeAndId(1, period.getPeriod_id()) }</td>
+				<c:if test="${ period.isA_ratrappage() }">
+					<td> ${ ec.getPeriodNoteBySessionTypeAndId(2, period.getPeriod_id()) }</td>
+				</c:if>
 			</c:forEach>
-			<td><input class = "input-ue-credit"></td>
+			<td><input class = "input-ue-credit" max-credit = "ec.getCourse_credit()" type = "number"></td>
 			<td><button class = "btn btn-sm btn-danger"><i class= "glyphicon glyphicon-remove"></i></button></td>
 		</tr>	
 	</c:forEach>
 </c:forEach>
+<tr class = "total-row">
+	<td colspan = "5">Total</td>
+	<c:forEach items = "${ periodes }" var = "period">
+		<td id = "moy-${ period.getPeriod_id() }-1"></td>
+		<c:if test="${ period.isA_ratrappage() }">
+			<td id = "moy-${ period.getPeriod_id() }-2"></td>
+		</c:if>
+	</c:forEach>
+	<td id = "total-credit">0</td>
+	<td></td>
+</tr>
 <c:forEach items = "${ periodes }" var = "period">
 		<th class = "head-period">${ period.getPeriod_libellecourt() }</th>
 		<c:if test="${ period.isA_ratrappage() }">

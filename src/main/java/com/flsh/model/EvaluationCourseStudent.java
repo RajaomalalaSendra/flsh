@@ -11,8 +11,14 @@ public class EvaluationCourseStudent {
 	private int course_notation;
 	private double course_coefficient;
 	private String professor;
-	private String periodicalEvaluations;
+	private HashMap<String, String> periodicalEvaluations;
 	
+	public HashMap<String, String> getPeriodicalEvaluations() {
+		return periodicalEvaluations;
+	}
+	public void setPeriodicalEvaluations(HashMap<String, String> periodicalEvaluations) {
+		this.periodicalEvaluations = periodicalEvaluations;
+	}
 	public int getCourse_id() {
 		return course_id;
 	}
@@ -61,10 +67,11 @@ public class EvaluationCourseStudent {
 	public void setProfessor(String professor) {
 		this.professor = professor;
 	}
-	public String getPeriodicalEvaluations() {
-		return periodicalEvaluations;
-	}
-	public void setPeriodicalEvaluations(String periodicalEvaluations) {
-		this.periodicalEvaluations = periodicalEvaluations;
+	public String getPeriodNoteBySessionTypeAndId(int sessionType, int idPeriod) {
+		try {
+			return periodicalEvaluations.get(idPeriod + "_" + sessionType);
+		} catch(Exception e) {
+			return "";
+		}
 	}
 }

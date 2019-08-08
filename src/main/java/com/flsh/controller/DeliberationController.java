@@ -1,6 +1,5 @@
 package com.flsh.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,13 +16,9 @@ import com.flsh.interfaces.DeliberationService;
 import com.flsh.interfaces.PeriodService;
 import com.flsh.interfaces.StudentService;
 import com.flsh.interfaces.TeachingService;
-import com.flsh.model.Course;
-import com.flsh.model.EvaluationNote;
 import com.flsh.model.EvaluationUEECStudent;
 import com.flsh.model.Level;
-import com.flsh.model.PeriodLibelle;
 import com.flsh.model.Student;
-import com.flsh.model.TotalCredit;
 import com.flsh.model.UniversityYear;
 
 @Controller
@@ -90,10 +84,8 @@ public class DeliberationController {
 		ModelAndView mav = new ModelAndView("deliberation/deliberation_list");
 	    
 		List<EvaluationUEECStudent> dataEvaluations = delibService.getInfosEvaluationsByStudentLevelUnivYearAndParcours(univYearId, idStudent, idLevel, idPrc);
-		List<EvaluationNote> evaluation_note = delibService.getEvaluationCourseByStdAnsCrsId(idStudent);
         mav.addObject("periodes", periodService.getNiveauPeriodsById(idLevel, univYearId));
 		mav.addObject("dataEvaluations", dataEvaluations);
-		mav.addObject("evaluation_note", evaluation_note);
 	    return mav;
 	}
 	
