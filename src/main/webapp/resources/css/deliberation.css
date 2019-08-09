@@ -48,3 +48,20 @@ tr.ue-row, tr.ue-row td {
 tr.ec-row, tr.ec-row td {
 	background-color: #f6f8fa;
 }
+
+
+.error-input-ue-credit {
+	position: absolute;
+    width: 230px;
+    padding: 5px;
+    display: none;
+    z-index: 10;
+}
+
+input.hasError {
+	border: 1px solid #c00;
+}
+
+.inputCreditEC {
+	position: absolute;
+}
