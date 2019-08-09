@@ -29,8 +29,14 @@
 					<td> ${ ec.getPeriodNoteBySessionTypeAndId(2, period.getPeriod_id()) }</td>
 				</c:if>
 			</c:forEach>
-			<td><input class = "input-ue-credit" max-credit = "ec.getCourse_credit()" type = "number"></td>
-			<td><button class = "btn btn-sm btn-danger"><i class= "glyphicon glyphicon-remove"></i></button></td>
+			<td class = "inputCreditEC">
+				<input class = "input-ue-credit" max-credit = "${ec.getCourse_credit()}" type = "number">
+				<div class = "error-input-ue-credit alert alert-danger"></div>
+				<div id = "success-input-ue-credit"></div>
+			</td>
+			<td>
+				<button class = "btn btn-sm btn-danger"><i class= "glyphicon glyphicon-remove"></i></button>
+			</td>
 		</tr>	
 	</c:forEach>
 </c:forEach>

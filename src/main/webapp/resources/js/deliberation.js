@@ -90,18 +90,30 @@ $(document).ready(function() {
 		}
 	})
 	
-	$(document).on('keyup', '.row-delib input', function(e) {
+	$(document).on('keyup', '.row-delib .input-ue-credit', function(e) {
 		console.log(e.keyCode)
-		var message = validateNote()
-		if(message == "") {
-			console.log("It is a number conform")
-		} else {
-			console.log("It is a number not conform")
+		var maxCredit = parseInt($(this).attr("max-credit"))
+		var credit = $(this).val()
+		if(credit != ""){
+			console.log(credit, 'credit obtenu')
+			if(parseInt(credit) > maxCredit){
+				console.log("Not OK")		
+				$(this).parent().find('.error-input-ue-credit').html('Credit est superieur au credit max.').show()
+				$(this).addClass("hasError")
+			} else if(parseInt(credit) < 0){
+				console.log("Not OK")
+				$(this).parent().find('.error-input-ue-credit').html('Credit ne devrait pas etre negatif.').show()
+				$(this).addClass("hasError")
+			} else {
+				console.log("OK")
+				$(this).parent().find('.error-input-ue-credit').hide()
+				$(this).removeClass("hasError")
+			}
 		}
+		
 	})
 	
 })
-
 
 function validateNote(val) {
 
