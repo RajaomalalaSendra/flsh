@@ -35,7 +35,7 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 	@Override
 	public List<Professor> getAllProfessor() {
-		String sql_prof = "SELECT * FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id   WHERE Utilisateur.uti_type = 2 ";		
+		String sql_prof = "SELECT * FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id   WHERE Utilisateur.uti_type = 2 LIMIT 50";		
 		List<Professor> professors = jdbcTemplate.query(sql_prof, new ProfessorMapper());
 		return professors;
 	}
@@ -46,6 +46,14 @@ public class ProfessorServiceImpl implements ProfessorService {
 		List<Professor> professors = jdbcTemplate.query(sql, new ProfessorMapper());
 		return professors.size() > 0 ? professors.get(0) : null;
 	}
+	
+	@Override
+	public int getProfsNumber() {
+		String sql = "SELECT COUNT(*) FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id   WHERE Utilisateur.uti_type = 2 ";
+		int profsNumber = jdbcTemplate.queryForObject(sql, Integer.class);
+		return profsNumber;
+	}
+	
 	private boolean checkUsernameExists(String username, int uti_id) {
 		String sql = "SELECT * FROM Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id WHERE Utilisateur.uti_login = '"+username+"'";
 		if(uti_id != 0) {

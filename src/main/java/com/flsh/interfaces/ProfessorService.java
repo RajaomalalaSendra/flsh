@@ -21,4 +21,6 @@ public interface ProfessorService {
 	List<ProfessorStudyUnit> getAllProfessorUnitStudy();
 
 	List<String> getListProfUntStd();
+
+	int getProfsNumber();
 }

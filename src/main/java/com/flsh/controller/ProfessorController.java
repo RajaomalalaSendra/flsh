@@ -34,9 +34,11 @@ public class ProfessorController {
 	  
 	  @RequestMapping(value = "/professors", method = RequestMethod.GET)
 	  public ModelAndView showProfessor(HttpServletRequest request, HttpServletResponse response) {
-		List<Professor> professors=professorService.getAllProfessor();
+		List<Professor> professors = professorService.getAllProfessor();
+		int profsNumber = professorService.getProfsNumber();
 		ModelAndView prof = new ModelAndView("users/professors");
 	    prof.addObject("professors", professors);
+	    prof.addObject("number", profsNumber);
 	    prof.addObject("menu", "professor");
 	    prof.addObject("submenu", "all_professors");
 	    return prof;
