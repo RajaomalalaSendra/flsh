@@ -66,6 +66,10 @@ $(document).ready(function() {
 				$('#info-evaluation thead .head-period').remove()
 				$("#info-evaluation tbody").html(data)
 				$('.head-period').appendTo('#info-evaluation thead tr')
+				$('.ue-row').each(function(){
+					var idUE = $(this).attr("id").split("-")[2]
+					computeMoyenneUE(idUE)
+				})
 			}, 
 			error: function() {
 				$("#info-evaluation tbody").html("There is an error")
@@ -90,46 +94,83 @@ $(document).ready(function() {
 		}
 	})
 	
-	$(document).on('keyup', '.row-delib .input-ue-credit', function(e) {
-		console.log(e.keyCode)
+	$(document).on('keyup', '.row-delib .input-ec-credit', function(e) {
 		var maxCredit = parseInt($(this).attr("max-credit"))
 		var credit = $(this).val()
+		
 		if(credit != ""){
-			console.log(credit, 'credit obtenu')
 			if(parseInt(credit) > maxCredit){
-				console.log("Not OK")		
 				$(this).parent().find('.error-input-ue-credit').html('Credit est superieur au credit max.').show()
 				$(this).addClass("hasError")
-			} else if(parseInt(credit) < 0){
-				console.log("Not OK")
+			} else if(parseInt(credit) < 0 || credit == "-"){
 				$(this).parent().find('.error-input-ue-credit').html('Credit ne devrait pas etre negatif.').show()
 				$(this).addClass("hasError")
-			} else {
-				console.log("OK")
+			} else if(!parseInt(credit)){
+				$(this).parent().find('.error-input-ue-credit').html('Credit ne devrait pas etre un alphabet.').show()
+				$(this).addClass("hasError")
+			}else {
+				var idUE = $(this).attr("id").split("-")[2]
+				computeSumCredit(idUE)
+				
 				$(this).parent().find('.error-input-ue-credit').hide()
 				$(this).removeClass("hasError")
 			}
+		} else {
+			$(this).removeClass("hasError")
+			$(this).parent().find('.error-input-ue-credit').hide()
 		}
-		
 	})
-	
 })
 
-function validateNote(val) {
+function computeSumCredit(idUE){
+	var sumCredit = 0
+	$(".ecue-" + idUE).each(function(){
+		sumCredit += +$(this).find(".input-ec-credit").val()
+		console.log("Somme credit ue ", sumCredit)
+	 });
+	$("#input-ue-" + idUE).val(sumCredit)
+	computeSumAllCredit()
+}
 
-	if(val == "") {
-		return "";
-	}
-	if(isNaN(parseFloat(val))) {
-		return "Valeur incorrect";
-	} else {
-		var nb = parseFloat(val)
-		if(val < 0) {
-			return "Credit négatif";
-		} else if(val > notation) {
-			return "Crédit obténu supérieur au Crédit(max)";
-		} else {
-			return "";
+function computeSumAllCredit(){
+	var sumAllCredit = 0
+	$(".input-ue-credit").each(function(){
+		sumAllCredit += +$(this).val()
+		console.log("Somme credit total ", sumAllCredit)
+	})
+	$("#total-credit").html(sumAllCredit)
+}
+
+function computeMoyenneUE(idUE){
+	$(".period-exam").each(function(){
+		var idPeriod = $(this).attr("id").split("-")[1]
+		var typeSession = $(this).attr("id").split("-")[2]
+		
+		console.log("id Period: ", idPeriod, " type session: ", typeSession , " id UE: ", idUE)
+		console.log("ABS", +"ABS")
+		
+		var moyenneUE = 0
+		var sumCoefNotation = 0
+		var sumCoefNote = 0
+		
+		$(".ecue-" + idUE).each(function(){
+			var note = $.trim($(this).find(".note-ec-" + idPeriod + "-" + typeSession).html())
+			
+			/*if student is absent the note will be considered as 0*/
+			if( note != ""){
+				sumCoefNotation += (+$(this).find(".notation-ec").html() * +$(this).find(".coefficient-ec").html())
+				if(note != "ABS" ) sumCoefNote += (+note * +$(this).find(".coefficient-ec").html())
+			}
+			console.log("sum note ", sumCoefNote ," sum all note max ", sumCoefNotation)
+		});
+		
+		
+		if(sumCoefNotation != 0){
+			moyenneUE = (sumCoefNote / sumCoefNotation) * 20
+			$("#tr-ue-" + idUE).find(".note-ue-" + idPeriod + "-" + typeSession).html(moyenneUE.toFixed(2))
 		}
-	}
+		
+		console.log("test: ", moyenneUE)
+	})
+	
 }

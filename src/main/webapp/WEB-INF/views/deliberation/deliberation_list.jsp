@@ -8,35 +8,33 @@
 		<td></td><!-- coefficient -->
 		<td></td><!-- Crédit -->
 		<c:forEach items = "${ periodes }" var = "period">
-			<td> --- </td>
+			<td class = "note-ue-${ period.getPeriod_id() }-1"></td>
 			<c:if test="${ period.isA_ratrappage() }">
-				<td>--</td>
+				<td class = "note-ue-${ period.getPeriod_id() }-2"></td>
 			</c:if>
 		</c:forEach>
-		<td><input class = "input-ue-credit" type = "text" disabled></td>
+		<td><input class = "input-ue-credit"  id = "input-ue-${ delib.getStudyunit_id()}" type = "text" disabled></td>
 		<td><button class = "btn btn-sm btn-danger"><i class= "glyphicon glyphicon-remove"></i></button></td>
 	</tr>	
 	<c:forEach items = "${ delib.getCoursesEvaluations() }" var = "ec">
 		<tr class = "ec-row ecue-${ delib.getStudyunit_id() }" id = "tr-ec-${ ec.getCourse_id() }">
 			<td class = "ec-delib">${ ec.getCourse_libelle() }</td>
 			<td>-</td>
-			<td>${ ec.getCourse_notation() }</td><!-- notation -->
-			<td>${ ec.getCourse_coefficient() }</td><!-- coefficient -->
+			<td class = "notation-ec">${ ec.getCourse_notation() }</td><!-- notation -->
+			<td class = "coefficient-ec">${ ec.getCourse_coefficient() }</td><!-- coefficient -->
 			<td>${ ec.getCourse_credit() }</td><!-- Crédit -->
 			<c:forEach items = "${ periodes }" var = "period">
-				<td> ${ ec.getPeriodNoteBySessionTypeAndId(1, period.getPeriod_id()) }</td>
+				<td class = "note-ec-${ period.getPeriod_id() }-1"> ${ ec.getPeriodNoteBySessionTypeAndId(1, period.getPeriod_id()) }</td>
 				<c:if test="${ period.isA_ratrappage() }">
-					<td> ${ ec.getPeriodNoteBySessionTypeAndId(2, period.getPeriod_id()) }</td>
+					<td class = "note-ec-${ period.getPeriod_id() }-2"> ${ ec.getPeriodNoteBySessionTypeAndId(2, period.getPeriod_id()) }</td>
 				</c:if>
 			</c:forEach>
 			<td class = "inputCreditEC">
-				<input class = "input-ue-credit" max-credit = "${ec.getCourse_credit()}" type = "number">
+				<input class = "input-ec-credit" id = "input-ec-${ delib.getStudyunit_id()}-${ ec.getCourse_id() }" max-credit = "${ec.getCourse_credit()}" type = "text">
 				<div class = "error-input-ue-credit alert alert-danger"></div>
 				<div id = "success-input-ue-credit"></div>
 			</td>
-			<td>
-				<button class = "btn btn-sm btn-danger"><i class= "glyphicon glyphicon-remove"></i></button>
-			</td>
+			<td></td>
 		</tr>	
 	</c:forEach>
 </c:forEach>
@@ -52,9 +50,9 @@
 	<td></td>
 </tr>
 <c:forEach items = "${ periodes }" var = "period">
-		<th class = "head-period">${ period.getPeriod_libellecourt() }</th>
+		<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-1">${ period.getPeriod_libellecourt() }</th>
 		<c:if test="${ period.isA_ratrappage() }">
-			<th class = "head-period">Rattr. ${ period.getPeriod_libellecourt() }</th>
+			<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-2">Rattr. ${ period.getPeriod_libellecourt() }</th>
 		</c:if>
 </c:forEach>
 <th class = "head-period">Créd. obtenu</th>

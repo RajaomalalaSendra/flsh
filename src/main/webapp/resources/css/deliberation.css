@@ -34,9 +34,13 @@
 	color: #000;
 }
 
-.input-ue-credit {
+.input-ue-credit, .input-ec-credit, #total-credit {
 	width: 80px;
 	text-align: right;
+}
+
+#total-credit {
+	padding-right: 12px;
 }
 
 .ec-row td.ec-delib {
