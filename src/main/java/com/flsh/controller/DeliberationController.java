@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,6 +99,23 @@ public class DeliberationController {
 	    Student student = studentService.getStudentById(idStudent);
 		mav.addObject("student", student);
 	    return mav;
+	}
+	
+	@RequestMapping(value = "deliberation/save_moyenneUE", method = RequestMethod.POST)
+	@ResponseBody
+	public String saveMoyenneUE(HttpServletRequest request, HttpServletResponse response) {
+		int idStudent = request.getParameter("idStudent") == "" ? 0 : Integer.parseInt(request.getParameter("idStudent"));
+		int idUE = request.getParameter("idUE") == "" ? 0 : Integer.parseInt(request.getParameter("idUE"));
+		int idPeriod = request.getParameter("idPeriod") == "" ? 0 : Integer.parseInt(request.getParameter("idPeriod"));
+		float moyenneUE = request.getParameter("moyenneUE") == "" ? 0 : Float.parseFloat(request.getParameter("moyenneUE"));
+		int typeSession = request.getParameter("typeSession") == "" ? 0 : Integer.parseInt(request.getParameter("typeSession"));
+		
+		System.out.print("\n============================================================="
+				+ "\nId Student: " + idStudent + " id Ue: " + idUE + " id Period " + idPeriod + "  moeynneUE "
+						+ moyenneUE + " type Session: " + typeSession +
+				"\n=======================================================");
+		JSONObject save = delibService.saveMoyenneUE(idStudent, idUE, idPeriod, moyenneUE, typeSession);
+	    return save.toString();
 	}
 
 }

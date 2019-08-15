@@ -20,7 +20,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import com.flsh.interfaces.NoteService;
 import com.flsh.model.Course;
 import com.flsh.model.Exam;
-import com.flsh.model.Period;
 import com.flsh.model.Student;
 
 public class NoteServiceImpl implements NoteService {

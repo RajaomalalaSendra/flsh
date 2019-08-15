@@ -68,7 +68,7 @@ $(document).ready(function() {
 				$('.head-period').appendTo('#info-evaluation thead tr')
 				$('.ue-row').each(function(){
 					var idUE = $(this).attr("id").split("-")[2]
-					computeMoyenneUE(idUE)
+					computeMoyenneUE(idUE, idStudent)
 				})
 			}, 
 			error: function() {
@@ -141,13 +141,12 @@ function computeSumAllCredit(){
 	$("#total-credit").html(sumAllCredit)
 }
 
-function computeMoyenneUE(idUE){
+function computeMoyenneUE(idUE, idStudent){
 	$(".period-exam").each(function(){
 		var idPeriod = $(this).attr("id").split("-")[1]
 		var typeSession = $(this).attr("id").split("-")[2]
 		
 		console.log("id Period: ", idPeriod, " type session: ", typeSession , " id UE: ", idUE)
-		console.log("ABS", +"ABS")
 		
 		var moyenneUE = 0
 		var sumCoefNotation = 0
@@ -166,8 +165,20 @@ function computeMoyenneUE(idUE){
 		
 		
 		if(sumCoefNotation != 0){
-			moyenneUE = (sumCoefNote / sumCoefNotation) * 20
-			$("#tr-ue-" + idUE).find(".note-ue-" + idPeriod + "-" + typeSession).html(moyenneUE.toFixed(2))
+			moyenneUE = ((sumCoefNote / sumCoefNotation) * 20).toFixed(2)
+			$("#tr-ue-" + idUE).find(".note-ue-" + idPeriod + "-" + typeSession).html(moyenneUE)
+			
+			$.ajax({
+				url: getBaseUrl("deliberation/save_moyenneUE"),
+				type: 'POST',
+				data: {idStudent, idUE, idPeriod, moyenneUE, typeSession},
+				success: function(data) {
+					console.log("enregistrer")
+				}, 
+				error: function() {
+					$("#tr-ue-" + idUE).find("#error-note-ue-" + idPeriod + "-" + typeSession).show()
+				}
+			})
 		}
 		
 		console.log("test: ", moyenneUE)

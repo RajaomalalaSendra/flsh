@@ -1,5 +1,6 @@
 package com.flsh.service;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -7,15 +8,19 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.flsh.interfaces.DeliberationService;
 import com.flsh.model.EvaluationCourseStudent;
 import com.flsh.model.EvaluationUEECStudent;
+import com.flsh.model.Professor;
 import com.flsh.model.UniversityYear;
 
 
@@ -48,6 +53,44 @@ public class DeliberationServiceImpl implements DeliberationService{
 		System.out.print("\n"+sql+"\n");
 		List<EvaluationUEECStudent> delibs = jdbcTemplate.query(sql, new DeliberationMapper(dataSource, jdbcTemplate, univYearId, idStudent, idLevel, idPrc));
 		return delibs;
+	}
+	
+	@Override
+	public JSONObject saveMoyenneUE(int idStudent, int idUE, int idPeriod, float moyenneUE, int typeSession) {
+		// TODO Auto-generated method stub
+		JSONObject save = new JSONObject();
+		String deleteMoyenneUE = "DELETE FROM Moyenne_Ue WHERE etd_id = ? AND ue_id = ? "
+								 + "AND exam_id =  (SELECT exam_id FROM Examen WHERE per_id = "
+								 + idPeriod + " AND exam_sessiontype = " + typeSession + " LIMIT 1) "
+								 + "AND per_id = ?"; 
+		jdbcTemplate.execute (deleteMoyenneUE, new PreparedStatementCallback<Boolean>() {
+
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setInt(1, idStudent);
+				ps.setInt(2, idUE);
+				ps.setInt(3, idPeriod);
+				return ps.executeUpdate() > 0 ? true : false;
+			}
+		});
+
+		
+		String saveMoyenneUE = "INSERT INTO Moyenne_Ue(etd_id, ue_id, per_id, exam_id, moyue_val)"
+				+ " VALUES(?, ?, ?, (SELECT exam_id FROM Examen WHERE per_id = "
+				+ idPeriod + " AND exam_sessiontype = " + typeSession + " LIMIT 1), ?)";
+		
+		jdbcTemplate.execute (saveMoyenneUE, new PreparedStatementCallback<Boolean>() {
+
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setInt(1, idStudent);
+				ps.setInt(2, idUE);
+				ps.setInt(3, idPeriod);
+				ps.setFloat(4, moyenneUE);
+				return ps.executeUpdate() > 0 ? true : false;
+			}
+		});
+		return save;
 	}
 
 }
@@ -127,5 +170,4 @@ class EvaluationCourseMapper implements RowMapper<EvaluationCourseStudent>{
 		course.setPeriodicalEvaluations(listEvaluations);
 	    return course;
 	}
-	
 }
