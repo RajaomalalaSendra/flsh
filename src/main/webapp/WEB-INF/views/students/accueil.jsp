@@ -42,7 +42,7 @@
 					</tbody>
 				</table>
     		</div>
-    		<div class = "pagination" id = "pagination-students">
+    		<div class = "pagination" id = "pagination-professors">
 			  <ul class="pagination">
 			    <li class="page-item">
 			      <a class="page-link" href="#" id = "previous-page" aria-label="Previous">

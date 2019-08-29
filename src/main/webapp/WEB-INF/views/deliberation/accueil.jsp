@@ -13,7 +13,7 @@
     	<%@include file="../common/_menu.jsp" %>
     	<br/><br/><br/><br/>
     	<div class="main-wrapper">
-			<h1>Choisissez le mode de saisie</h1>
+			<h1>Choisissez une année</h1>
 			<div class = "row row-fluid" id = "choix-delib-wrapper">
 				<div class = "form-group form-inline">
 					<label for = "select-uy">Année universitaire :</label>

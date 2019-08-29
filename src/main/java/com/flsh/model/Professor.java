@@ -12,6 +12,7 @@ public class Professor {
 	private int user_id;
 	private int user_type;
 	private int user_civilite;
+	private int number = 1;
 	
 	public int getProfessor_id() {
 		return professor_id;
@@ -113,6 +114,12 @@ public class Professor {
 
 	public void setUser_civilite(int user_civilite) {
 		this.user_civilite = user_civilite;
+	}
+	public int getNumber() {
+		return number;
+	}
+	public void setNumber(int number) {
+		this.number = number;
 	}
 	
 }

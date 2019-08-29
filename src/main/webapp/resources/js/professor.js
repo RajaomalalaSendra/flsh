@@ -1,3 +1,5 @@
+var inSearch = false
+
 $(document).ready(function() {
 	//first loading
 	//Trigger change in professor courses
@@ -5,7 +7,7 @@ $(document).ready(function() {
 		$('#professorsAndUes').trigger('change');
 	})
 	
-	$('.detail-professor').on('click', function(event) {
+	$(document).on('click', '.detail-professor', function(event) {
 		event.preventDefault()
 		var url = getBaseUrl($(this).attr('href'))
 		$.ajax({
@@ -26,6 +28,7 @@ $(document).ready(function() {
 			}
 		})
 	})
+	
 	$('#add-professor').on('click', function() {
 		$('#profAddLabel').html('Ajouter un professeur')
 		emptyForm("#profAddModal")
@@ -34,7 +37,8 @@ $(document).ready(function() {
 		$('#prof-for-user-id').val('0')
 		$('#profAddModal').modal('show')
 	})
-	$('#save-prof').on('click', function(){
+	
+	$(document).on('click', '#save-prof', function(){
 		updatePasswordStatus()
 		if (formValidate('#form-save-prof')){
 			console.log("test.....")
@@ -59,7 +63,7 @@ $(document).ready(function() {
 		}
 	})
 	
-	$('.edit-professor').on('click', function(){
+	$(document).on('click', '.edit-professor', function(){
 		console.log('test edit prof')
 		var idprof = $(this).attr('id-prof')
 		var idprofforuser = $(this).attr('id-prof-for-user')
@@ -88,13 +92,15 @@ $(document).ready(function() {
 			}
 		})
 	})
-	$('.delete-professor').on('click', function() {
+	
+	$(document).on('click', '.delete-professor', function() {
 		var idUserProf = $(this).attr('id-profd')
 		var idUserProfProf = $(this).attr('id-profdelete')
 		$('#idProfDelete').val(idUserProf)
 		$('#userIdDelete').val(idUserProfProf)
 		$('#profDeleteModal').modal('show')
 	})
+	
 	$('#form-delete-prof').on('submit', function(e) {
 		console.log(getBaseUrl('professor/delete?id='+$('#idProfDelete').val()))
 		console.log(e)
@@ -104,7 +110,6 @@ $(document).ready(function() {
 			type: 'GET',
 			dataType: 'JSON',
 			success: function(data) {
-				console.log("OKOKOKOKOKO")
 				if(data.status == 1) {
 					$("#prof-"+$('#idProfDelete').val()).remove()
 					$('#success-delete-prof').html('Suppression avec success...').show().delay(3000).fadeOut(600)
@@ -165,6 +170,76 @@ $(document).ready(function() {
 				alert('Echec du chargement des UEs!!!!')
 			}
 		})
+	})
+	
+	$(document).on('click', '#pagination-professors li.page-item a', function(e) {
+		e.preventDefault()
+		console.log('call it')
+		var parent = $(this).parent()
+		if($(this).attr('id') == "previous-page") {
+			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) - 1
+			console.log('next page ', pageNext)
+			if(!$('li.page-item.active a').attr('page-target') != "1") {
+				$('a[page-target='+pageNext+']').trigger('click')
+			}
+		} else if($(this).attr('id') == "next-page") {
+			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) + 1
+			console.log('next page ', pageNext)
+			if($('a[page-target='+pageNext+']').html()) {
+				$('a[page-target='+pageNext+']').trigger('click')
+			}
+		} else {
+			if(!parent.hasClass('active')) {
+				var numPage = $.trim( $(this).html())
+				var criteria = $('#search-student').val()
+				if(criteria == "" || !inSearch) {
+					$.ajax({
+						url: getBaseUrl('professors/bypage?page='+numPage),
+						success: function(data) {
+							$('#table-professors tbody').html(data)
+							$('li.page-item').removeClass('active')
+							parent.addClass('active')
+						},
+						error: function() {
+							alert('Erreur lors du chargement de la page')
+						}
+					})
+				} else {
+					$.ajax({
+						url: getBaseUrl('professors/search?criteria='+criteria+'&page='+numPage),
+						success: function(data) {
+							$('#table-professors tbody').html(data)
+							$('li.page-item').removeClass('active')
+							parent.addClass('active')
+						},
+						error: function() {
+							alert('Erreur lors du chargement de la page')
+						}
+					})
+				}
+			}
+		}
+	})
+	
+	$(document).on('keyup', '#search-prof', function(e) {
+		if(e.keyCode == 13) {
+			inSearch = true
+			console.log('Start search')
+			var criteria = $(this).val()
+			$.ajax({
+				url: getBaseUrl('professors/search?criteria='+criteria),
+				success: function(data) {
+					var paginationContent = data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") > -1 ? data.substring(data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") + 55, data.length - 7) : undefined
+					$.when($('#table-professors tbody').html(data)).then(function() {
+						$('div.pagination ul').html(paginationContent)
+					})
+					if($.trim(criteria) == "") inSearch = false
+				},
+				error: function() {
+					alert('Erreur lors du chargement des professeurs')
+				}
+			})
+		}
 	})
 })
 
