@@ -8,6 +8,7 @@ public class EvaluationCourseStudent {
 	private int professor_id;
 	private String course_libelle;
 	private int course_credit;
+	private int course_credit_obtenu;
 	private int course_notation;
 	private double course_coefficient;
 	private String professor;
@@ -73,5 +74,11 @@ public class EvaluationCourseStudent {
 		} catch(Exception e) {
 			return "";
 		}
+	}
+	public int getCourse_credit_obtenu() {
+		return course_credit_obtenu;
+	}
+	public void setCourse_credit_obtenu(int course_credit_obtenu) {
+		this.course_credit_obtenu = course_credit_obtenu;
 	}
 }

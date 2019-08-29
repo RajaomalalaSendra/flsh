@@ -33,6 +33,10 @@
 	</div>
 			<div class = "row">
 				<div class = "col-md-8">
+				    
+				    <div class = "alert alert-danger" id = "error-note-ue"></div>
+    				<div class = "alert alert-success" id = "success-note-ue"></div>
+					
 					<table class="table table-striped" id = "info-evaluation">
 						<thead>
 							<tr>
@@ -55,9 +59,9 @@
 				</div>
 			</div>
 			<div class = "pull-right-buttom">
-				<button type="button" class="btn btn-danger" id = "renvoi-deliberation">Renvoi</button>
-				<button type="button" class="btn btn-warning" id = "redouble-deliberation">Redouble</button>
-				<button type="button" class="btn btn-success" id = "passe-deliberation">Passe</button>
+				<button type="button" class="btn deliberation-decision" id = "renvoi-deliberation">Renvoi</button>
+				<button type="button" class="btn deliberation-decision" id = "redouble-deliberation">Redouble</button>
+				<button type="button" class="btn deliberation-decision" id = "passe-deliberation">Passe</button>
 			</div>
    	</div>
 

@@ -14,5 +14,11 @@ public interface DeliberationService {
 	List<EvaluationUEECStudent> getInfosEvaluationsByStudentLevelUnivYearAndParcours(int univYearId, int idStudent, int idLevel, int idPrc);
 
 	JSONObject saveMoyenneUE(int idStudent, int idUE, int idPeriod, float moyenneUE, int typeSession);
+
+	JSONObject saveCreditECAndUE(int idEC, int idUE, int creditEC, int creditUE, int idStudent);
+
+	JSONObject saveValidCreditUE(int valValid, int idStudent, int idUE);
+
+	JSONObject saveDeliberationDecision(int delibDecision, int idStudent, int idLevel, int idAU, int idParcours, String passage);
 	
 }
