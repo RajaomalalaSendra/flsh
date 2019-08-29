@@ -5,6 +5,8 @@ import java.util.List;
 public class EvaluationUEECStudent {
 	private int studyunit_id;
 	private int parcours_id;
+	private int credit_ue;
+	private int valid_credit_ue;
 	private String studyunit_libelle;
 	private String studyunit_type;
 	private List<EvaluationCourseStudent> CoursesEvaluations;
@@ -38,5 +40,17 @@ public class EvaluationUEECStudent {
 	}
 	public void setCoursesEvaluations(List<EvaluationCourseStudent> coursesEvaluations) {
 		CoursesEvaluations = coursesEvaluations;
+	}
+	public int getCredit_ue() {
+		return credit_ue;
+	}
+	public void setCredit_ue(int credit_ue) {
+		this.credit_ue = credit_ue;
+	}
+	public int getValid_credit_ue() {
+		return valid_credit_ue;
+	}
+	public void setValid_credit_ue(int valid_credit_ue) {
+		this.valid_credit_ue = valid_credit_ue;
 	}
 }

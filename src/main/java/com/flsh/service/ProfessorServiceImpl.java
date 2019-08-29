@@ -94,8 +94,6 @@ public class ProfessorServiceImpl implements ProfessorService {
 			sql_user = professor.getProfessor_password().equals("") ? "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, civ_id = ? WHERE uti_id = ?" : "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, civ_id = ?, uti_passwd = sha1(?) WHERE uti_id = ?";
 		}
 		
-		System.out.println(" Professor Id: " + professor.getProfessor_id());
-		System.out.println("||||||||User Type: " + professor.getUser_type()+"|||||||||||");
 		GeneratedKeyHolder holder = new GeneratedKeyHolder();
 		jdbcTemplate.update(new PreparedStatementCreator() {
 		    @Override
@@ -119,7 +117,6 @@ public class ProfessorServiceImpl implements ProfessorService {
 		} else {
 			uti_id_key = professor.getUser_id();
 		}
-		System.out.println(" Uti User Key: " + uti_id_key);
         // the sql for the professeur table
 		String sql_prof = professor.getProfessor_id() == 0 ? "INSERT INTO Professeur(prof_adresse, prof_contact, uti_id) values( ?, ?, ?)" : 
 										"UPDATE Professeur SET  prof_adresse = ?, prof_contact = ?, uti_id = ? WHERE prof_id = ?";

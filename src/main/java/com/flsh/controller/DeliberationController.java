@@ -85,6 +85,7 @@ public class DeliberationController {
 		ModelAndView mav = new ModelAndView("deliberation/deliberation_list");
 	    
 		List<EvaluationUEECStudent> dataEvaluations = delibService.getInfosEvaluationsByStudentLevelUnivYearAndParcours(univYearId, idStudent, idLevel, idPrc);
+		
         mav.addObject("periodes", periodService.getNiveauPeriodsById(idLevel, univYearId));
 		mav.addObject("dataEvaluations", dataEvaluations);
 	    return mav;
@@ -110,11 +111,47 @@ public class DeliberationController {
 		float moyenneUE = request.getParameter("moyenneUE") == "" ? 0 : Float.parseFloat(request.getParameter("moyenneUE"));
 		int typeSession = request.getParameter("typeSession") == "" ? 0 : Integer.parseInt(request.getParameter("typeSession"));
 		
-		System.out.print("\n============================================================="
-				+ "\nId Student: " + idStudent + " id Ue: " + idUE + " id Period " + idPeriod + "  moeynneUE "
-						+ moyenneUE + " type Session: " + typeSession +
-				"\n=======================================================");
-		JSONObject save = delibService.saveMoyenneUE(idStudent, idUE, idPeriod, moyenneUE, typeSession);
+        JSONObject save = delibService.saveMoyenneUE(idStudent, idUE, idPeriod, moyenneUE, typeSession);
+	    return save.toString();
+	}
+	
+	@RequestMapping(value = "deliberation/save_credit", method = RequestMethod.POST)
+	@ResponseBody
+	public String saveCreditECAndUE(HttpServletRequest request, HttpServletResponse response) {
+		int idEC = request.getParameter("idEC") == "" ? 0 : Integer.parseInt(request.getParameter("idEC"));
+		int idUE = request.getParameter("idUE") == "" ? 0 : Integer.parseInt(request.getParameter("idUE"));
+		int creditEC = request.getParameter("creditEC") == "" ? 0 : Integer.parseInt(request.getParameter("creditEC"));
+		int creditUE = request.getParameter("creditUE") == "" ? 0 : Integer.parseInt(request.getParameter("creditUE"));
+		int idStudent = request.getParameter("idStudent") == "" ? 0 : Integer.parseInt(request.getParameter("idStudent"));
+
+		JSONObject save = delibService.saveCreditECAndUE(idEC, idUE, creditEC, creditUE, idStudent);
+	    return save.toString();
+	}
+	
+	@RequestMapping(value = "deliberation/save_validCredit", method = RequestMethod.POST)
+	@ResponseBody
+	public String saveValidityCreditUE(HttpServletRequest request, HttpServletResponse response) {
+		int valValid = request.getParameter("valValid") == "" ? 0 : Integer.parseInt(request.getParameter("valValid"));
+		int idStudent = request.getParameter("idStudent") == "" ? 0 : Integer.parseInt(request.getParameter("idStudent"));
+		int idUE = request.getParameter("idUE") == "" ? 0 : Integer.parseInt(request.getParameter("idUE"));
+
+		JSONObject save = delibService.saveValidCreditUE(valValid, idStudent, idUE);
+	    return save.toString();
+	}
+	
+	@RequestMapping(value = "deliberation/save_delib_decision", method = RequestMethod.POST)
+	@ResponseBody
+	public String saveDeliberationDecision(HttpServletRequest request, HttpServletResponse response) {
+		int delibDecision = 1;
+		int idStudent = request.getParameter("idStudent") == "" ? 0 : Integer.parseInt(request.getParameter("idStudent"));
+		int idLevel = request.getParameter("idLevel") == "" ? 0 : Integer.parseInt(request.getParameter("idLevel"));
+		int idAU = request.getParameter("idUnivYear") == "" ? 0 : Integer.parseInt(request.getParameter("idUnivYear"));
+		int idParcours = request.getParameter("idPrc") == "" ? 0 : Integer.parseInt(request.getParameter("idPrc"));
+		String passage = request.getParameter("passage");
+		
+		System.out.print("Passage: "+ passage);
+		
+		JSONObject save = delibService.saveDeliberationDecision(delibDecision, idStudent, idLevel, idAU, idParcours, passage);
 	    return save.toString();
 	}
 

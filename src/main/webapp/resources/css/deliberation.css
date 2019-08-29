@@ -15,7 +15,7 @@
 }
 
 .pull-right-buttom {
-	margin-left: 800px;
+	margin-left: 650px;
 	margin-bottom: 10px;
 }
 #deliberation-wrapper .header-list {
@@ -35,10 +35,18 @@
 }
 
 .input-ue-credit, .input-ec-credit, #total-credit {
-	width: 80px;
+	width: 60px;
 	text-align: right;
 }
 
+.input-ec-credit{
+	border: 1px solid #d2dff3;
+	background: #d2dff3;
+}
+.input-ue-credit {
+	border: 1px solid #f6f8fa;
+	background-color: #f6f8fa;
+}
 #total-credit {
 	padding-right: 12px;
 }
@@ -47,14 +55,25 @@
 	padding-left: 20px !important;
 }
 tr.ue-row, tr.ue-row td {
-	background-color: #f9f9f9;
-}
-tr.ec-row, tr.ec-row td {
 	background-color: #f6f8fa;
 }
 
+tr.ec-row, tr.ec-row td {
+	background-color: #d2dff3;
+}
 
-.error-input-ue-credit {
+.row-delib tr.ec-row.active{
+	background-color: #fff;
+}
+.row-delib tr.ec-row.active input {
+	background-color: #f5f5f5;	
+	border: 1px solid #f5f5f5;
+}
+.row-delib tr.ec-row.active input:focus {
+	background-color: #fff;	
+}
+
+.error-input-ec-credit, .success-input-ec-credit {
 	position: absolute;
     width: 230px;
     padding: 5px;
@@ -66,6 +85,28 @@ input.hasError {
 	border: 1px solid #c00;
 }
 
-.inputCreditEC {
+.input-wrapper {
+	position: relative;
+}
+.input-wrapper .glyphicon {
 	position: absolute;
+    top: 30%;
+    display: none;
+}
+.input-wrapper .glyphicon-ok-sign {
+	color: #090;
+}
+.input-wrapper .glyphicon-warning-sign {
+	color: #b00;
+}
+
+#success-note-ue, #error-note-ue, .error-save-valid-credit, .succ-none, .dang-none {
+	display: none;
+}
+#success-note-ue, #error-note-ue {
+	width: 30%;
+	position: absolute;
+}
+.input-ec-credit:hover {
+	background: #fff;
 }
