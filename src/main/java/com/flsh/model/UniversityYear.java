@@ -1,7 +1,6 @@
 package com.flsh.model;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import com.flsh.utils.DateUtils;
 

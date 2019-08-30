@@ -10,7 +10,7 @@
     <input type = "hidden" id = "base-url" value = "${req.scheme}://${req.serverName}:${req.serverPort}${req.contextPath}/" />
    	<div id="deliberation-wrapper">
 		<div class = "header-list" >
-			<input type = "hidden" name = "IdUnivYear" id = "IdUnivYear" value = "${univ_year.getUniversity_year_id()}"/>
+			<input type = "hidden" name = "IdUnivYear" id = "IdUnivYear" value = "${currentUnivYear.getUniversity_year_id()}"/>
 				<div class = "btn-group pull-right form-inline push-notfar">
 		        	<label for = "choixLevelDelib">Niveau :</label>
 		        	<select class = "form-control" id = "choixLevelDelib" >

@@ -73,6 +73,17 @@ $(document).ready(function() {
 					var idUE = $(this).attr("id").split("-")[2]
 					computeMoyenneUE(idUE, idStudent)
 				})
+				
+				var decision = $("#delibCurrentUser").val()
+				$(".btn.deliberation-decision").attr("class", "btn deliberation-decision")
+				console.log("Dec ", decision)
+				if(decision == "PASSE"){
+					$("#passe-deliberation").addClass("btn-success")
+				} else if(decision == "REDOUBLE"){
+					$("#redouble-deliberation").addClass("btn-warning")
+				} else if(decision == "RENVOI") {
+					$("#renvoi-deliberation").addClass("btn-danger")
+				} 
 			}, 
 			error: function() {
 				$("#info-evaluation tbody").html("There is an error")
@@ -165,6 +176,9 @@ $(document).ready(function() {
 	
 	$(".deliberation-decision").on('click', function(){
 		var idDecision = $(this).attr("id")
+		var valDecision = $("#delibCurrentUser").val();
+		console.log("ValDecision: " , valDecision)
+		
 		if(idDecision == "renvoi-deliberation"){
 			$("#renvoi-deliberation").addClass("btn-danger")
 			$("#redouble-deliberation").removeClass("btn-warning")
@@ -177,7 +191,7 @@ $(document).ready(function() {
 			$("#passe-deliberation").removeClass("btn-success")
 			
 			passage = "REDOUBLE"
-		} else {
+		} else if(idDecision == "passe-deliberation") {
 			$("#renvoi-deliberation").removeClass("btn-danger")
 			$("#redouble-deliberation").removeClass("btn-warning")
 			$("#passe-deliberation").addClass("btn-success")

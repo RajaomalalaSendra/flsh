@@ -9,8 +9,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,7 +25,6 @@ public class DeliberationServiceImpl implements DeliberationService{
 	
 	DataSource dataSource;
 	JdbcTemplate jdbcTemplate;
-	private static final Logger logger = LoggerFactory.getLogger(EducationServiceImpl.class);
 	
 	@Autowired
 	public DeliberationServiceImpl(DataSource dsrc) {
@@ -190,7 +187,6 @@ public class DeliberationServiceImpl implements DeliberationService{
 	public JSONObject saveDeliberationDecision(int delibDecision, int idStudent, int idLevel, int idAU,
 			int idParcours, String passage) {
 		JSONObject save = new JSONObject();
-        System.out.print("\n Id de l etudiqnt "+ idStudent);
 		String sqlSavingDelibDecision = "UPDATE Niveau_Etudiant SET  net_deliberation = ?, net_passage = ? "
 				+ "WHERE au_id = ? AND niv_id = ? AND prc_id = ? AND etd_id = ? ";
 		
@@ -210,6 +206,24 @@ public class DeliberationServiceImpl implements DeliberationService{
 		save.put("status", savingDelibDecision ? 1 : 0);
 		save.put("message", savingDelibDecision ? "Delibération Enregistré avec succès" : "Echec de l'enregistrement de Credit! Veuillez réessayer");
 		return save;
+	}
+
+	@Override
+	public String getDelibDecisionCurrentUser(int univYearId, int idLevel, int idStudent) {
+		String delibCurrentUser = "None";
+		
+		String sql = "SELECT net_passage FROM Niveau_Etudiant WHERE "
+				+ "au_id = " + univYearId + " AND niv_id = " + idLevel + " AND etd_id = " + idStudent;
+		System.out.print(sql);
+		try{
+			delibCurrentUser = jdbcTemplate.queryForObject(sql, String.class);
+		} catch (Exception e) {
+			System.out.print("\nNo current Deliberation");
+			e.printStackTrace();
+		}
+		
+		System.out.print("\nDelibCurr: " + delibCurrentUser);
+		return delibCurrentUser;
 	}
 }
 

@@ -56,7 +56,7 @@ public class DeliberationController {
 		List<Level> levels = periodService.getAllLevels();
 		
 		mav.addObject("students", studentService.getAllStudents());
-		mav.addObject("univ_year", detailUnivYear);
+		mav.addObject("currentUnivYear", detailUnivYear);
 		mav.addObject("levels", levels);
 	    return mav;
 	}
@@ -85,7 +85,9 @@ public class DeliberationController {
 		ModelAndView mav = new ModelAndView("deliberation/deliberation_list");
 	    
 		List<EvaluationUEECStudent> dataEvaluations = delibService.getInfosEvaluationsByStudentLevelUnivYearAndParcours(univYearId, idStudent, idLevel, idPrc);
+		String delibDecisionCurrentUser = delibService.getDelibDecisionCurrentUser(univYearId, idLevel, idStudent);
 		
+		mav.addObject("delibCurrentUser", delibDecisionCurrentUser);
         mav.addObject("periodes", periodService.getNiveauPeriodsById(idLevel, univYearId));
 		mav.addObject("dataEvaluations", dataEvaluations);
 	    return mav;

@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,8 +11,6 @@ import java.util.Set;
 import javax.sql.DataSource;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,7 +19,6 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
-import com.flsh.controller.HomeController;
 import com.flsh.interfaces.TeachingService;
 import com.flsh.model.Course;
 import com.flsh.model.Parcours;
@@ -30,14 +26,12 @@ import com.flsh.model.Professor;
 import com.flsh.model.ProfessorCourse;
 import com.flsh.model.ProfessorStudyUnit;
 import com.flsh.model.StudyUnit;
-import com.flsh.model.User;
 import com.mysql.jdbc.Statement;
 
 public class TeachingServiceImpl implements TeachingService {
 	
 	DataSource dataSource;
 	JdbcTemplate jdbcTemplate;
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
 	public TeachingServiceImpl(DataSource dsrc) {
