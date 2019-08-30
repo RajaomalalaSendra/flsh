@@ -65,7 +65,7 @@
 		</c:if>
 	</c:forEach>
 	<td id = "total-credit" class = "total-credit">0</td>
-	<td></td>
+	<td><input type = "hidden" name = "delibCurrentUser" id = "delibCurrentUser" value = "${delibCurrentUser}"/></td>
 </tr>
 <c:forEach items = "${ periodes }" var = "period">
 		<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-1">${ period.getPeriod_libellecourt() }</th>
