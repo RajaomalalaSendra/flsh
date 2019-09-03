@@ -1,5 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 <c:forEach items = "${ dataEvaluations }" var = "delib">
 	<tr class = "ue-row" id = "tr-ue-${ delib.getStudyunit_id() }">
 		<td>${ delib.getStudyunit_libelle() }</td>
@@ -24,7 +23,6 @@
                <button class = "btn btn-sm btn-success" id = "success-ue-${ delib.getStudyunit_id() }"><i class= "glyphicon glyphicon-ok"></i></button>
                <button class = "btn btn-sm btn-danger dang-none" id = "danger-ue-${ delib.getStudyunit_id() }"><i class= "glyphicon glyphicon-remove"></i></button>
            </c:if>
-           <div class = "error-save-valid-credit"></div>
        </td>
 	</tr>	
 	<c:forEach items = "${ delib.getCoursesEvaluations() }" var = "ec">

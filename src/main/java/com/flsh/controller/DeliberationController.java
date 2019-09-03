@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,20 +77,35 @@ public class DeliberationController {
 	
 	@RequestMapping(value = "/deliberation/getEvaluationData", method = RequestMethod.POST)
 	@ResponseBody
-	ModelAndView getDelibList(HttpServletRequest request, HttpServletResponse response) {
+	ModelAndView getDelibList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		int univYearId = request.getParameter("idUnivYear") == ""   ? 0 : Integer.parseInt(request.getParameter("idUnivYear"));
 		int idStudent = request.getParameter("idStudent") == "" ? 0 : Integer.parseInt(request.getParameter("idStudent"));
 		int idLevel = request.getParameter("idLevel") == "" ? 0 : Integer.parseInt(request.getParameter("idLevel"));
 		int idPrc = request.getParameter("idPrc") == "" ? 0 : Integer.parseInt(request.getParameter("idPrc"));
-	
-		ModelAndView mav = new ModelAndView("deliberation/deliberation_list");
-	    
+		
 		List<EvaluationUEECStudent> dataEvaluations = delibService.getInfosEvaluationsByStudentLevelUnivYearAndParcours(univYearId, idStudent, idLevel, idPrc);
 		String delibDecisionCurrentUser = delibService.getDelibDecisionCurrentUser(univYearId, idLevel, idStudent);
+		ModelAndView mav = new ModelAndView("deliberation/deliberation_list");
 		
+		
+		// model and view for session
+		session.setAttribute("idUnivYear", univYearId);
+		session.setAttribute("idStudent", idStudent);
+		session.setAttribute("idLevel", idLevel);
+		
+		System.out.print("\n"+session.getAttribute("idUnivYear") + " " +
+				session.getAttribute("idStudent") + " " + session.getAttribute("idLevel") +"\n");
+		
+		mav.addObject("id_univ_year", session.getAttribute("idUnivYear"));
+		mav.addObject("id_current_student", session.getAttribute("idStudent"));
+		mav.addObject("id_current_level", session.getAttribute("idLevel"));
+		System.out.print("\ntest is over here for today\n");
+		
+		// model and view for values
 		mav.addObject("delibCurrentUser", delibDecisionCurrentUser);
         mav.addObject("periodes", periodService.getNiveauPeriodsById(idLevel, univYearId));
 		mav.addObject("dataEvaluations", dataEvaluations);
+		
 	    return mav;
 	}
 	
@@ -151,7 +167,6 @@ public class DeliberationController {
 		int idParcours = request.getParameter("idPrc") == "" ? 0 : Integer.parseInt(request.getParameter("idPrc"));
 		String passage = request.getParameter("passage");
 		
-		System.out.print("Passage: "+ passage);
 		
 		JSONObject save = delibService.saveDeliberationDecision(delibDecision, idStudent, idLevel, idAU, idParcours, passage);
 	    return save.toString();

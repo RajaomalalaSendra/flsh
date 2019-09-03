@@ -29,13 +29,13 @@
 		        		<a class = "btn btn-default" id = "delib-eleve-suivant" title = "eleve suivant"><i class = "glyphicon glyphicon-step-forward"></i></a>
 		        	</div>
 				</div>
-				<h4>Deliberation  ${univ_year.getUniversity_year_libelle() }</h4>
+				<h4>Deliberation  ${currentUnivYear.getUniversity_year_libelle() }</h4>
 	</div>
 			<div class = "row">
 				<div class = "col-md-8">
 				    
 				    <div class = "alert alert-danger" id = "error-note-ue"></div>
-    				<div class = "alert alert-success" id = "success-note-ue"></div>
+					<div class = "alert alert-danger" id = "error-save-valid-credit"></div>
 					
 					<table class="table table-striped" id = "info-evaluation">
 						<thead>
