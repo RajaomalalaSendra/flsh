@@ -100,10 +100,10 @@ input.hasError {
 	color: #b00;
 }
 
-#success-note-ue, #error-note-ue, .error-save-valid-credit, .succ-none, .dang-none {
+#success-note-ue, #error-note-ue, #error-save-valid-credit, .succ-none, .dang-none {
 	display: none;
 }
-#success-note-ue, #error-note-ue {
+#success-note-ue, #error-note-ue , #error-save-valid-credit{
 	width: 30%;
 	position: absolute;
 }

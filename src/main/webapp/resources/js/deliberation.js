@@ -49,8 +49,6 @@ $(document).ready(function() {
 		var idUnivYear = $("#IdUnivYear").val()
 		var idPrc = $('#choixParcoursDelib').val()
 		
-		var j = listStudents.indexOf(idStudent)
-		
 		$.ajax({
 			url: getBaseUrl("deliberation/student_detail?idStudent=" + idStudent),
 			success: function(data) {
@@ -144,6 +142,7 @@ $(document).ready(function() {
 		var idEC = $(this).attr("id").split("-")[3]
 		var idStudent = $("#choixElevesDelib").val()
 		console.log(" Credit UE: ", creditUE)
+		
 		$.when(
 				$.ajax({
 					url: getBaseUrl("deliberation/save_credit"),
@@ -261,13 +260,11 @@ function computeMoyenneUE(idUE, idStudent){
 				data: {idStudent, idUE, idPeriod, moyenneUE, typeSession},
 				dataType: 'JSON',
 				success: function(data) {
-			    	if(data.status == 1) {
-			    		$("#success-note-ue").html(data.message).show().delay(3000).fadeOut(600)
-					} else {
+			    	if(data.status == 0) {
 						$("#error-note-ue").html(data.message ? data.message : 'Note non enregistre').show().delay(3000).fadeOut(600)
 					}
 				}, 
-				error: function(data) {
+				error: function(err) {
 					$("#error-note-ue").html(data.message ? data.message : 'Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
 				}
 			})
@@ -289,14 +286,12 @@ function saveValidCredit(firstValidCssID, secondValidCssID, valValid, idUE, idSt
 			data: {idStudent, idUE, valValid},
 			dataType: 'JSON',
 			success: function(data){
-				if(data.status == 1){
-					console.log("success")
-				} else {
-					console.log("Error")
-				}
+				if(data.status == 0){
+					$("#error-save-valid-credit").html(data.message ? data.message : 'Credit non enregistre').show().delay(3000).fadeOut(600)
+				} 
 			},
 			error: function(err) {
-				$(".ue-row").find(".error-save-valid-credit").html(err).show().delay(1000).fadeOut(300)
+				$("#error-save-valid-credit").html(err).show().delay(1000).fadeOut(300)
 			}
 		})
 	})
@@ -307,7 +302,6 @@ function  saveDecisionDeliberation(passage){
 	var idLevel = $('#choixLevelDelib').val()
 	var idUnivYear = $("#IdUnivYear").val()
 	var idPrc = $('#choixParcoursDelib').val()
-	var i = listStudents.indexOf($("#choixElevesDelib").val())
 	
 	
 	$.ajax({
@@ -322,4 +316,25 @@ function  saveDecisionDeliberation(passage){
 			console.log(err)
 		}
 	})
+}
+
+function  getElevationData(reload){
+	$('#choixElevesDelib').on('change', function(){
+		var idStudent = $('#choixElevesDelib').val()
+		var idLevel = $('#choixLevelDelib').val()
+		var idUnivYear = $("#IdUnivYear").val()
+		var idPrc = $('#choixParcoursDelib').val()
+		
+		$.ajax({
+			url: getBaseUrl("deliberation/getEvaluationData"),
+			type: 'POST',
+			data: {idUnivYear, idLevel, idStudent, idPrc, reload},
+			success: function(data) {
+				console.log(data.status)
+			},
+			error: function(err) {
+				console.log(err)
+			}
+		})
+	})	
 }
