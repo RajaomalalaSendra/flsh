@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,9 +119,10 @@ public class StudentController {
 	}
 	
 	@RequestMapping(value = "/student/loadParcoursByLevel", method = RequestMethod.GET)
-	public ModelAndView loadParcoursByLevel(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView loadParcoursByLevel(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		int idLevel = !request.getParameter("id").equals("") ? Integer.parseInt(request.getParameter("id")) : 0;
 		ModelAndView mav = new ModelAndView("students/option_parcours");
+		mav.addObject("idPrc", session.getAttribute("idPrc"));
 		mav.addObject("parcours", periodService.getParcoursByLevelId(idLevel));
 		return mav;
 	}
