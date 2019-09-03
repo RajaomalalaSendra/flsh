@@ -49,12 +49,13 @@ public class DeliberationController {
 	
 	@RequestMapping(value = "/deliberation", method = RequestMethod.GET)
 	@ResponseBody
-	ModelAndView getDelib(HttpServletRequest request, HttpServletResponse response) {
+	ModelAndView getDelib(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 	    int univYearId = request.getParameter("univYear") == ""   ? 0 : Integer.parseInt(request.getParameter("univYear"));
 		ModelAndView mav = new ModelAndView("deliberation/detail");
 		UniversityYear detailUnivYear = delibService.getDetailUnivYear(univYearId);
 		
 		List<Level> levels = periodService.getAllLevels();
+		mav.addObject("idLevel", session.getAttribute("idLevel"));
 		
 		mav.addObject("students", studentService.getAllStudents());
 		mav.addObject("currentUnivYear", detailUnivYear);
@@ -64,11 +65,12 @@ public class DeliberationController {
 	
 	@RequestMapping(value = "/deliberation/students_list", method = RequestMethod.GET)
 	@ResponseBody
-	ModelAndView getDelibForStudentId(HttpServletRequest request, HttpServletResponse response) {
+	ModelAndView getDelibForStudentId(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		int univYearId = request.getParameter("univYear") == ""   ? 0 : Integer.parseInt(request.getParameter("univYear"));
 	    int idParcours = request.getParameter("idParcours") == ""   ? 0 : Integer.parseInt(request.getParameter("idParcours"));
 		ModelAndView mav = new ModelAndView("deliberation/students_list");
 		
+		mav.addObject("idStudent", session.getAttribute("idStudent"));
 		List<Student> students = studentService.getStudentsByUnivYearAndParcours(univYearId, idParcours);
 
 		mav.addObject("students", students);
@@ -83,15 +85,16 @@ public class DeliberationController {
 		int idLevel = request.getParameter("idLevel") == "" ? 0 : Integer.parseInt(request.getParameter("idLevel"));
 		int idPrc = request.getParameter("idPrc") == "" ? 0 : Integer.parseInt(request.getParameter("idPrc"));
 		
+		// session data
+		session.setAttribute("idPrc", idPrc);
+		session.setAttribute("idStudent", idStudent);
+		session.setAttribute("idLevel", idLevel);
+		
 		List<EvaluationUEECStudent> dataEvaluations = delibService.getInfosEvaluationsByStudentLevelUnivYearAndParcours(univYearId, idStudent, idLevel, idPrc);
 		String delibDecisionCurrentUser = delibService.getDelibDecisionCurrentUser(univYearId, idLevel, idStudent);
 		ModelAndView mav = new ModelAndView("deliberation/deliberation_list");
 		
 		
-		// model and view for session
-		session.setAttribute("idUnivYear", univYearId);
-		session.setAttribute("idStudent", idStudent);
-		session.setAttribute("idLevel", idLevel);
 		
 		System.out.print("\n"+session.getAttribute("idUnivYear") + " " +
 				session.getAttribute("idStudent") + " " + session.getAttribute("idLevel") +"\n");

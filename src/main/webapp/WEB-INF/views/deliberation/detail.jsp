@@ -15,7 +15,7 @@
 		        	<label for = "choixLevelDelib">Niveau :</label>
 		        	<select class = "form-control" id = "choixLevelDelib" >
 		        		<c:forEach items = "${ levels }" var = "level" varStatus = "status">
-		        			<option value = "${ level.getLevelId() }">${ level.getLevelLibelle() }</option>
+		        			<option value = "${ level.getLevelId() }" ${ level.getLevelId() == idLevel ? "selected" : "" }>${ level.getLevelLibelle() }</option>
 		        		</c:forEach>
 		        	</select>
 		        	<label for = "choixParcoursDelib" >Parcours :</label>
