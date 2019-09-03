@@ -54,6 +54,24 @@
 			   </c:forEach>
 			  </tbody>  
 			</table>  
+			<div class = "pagination" id = "pagination-users">
+			  <ul class="pagination pull-right">
+			    <li class="page-item">
+			      <a class="page-link" href="#" id = "previous-page" aria-label="Previous">
+			        <span aria-hidden="true">&laquo;</span>
+			      </a>
+			    </li>
+			    
+			    <c:forEach var="i" begin="1" end="${ Math.ceil(number/50) }" step="1">
+				    <li class="page-item ${ i == 1 ? 'active' : ''}"><a class="page-link" page-target = "${ i }" href="#"><c:out value="${ i }" /></a></li>
+				</c:forEach>
+			    <li class="page-item">
+			      <a class="page-link" href="#" id = "next-page" aria-label="Next">
+			        <span aria-hidden="true">&raquo;</span>
+			      </a>
+			    </li>
+			  </ul>
+    		</div>
     	</div>
     	<%@include file="userdetails.jsp" %>
     	<%@include file="user_forms.jsp" %>

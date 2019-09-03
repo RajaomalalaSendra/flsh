@@ -28,13 +28,15 @@ public class UserController {
 
 	  @RequestMapping(value = "/users", method = RequestMethod.GET)
 	  public ModelAndView showUser(HttpServletRequest request, HttpServletResponse response) {
-		  List<User> users=userService.getAllUser();
+		  List<User> users = userService.getAllUser();
+		  int number = userService.getUsersNumber();
 		  ModelAndView m = new ModelAndView("users/users");
 		  HttpSession session = request.getSession();
 		  m.addObject("menu", "system");
 		  m.addObject("submenu", "all_users");
 		  m.addObject("username", session.getAttribute("username") );
-	      m.addObject("users",users);  
+	      m.addObject("users", users);  
+	      m.addObject("number", number);  
 	      return m;    
 	  }
 	  

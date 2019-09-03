@@ -217,6 +217,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 
+	@Override
+	public int getUsersNumber() {
+		String queryCount = "SELECT COUNT(*) FROM Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_type != 2 ";
+		int usersNumber = jdbcTemplate.queryForObject(queryCount, Integer.class);
+		System.out.print("\nNumber of users : "+usersNumber+"\n");
+		return usersNumber;
+	}
 }
 
 class UserMapper implements RowMapper<User> {
