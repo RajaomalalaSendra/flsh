@@ -506,8 +506,11 @@ public class StudentServiceImpl implements StudentService {
 						break;
 				}
 			}
+		} else {
+			querySearch += idLevel == 0 ? " WHERE etd_id not in  (SELECT etd_id FROM Niveau_Etudiant WHERE au_id = "+idUY+") " : " WHERE etd_id in  (SELECT etd_id FROM Niveau_Etudiant WHERE au_id = "+idUY+" AND niv_id = "+idLevel+") ";
 		}
 		String query = queryIntro +" "+querySearch+") as maxnumber "+querySearch+" limit 100 offset "+ (100 * (numPage - 1));
+		System.out.print("\n search query : "+query+"\n");
 		List<Student> students = jdbcTemplate.query(query, new StudentMapper());
 		return students;
 	}
@@ -552,7 +555,7 @@ class StudentMapper implements RowMapper<Student> {
 			}
 			student.setEvaluations(listEvaluations);
 		} catch (Exception e) {
-			System.out.print("No evaluation data");
+			System.out.print("\nNo evaluation data\n");
 			//e.printStackTrace();
 		}
 		return student;
