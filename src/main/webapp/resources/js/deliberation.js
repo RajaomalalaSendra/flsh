@@ -74,7 +74,7 @@ $(document).ready(function() {
 				
 				var decision = $("#delibCurrentUser").val()
 				$(".btn.deliberation-decision").attr("class", "btn deliberation-decision")
-				console.log("Dec ", decision)
+				
 				if(decision == "PASSE"){
 					$("#passe-deliberation").addClass("btn-success")
 				} else if(decision == "REDOUBLE"){
@@ -86,7 +86,7 @@ $(document).ready(function() {
 			error: function() {
 				$("#info-evaluation tbody").html("There is an error")
 			}
-		})	
+		})
 	})
 	
 	$("#delib-eleve-suivant").on('click', function(e){
@@ -171,6 +171,10 @@ $(document).ready(function() {
 	
 	$("body").on('click', function() {
 		$('.ec-row').removeClass('active')
+	})
+	
+	$(window).load(function() {
+		$('.spinner').show().delay(3000).fadeOut(600)
 	})
 	
 	$(".deliberation-decision").on('click', function(){
@@ -264,8 +268,8 @@ function computeMoyenneUE(idUE, idStudent){
 						$("#error-note-ue").html(data.message ? data.message : 'Note non enregistre').show().delay(3000).fadeOut(600)
 					}
 				}, 
-				error: function(err) {
-					$("#error-note-ue").html(data.message ? data.message : 'Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
+				error: function() {
+					$("#error-note-ue").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
 				}
 			})
 		}
@@ -291,7 +295,7 @@ function saveValidCredit(firstValidCssID, secondValidCssID, valValid, idUE, idSt
 				} 
 			},
 			error: function(err) {
-				$("#error-save-valid-credit").html(err).show().delay(1000).fadeOut(300)
+				$("#error-save-valid-credit").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
 			}
 		})
 	})
@@ -316,25 +320,4 @@ function  saveDecisionDeliberation(passage){
 			console.log(err)
 		}
 	})
-}
-
-function  getElevationData(reload){
-	$('#choixElevesDelib').on('change', function(){
-		var idStudent = $('#choixElevesDelib').val()
-		var idLevel = $('#choixLevelDelib').val()
-		var idUnivYear = $("#IdUnivYear").val()
-		var idPrc = $('#choixParcoursDelib').val()
-		
-		$.ajax({
-			url: getBaseUrl("deliberation/getEvaluationData"),
-			type: 'POST',
-			data: {idUnivYear, idLevel, idStudent, idPrc, reload},
-			success: function(data) {
-				console.log(data.status)
-			},
-			error: function(err) {
-				console.log(err)
-			}
-		})
-	})	
 }

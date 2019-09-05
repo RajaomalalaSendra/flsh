@@ -48,7 +48,6 @@
 							</tr>
 						</thead>
 						<tbody class = "row-delib">
-						
 						</tbody>
 					</table>
 				</div>
