@@ -405,6 +405,29 @@ $(document).ready(function() {
 		}
 	})
 	
+	$(document).on('click', '.btn-primary.print-result-exam', function(){
+		var idStudent = $(this).attr('id')
+		var idUY = $('#choixUY').val()
+		var idLevel = $('#choixLevel').val()
+		
+		$.ajax({
+			url: getBaseUrl('exportpdf/result_exam'),
+			type: 'POST',
+			data: { idStudent, idUY, idLevel},
+			dataType: 'JSON',
+			success: function(data) {
+				if(data.status == 1) {
+					console.log("Data status one")					
+				}else{
+					console.log("Data status not one")
+				}
+			},
+			error: function(){
+				console.log("Errorrr")
+			}
+		})
+	})
+	
 	$(document).on('click', '#tab-cumule a', function() {
 		if($(this).attr('href') == "#cumule" && $(this).parent().hasClass('active')) {
 			$("#add-cumule").show()

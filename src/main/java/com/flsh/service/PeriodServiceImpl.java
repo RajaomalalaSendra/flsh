@@ -21,6 +21,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import com.flsh.interfaces.PeriodService;
+import com.flsh.model.Cycles;
 import com.flsh.model.Level;
 import com.flsh.model.Parcours;
 import com.flsh.model.Period;
@@ -120,7 +121,7 @@ public class PeriodServiceImpl implements PeriodService {
 
 	@Override
 	public UniversityYear getUnivYearById(int id) {
-		String sql = "select * from Annee_Universitaire where au_id = "+id;
+		String sql = "select *, (au_debut <= now() and now() <= au_fin ) as annee_encours from Annee_Universitaire where au_id = "+id;
 		List<UniversityYear> aus = jdbcTemplate.query(sql, new AUMapper());
 		return aus.size() > 0 ? aus.get(0) : null;
 	}
@@ -132,6 +133,21 @@ public class PeriodServiceImpl implements PeriodService {
 		System.out.print(levels);
 		return levels;
 	}
+	
+	@Override
+	public Level getLevelById(int idLevel) {
+		String sql = "SELECT * from Niveau WHERE niv_id = "+idLevel;
+		List<Level> levels = jdbcTemplate.query(sql, new LevelMapper(dataSource));
+		return levels.size() > 0 ? levels.get(0) : null;
+	}
+	
+	@Override
+	public Cycles getCyclesById(int idCycle) {
+		String sql = "SELECT * from Cycle WHERE cyc_id = "+idCycle;
+		List<Cycles> cycles = jdbcTemplate.query(sql, new CycleMapper());
+		return cycles.size() > 0 ? cycles.get(0) : null;
+	}
+
 
 	@Override
 	public List<Period> getNiveauPeriodsById(int id, int au) {
@@ -300,6 +316,45 @@ public class PeriodServiceImpl implements PeriodService {
 		String sql = "SELECT * FROM Parcours WHERE niv_id = "+idLevel;
 		List<Parcours> parcours = jdbcTemplate.query(sql, new ParcoursMapper());
 		return parcours;
+	}
+
+	@Override
+	public Parcours getParcoursByAUAndLevelAndStudentId(int idAU, int idLevel, int idStudent) {
+		// TODO Auto-generated method stub
+		String sql = "SELECT * FROM Parcours JOIN Niveau_Etudiant ON Niveau_Etudiant.prc_id = Parcours.prc_id " +
+				"WHERE Parcours.niv_id = "+idLevel+" AND Niveau_Etudiant.etd_id = "+idStudent+" AND Niveau_Etudiant.au_id = "+idAU;
+		List<Parcours> parcours = jdbcTemplate.query(sql, new ParcoursMapper());
+		return parcours.size() > 0 ? parcours.get(0) : null;
+	}
+
+	@Override
+	public int getIdLevelByIdStudentAndIdUY(int idStudent, int idUY) {
+		int idLevelStudent = 0;
+		String sql = "SELECT Niveau.niv_id FROM Niveau JOIN Niveau_Etudiant ON Niveau_Etudiant.niv_id = Niveau.niv_id " +
+				"WHERE  Niveau_Etudiant.etd_id = "+idStudent+" AND Niveau_Etudiant.au_id = "+idUY;
+		
+		try{
+			idLevelStudent = jdbcTemplate.queryForObject(sql, Integer.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return idLevelStudent;
+	}
+	
+	@Override
+	public int getIdCycleByIdStudentAndIdUY(int idStudent, int idUY) {
+		int idCycleStudent = 0;
+		String sql = "SELECT Niveau.cyc_id FROM Niveau JOIN Niveau_Etudiant ON Niveau_Etudiant.niv_id = Niveau.niv_id " +
+				"WHERE  Niveau_Etudiant.etd_id = "+idStudent+" AND Niveau_Etudiant.au_id = "+idUY;
+		
+		try{
+			idCycleStudent = jdbcTemplate.queryForObject(sql, Integer.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return idCycleStudent;
 	}
 	
 }

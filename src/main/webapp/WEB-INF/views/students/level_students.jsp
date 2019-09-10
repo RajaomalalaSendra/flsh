@@ -1,6 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<<<<<<< master
 <%@ page import ="com.flsh.model.User" %>
 <% User user = (User) request.getSession().getAttribute("user"); %>
+=======
+<c:set var="req" value="${pageContext.request}" />
+>>>>>>> export pdf feature as a web page  for the result of one student
 <c:forEach items="${ students }" var="student" varStatus="status">
 	<tr id = "stud-${ student.getStudent_id() }">
 		<td><img  class = "rounded-image" src="${ student.getCroppedImageURL(sc)}"/></td>
@@ -11,7 +15,12 @@
 		<td>${ student.getStudent_nationality() }</td>
 		<td>${ student.getStudent_adress() }</td>
 		<td align = "center">
-         	<button class = "btn btn-sm btn-info show-details-student" title = "Afficher les détails sur l'étudiants">
+			<c:if test = "${ student.getNet_delib() == 1 }">
+				<a class = "btn btn-sm btn-success print-result-exam" href = "${req.scheme}://${req.serverName}:${req.serverPort}${req.contextPath}/students/result?idStudent=${ student.getStudent_id() }&idUY=${idUY}" target = "_blank" title = "Imprimer le resultat de l'examen.">
+	        		 <i class="glyphicon glyphicon-print"></i>
+	        	</a>
+			</c:if>	
+         	<button class = "btn btn-sm btn-info show-details-student" title = "Afficher les dï¿½tails sur l'ï¿½tudiants">
 				<i class = "glyphicon glyphicon-eye-open"></i>
 			</button>
 			<% if( user != null && user.isEnabled() && Integer.parseInt( user.getType()) != 2) { %>
@@ -19,12 +28,12 @@
 					<button class = "btn btn-sm btn-primary edit-subs" title = "Modifier les informations d'inscription">
 						<i class = "glyphicon glyphicon-pencil"></i>
 					</button>
-					<button class = "btn btn-sm btn-danger delete-subs" title = "Retirer l'étudiant de cette liste">
+					<button class = "btn btn-sm btn-danger delete-subs" title = "Retirer l'ï¿½tudiant de cette liste">
 						<i class = "glyphicon glyphicon-remove"></i>
 					</button>
 		      	</c:if>
 		      	<c:if test = "${ idLevel == 0}">
-		         	<button class = "btn btn-sm btn-success subscribe-student" title = "Inscrire l'étudiant">
+		         	<button class = "btn btn-sm btn-success subscribe-student" title = "Inscrire l'ï¿½tudiant">
 						<i class = "glyphicon glyphicon-log-in"></i>
 					</button>
 		      	</c:if>

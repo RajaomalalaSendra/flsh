@@ -45,7 +45,7 @@
 								<th>Type</th>
 								<th>Notation</th>
 								<th>Coef</th>
-								<th>Crédit (max)</th>
+								<th>Crï¿½dit (max)</th>
 							</tr>
 						</thead>
 						<tbody class = "row-delib">

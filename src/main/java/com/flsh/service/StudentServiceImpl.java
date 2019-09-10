@@ -72,7 +72,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<Student> getStudentsByPage(int numPage) {
-		String queryStudent = "SELECT * FROM Etudiant ORDER BY etd_id limit 100 offset "+ (100 * (numPage - 1));
+		String queryStudent = "SELECT Etudiant.*, (SELECT net_deliberation FROM Niveau_Etudiant  WHERE  Niveau_Etudiant.etd_id = Etudiant.etd_id) as net_delib FROM Etudiant ORDER BY etd_id limit 100 offset "+ (100 * (numPage - 1));
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
 		return students;
 	}
@@ -132,7 +132,8 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel, int numPage) {
 		String queryStudent = idLevel == 0 ? "SELECT Etudiant.*, ( select count(*) FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+") ) as maxnumber FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+") LIMIT 100 OFFSET "+(100 * (numPage - 1)) 
-								: "SELECT Etudiant.*, (SELECT count(*) FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id where au_id = "+idUY+" and niv_id = "+idLevel+") as maxnumber FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id"
+								: "SELECT Etudiant.*, (SELECT count(*) FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id where au_id = "+idUY+" and niv_id = "+idLevel+") as maxnumber "
+										+ ", (SELECT net_deliberation FROM Niveau_Etudiant  WHERE au_id = "+idUY+" AND niv_id ="+idLevel+" AND Niveau_Etudiant.etd_id = Etudiant.etd_id) as net_delib FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id"
 								+ " where au_id = "+idUY+" and niv_id = "+idLevel+" LIMIT 100 OFFSET "+(100 * (numPage - 1));
 		System.out.print(queryStudent);
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
@@ -669,6 +670,13 @@ class StudentMapper implements RowMapper<Student> {
 			student.setEvaluations(listEvaluations);
 		} catch (Exception e) {
 			System.out.print("\nNo evaluation data\n");
+			//e.printStackTrace();
+		}
+		try {
+			student.setNet_delib(rs.getInt("net_delib"));
+			System.out.print( "Net Delib: " + rs.getInt("net_delib"));
+		} catch (Exception e) {
+			System.out.print("\nNo Net Deliberation");
 			//e.printStackTrace();
 		}
 		return student;

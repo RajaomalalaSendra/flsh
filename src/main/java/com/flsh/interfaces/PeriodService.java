@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import com.flsh.model.Cycles;
 import com.flsh.model.Level;
 import com.flsh.model.Parcours;
 import com.flsh.model.Period;
@@ -29,4 +30,14 @@ public interface PeriodService {
 	public Period getPeriodById(int idPeriod);
 	
 	public List<Parcours> getParcoursByLevelId(int idLevel);
+
+	public Level getLevelById(int idLevel);
+	
+	public Parcours getParcoursByAUAndLevelAndStudentId(int idAU, int idLevel, int idStudent);
+
+	public int getIdLevelByIdStudentAndIdUY(int idStudent, int idUY);
+
+	public Cycles getCyclesById(int idCycle);
+
+	int getIdCycleByIdStudentAndIdUY(int idStudent, int idUY);
 }

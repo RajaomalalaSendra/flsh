@@ -185,6 +185,7 @@ public class StudentController {
 		if(numPage == 1) mav.addObject("showPage", true);
 		mav.addObject("sc", request.getSession().getServletContext());
 		mav.addObject("idLevel", idLevel);
+		mav.addObject("idUY", idUY);
 		return mav;
 	}
 	
