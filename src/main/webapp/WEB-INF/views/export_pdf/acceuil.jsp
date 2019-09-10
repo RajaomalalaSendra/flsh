@@ -40,14 +40,14 @@
 				<th>Type</th>
 				<th>Notation</th>
 				<th>Coef</th>
-				<th>Crédit (max)</th>				
+				<th>Crï¿½dit (max)</th>				
 				<c:forEach items = "${ periodesStudent }" var = "period">
 						<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-1">${ period.getPeriod_libellecourt() }</th>
 						<c:if test="${ period.isA_ratrappage() }">
 							<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-2">Rattr. ${ period.getPeriod_libellecourt() }</th>
 						</c:if>
 				</c:forEach>
-				<th>Crédit Obtenu</th>
+				<th>Crï¿½dit Obtenu</th>
 			</tr>
 		</thead>
 		<tbody class = "row-delib">
@@ -58,7 +58,7 @@
 					<td>${ delib.getStudyunit_type() }</td>
 					<td>-</td><!-- notation -->
 					<td></td><!-- coefficient -->
-					<td></td><!-- Crédit -->
+					<td></td><!-- Crï¿½dit -->
 					<c:forEach items = "${ periodesStudent }" var = "period">
 						<td class = "note-ue-${ period.getPeriod_id() }-1"></td>
 						<c:if test="${ period.isA_ratrappage() }">
@@ -74,7 +74,7 @@
 						<td>-</td>
 						<td class = "notation-ec">${ ec.getCourse_notation() }</td><!-- notation -->
 						<td class = "coefficient-ec">${ ec.getCourse_coefficient() }</td><!-- coefficient -->
-						<td>${ ec.getCourse_credit() }</td><!-- Crédit -->
+						<td>${ ec.getCourse_credit() }</td><!-- Crï¿½dit -->
 						<c:forEach items = "${ periodesStudent }" var = "period">
 							<td class = "note-ec-${ period.getPeriod_id() }-1"> ${ ec.getPeriodNoteBySessionTypeAndId(1, period.getPeriod_id()) }</td>
 							<c:if test="${ period.isA_ratrappage() }">
@@ -107,7 +107,7 @@
 	<div id = "result-current-student">
 		<p>Credits valides: <span id = "summ-credit-obtain"></span></p>
 		<p>Resultat: ${delibCurrentUser}</p>
-		<p>Fait à Antananarivo le ${dateNow}</p>
+		<p>Fait ï¿½ Antananarivo le ${dateNow}</p>
 	</div>
 	<div id = "jury-member" ><p>Les membres de Jury,</p></div>
 	<div id = "jury-president" ><p>Le president de Jury,</p></div>

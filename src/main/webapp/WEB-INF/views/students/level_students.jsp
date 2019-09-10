@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<<<<<<< master
 <%@ page import ="com.flsh.model.User" %>
 <% User user = (User) request.getSession().getAttribute("user"); %>
 <c:set var="req" value="${pageContext.request}" />
