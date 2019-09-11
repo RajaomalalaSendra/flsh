@@ -210,7 +210,7 @@ $(document).ready(function() {
 
 			deselectCumules()
 			
-			passage = "REDOUBLE"
+			passage = "Sous réserve"
 		} else if(idDecision == "passe-deliberation") {
 			$("#renvoi-deliberation").removeClass("btn-danger")
 			$("#redouble-deliberation").removeClass("btn-warning")

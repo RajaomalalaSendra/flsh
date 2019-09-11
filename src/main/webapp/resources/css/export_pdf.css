@@ -4,20 +4,30 @@
 }
 
 #result {
-	margin-left: 400px;
-	margin-top: 50px;
+	margin-left: 350px;
+	margin-top: 60px;
 }
 
 #univ-year-and-cycle {
-	margin-left: 800px;
-	margin-top: -160px;
+	margin-left: 900px;
+	margin-top: -140px;
 }
 
-#university-name {
+#university-name, #result-current-student, #jury-member, #jury-president {
 	margin-left: 20px;
 }
 
 #about-student {
-	margin-left: 120px;
+	margin-left: 20px;
 	margin-top: 70px;
+}
+
+table {
+	margin-left: 20px;
+	width: 90%;
+}
+
+#jury-president {
+	margin-top: -35px;
+	margin-left: 600px;
 }

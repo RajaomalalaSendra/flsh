@@ -1,6 +1,7 @@
 package com.flsh.controller;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +50,7 @@ public class ExportPdfController {
 		Level levelStudent = periodService.getLevelById(idLevel);
 		Parcours parcoursStudent = periodService.getParcoursByAUAndLevelAndStudentId(idUY, idLevel, idStudent);
 		Cycles cycleStudent = periodService.getCyclesById(idCycle);
+		String delibDecisionCurrentUser = delibService.getDelibDecisionCurrentUser(idUY, idLevel, idStudent);
 		
 		List<EvaluationUEECStudent> dataEvaluationsStudent = delibService.getInfosEvaluationsByStudentLevelUnivYearAndParcours(idUY, idStudent, idLevel, parcoursStudent.getParcoursId());
 		
@@ -59,10 +61,12 @@ public class ExportPdfController {
 		mavExportPdf.addObject("universityYearStudent", univYearStudent);
 		mavExportPdf.addObject("cycleStudent", cycleStudent);
 		mavExportPdf.addObject("levelStudent", levelStudent);
+		mavExportPdf.addObject("delibCurrentUser", delibDecisionCurrentUser);
 		
 		mavExportPdf.addObject("parcoursStudent", parcoursStudent);
 		mavExportPdf.addObject("dataEvaluationsStudent", dataEvaluationsStudent);
 		mavExportPdf.addObject("periodesStudent", periodService.getNiveauPeriodsById(idLevel, idUY));
+		mavExportPdf.addObject("dateNow", LocalDate.now());
 		
 		return mavExportPdf;
     }	

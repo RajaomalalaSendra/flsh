@@ -8,9 +8,9 @@
 </head>
 <body>
 	 <div id = "university-name">
-	 	<h1>UNIVERSITE D'ANTANANANARIVO</h1>
-	 	<h1>DOMAINE ARTS,LETTRES</h1>
-	 	<h1>SCIENCES HUMAINES</h1>
+	 	<h4>UNIVERSITE D'ANTANANANARIVO</h4>
+	 	<h4>DOMAINE ARTS,LETTRES</h4>
+	 	<h4>SCIENCES HUMAINES</h4>
      </div>
      
      <div id = "level-student">
@@ -22,19 +22,17 @@
      </div>
      
      <div id = "univ-year-and-cycle">
-	 	<h1>${ universityYearStudent.getUniversity_year_libelle().toUpperCase() }</h1>
-	 	<h1>${ cycleStudent.getCycleLibelle().toUpperCase() } MENTION ETUDE ANGLOPHONE</h1>
-	 	<h1>PARCOURS ${ parcoursStudent.getParcoursLibelle().toUpperCase() }</h1>
+	 	<h4>${ universityYearStudent.getUniversity_year_libelle().toUpperCase() }</h4>
+	 	<h4>${ cycleStudent.getCycleLibelle().toUpperCase() } MENTION ETUDE ANGLOPHONE</h4>
+	 	<h4>PARCOURS ${ parcoursStudent.getParcoursLibelle().toUpperCase() }</h4>
      </div>
      
      <div id="about-student">
         <p><b>NOM:</b> ${ student.getStudent_name().toUpperCase()  }</p>        	
         <p><b>PRENOM:</b> ${ student.getStudent_lastname().toUpperCase() } </p>
-		<p><b>DATE DE NAISSANCE:</b> ${ student.getStudent_birthdate()}</p>
-		<p><b>NATIONALITE:</b> ${ student.getStudent_nationality().toUpperCase()}</p>
     </div>
     
-    <table class="table table-striped" id = "info-evaluation">
+    <table class="table table-bordered" id = "info-evaluation">
 		<thead>
 			<tr>
 				<th>U.E / E.C</th>
@@ -65,7 +63,7 @@
 							<td class = "note-ue-${ period.getPeriod_id() }-2"></td>
 						</c:if>
 					</c:forEach>
-			       <td>${delib.getCredit_ue()}</td>
+			       <td class = "input-ue-credit">${delib.getCredit_ue()}</td>
 				</tr>	
 				<c:forEach items = "${ delib.getCoursesEvaluations() }" var = "ec">
 					<tr class = "ec-row ecue-${ delib.getStudyunit_id() }" id = "tr-ec-${ ec.getCourse_id() }">
@@ -88,11 +86,28 @@
 								${ec.getCourse_credit_obtenu()}
 							</c:if>
 						</td>
-					</tr>	
+					</tr>
 				</c:forEach>
 			</c:forEach>
+			<tr class = "total-row">
+					<td colspan = "5">Total</td>
+					<c:forEach items = "${ periodesStudent }" var = "period">
+						<td id = "moy-${ period.getPeriod_id() }-1"></td>
+						<c:if test="${ period.isA_ratrappage() }">
+							<td id = "moy-${ period.getPeriod_id() }-2"></td>
+						</c:if>
+					</c:forEach>
+					<td id = "total-credit" class = "total-credit">0</td>
+				</tr>
 		</tbody>
 	</table>
+	<div id = "result-current-student">
+		<p>Credits valides: </p>
+		<p>Resultat: ${delibCurrentUser}</p>
+		<p>Fait à Antananarivo le ${dateNow}</p>
+	</div>
+	<div id = "jury-member" ><p>Les membres de Jury,</p></div>
+	<div id = "jury-president" ><p>Le president de Jury,</p></div>
 <%@include file="../common/_script.jsp" %>
 <script src="<c:url value="/resources/js/export_pdf.js" />"></script>
 </body>
