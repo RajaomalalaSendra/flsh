@@ -27,7 +27,7 @@ public class UserController {
 	  UserService userService;
 
 	  @RequestMapping(value = "/users", method = RequestMethod.GET)
-	  public ModelAndView showUser(HttpServletRequest request, HttpServletResponse response) {
+	  public ModelAndView showUsers(HttpServletRequest request, HttpServletResponse response) {
 		  List<User> users = userService.getAllUser();
 		  int number = userService.getUsersNumber();
 		  ModelAndView m = new ModelAndView("users/users");
@@ -37,6 +37,26 @@ public class UserController {
 		  m.addObject("username", session.getAttribute("username") );
 	      m.addObject("users", users);  
 	      m.addObject("number", number);  
+	      return m;    
+	  }
+	  
+	  @RequestMapping(value = "/users/bypage", method = RequestMethod.GET)
+	  public ModelAndView showUsersByPage(HttpServletRequest request, HttpServletResponse response) {
+		  int page = request.getParameter("page") == null || request.getParameter("page") == "" ? 1 : Integer.parseInt(request.getParameter("page"));
+		  List<User> users = userService.getUsersByPage(page);
+		  ModelAndView m = new ModelAndView("users/list_users");
+	      m.addObject("users", users);   
+	      return m;    
+	  }
+	  
+	  @RequestMapping(value = "/users/search", method = RequestMethod.GET)
+	  public ModelAndView searchUserByCriteria(HttpServletRequest request, HttpServletResponse response) {
+		  int page = request.getParameter("page") == null || request.getParameter("page") == "" ? 1 : Integer.parseInt(request.getParameter("page"));
+		  String criteria = request.getParameter("criteria");
+		  List<User> users = userService.getUsersByCriteria(criteria, page);
+		  ModelAndView m = new ModelAndView("users/list_users");
+	      m.addObject("users", users);  
+	      m.addObject("showPage", true);  
 	      return m;    
 	  }
 	  

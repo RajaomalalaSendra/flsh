@@ -15,6 +15,7 @@ public class User {
 	  private Boolean enabled = true;
 	  private Set<Authorities> authorities = new HashSet<Authorities>();
 	  private int civ;
+	  private int maxnumber;
 	
 	  public String getUsername() {
 		  return username;
@@ -110,6 +111,15 @@ public class User {
 	public void setCiv(int civ) {
 		this.civ = civ;
 	}
+
+	public int getMaxnumber() {
+		return maxnumber;
+	}
+
+	public void setMaxnumber(int maxnumber) {
+		this.maxnumber = maxnumber;
+	}
+	
 	public String getCivilite() {
 		switch(civ) {
 		case 2: return "Mlle"; 

@@ -4,6 +4,7 @@
 <html class="no-js" lang="en">
 <head>
 	<%@include file="../common/_header.jsp" %>
+	<link rel="stylesheet" href="<c:url value="/resources/css/user.css" />">
 </head>
 <body>
 	
@@ -16,8 +17,12 @@
 	    	<div class = "header-list">
 				<button class = "btn btn-primary pull-right" id = "add-user" title = "Ajouter un nouveau utilisateur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>	
     			<h1>Users List</h1>		
+    			<div class = "form-group" id = "search-container">
+    				<input type = "text" id = "search-user" placeholder = "Rechercher utilisateur..." class = "form-control" />
+    				<label for = "search-user"><i class = "glyphicon glyphicon-search"></i></label>
+    			</div>
 			</div>  
-			<table class="table table-striped">
+			<table class="table table-striped" id = "table-users">
 			  <thead>
 			    <tr>
 			      <th scope="col">Id</th>

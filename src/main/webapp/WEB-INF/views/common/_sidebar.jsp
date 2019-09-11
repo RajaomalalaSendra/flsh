@@ -30,14 +30,14 @@
                         <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
                         <ul class="submenu-angle" aria-expanded="${ menu == 'professor'? 'true' : 'false' }">
                             <li class = "${ submenu == 'all_professors'? 'active' : '' }"><a title="Tous les professeurs" href="<c:url value='/professors' />"><span class="mini-sub-pro">All Professors</span></a></li>
-                            <li class = "${ submenu == 'prof_courses'? 'active' : '' }"><a title="Cours professeurs" href="<c:url value='/professor/courses' />"><span class="mini-sub-pro">Professor courses</span></a></li>
+                            <li class = "${ submenu == 'prof_courses'? 'active' : '' }"><a title="Cours professeurs" href="<c:url value='/professor/courses' />"><span class="mini-sub-pro">Professor-Courses</span></a></li>
                         </ul>
                     </li>
                     <li class = "${ menu == 'student'? 'active' : '' }">
                         <a class="has-arrow" href="all-students.html" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Students</span></a>
                         <ul class="submenu-angle" aria-expanded="${ menu == 'student'? 'true' : 'false' }">
                             <li class = "${ submenu == 'all_students'? 'active' : '' }"><a title="All Students" href="<c:url value='/students' />"><span class="mini-sub-pro">All Students</span></a></li>
-                            <li  class = "${ submenu == 'subscription'? 'active' : '' }"><a title="Inscription des étudiants" href="<c:url value='/students/subscriptions' />"><span class="mini-sub-pro">Manage subscriptions</span></a></li>
+                            <li  class = "${ submenu == 'subscription'? 'active' : '' }"><a title="Inscription des étudiants" href="<c:url value='/students/subscriptions' />"><span class="mini-sub-pro">Level-Students</span></a></li>
                         </ul>
                     </li>
                     <li class = "${ menu == 'course'? 'active' : '' }">

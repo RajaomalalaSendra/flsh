@@ -59,17 +59,74 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> getAllUser() {
-		String sql = "SELECT * FROM Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_type != 2";
+		String sql = "SELECT * FROM Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_type != 2 LIMIT 50";
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users;
 	}
-
+	
+	@Override
+	public List<User> getUsersByPage(int page) {
+		String sql = "SELECT Utilisateur.*, Role.*, (select count(*) from Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_type != 2) as users_number FROM Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_type != 2 LIMIT 50 OFFSET "+((page - 1)*50);
+		List<User> users = jdbcTemplate.query(sql, new UserMapper());
+		return users;
+	}
 
 	@Override
 	public User getUserDetails(int id) {
 		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_id=" + id ;
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users.size() > 0 ? users.get(0) : null;
+	}
+	
+	@Override
+	public List<User> getUsersByCriteria(String criteria, int page) {
+		String queryIntro = "SELECT *, (SELECT COUNT(*) ";
+		String querySearch = "FROM Utilisateur join Role on Role.rol_id = Utilisateur.uti_type ";
+		if(!criteria.equals("")) {
+			String[] tmpCriteria = criteria.split(" ");
+			switch(tmpCriteria.length) {
+				case 2:
+					querySearch += "WHERE (( uti_nom LIKE '%"+tmpCriteria[0]+"%' AND uti_prenom LIKE '%"+tmpCriteria[1]+"%')";
+					querySearch += " OR ( uti_nom LIKE '%"+tmpCriteria[1]+"%' AND uti_prenom LIKE '%"+tmpCriteria[0]+"%')";
+					querySearch += " OR uti_nom LIKE '%"+criteria+"%' ";
+					querySearch += " OR uti_prenom LIKE '%"+criteria+"%' ";
+					querySearch += " OR uti_email LIKE '%"+criteria+"%' ";
+					break;
+				case 3:
+					querySearch += "WHERE (( uti_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%' AND uti_prenom LIKE '%"+tmpCriteria[2]+"%')";
+					querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND uti_nom LIKE '%"+tmpCriteria[0]+"%')";
+					querySearch += " OR ( uti_nom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[1]+"%' AND uti_prenom LIKE '%"+tmpCriteria[0]+"%')";
+					querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%' AND uti_nom LIKE '%"+tmpCriteria[2]+"%')";
+					querySearch += " OR uti_nom LIKE '%"+criteria+"%' ";
+					querySearch += " OR uti_prenom LIKE '%"+criteria+"%' ";
+					querySearch += " OR uti_email LIKE '%"+criteria+"%' ";
+					break;
+				case 4:
+					querySearch += "WHERE (( uti_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%' AND uti_prenom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[3]+"%')";
+					querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[3]+"%' AND uti_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%')";
+					querySearch += " OR ( uti_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[2]+"%' AND uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%')";
+					querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%' AND uti_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[2]+"%')";
+					querySearch += " OR ( uti_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[0]+"%' AND uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%')";
+					querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND uti_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[0]+"%')";
+					querySearch += " OR ( uti_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND uti_prenom LIKE '%"+tmpCriteria[3]+"%')";
+					querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND uti_nom LIKE '%"+tmpCriteria[3]+"%')";
+					querySearch += " OR uti_nom LIKE '%"+criteria+"%' ";
+					querySearch += " OR uti_prenom LIKE '%"+criteria+"%' ";
+					querySearch += " OR uti_email LIKE '%"+criteria+"%' ";
+					break;
+				default:
+					querySearch += "WHERE (uti_nom LIKE '%"+criteria+"%' ";
+					querySearch += " OR uti_prenom LIKE '%"+criteria+"%' ";
+					querySearch += " OR uti_login LIKE '%"+criteria+"%' ";
+					querySearch += " OR uti_email LIKE '%"+criteria+"%' ";
+					break;
+			}
+			
+		}
+		querySearch += criteria.equals("") ? " WHERE uti_type != 2" : ") AND uti_type != 2";
+		String query = queryIntro +" "+querySearch+") as users_number "+querySearch+" limit 50 offset "+ (50 * (page - 1));
+		List<User> users = jdbcTemplate.query(query, new UserMapper());
+		return users;
 	}
 
 	//Verification functions
@@ -224,6 +281,7 @@ public class UserServiceImpl implements UserService {
 		System.out.print("\nNumber of users : "+usersNumber+"\n");
 		return usersNumber;
 	}
+
 }
 
 class UserMapper implements RowMapper<User> {
@@ -240,6 +298,11 @@ class UserMapper implements RowMapper<User> {
 	    Set<Authorities> authorities = new HashSet();
 	    authorities.add(new Authorities(rs.getString("rol_libelle")));
 	    user.setAuthorities(authorities);
+	    try {
+	    	user.setMaxnumber(rs.getInt("users_number"));
+	    } catch (Exception e) {
+	    	System.out.print("\nNo users number\n");
+	    }
 	    return user;
 	}
 }
