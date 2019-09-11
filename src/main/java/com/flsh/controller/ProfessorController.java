@@ -33,19 +33,42 @@ public class ProfessorController {
 	  TeachingService teachingService;
 	  
 	  @RequestMapping(value = "/professors", method = RequestMethod.GET)
-	  public ModelAndView showProfessor(HttpServletRequest request, HttpServletResponse response) {
-		List<Professor> professors=professorService.getAllProfessor();
+	  public ModelAndView showProfessors(HttpServletRequest request, HttpServletResponse response) {
+		List<Professor> professors = professorService.getAllProfessor();
+		int profsNumber = professorService.getProfsNumber();
 		ModelAndView prof = new ModelAndView("users/professors");
 	    prof.addObject("professors", professors);
+	    prof.addObject("number", profsNumber);
 	    prof.addObject("menu", "professor");
 	    prof.addObject("submenu", "all_professors");
+	    return prof;
+	  }
+	  
+	  @RequestMapping(value = "/professors/bypage", method = RequestMethod.GET)
+	  public ModelAndView showProfessorsByPage(HttpServletRequest request, HttpServletResponse response) {
+		int pageNumber = request.getParameter("page") == null || request.getParameter("page").equals("") ? 1 : Integer.parseInt(request.getParameter("page"));
+		List<Professor> professors = professorService.getProfessorsByPage(pageNumber);
+		ModelAndView prof = new ModelAndView("users/professors_list");
+	    prof.addObject("professors", professors);
+	    return prof;
+	  }
+	  
+	  @RequestMapping(value = "/professors/search", method = RequestMethod.GET)
+	  public ModelAndView searchProfessorsByPage(HttpServletRequest request, HttpServletResponse response) {
+		int pageNumber = request.getParameter("page") == null || request.getParameter("page").equals("")  ? 1 : Integer.parseInt(request.getParameter("page"));
+		boolean addPagination = request.getParameter("page") == null || request.getParameter("page").equals("");
+		String searchCriteria = request.getParameter("criteria");
+		List<Professor> professors = professorService.searchProfessorsByPage(searchCriteria, pageNumber);
+		ModelAndView prof = new ModelAndView("users/professors_list");
+	    prof.addObject("professors", professors);
+	    prof.addObject("addPagination", addPagination);
 	    return prof;
 	  }
 	  
 	  @RequestMapping(value = "/professor/details", method = RequestMethod.GET)
 	  @ResponseBody
 	  public String getUserDetails(HttpServletRequest request, HttpServletResponse response) {
-		  int id = request.getParameter("id") == null || request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
+		  int id = request.getParameter("id") == null || request.getParameter("id").equals("") ? 0 : Integer.parseInt(request.getParameter("id"));
 		  Professor professor = professorService.getProfessorDetails(id);
 		  JSONObject rtn = new JSONObject();
 		  rtn.put("professor_id", professor.getProfessor_id());

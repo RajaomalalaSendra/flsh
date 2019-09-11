@@ -65,13 +65,64 @@ public class StudentServiceImpl implements StudentService {
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
 		return students;
 	}
-	
 
 	@Override
-	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel) {
-		String queryStudent = idLevel == 0 ? "SELECT * FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+")" 
-								: "SELECT * FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id"
-								+ " where au_id = "+idUY+" and niv_id = "+idLevel;
+	public List<Student> getStudentsByCriteria(String criteria, int numPage) {
+		String queryIntro = "SELECT *, (SELECT COUNT(*) ";
+		String querySearch = "FROM Etudiant ";
+		if(!criteria.equals("")) {
+			if(criteria.matches("-?\\d+(\\.\\d+)?")) {
+				querySearch += "WHERE etd_cin LIKE '%"+criteria+"%' OR etd_numeropasseport LIKE '%"+criteria+"%' ";
+			} else {
+				String[] tmpCriteria = criteria.split(" ");
+				switch(tmpCriteria.length) {
+					case 2:
+						querySearch += "WHERE ( etd_nom LIKE '%"+tmpCriteria[0]+"%' AND etd_prenom LIKE '%"+tmpCriteria[1]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' ";
+						break;
+					case 3:
+						querySearch += "WHERE ( etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[2]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_nom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%' AND etd_nom LIKE '%"+tmpCriteria[2]+"%')";
+						querySearch += " OR etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' ";
+						break;
+					case 4:
+						querySearch += "WHERE ( etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[3]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[3]+"%' AND etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[2]+"%' AND etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%' AND etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[2]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[0]+"%' AND etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_prenom LIKE '%"+tmpCriteria[3]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_nom LIKE '%"+tmpCriteria[3]+"%')";
+						querySearch += " OR etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' ";
+						break;
+					default:
+						querySearch += "WHERE etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' ";
+						break;
+				}
+			}
+		}
+		String query = queryIntro +" "+querySearch+") as maxnumber "+querySearch+" limit 100 offset "+ (100 * (numPage - 1));
+		List<Student> students = jdbcTemplate.query(query, new StudentMapper());
+		return students;
+	}
+
+	@Override
+	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel, int numPage) {
+		String queryStudent = idLevel == 0 ? "SELECT Etudiant.*, ( select count(*) FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+") ) as maxnumber FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+") LIMIT 100 OFFSET "+(100 * (numPage - 1)) 
+								: "SELECT Etudiant.*, (SELECT count(*) FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id where au_id = "+idUY+" and niv_id = "+idLevel+") as maxnumber FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id"
+								+ " where au_id = "+idUY+" and niv_id = "+idLevel+" LIMIT 100 OFFSET "+(100 * (numPage - 1));
 		System.out.print(queryStudent);
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
 		return students;
@@ -404,6 +455,65 @@ public class StudentServiceImpl implements StudentService {
 	    rtn.put("message", res ? "Suppression réussie" : "Echec de la désinscription! Veuillez réessayer");
 		return rtn;
 	}
+
+	/**
+	 * Search subscribed student
+	 */
+	@Override
+	public Object getStudentsByUnivYearAndLevelAndCriteria(int idUY, int idLevel, String criteria, int numPage) {
+		String queryIntro = "SELECT *, (SELECT COUNT(*) ";
+		String querySearch = "FROM Etudiant ";
+		String levelCriteria = idLevel == 0 ? " AND etd_id not in  (SELECT etd_id FROM Niveau_Etudiant WHERE au_id = "+idUY+") " : " AND etd_id in  (SELECT etd_id FROM Niveau_Etudiant WHERE au_id = "+idUY+" AND niv_id = "+idLevel+") ";
+		if(!criteria.equals("")) {
+			if(criteria.matches("-?\\d+(\\.\\d+)?")) {
+				querySearch += "WHERE ( etd_cin LIKE '%"+criteria+"%' OR etd_numeropasseport LIKE '%"+criteria+"%' )"+levelCriteria;
+			} else {
+				String[] tmpCriteria = criteria.split(" ");
+				switch(tmpCriteria.length) {
+					case 2:
+						querySearch += "WHERE (( etd_nom LIKE '%"+tmpCriteria[0]+"%' AND etd_prenom LIKE '%"+tmpCriteria[1]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' )"+levelCriteria;
+						break;
+					case 3:
+						querySearch += "WHERE (( etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[2]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_nom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%' AND etd_nom LIKE '%"+tmpCriteria[2]+"%')";
+						querySearch += " OR etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' )"+levelCriteria;
+						break;
+					case 4:
+						querySearch += "WHERE (( etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%' AND etd_prenom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[3]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[3]+"%' AND etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[2]+"%' AND etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%' AND etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[2]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[0]+"%' AND etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[0]+"%')";
+						querySearch += " OR ( etd_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_prenom LIKE '%"+tmpCriteria[3]+"%')";
+						querySearch += " OR ( etd_prenom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND etd_nom LIKE '%"+tmpCriteria[3]+"%')";
+						querySearch += " OR etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' )"+levelCriteria;
+						break;
+					default:
+						querySearch += "WHERE (etd_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR etd_adresse LIKE '%"+criteria+"%' )"+levelCriteria;
+						break;
+				}
+			}
+		} else {
+			querySearch += idLevel == 0 ? " WHERE etd_id not in  (SELECT etd_id FROM Niveau_Etudiant WHERE au_id = "+idUY+") " : " WHERE etd_id in  (SELECT etd_id FROM Niveau_Etudiant WHERE au_id = "+idUY+" AND niv_id = "+idLevel+") ";
+		}
+		String query = queryIntro +" "+querySearch+") as maxnumber "+querySearch+" limit 100 offset "+ (100 * (numPage - 1));
+		System.out.print("\n search query : "+query+"\n");
+		List<Student> students = jdbcTemplate.query(query, new StudentMapper());
+		return students;
+	}
 }
 
 class StudentMapper implements RowMapper<Student> {
@@ -430,6 +540,12 @@ class StudentMapper implements RowMapper<Student> {
 		student.setStudent_jobfather(rs.getString("etd_professionpere"));
 		student.setStudent_jobmother(rs.getString("etd_professionmere"));
 		try {
+			System.out.print("\n Max number : "+rs.getInt("maxnumber")+"\n");
+			student.setNumber(rs.getInt("maxnumber"));
+		} catch (Exception e) {
+			System.out.print("\n No max number \n");
+		}
+		try {
 			String evaluations = rs.getString("evaluations");
 			String[] tmpEvals = evaluations.split(";");
 			HashMap<String, String> listEvaluations = new HashMap<String, String>();
@@ -439,7 +555,8 @@ class StudentMapper implements RowMapper<Student> {
 			}
 			student.setEvaluations(listEvaluations);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.print("\nNo evaluation data\n");
+			//e.printStackTrace();
 		}
 		return student;
 	}

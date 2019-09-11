@@ -21,4 +21,10 @@ public interface ProfessorService {
 	List<ProfessorStudyUnit> getAllProfessorUnitStudy();
 
 	List<String> getListProfUntStd();
+
+	int getProfsNumber();
+
+	List<Professor> getProfessorsByPage(int pageNumber);
+
+	List<Professor> searchProfessorsByPage(String searchCriteria, int pageNumber);
 }

@@ -20,6 +20,7 @@
 	    			</c:forEach>
     			</select>
     		</div>
+    		<h1>Courses of professor</h1>  
 			<table class="table table-striped">
 			  <thead>
 			    <tr>

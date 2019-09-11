@@ -31,9 +31,13 @@
 		        	</select>
 				</div>
     			<h3>Etudiants</h3>
+    			<div class = "form-group" id = "search-container-subscription">
+    				<input type = "text" id = "search-student-subscribe" placeholder = "Rechercher étudiant..." class = "form-control" />
+    				<label for = "search-student"><i class = "glyphicon glyphicon-search"></i></label>
+    			</div>
     		</div>
     		<div class = "table-wrapper">
-    			<table class = "table table-bordered">
+    			<table class = "table table-bordered" id = "table-subscribed">
 					<thead>
 						<tr>
 							<th>Civ.</th>
@@ -51,6 +55,10 @@
 						
 					</tbody>
 				</table>
+    		</div>
+    		<div class = "pagination" id = "pagination-subscription">
+			  <ul class="pagination">
+			  </ul>
     		</div>
     	</div>
     	<div id = "modals-wrapper">

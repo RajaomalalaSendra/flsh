@@ -32,8 +32,8 @@
 		        	<select class = "form-control" id = "choixPeriodParcours">
 		        	</select>
 				</div>
+    			<h1>Unite D'enseignement</h1>  
 			</div>
-    		<h1>Unite D'enseignement</h1>  
     		<div class = "alert alert-danger alert-course-period" id = "error-save-periodcourse">Erreur</div>
     		<div class = "alert alert-success alert-course-period" id = "success-save-periodcourse">Saved</div>
 			<table class="table table-striped" id = "table-period-courses">

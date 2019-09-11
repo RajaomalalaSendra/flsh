@@ -4,6 +4,7 @@
 <html class="no-js" lang="en">
 <head>
 	<%@include file="../common/_header.jsp" %>
+	<link rel="stylesheet" href="<c:url value="/resources/css/user.css" />">
 </head>
 <body>
 	
@@ -14,9 +15,14 @@
     	<br/><br/><br/><br/>
     	<div class="main-wrapper">
 	    	<div class = "header-list">
-				<button class = "btn btn-primary pull-right" id = "add-user" title = "Ajouter un nouveau utilisateur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>			</div>
-    		<h1>Users List</h1>  
-			<table class="table table-striped">
+				<button class = "btn btn-primary pull-right" id = "add-user" title = "Ajouter un nouveau utilisateur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>	
+    			<h1>Users List</h1>		
+    			<div class = "form-group" id = "search-container">
+    				<input type = "text" id = "search-user" placeholder = "Rechercher utilisateur..." class = "form-control" />
+    				<label for = "search-user"><i class = "glyphicon glyphicon-search"></i></label>
+    			</div>
+			</div>  
+			<table class="table table-striped" id = "table-users">
 			  <thead>
 			    <tr>
 			      <th scope="col">Id</th>
@@ -53,6 +59,24 @@
 			   </c:forEach>
 			  </tbody>  
 			</table>  
+			<div class = "pagination" id = "pagination-users">
+			  <ul class="pagination pull-right">
+			    <li class="page-item">
+			      <a class="page-link" href="#" id = "previous-page" aria-label="Previous">
+			        <span aria-hidden="true">&laquo;</span>
+			      </a>
+			    </li>
+			    
+			    <c:forEach var="i" begin="1" end="${ Math.ceil(number/50) }" step="1">
+				    <li class="page-item ${ i == 1 ? 'active' : ''}"><a class="page-link" page-target = "${ i }" href="#"><c:out value="${ i }" /></a></li>
+				</c:forEach>
+			    <li class="page-item">
+			      <a class="page-link" href="#" id = "next-page" aria-label="Next">
+			        <span aria-hidden="true">&raquo;</span>
+			      </a>
+			    </li>
+			  </ul>
+    		</div>
     	</div>
     	<%@include file="userdetails.jsp" %>
     	<%@include file="user_forms.jsp" %>

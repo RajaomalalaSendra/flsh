@@ -24,5 +24,11 @@ public interface UserService {
 	JSONObject deleteUser(int id);
 	
 	JSONObject saveAccount(int id, String lastname, String firstname, String username, String  email, String  type, String  newpassword, String  password);
+
+	int getUsersNumber();
+
+	List<User> getUsersByPage(int page);
+
+	List<User> getUsersByCriteria(String criteria, int page);
 	
 }

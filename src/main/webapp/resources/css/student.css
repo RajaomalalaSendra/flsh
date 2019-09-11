@@ -17,3 +17,28 @@ div.pagination {
 	text-align: right;
     width: 100%;
 }
+.header-list {
+	position: relative;
+}
+#search-container {
+	position: absolute;
+    width: 40%;
+    top: 0;
+    left: 30%;
+}
+#search-container-subscription {
+	position: absolute;
+    width: 40%;
+    top: 0;
+    left: 20%;
+}
+#search-container label, #search-container-subscription label {
+	position: absolute;
+    right: 10px;
+    top: 30%;
+    color: #999;
+    cursor: pointer;
+}
+#main-wrapper, .main-wrapper {
+	padding-left: 20px;
+}

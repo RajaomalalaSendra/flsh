@@ -1,4 +1,5 @@
 var infosSubscription
+var inSearch = false
 $(document).ready(function() {
 	
 	$(function() {
@@ -95,11 +96,14 @@ $(document).ready(function() {
 		var idUY = $('#choixUY').val()
 		var idLevel = $('#choixLevel').val()
 		$.ajax({
-			url: getBaseUrl('student/loadStudentsByUnivYearAndLevel'),
+			url: getBaseUrl('students/loadStudentsByUnivYearAndLevel'),
 			type: 'POST',
 			data: {idUY, idLevel},
 			success: function(data) {
 				$('tbody').html(data)
+				var paginationContent = data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") > -1 ? data.substring(data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") + 55, data.length - 7) : undefined
+				console.log('html pagination', paginationContent)
+				$('div.pagination ul').html(paginationContent)
 			},
 			error: function() {
 				$('tbody').html('')
@@ -215,7 +219,7 @@ $(document).ready(function() {
 		})
 	})
 	
-	$(document).on('click', 'li.page-item a', function(e) {
+	$(document).on('click', '#pagination-students li.page-item a', function(e) {
 		e.preventDefault()
 		var parent = $(this).parent()
 		if($(this).attr('id') == "previous-page") {
@@ -233,17 +237,126 @@ $(document).ready(function() {
 		} else {
 			if(!parent.hasClass('active')) {
 				var numPage = $.trim( $(this).html())
-				$.ajax({
-					url: getBaseUrl('students/bypage?page='+numPage),
-					success: function(data) {
-						$('#table-students tbody').html(data)
-						$('li.page-item').removeClass('active')
-						parent.addClass('active')
-					},
-					error: function() {
-						alert('Erreur lors du chargement de la page')
-					}
-				})
+				var criteria = $('#search-student').val()
+				if(criteria == "" || !inSearch) {
+					$.ajax({
+						url: getBaseUrl('students/bypage?page='+numPage),
+						success: function(data) {
+							$('#table-students tbody').html(data)
+							$('li.page-item').removeClass('active')
+							parent.addClass('active')
+						},
+						error: function() {
+							alert('Erreur lors du chargement de la page')
+						}
+					})
+				} else {
+					$.ajax({
+						url: getBaseUrl('students/search?criteria='+criteria+'&page='+numPage),
+						success: function(data) {
+							$('#table-students tbody').html(data)
+							$('li.page-item').removeClass('active')
+							parent.addClass('active')
+						},
+						error: function() {
+							alert('Erreur lors du chargement de la page')
+						}
+					})
+				}
+			}
+		}
+	})
+	
+	$(document).on('keyup', '#search-student', function(e) {
+		if(e.keyCode == 13) {
+			inSearch = true
+			console.log('Start search')
+			var criteria = $(this).val()
+			$.ajax({
+				url: getBaseUrl('students/search?criteria='+criteria),
+				success: function(data) {
+					var paginationContent = data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") > -1 ? data.substring(data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") + 55, data.length - 7) : undefined
+					$.when($('#table-students tbody').html(data)).then(function() {
+						$('div.pagination ul').html(paginationContent)
+					})
+					if($.trim(criteria) == "") inSearch = false
+				},
+				error: function() {
+					alert('Erreur lors du chargement des étudiants')
+				}
+			})
+		}
+	})
+	
+	$(document).on('keyup', '#search-student-subscribe', function(e) {
+		if(e.keyCode == 13) {
+			inSearch = true
+			console.log('Search subscribed student')
+			var criteria = $(this).val()
+			$.ajax({
+				url: getBaseUrl('students/searchSubscribed?criteria='+criteria+'&idUY='+$('#choixUY').val()+'&idLevel='+$('#choixLevel').val()),
+				success: function(data) {
+					var paginationContent = data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") > -1 ? data.substring(data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") + 55, data.length - 7) : undefined
+					$.when($('#table-subscribed tbody').html(data)).then(function() {
+						$('div.pagination ul').html(paginationContent)
+					})
+					if($.trim(criteria) == "") inSearch = false
+				},
+				error: function() {
+					alert('Erreur lors du chargement des étudiants')
+				}
+			})
+		}
+	})
+	
+	$(document).on('click', '#pagination-subscription li.page-item a', function(e) {
+		e.preventDefault()
+		var parent = $(this).parent()
+		if($(this).attr('id') == "previous-page") {
+			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) - 1
+			console.log('next page ', pageNext)
+			if(!$('li.page-item.active a').attr('page-target') != "1") {
+				$('a[page-target='+pageNext+']').trigger('click')
+			}
+		} else if($(this).attr('id') == "next-page") {
+			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) + 1
+			console.log('next page ', pageNext)
+			if($('a[page-target='+pageNext+']').html()) {
+				$('a[page-target='+pageNext+']').trigger('click')
+			}
+		} else {
+			if(!parent.hasClass('active')) {
+				var numPage = $.trim( $(this).html())
+				var criteria = $('#search-student-subscribe').val()
+				var idUY = $('#choixUY').val()
+				var idLevel = $('#choixLevel').val()
+				if(criteria == "" || !inSearch) {
+					$.ajax({
+						url: getBaseUrl('students/loadStudentsByUnivYearAndLevel'),
+						type: 'POST',
+						data: {page: numPage, idUY, idLevel},
+						success: function(data) {
+							$('#table-subscribed tbody').html(data)
+							$('li.page-item').removeClass('active')
+							parent.addClass('active')
+						},
+						error: function() {
+							alert('Erreur lors du chargement de la page')
+						}
+					})
+				} else {
+					$.ajax({
+						url: getBaseUrl('students/searchSubscribed?criteria='+criteria+'&page='+numPage+'&idUY='+$('#choixUY').val()+'&idLevel='+$('#choixLevel').val()),
+						success: function(data) {
+							$('#table-subscribed tbody').html(data)
+							$('li.page-item').removeClass('active')
+							parent.addClass('active')
+						},
+						error: function() {
+							alert('Erreur lors du chargement de la page')
+						}
+					})
+				}
 			}
 		}
 	})

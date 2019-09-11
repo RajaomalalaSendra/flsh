@@ -22,7 +22,7 @@ public interface StudentService {
 
 	HashSet<StudyUnit> getParcoursChoiceUnits(int idParcours);
 
-	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel);
+	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel, int numPage);
 
 	public JSONObject saveSubscriptionStudent(int idStudent, int idUY, int idLevel, int idPrc, int paid,
 			String dateInscription, String choixprc);
@@ -34,5 +34,9 @@ public interface StudentService {
 	public int getStudentsNumber();
 
 	public List<Student> getStudentsByPage(int numPage);
+
+	public List<Student> getStudentsByCriteria(String criteria, int numPage);
+
+	public Object getStudentsByUnivYearAndLevelAndCriteria(int idUY, int idLevel, String searchCriteria, int numPage);
 
 }
