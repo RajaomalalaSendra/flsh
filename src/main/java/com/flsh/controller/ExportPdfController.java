@@ -51,7 +51,6 @@ public class ExportPdfController {
 		Parcours parcoursStudent = periodService.getParcoursByAUAndLevelAndStudentId(idUY, idLevel, idStudent);
 		Cycles cycleStudent = periodService.getCyclesById(idCycle);
 		String delibDecisionCurrentUser = delibService.getDelibDecisionCurrentUser(idUY, idLevel, idStudent);
-		int total = 0;
 		
 		List<EvaluationUEECStudent> dataEvaluationsStudent = delibService.getInfosEvaluationsByStudentLevelUnivYearAndParcours(idUY, idStudent, idLevel, parcoursStudent.getParcoursId());
 		

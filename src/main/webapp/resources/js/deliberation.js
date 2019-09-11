@@ -199,9 +199,9 @@ $(document).ready(function() {
 			$("#passe-deliberation").removeClass("btn-success")
 			$("#asr-deliberation").removeClass("btn-info")
 			
-			deselectCumules()
 			
-			passage = "RENVOI"
+			deselectCumules()
+			passage = "Refusé(e)"
 		} else if(idDecision == "redouble-deliberation"){
 			$("#renvoi-deliberation").removeClass("btn-danger")
 			$("#redouble-deliberation").addClass("btn-warning")

@@ -39,7 +39,6 @@ $(document).ready(function() {
 			}
 		})
 		computeSumAllCredit()
-		computeSumAllCreditObtain()
 	})
 })
 
@@ -49,12 +48,4 @@ function computeSumAllCredit(){
 		sumAllCredit += +$(this).html()
 	})
 	$("#total-credit").html(sumAllCredit)
-}
-
-function computeSumAllCreditObtain(){
-	var sumAllCreditObtain = 0
-	$("tr td.valid-credit-ue").each(function(){
-		sumAllCreditObtain += +$(this).attr("val-credit-ue")
-	})
-	$("#summ-credit-obtain").html(sumAllCreditObtain)
 }
