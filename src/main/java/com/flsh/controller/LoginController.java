@@ -38,7 +38,7 @@ public class LoginController {
 
 	    ModelAndView mav = null;
 	    User user = userService.validateUser(login);
-	    if (null != user) {;  
+	    if (null != user) {  
 	         session.setAttribute("username", user.getUsername());  
 	         logger.info("User infos is .", session.getAttribute("username"));
 	    	 mav = new ModelAndView("redirect:/");

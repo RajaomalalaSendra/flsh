@@ -120,16 +120,6 @@ $(document).ready(function() {
 		$('#edit-myaccount').show();
 	})
 	
-//	$('#show-password').on('click', function() {
-//		if($(this).hasClass('glyphicon-eye-close')) {
-//			$(this).parent().find('input').attr('type', 'text');
-//			$(this).removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
-//		} else {
-//			$(this).parent().find('input').attr('type', 'password');
-//			$(this).addClass('glyphicon-eye-close').removeClass('glyphicon-eye-open');
-//		}
-//	})
-	
 	$('#newpass-account').on('keyup', function() {
 		if($(this).val() == "") {
 			$('#pass-account').attr('disabled','')

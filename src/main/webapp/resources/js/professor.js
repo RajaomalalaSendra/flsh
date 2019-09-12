@@ -15,7 +15,6 @@ $(document).ready(function() {
 			type: "GET",
 			dataType: "JSON",
 			success: function(data) {
-				console.log(data)
 				$('#detail-lastname-prof').html(data.professor_last_name)
 				$('#detail-firstname-prof').html(data.professor_name)
 				$('#detail-email-prof').html(data.professor_email)
@@ -41,15 +40,12 @@ $(document).ready(function() {
 	$(document).on('click', '#save-prof', function(){
 		updatePasswordStatus()
 		if (formValidate('#form-save-prof')){
-			console.log("test.....")
 			$.ajax({
 				url: getBaseUrl('professor/save'),
 			    type: 'POST',
 			    data: $('#form-save-prof').serialize(),
 			    dataType : 'JSON',
 			    success: function(data){
-			    	console.log("test inside.....")
-			    	console.log(data)
 			    	if(data.status == 1) {
 						window.location.reload()
 					} else {
@@ -73,7 +69,6 @@ $(document).ready(function() {
 			type: "GET",
 			dataType: "JSON",
 			success: function(data) {
-				console.log(data)
 				$('#prof-id').val(data.professor_id)
 				$('#lastname-prof').val(data.professor_last_name)
 				$('#firstname-prof').val(data.professor_name)
@@ -135,15 +130,12 @@ $(document).ready(function() {
 	
 	$('#save-prof-ue').on('click', function(){
 		if (formValidate('#form-save-prof-ue')){
-			console.log("test.....")
 			$.ajax({
 				url: getBaseUrl('professor/course/save'),
 			    type: 'POST',
 			    data: $('#form-save-prof-ue').serialize(),
 			    dataType : 'JSON',
 			    success: function(data){
-			    	console.log("test inside.....")
-			    	console.log(data)
 			    	if(data.status == 1) {
 						window.location.reload()
 					} else {
@@ -158,7 +150,6 @@ $(document).ready(function() {
 	})
 	
 	$('#professorsAndUes').on('change', function() {
-		console.log("hello")
 		$('tbody').html('loading...');
 		var id = $(this).val();
 		$.ajax({

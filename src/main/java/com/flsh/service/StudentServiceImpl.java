@@ -127,6 +127,8 @@ public class StudentServiceImpl implements StudentService {
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
 		return students;
 	}
+	
+	
 
 	@Override
 	public Student getStudentById(int idStudent) {
