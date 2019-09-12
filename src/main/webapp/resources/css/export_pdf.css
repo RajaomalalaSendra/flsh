@@ -31,3 +31,31 @@ table {
 	margin-top: -35px;
 	margin-left: 600px;
 }
+
+@media print {
+	    @page 
+    {
+        size:  auto;   /* auto is the initial value */
+        margin: 0mm;  /* this affects the margin in the printer settings */
+    }
+
+    html
+    {
+        background-color: #FFFFFF; 
+        margin: 0px;  /* this affects the margin on the html before sending to printer */
+    }
+
+    body
+    {
+        margin: 10mm 15mm 10mm 15mm;
+        background-image: none; /* margin you want for the content */
+    }
+    
+    a[href]:after {
+    	content: none !important;
+  	}
+  	title:after {
+  		content: none !important;
+  	}
+  	
+}
