@@ -16,13 +16,13 @@
 			<h1>Choisissez le mode de saisie</h1>
 			<div class = "row row-fluid" id = "choix-delib-wrapper">
 				<div class = "form-group form-inline">
-					<label for = "select-uy">Année universitaire :</label>
+					<label for = "select-uy">Annï¿½e universitaire :</label>
 					<select id = "select-uy" class = "form-control">
 						<c:forEach items = "${ univYears }" var = "uy" varStatus = "status">
 		        			<option value = "${ uy.getUniversity_year_id() }" ${ uy.isActual() ? "selected" : ""}>${ uy.getUniversity_year_libelle() }</option>
 		        		</c:forEach>
 					</select>
-					<a class = "btn btn-info" id = "start-deliberation" target = "_blank">Démarrer la délibération</a>
+					<a class = "btn btn-info" id = "start-deliberation" target = "_blank">Dï¿½marrer la dï¿½libï¿½ration</a>
 				</div>
 			</div>
     	</div>

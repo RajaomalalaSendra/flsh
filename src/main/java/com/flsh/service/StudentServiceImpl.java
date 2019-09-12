@@ -128,16 +128,6 @@ public class StudentServiceImpl implements StudentService {
 		return students;
 	}
 	
-	@Override
-	public List<Student> getStudentsByUnivYearAndParcours(int idUY, int idParcours) {
-		String queryStudent = idParcours == 0 ? "SELECT * FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+")" 
-								: "SELECT * FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id"
-								+ " WHERE au_id = "+idUY+" AND prc_id = "+idParcours;
-		System.out.print(queryStudent);
-		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
-		return students;
-	}
-	
 	
 
 	@Override
@@ -518,8 +508,11 @@ public class StudentServiceImpl implements StudentService {
 						break;
 				}
 			}
+		} else {
+			querySearch += idLevel == 0 ? " WHERE etd_id not in  (SELECT etd_id FROM Niveau_Etudiant WHERE au_id = "+idUY+") " : " WHERE etd_id in  (SELECT etd_id FROM Niveau_Etudiant WHERE au_id = "+idUY+" AND niv_id = "+idLevel+") ";
 		}
 		String query = queryIntro +" "+querySearch+") as maxnumber "+querySearch+" limit 100 offset "+ (100 * (numPage - 1));
+		System.out.print("\n search query : "+query+"\n");
 		List<Student> students = jdbcTemplate.query(query, new StudentMapper());
 		return students;
 	}
@@ -564,7 +557,7 @@ class StudentMapper implements RowMapper<Student> {
 			}
 			student.setEvaluations(listEvaluations);
 		} catch (Exception e) {
-			System.out.print("No evaluation data");
+			System.out.print("\nNo evaluation data\n");
 			//e.printStackTrace();
 		}
 		return student;

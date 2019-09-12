@@ -1,6 +1,8 @@
+var inSearch = false
+
 $(document).ready(function() {
 	
-	$('.detail-user').on('click', function(event) {
+	$(document).on('click', '.detail-user', function(event) {
 		event.preventDefault()
 		var url = getBaseUrl($(this).attr('href'))
 		$.ajax({
@@ -51,8 +53,7 @@ $(document).ready(function() {
 		}
 	})
 	
-	
-	$('.edit-user').on('click', function(){
+	$(document).on('click', '.edit-user', function(){
 		console.log('test edit user')
 		var iduser = $(this).attr('id-user')
 		$('#userAddLabel').html('Editer un utilisateur')
@@ -78,7 +79,7 @@ $(document).ready(function() {
 		})
 	})
 	
-	$('.delete-user').on('click', function() {
+	$(document).on('click', '.delete-user', function() {
 		var idUser = $(this).attr('id-user-delete')
 		$('#idUserDelete').val(idUser)
 		$('#userDeleteModal').modal('show')
@@ -159,6 +160,74 @@ $(document).ready(function() {
 					}
 				})
 			}
+		}
+	})
+	
+	$(document).on('click', '#pagination-users li.page-item a', function(e) {
+		e.preventDefault()
+		var parent = $(this).parent()
+		if($(this).attr('id') == "previous-page") {
+			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) - 1
+			console.log('next page ', pageNext)
+			if(!$('li.page-item.active a').attr('page-target') != "1") {
+				$('a[page-target='+pageNext+']').trigger('click')
+			}
+		} else if($(this).attr('id') == "next-page") {
+			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) + 1
+			console.log('next page ', pageNext)
+			if($('a[page-target='+pageNext+']').html()) {
+				$('a[page-target='+pageNext+']').trigger('click')
+			}
+		} else {
+			if(!parent.hasClass('active')) {
+				var numPage = $.trim( $(this).html())
+				var criteria = $('#search-user').val()
+				if(criteria == "" || !inSearch) {
+					$.ajax({
+						url: getBaseUrl('users/bypage?page='+numPage),
+						success: function(data) {
+							$('#table-users tbody').html(data)
+							$('li.page-item').removeClass('active')
+							parent.addClass('active')
+						},
+						error: function() {
+							alert('Erreur lors du chargement de la page')
+						}
+					})
+				} else {
+					$.ajax({
+						url: getBaseUrl('users/search?criteria='+criteria+'&page='+numPage),
+						success: function(data) {
+							$('#table-users tbody').html(data)
+							$('li.page-item').removeClass('active')
+							parent.addClass('active')
+						},
+						error: function() {
+							alert('Erreur lors du chargement de la page')
+						}
+					})
+				}
+			}
+		}
+	})
+	
+	$(document).on('keyup', '#search-user', function(e) {
+		if(e.keyCode == 13) {
+			inSearch = true
+			var criteria = $(this).val()
+			$.ajax({
+				url: getBaseUrl('users/search?criteria='+criteria),
+				success: function(data) {
+					var paginationContent = data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") > -1 ? data.substring(data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") + 55, data.length - 7) : undefined
+					$.when($('#table-users tbody').html(data)).then(function() {
+						$('div.pagination ul').html(paginationContent)
+					})
+					if($.trim(criteria) == "") inSearch = false
+				},
+				error: function() {
+					alert('Erreur lors du chargement des utilisateurs')
+				}
+			})
 		}
 	})
 })

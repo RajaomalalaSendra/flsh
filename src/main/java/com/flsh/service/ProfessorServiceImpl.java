@@ -41,6 +41,65 @@ public class ProfessorServiceImpl implements ProfessorService {
 	}
 
 	@Override
+	public List<Professor> getProfessorsByPage(int pageNumber) {
+		String sql_prof = "SELECT * FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id   WHERE Utilisateur.uti_type = 2 LIMIT 50 OFFSET "+((pageNumber - 1) * 100 );		
+		List<Professor> professors = jdbcTemplate.query(sql_prof, new ProfessorMapper());
+		return professors;
+	}
+
+	@Override
+	public List<Professor> searchProfessorsByPage(String criteria, int numPage) {
+		String queryIntro = "SELECT *, (SELECT COUNT(*) ";
+		String querySearch = "FROM Professeur  JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id ";
+		if(!criteria.equals("")) {
+			if(criteria.matches("-?\\d+(\\.\\d+)?")) {
+				querySearch += "WHERE prof_contact LIKE '%"+criteria+"%' ";
+			} else {
+				String[] tmpCriteria = criteria.split(" ");
+				switch(tmpCriteria.length) {
+					case 2:
+						querySearch += "WHERE ( uti_nom LIKE '%"+tmpCriteria[0]+"%' AND uti_prenom LIKE '%"+tmpCriteria[1]+"%')";
+						querySearch += " OR ( uti_nom LIKE '%"+tmpCriteria[1]+"%' AND uti_prenom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR uti_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR uti_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR prof_adresse LIKE '%"+criteria+"%' ";
+						break;
+					case 3:
+						querySearch += "WHERE ( uti_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%' AND uti_prenom LIKE '%"+tmpCriteria[2]+"%')";
+						querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND uti_nom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR ( uti_nom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[1]+"%' AND uti_prenom LIKE '%"+tmpCriteria[0]+"%')";
+						querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%' AND uti_nom LIKE '%"+tmpCriteria[2]+"%')";
+						querySearch += " OR uti_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR uti_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR prof_adresse LIKE '%"+criteria+"%' ";
+						break;
+					case 4:
+						querySearch += "WHERE ( uti_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%' AND uti_prenom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[3]+"%')";
+						querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[2]+" "+tmpCriteria[3]+"%' AND uti_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+"%')";
+						querySearch += " OR ( uti_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[2]+"%' AND uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%')";
+						querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[0]+"%' AND uti_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[2]+"%')";
+						querySearch += " OR ( uti_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[0]+"%' AND uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%')";
+						querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND uti_nom LIKE '%"+tmpCriteria[3]+" "+tmpCriteria[0]+"%')";
+						querySearch += " OR ( uti_nom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND uti_prenom LIKE '%"+tmpCriteria[3]+"%')";
+						querySearch += " OR ( uti_prenom LIKE '%"+tmpCriteria[0]+" "+tmpCriteria[1]+" "+tmpCriteria[2]+"%' AND uti_nom LIKE '%"+tmpCriteria[3]+"%')";
+						querySearch += " OR uti_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR uti_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR prof_adresse LIKE '%"+criteria+"%' ";
+						break;
+					default:
+						querySearch += "WHERE uti_nom LIKE '%"+criteria+"%' ";
+						querySearch += " OR uti_prenom LIKE '%"+criteria+"%' ";
+						querySearch += " OR prof_adresse LIKE '%"+criteria+"%' ";
+						break;
+				}
+			}
+		}
+		String query = queryIntro +" "+querySearch+") as maxnumber "+querySearch+" limit 50 offset "+ (50 * (numPage - 1));
+		List<Professor> professors = jdbcTemplate.query(query, new ProfessorMapper());
+		return professors;
+	}
+
+	@Override
 	public Professor getProfessorDetails(int id) {
 		String sql = "SELECT * FROM Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id WHERE prof_id = " + id ;
 		List<Professor> professors = jdbcTemplate.query(sql, new ProfessorMapper());
@@ -185,6 +244,11 @@ class ProfessorMapper implements RowMapper<Professor> {
 	    prof.setUser_id(rs.getInt("uti_id"));
 	    prof.setUser_type(rs.getInt("uti_type"));
 	    prof.setUser_civilite(rs.getInt("civ_id"));
+	    try {
+	    	prof.setNumber(rs.getInt("maxnumber"));
+	    } catch (Exception e) {
+	    	System.out.print("\n No number for pagination \n");
+	    }
 	    return prof;
 	}
 

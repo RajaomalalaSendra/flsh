@@ -39,3 +39,6 @@ div.pagination {
     color: #999;
     cursor: pointer;
 }
+#main-wrapper, .main-wrapper {
+	padding-left: 20px;
+}

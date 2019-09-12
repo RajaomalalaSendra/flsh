@@ -6,11 +6,8 @@
 }
 .box-starter {
 	padding: 10px;
-	margin: 20px;
+	margin-bottom: 20px;
 	border: 1px solid;
-}
-#saisie-niveau {
-	margin-left: 13%;
 }
 .form-group.form-inline label{
 	margin-left: 20px;

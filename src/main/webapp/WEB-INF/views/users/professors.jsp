@@ -23,7 +23,7 @@
     			</div>
 			</div>
 			<div class = "table-wrapper">
-				<table class="table table-striped">
+				<table class="table table-striped" id = "table-professors">
 				  <thead>
 				    <tr>
 				      <th scope="col">Id</th>
@@ -62,7 +62,7 @@
 				</table>  
 			</div>
 			<div class = "pagination" id = "pagination-professors">
-			  <ul class="pagination">
+			  <ul class="pagination pull-right">
 			    <li class="page-item">
 			      <a class="page-link" href="#" id = "previous-page" aria-label="Previous">
 			        <span aria-hidden="true">&laquo;</span>
