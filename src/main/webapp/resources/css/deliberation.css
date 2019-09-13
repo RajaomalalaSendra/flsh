@@ -101,7 +101,7 @@ input.hasError {
 	color: #b00;
 }
 
-#success-save, #error-save, .succ-none, .dang-none {
+#success-note-ue, #error-note-ue, #error-save-valid-credit, .succ-none, .dang-none, .spinner {
 	display: none;
 }
 #success-save, #error-save{
