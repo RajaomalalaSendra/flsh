@@ -30,7 +30,7 @@
 		        	</div>
 				</div>
 				<h4>Deliberation  ${currentUnivYear.getUniversity_year_libelle() }</h4>
-	</div>
+			</div>
 			<div class = "row">
 				<div class = "col-md-8">
 				    
@@ -51,17 +51,18 @@
 						
 						</tbody>
 					</table>
+					
+					<div class = "pull-right-buttom pull-right">
+						<button type="button" class="btn deliberation-decision" id = "renvoi-deliberation">Renvoi</button>
+						<button type="button" class="btn deliberation-decision" id = "redouble-deliberation">Redouble</button>
+						<button type="button" class="btn deliberation-decision" id = "passe-deliberation">Passe</button>
+					</div>
 				</div>
 				<div class = "col-md-4">
 					<div id = "student-delib-marg">
 						<div id = "Detail-Student-Deliberation"></div>
 					</div>
 				</div>
-			</div>
-			<div class = "pull-right-buttom">
-				<button type="button" class="btn deliberation-decision" id = "renvoi-deliberation">Renvoi</button>
-				<button type="button" class="btn deliberation-decision" id = "redouble-deliberation">Redouble</button>
-				<button type="button" class="btn deliberation-decision" id = "passe-deliberation">Passe</button>
 			</div>
    	</div>
 

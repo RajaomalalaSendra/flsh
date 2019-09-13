@@ -110,3 +110,9 @@ input.hasError {
 .input-ec-credit:hover {
 	background: #fff;
 }
+table tbody tr td.note, table thead tr th.period-exam, table thead tr th.credit {
+	text-align: right;
+}
+table tbody tr td.credit {
+	text-align: right;
+}
