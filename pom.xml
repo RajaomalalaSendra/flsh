@@ -178,7 +178,6 @@
         <artifactId>pdftest</artifactId>
         <version>${itext.version}</version>
     </dependency>
-    
   	</dependencies>
 	<build>
 	   	<finalName>scolarLMD</finalName>

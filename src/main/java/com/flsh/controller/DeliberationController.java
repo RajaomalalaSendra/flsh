@@ -94,16 +94,6 @@ public class DeliberationController {
 		String delibDecisionCurrentUser = delibService.getDelibDecisionCurrentUser(univYearId, idLevel, idStudent);
 		ModelAndView mav = new ModelAndView("deliberation/deliberation_list");
 		
-		
-		
-		System.out.print("\n"+session.getAttribute("idUnivYear") + " " +
-				session.getAttribute("idStudent") + " " + session.getAttribute("idLevel") +"\n");
-		
-		mav.addObject("id_univ_year", session.getAttribute("idUnivYear"));
-		mav.addObject("id_current_student", session.getAttribute("idStudent"));
-		mav.addObject("id_current_level", session.getAttribute("idLevel"));
-		System.out.print("\ntest is over here for today\n");
-		
 		// model and view for values
 		mav.addObject("delibCurrentUser", delibDecisionCurrentUser);
         mav.addObject("periodes", periodService.getNiveauPeriodsById(idLevel, univYearId));

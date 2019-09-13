@@ -97,7 +97,7 @@ $(document).ready(function() {
 			error: function() {
 				$("#info-evaluation tbody").html("There is an error")
 			}
-		})	
+		})
 	})
 	
 	$("#delib-eleve-suivant").on('click', function(e){
@@ -182,6 +182,10 @@ $(document).ready(function() {
 	
 	$("body").on('click', function() {
 		$('.ec-row').removeClass('active')
+	})
+	
+	$(window).load(function() {
+		$('.spinner').show().delay(3000).fadeOut(600)
 	})
 	
 	$(".deliberation-decision").on('click', function(){
@@ -374,8 +378,8 @@ function computeMoyenneUE(idUE, idStudent){
 						$("#error-save").html(data.message ? data.message : 'Note non enregistre').show().delay(3000).fadeOut(600)
 					}
 				}, 
-				error: function(err) {
-					$("#error-save").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
+				error: function() {
+					$("#error-note-ue").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
 				}
 			})
 		}
@@ -383,6 +387,28 @@ function computeMoyenneUE(idUE, idStudent){
 	
 	//Show credit sum on the page
 	computeSumAllCredit()
+}
+
+function saveValidCredit(firstValidCssID, secondValidCssID, valValid, idUE, idStudent){
+	$(firstValidCssID + idUE).on('click', function(){
+		$(this).hide()
+		$(secondValidCssID + idUE).show()
+		
+		$.ajax({
+			url: getBaseUrl("deliberation/save_validCredit"),
+			type: 'POST',
+			data: {idStudent, idUE, valValid},
+			dataType: 'JSON',
+			success: function(data){
+				if(data.status == 0){
+					$("#error-save-valid-credit").html(data.message ? data.message : 'Credit non enregistre').show().delay(3000).fadeOut(600)
+				} 
+			},
+			error: function(err) {
+				$("#error-save-valid-credit").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
+			}
+		})
+	})
 }
 
 function  saveDecisionDeliberation(passage){
