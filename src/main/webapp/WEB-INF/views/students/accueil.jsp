@@ -28,9 +28,9 @@
 						<tr>
 							<th>Civ.</th>
 							<th>Nom</th>
-							<th>Prï¿½nom</th>
+							<th>Prénom</th>
 							<th>Date de naissance</th>
-							<th>Nationalitï¿½</th>
+							<th>Nationalité</th>
 							<th>Adresse</th>
 							<th>Email</th>
 							<th>Dernier Etablissement</th>

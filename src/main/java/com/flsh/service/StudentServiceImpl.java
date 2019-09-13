@@ -516,6 +516,16 @@ public class StudentServiceImpl implements StudentService {
 		List<Student> students = jdbcTemplate.query(query, new StudentMapper());
 		return students;
 	}
+
+	@Override
+	public List<Student> getStudentsByUnivYearAndParcours(int idUY, int idParcours) {
+		String queryStudent = idParcours == 0 ? "SELECT * FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+")" 
+				: "SELECT * FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id"
+				+ " WHERE au_id = "+idUY+" AND prc_id = "+idParcours;
+		System.out.print(queryStudent);
+		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
+		return students;
+	}
 }
 
 class StudentMapper implements RowMapper<Student> {
