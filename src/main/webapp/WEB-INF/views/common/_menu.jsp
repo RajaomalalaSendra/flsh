@@ -1,6 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import ="com.flsh.model.User" %>
-<% User user = (User) request.getSession().getAttribute("user"); %>
+<% User onlineUser = (User) request.getSession().getAttribute("user"); %>
 <div class="header-advance-area">
     <div class="header-top-area">
         <div class="container-fluid">
@@ -45,7 +45,7 @@
                                         </li>-->
                                         <li class="nav-item">
                                             <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
-											<span class="admin-name" ><%= user != null ? user.getUsername() : "User" %></span>
+											<span class="admin-name" ><%= onlineUser != null ? onlineUser.getUsername() : "User" %></span>
 											<i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
 										</a>
                                             <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">

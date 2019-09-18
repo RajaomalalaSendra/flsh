@@ -1,4 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import ="com.flsh.model.User" %>
+<% User user = (User) request.getSession().getAttribute("user"); %>
 <!--[if lt IE 8]>
 	<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
@@ -20,10 +22,16 @@
 						</a>
                         <ul class="submenu-angle" aria-expanded="${ menu == 'education' || menu == null ? 'true' : 'false' }">
                             <li class = "${ submenu == 'dashboard'? 'active' : '' }"><a title="Dashboard" href="<c:url value='/' />"><span class="mini-sub-pro">Dashboard</span></a></li>
-                            <li class = "${ submenu == 'cycle_level_parcours'? 'active' : '' }"><a title="Cycle&&Level" href="<c:url value='/educations/cyclesandlevel/' />"><span class="mini-sub-pro">Cycle & Level</span></a></li>
-                            <li class = "${ submenu == 'periods'? 'active' : '' }"><a title="Period" href="<c:url value='/educations/periods/' />"><span class="mini-sub-pro">Periods</span></a></li>
-                            <li class = "${ submenu == 'notes'? 'active' : '' }"><a title="Notes" href="<c:url value='/educations/notes' />"><span class="mini-sub-pro">Notes</span></a></li>
-                            <li class = "${ submenu == 'deliberation'? 'active' : '' }"><a title="Notes" href="<c:url value='/educations/deliberation' />"><span class="mini-sub-pro">Deliberation</span></a></li>
+                            <c:if test="${ user != null && user.isEnabled() && user.getType() == 1 }">
+                            	<li class = "${ submenu == 'cycle_level_parcours'? 'active' : '' }"><a title="Cycle&&Level" href="<c:url value='/educations/cyclesandlevel/' />"><span class="mini-sub-pro">Cycle & Level</span></a></li>
+                            	<li class = "${ submenu == 'periods'? 'active' : '' }"><a title="Period" href="<c:url value='/educations/periods/' />"><span class="mini-sub-pro">Periods</span></a></li>
+                            </c:if>
+                            <c:if test="${ user != null && user.isEnabled() && user.getType() <= 2 }">
+                            	<li class = "${ submenu == 'notes'? 'active' : '' }"><a title="Notes" href="<c:url value='/educations/notes' />"><span class="mini-sub-pro">Notes</span></a></li>
+                            </c:if>
+                            <c:if test="${ user != null && user.isEnabled() && user.getType() == 1 }">
+                            	<li class = "${ submenu == 'deliberation'? 'active' : '' }"><a title="Notes" href="<c:url value='/educations/deliberation' />"><span class="mini-sub-pro">Deliberation</span></a></li>
+                            </c:if>
                         </ul>
                     </li>
                     <li  class="${ menu == 'professor'? 'active' : '' }">
@@ -40,19 +48,23 @@
                             <li  class = "${ submenu == 'subscription'? 'active' : '' }"><a title="Inscription des étudiants" href="<c:url value='/students/subscriptions' />"><span class="mini-sub-pro">Level-Students</span></a></li>
                         </ul>
                     </li>
-                    <li class = "${ menu == 'course'? 'active' : '' }">
-                        <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Courses</span></a>
-                        <ul class="submenu-angle" aria-expanded="${ menu == 'course'? 'true' : 'false' }">
-                            <li class = "${ submenu == 'ue_ec'? 'active' : '' }"><a title="All UE/EC" href="<c:url value='/ue' />"><span class="mini-sub-pro">All UE/EC</span></a></li>
-                            <li class = "${ submenu == 'period_course'? 'active' : '' }"><a title="Cours périodique" href="<c:url value='/course/byPeriod' />"><span class="mini-sub-pro">Periodical courses</span></a></li>
-                        </ul>
-                    </li>
-                    <li class = "${ menu == 'system'? 'active' : '' }">
-                        <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-library icon-wrap"></span> <span class="mini-click-non">Users</span></a>
-                        <ul class="submenu-angle" aria-expanded="${ menu == 'system'? 'true' : 'false' }">
-                            <li class = "${ submenu == 'all_users'? 'active' : '' }"><a title="All Secretaries" href="<c:url value='/users' />"><span class="mini-sub-pro">All users</span></a></li>
-                        </ul>
-                    </li>
+                    <c:if test="${ user != null && user.isEnabled() && user.getType() <= 2 }">
+	                    <li class = "${ menu == 'course'? 'active' : '' }">
+	                        <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Courses</span></a>
+	                        <ul class="submenu-angle" aria-expanded="${ menu == 'course'? 'true' : 'false' }">
+	                            <li class = "${ submenu == 'ue_ec'? 'active' : '' }"><a title="All UE/EC" href="<c:url value='/ue' />"><span class="mini-sub-pro">All UE/EC</span></a></li>
+	                            <li class = "${ submenu == 'period_course'? 'active' : '' }"><a title="Cours périodique" href="<c:url value='/course/byPeriod' />"><span class="mini-sub-pro">Periodical courses</span></a></li>
+	                        </ul>
+	                    </li>
+                    </c:if>
+                    <c:if test="${ user != null && user.isEnabled() && user.getType() == 1 }">
+	                    <li class = "${ menu == 'system'? 'active' : '' }">
+	                        <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-library icon-wrap"></span> <span class="mini-click-non">Users</span></a>
+	                        <ul class="submenu-angle" aria-expanded="${ menu == 'system'? 'true' : 'false' }">
+	                            <li class = "${ submenu == 'all_users'? 'active' : '' }"><a title="Users admin and direction" href="<c:url value='/users' />"><span class="mini-sub-pro">All users</span></a></li>
+	                        </ul>
+	                    </li>
+                    </c:if>
                 </ul>
             </nav>
         </div>
