@@ -46,6 +46,8 @@ public class TeachingServiceImpl implements TeachingService {
 		for(StudyUnit unit : units) {
 			Set<Course> listCourses = new HashSet<Course>(this.getCourseById( unit.getStudyunit_id()));
 			unit.setCourses((HashSet<Course>) listCourses);
+			List<Professor> profResponsables = this.getProfResponsables(unit.getStudyunit_id());
+			unit.setResponsables(profResponsables);
 		    listUnits.add(unit);
 		}
 		return listUnits;
@@ -61,6 +63,8 @@ public class TeachingServiceImpl implements TeachingService {
 		for(StudyUnit unit : units) {
 			Set<Course> listCourses = new HashSet<Course>(this.getCourseByIdWithPeriods( unit.getStudyunit_id(), idUY, idLevel));
 			unit.setCourses((HashSet<Course>) listCourses);
+			List<Professor> profResponsables = this.getProfResponsables(unit.getStudyunit_id());
+			unit.setResponsables(profResponsables);
 		    listUnits.add(unit);
 		}
 		return listUnits;
@@ -83,6 +87,8 @@ public class TeachingServiceImpl implements TeachingService {
 		for(StudyUnit unit : units) {
 			Set<Course> listCourses = new HashSet<Course>(this.getCourseById( unit.getStudyunit_id()));
 			unit.setCourses((HashSet<Course>) listCourses);
+			List<Professor> profResponsables = this.getProfResponsables(unit.getStudyunit_id());
+			unit.setResponsables(profResponsables);
 		    listUnits.add(unit);
 		}
 		return listUnits;
@@ -267,6 +273,16 @@ public class TeachingServiceImpl implements TeachingService {
 		// TODO Auto-generated method stub
 		String sql = "SELECT * FROM Prof_Ue WHERE ue_id = " + ue;
 		List<ProfessorStudyUnit> profsUe = jdbcTemplate.query(sql, new ProfessorStudyUnitMapper());
+		return profsUe;
+	}
+	
+	public List<Professor> getProfResponsables(int idUE) {
+		String sql = "SELECT Professeur.*, Utilisateur.* "
+				+ "FROM Professeur "
+				+ "JOIN Prof_Ue ON Prof_Ue.prof_id = Professeur.prof_id "
+				+ "JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id  "
+				+ "WHERE ue_id = " + idUE;
+		List<Professor> profsUe = jdbcTemplate.query(sql, new ProfessorMapper());
 		return profsUe;
 	}
 
