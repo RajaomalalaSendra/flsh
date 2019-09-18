@@ -21,38 +21,38 @@
 						   <span class="mini-click-non">Education</span>
 						</a>
                         <ul class="submenu-angle" aria-expanded="${ menu == 'education' || menu == null ? 'true' : 'false' }">
-                            <li class = "${ submenu == 'dashboard'? 'active' : '' }"><a title="Dashboard" href="<c:url value='/' />"><span class="mini-sub-pro">Dashboard</span></a></li>
-                            <c:if test="${ user != null && user.isEnabled() && user.getType() == 1 }">
+                            <li class = "${ submenu == 'dashboard'? 'active' : '' }"><a title="Dashboard" href="<c:url value='/' />"><span class="mini-sub-pro">Dashboard ${ user.getUsername() } ${ user.isEnabled() }</span></a></li>
+                            <% if(user != null && user.isEnabled() && Integer.parseInt( user.getType()) == 1 ) { %>
                             	<li class = "${ submenu == 'cycle_level_parcours'? 'active' : '' }"><a title="Cycle&&Level" href="<c:url value='/educations/cyclesandlevel/' />"><span class="mini-sub-pro">Cycle & Level</span></a></li>
                             	<li class = "${ submenu == 'periods'? 'active' : '' }"><a title="Period" href="<c:url value='/educations/periods/' />"><span class="mini-sub-pro">Periods</span></a></li>
-                            </c:if>
-                            <c:if test="${ user != null && user.isEnabled() && user.getType() <= 2 }">
+                            <% } %>
+                            <% if( user != null && user.isEnabled() && Integer.parseInt( user.getType()) <= 2) { %>
                             	<li class = "${ submenu == 'notes'? 'active' : '' }"><a title="Notes" href="<c:url value='/educations/notes' />"><span class="mini-sub-pro">Notes</span></a></li>
-                            </c:if>
-                            <c:if test="${ user != null && user.isEnabled() && user.getType() == 1 }">
+                            <% } %>
+                            <% if( user != null && user.isEnabled() && Integer.parseInt( user.getType()) == 1) { %>
                             	<li class = "${ submenu == 'deliberation'? 'active' : '' }"><a title="Déliberation" href="<c:url value='/educations/deliberation' />"><span class="mini-sub-pro">Deliberation</span></a></li>
-                            </c:if>
+                            <% } %>
                         </ul>
                     </li>
                     <li  class="${ menu == 'professor'? 'active' : '' }">
                         <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
                         <ul class="submenu-angle" aria-expanded="${ menu == 'professor'? 'true' : 'false' }">
-                        	<c:if test="${ user != null && user.isEnabled() && user.getType() != 2 }">
+                        	<% if( user != null && user.isEnabled() && Integer.parseInt( user.getType()) != 2) { %>
                             	<li class = "${ submenu == 'all_professors'? 'active' : '' }"><a title="Tous les professeurs" href="<c:url value='/professors' />"><span class="mini-sub-pro">All Professors</span></a></li>
-                            </c:if>
+                            <% } %>
                             <li class = "${ submenu == 'prof_courses'? 'active' : '' }"><a title="Cours professeurs" href="<c:url value='/professor/courses' />"><span class="mini-sub-pro">Professor-Courses</span></a></li>
                         </ul>
                     </li>
                     <li class = "${ menu == 'student'? 'active' : '' }">
                         <a class="has-arrow" href="all-students.html" aria-expanded="false"><span class="educate-icon educate-student icon-wrap"></span> <span class="mini-click-non">Students</span></a>
                         <ul class="submenu-angle" aria-expanded="${ menu == 'student'? 'true' : 'false' }">
-                        	<c:if test="${ user != null && user.isEnabled() && user.getType() != 2 }">
+                        	<% if( user != null && user.isEnabled() && Integer.parseInt( user.getType()) != 2) { %>
                             	<li class = "${ submenu == 'all_students'? 'active' : '' }"><a title="All Students" href="<c:url value='/students' />"><span class="mini-sub-pro">All Students</span></a></li>
-                            </c:if>
+                            <% } %>
                             <li  class = "${ submenu == 'subscription'? 'active' : '' }"><a title="Inscription des étudiants" href="<c:url value='/students/subscriptions' />"><span class="mini-sub-pro">Level-Students</span></a></li>
                         </ul>
                     </li>
-                    <c:if test="${ user != null && user.isEnabled() && user.getType() <= 2 }">
+                    <% if( user != null && user.isEnabled() && Integer.parseInt( user.getType()) <= 2) { %>
 	                    <li class = "${ menu == 'course'? 'active' : '' }">
 	                        <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Courses</span></a>
 	                        <ul class="submenu-angle" aria-expanded="${ menu == 'course'? 'true' : 'false' }">
@@ -60,15 +60,15 @@
 	                            <li class = "${ submenu == 'period_course'? 'active' : '' }"><a title="Cours périodique" href="<c:url value='/course/byPeriod' />"><span class="mini-sub-pro">Periodical courses</span></a></li>
 	                        </ul>
 	                    </li>
-                    </c:if>
-                    <c:if test="${ user != null && user.isEnabled() && user.getType() == 1 }">
+                    <% } %>
+                    <% if( user != null && user.isEnabled() && Integer.parseInt( user.getType()) == 1) { %>
 	                    <li class = "${ menu == 'system'? 'active' : '' }">
 	                        <a class="has-arrow" href="all-courses.html" aria-expanded="false"><span class="educate-icon educate-library icon-wrap"></span> <span class="mini-click-non">Users</span></a>
 	                        <ul class="submenu-angle" aria-expanded="${ menu == 'system'? 'true' : 'false' }">
 	                            <li class = "${ submenu == 'all_users'? 'active' : '' }"><a title="Users admin and direction" href="<c:url value='/users' />"><span class="mini-sub-pro">All users</span></a></li>
 	                        </ul>
 	                    </li>
-                    </c:if>
+                    <% } %>
                 </ul>
             </nav>
         </div>

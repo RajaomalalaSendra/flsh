@@ -45,7 +45,7 @@
                                         </li>-->
                                         <li class="nav-item">
                                             <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
-											<span class="admin-name" ><%= onlineUser != null ? onlineUser.getUsername() : "User" %></span>
+											<span class="admin-name" ><%= onlineUser != null ? onlineUser.getUsername() +" ( "+onlineUser.getTypeComputed()+" )" : "User" %></span>
 											<i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
 										</a>
                                             <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
@@ -74,50 +74,50 @@
                                 <li><a data-toggle="collapse" data-target="#Charts" href="<c:url value='/' />">Education <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                     <ul class="collapse dropdown-header-top">
                                         <li><a href="<c:url value='/' />">Dashboard</a></li>
-                                        <c:if test="${ user != null && user.isEnabled() && user.getType() == 1 }">
+                                        <% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) == 1) { %>
 	                                        <li><a href="<c:url value='/educations/cyclesandlevel/' />">Cycle & Level</a></li>
 	                                        <li><a href="<c:url value='/educations/periods/' />">Periods</a></li>
-                                        </c:if>
-                                        <c:if test="${ user != null && user.isEnabled() && user.getType() <= 2 }">
+                                        <% } %>
+                                        <% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) <= 2) { %>
                                         	<li><a href="<c:url value='/educations/notes/' />">Notes</a></li>
-                                        </c:if>
-                                        <c:if test="${ user != null && user.isEnabled() && user.getType() == 1 }">
+                                        <% } %>
+                                        <% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) == 1) { %>
                                         	<li><a href="<c:url value='/educations/deliberation' />">Deliberation</a></li>
-                                        </c:if>
+                                        <% } %>
                                     </ul>
                                 </li>
                                 <li><a data-toggle="collapse" data-target="#demoevent" href="#">Professors <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                     <ul id="demoevent" class="collapse dropdown-header-top">
-                                    	<c:if test="${ user != null && user.isEnabled() && user.getType() != 2 }">
+                                    	<% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) != 2) { %>
                                         	<li><a href="<c:url value='/professors' />">All Professors</a></li>
-                                        </c:if>
+                                        <% } %>
                                         <li><a href="<c:url value='/professor/courses' />">Professor-Courses</a></li>
                                     </ul>
                                 </li>
                                 <li><a data-toggle="collapse" data-target="#demopro" href="#">Students <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                     <ul id="demopro" class="collapse dropdown-header-top">
-                                    	<c:if test="${ user != null && user.isEnabled() && user.getType() != 2 }">
+                                    	<% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) != 2) { %>
                                         	<li><a href="<c:url value='/students' />">All Students</a></li>
-                                        </c:if>
+                                        <% } %>
                                         <li><a href="<c:url value='/students/subscriptions' />">Level-Students</a></li>
                                     </ul>
                                 </li>
-                                <c:if test="${ user != null && user.isEnabled() && user.getType() <= 2 }">
+                                <% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) <= 2) { %>
 	                                <li><a data-toggle="collapse" data-target="#democrou" href="#">Courses <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
 	                                    <ul id="democrou" class="collapse dropdown-header-top">
 	                                        <li><a href="<c:url value='/ue' />">UE & EC</a></li>
 	                                        <li><a href="<c:url value='/course/byPeriod' />">Periodical courses</a></li>
 	                                    </ul>
 	                                </li>
-                                </c:if>
-                                <c:if test="${ user != null && user.isEnabled() && user.getType() == 1 }">
+                                <% }  %>
+                                <% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) == 1) { %>
 	                                <li><a data-toggle="collapse" data-target="#users_all" href="#">Users <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
 	                                    <ul id="demodepart" class="collapse dropdown-header-top">
 	                                        <li><a href="<c:url value='/users' />">All users</a>
 	                                        </li>
 	                                    </ul>
 	                                </li>
-                                </c:if>
+                                <% } %>
                             </ul>
                         </nav>
                     </div>
