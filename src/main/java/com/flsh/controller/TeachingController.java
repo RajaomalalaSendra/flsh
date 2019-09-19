@@ -60,11 +60,9 @@ public class TeachingController {
 		int idParcours = request.getParameter("idParcours") == null || request.getParameter("idParcours") == "" ? 0 : Integer.parseInt(request.getParameter("idParcours"));
 		User user = (User) session.getAttribute("user");
 		HashSet<StudyUnit> units = teachingService.getUnitsByParcours(idParcours);
-		List<ProfessorStudyUnit> professorsUe = professorService.getAllProfessorUnitStudy();
 		ModelAndView teaching = new ModelAndView("ue/parcours_list");
 		
 		teaching.addObject("units", units);
-		teaching.addObject("professors_ue", professorsUe);
 		if(user != null && user.getType().equals("2")) {
 			teaching.addObject("prof", teachingService.getProfessorByUserId(user.getId()));
 		}
