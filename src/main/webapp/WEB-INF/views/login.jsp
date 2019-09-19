@@ -16,7 +16,7 @@
 				
 				    <!-- Icon -->
 				    <div class="fadeIn first">
-						<img src="/scolarLMD/resources/img/profile/user.png" id="icon" alt="User Icon" />
+						<img src="<c:url value="/resources/img/profile/user.png" />" id="icon" alt="User Icon" />
 				    </div>
 				
 				    <!-- Login Form -->

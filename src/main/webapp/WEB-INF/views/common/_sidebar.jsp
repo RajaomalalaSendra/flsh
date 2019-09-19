@@ -9,8 +9,8 @@
 <div class="left-sidebar-pro">
     <nav id="sidebar" class="">
         <div class="sidebar-header">
-            <a href="index.html"><img class="main-logo" src="img/logo/logo.png" alt="" /></a>
-            <strong><a href="index.html"><img src="img/logo/logosn.png" alt="" /></a></strong>
+            <a href="<c:url value='/' />"><img class="main-logo" src="<c:url value="/resources/img/logo/logo.png" />" alt="" /></a>
+            <strong><a href="<c:url value='/' />"><img src="<c:url value="/resources/img/logo/logosn.png" />" alt="" /></a></strong>
         </div>
         <div class="left-custom-menu-adp-wrap comment-scrollbar">
             <nav class="sidebar-nav left-sidebar-menu-pro">
