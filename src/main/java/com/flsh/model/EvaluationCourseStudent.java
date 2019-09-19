@@ -13,6 +13,7 @@ public class EvaluationCourseStudent {
 	private int course_notation;
 	private double course_coefficient;
 	private String professor;
+	private String course_volumehoraire;
 	private boolean cumule;
 	private boolean ok;
 	private HashMap<String, String[]> periodicalEvaluations;
@@ -90,6 +91,12 @@ public class EvaluationCourseStudent {
 	}
 	public void setCourse_credit_obtenu(int course_credit_obtenu) {
 		this.course_credit_obtenu = course_credit_obtenu;
+	}
+	public String getCourse_volumehoraire() {
+		return course_volumehoraire;
+	}
+	public void setCourse_volumehoraire(String course_volumehoraire) {
+		this.course_volumehoraire = course_volumehoraire;
 	}
 	public String getCourse_type() {
 		return course_type;

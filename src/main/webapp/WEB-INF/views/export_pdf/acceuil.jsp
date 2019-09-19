@@ -8,23 +8,23 @@
 </head>
 <body>
 	 <div id = "university-name">
-	 	<h4>UNIVERSITE D'ANTANANANARIVO</h4>
-	 	<h4>DOMAINE ARTS,LETTRES</h4>
-	 	<h4>SCIENCES HUMAINES</h4>
+	 	<h5>UNIVERSITE D'ANTANANANARIVO</h5>
+	 	<h5>DOMAINE ARTS,LETTRES</h5>
+	 	<h5>SCIENCES HUMAINES</h5>
      </div>
      
      <div id = "level-student">
-	 	<h1>${ levelStudent.getLevelLibelle() }</h1>
+	 	<h2>${ levelStudent.getLevelLibelle() }</h2>
      </div>
      
      <div id = "result">
-	 	<h1>FICHE INDIVIDUELLE DE RESULTATS</h1>
+	 	<h2>FICHE INDIVIDUELLE DE RESULTATS</h2>
      </div>
      
      <div id = "univ-year-and-cycle">
-	 	<h4>${ universityYearStudent.getUniversity_year_libelle().toUpperCase() }</h4>
-	 	<h4>${ cycleStudent.getCycleLibelle().toUpperCase() } MENTION ETUDE ANGLOPHONE</h4>
-	 	<h4>PARCOURS ${ parcoursStudent.getParcoursLibelle().toUpperCase() }</h4>
+	 	<h5>${ universityYearStudent.getUniversity_year_libelle().toUpperCase() }</h5>
+	 	<h5>${ cycleStudent.getCycleLibelle().toUpperCase() } MENTION ETUDE ANGLOPHONE</h5>
+	 	<h5>PARCOURS ${ parcoursStudent.getParcoursLibelle().toUpperCase() }</h5>
      </div>
      
      <div id="about-student">
@@ -36,10 +36,11 @@
 		<thead>
 			<tr>
 				<th>U.E / E.C</th>
+				<th>Vol. Hor.</th>
 				<th>Type</th>
 				<th>Notation</th>
 				<th>Coef</th>
-				<th>Crédit (max)</th>
+				<th>Crédit (max)</th>				
 				<c:forEach items = "${ periodesStudent }" var = "period">
 						<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-1">${ period.getPeriod_libellecourt() }</th>
 						<c:if test="${ period.isA_ratrappage() }">
@@ -53,6 +54,7 @@
 			<c:forEach items = "${ dataEvaluationsStudent }" var = "delib">
 				<tr class = "ue-row" id = "tr-ue-${ delib.getStudyunit_id() }">
 					<td>${ delib.getStudyunit_libelle() }</td>
+					<td>-</td>
 					<td>${ delib.getStudyunit_type() }</td>
 					<td>-</td><!-- notation -->
 					<td></td><!-- coefficient -->
@@ -68,6 +70,7 @@
 				<c:forEach items = "${ delib.getCoursesEvaluations() }" var = "ec">
 					<tr class = "ec-row ecue-${ delib.getStudyunit_id() }" id = "tr-ec-${ ec.getCourse_id() }">
 						<td class = "ec-delib">${ ec.getCourse_libelle() }</td>
+						<td>${ ec.getCourse_volumehoraire() }</td>
 						<td>-</td>
 						<td class = "notation-ec">${ ec.getCourse_notation() }</td><!-- notation -->
 						<td class = "coefficient-ec">${ ec.getCourse_coefficient() }</td><!-- coefficient -->
@@ -90,7 +93,7 @@
 				</c:forEach>
 			</c:forEach>
 			<tr class = "total-row">
-					<td colspan = "5">Total</td>
+					<td colspan = "6">Total</td>
 					<c:forEach items = "${ periodesStudent }" var = "period">
 						<td id = "moy-${ period.getPeriod_id() }-1"></td>
 						<c:if test="${ period.isA_ratrappage() }">

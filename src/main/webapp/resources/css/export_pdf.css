@@ -1,16 +1,17 @@
 #level-student{
-	margin-left: 600px;
+	margin-left: 300px;
 	margin-top: -80px;
 }
 
 #result {
-	margin-left: 350px;
+	margin-left: 120px;
 	margin-top: 60px;
+	margin-bottom: 60px;
 }
 
 #univ-year-and-cycle {
-	margin-left: 900px;
-	margin-top: -140px;
+	margin-left: 400px;
+	margin-top: -180px;
 }
 
 #university-name, #result-current-student, #jury-member, #jury-president {
@@ -29,7 +30,7 @@ table {
 
 #jury-president {
 	margin-top: -35px;
-	margin-left: 600px;
+	margin-left: 500px;
 }
 
 @media print {

@@ -360,6 +360,7 @@ class EvaluationCourseMapper implements RowMapper<EvaluationCourseStudent>{
 	    course.setCourse_coefficient(rs.getInt("ec_coefficient"));
 	    course.setCourse_id(rs.getInt("ec_id"));
 	    course.setCourse_credit_obtenu(rs.getInt("ec_credit_obtenu"));
+	    course.setCourse_volumehoraire(rs.getString("ec_volumehoraire"));
 	    course.setCumule(rs.getInt("ec_cumule") > 0);
 	    String evaluations = rs.getString("evaluations");
 	    String[] tmpEvals = evaluations != null ? evaluations.split(";") : new String[0];

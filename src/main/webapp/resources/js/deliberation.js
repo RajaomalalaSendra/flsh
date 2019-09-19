@@ -231,6 +231,8 @@ $(document).ready(function() {
 			passage = "ASR"
 		}
 		
+		console.log(passage)
+		
 		saveDecisionDeliberation(passage)
 	})
 	
