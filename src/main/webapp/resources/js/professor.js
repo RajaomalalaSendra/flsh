@@ -213,7 +213,7 @@ $(document).ready(function() {
 	})
 	
 	$(document).on('keyup', '#search-prof', function(e) {
-		if(e.keyCode == 13) {
+		if(e.keyCode == 13 || e.which == 13) {
 			inSearch = true
 			console.log('Start search')
 			var criteria = $(this).val()

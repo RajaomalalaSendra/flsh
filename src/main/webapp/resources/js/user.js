@@ -212,7 +212,7 @@ $(document).ready(function() {
 	})
 	
 	$(document).on('keyup', '#search-user', function(e) {
-		if(e.keyCode == 13) {
+		if(e.keyCode == 13 || e.which == 13) {
 			inSearch = true
 			var criteria = $(this).val()
 			$.ajax({

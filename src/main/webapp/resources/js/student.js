@@ -268,7 +268,7 @@ $(document).ready(function() {
 	})
 	
 	$(document).on('keyup', '#search-student', function(e) {
-		if(e.keyCode == 13) {
+		if(e.keyCode == 13 || e.which == 13) {
 			inSearch = true
 			console.log('Start search')
 			var criteria = $(this).val()
@@ -289,7 +289,7 @@ $(document).ready(function() {
 	})
 	
 	$(document).on('keyup', '#search-student-subscribe', function(e) {
-		if(e.keyCode == 13) {
+		if(e.keyCode == 13 || e.which == 13) {
 			inSearch = true
 			console.log('Search subscribed student')
 			var criteria = $(this).val()

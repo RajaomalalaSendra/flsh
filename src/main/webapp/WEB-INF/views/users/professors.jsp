@@ -15,7 +15,9 @@
     	<br/><br/><br/><br/>
     	<div class="main-wrapper">
 	    	<div class = "header-list">
-				<button class = "btn btn-primary pull-right" id = "add-professor" title = "Ajouter un nouveau professeur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
+	    		<% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) == 1) { %>
+					<button class = "btn btn-primary pull-right" id = "add-professor" title = "Ajouter un nouveau professeur"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
+				<% } %>
     			<h1>Professors List</h1>  
     			<div class = "form-group" id = "search-container">
     				<input type = "text" id = "search-prof" placeholder = "Rechercher prof..." class = "form-control" />
@@ -48,12 +50,14 @@
 						   <td>
 						   <span class = "btn-group pull-right">
 						   			<a class = "btn btn-sm btn-info detail-professor" href="professor/details?id=${professor.getProfessor_id()}" title="afficher les details concernant le professeur"><i class = "glyphicon glyphicon-eye-open"></i></a>
-						        	<button class = "btn btn-sm btn-primary edit-professor" id-prof = "${professor.getProfessor_id()}" id-prof-for-user = "${professor.getUser_id()}" title = "Edit Professor">
-						        		<i class = "glyphicon glyphicon-pencil"></i>
-						        	</button> 
-						        	<button class = "btn btn-sm btn-danger delete-professor"  id-profd = "${professor.getProfessor_id()}" id-profdelete = "${professor.getUser_id()}" title = "Delete Professor">
-						        		<i class = "glyphicon glyphicon-trash"></i>
-						        	</button>
+						        	<% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) == 1) { %>
+							        	<button class = "btn btn-sm btn-primary edit-professor" id-prof = "${professor.getProfessor_id()}" id-prof-for-user = "${professor.getUser_id()}" title = "Edit Professor">
+							        		<i class = "glyphicon glyphicon-pencil"></i>
+							        	</button> 
+							        	<button class = "btn btn-sm btn-danger delete-professor"  id-profd = "${professor.getProfessor_id()}" id-profdelete = "${professor.getUser_id()}" title = "Delete Professor">
+							        		<i class = "glyphicon glyphicon-trash"></i>
+							        	</button>
+						        	<% } %>
 						        </span>
 						    </td>  
 				   	  </tr>  

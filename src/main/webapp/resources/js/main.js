@@ -95,7 +95,17 @@
         easingType: 'linear',
         scrollSpeed: 900,
         animation: 'fade'
-    }); 	   
+    }); 	
+	
+	$(document).on('click', '.glyphicon.glyphicon-search', function() {
+		$(this).parent().parent().find('input').focus()
+	})
+	
+	$(document).on('dblclick', '.glyphicon.glyphicon-search', function() {
+		console.log( "Handler for .dblclick() called." );
+		var e = $.Event( "keyup", { which: 13 } );
+		$(this).parent().parent().find('input').trigger(e)
+	})
  
 })(jQuery); 
 

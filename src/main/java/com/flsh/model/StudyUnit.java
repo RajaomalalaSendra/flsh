@@ -57,5 +57,19 @@ public class StudyUnit {
 	public void setResponsablesId(List<ProfessorStudyUnit> responsablesId) {
 		ResponsablesId = responsablesId;
 	}
+	public boolean checkProfIsResp(int idProf) {
+		boolean res = false;
+		if(Responsables != null) {
+			System.out.print("\nthere are responsibles");
+			for(Professor prof : Responsables) {
+				if(prof.getProfessor_id() == idProf) {
+					System.out.print("\nProf responsable\n");
+					return true;
+				}
+			}
+		}
+		System.out.print("\nNon responsible");
+		return res;
+	}
 	
 }

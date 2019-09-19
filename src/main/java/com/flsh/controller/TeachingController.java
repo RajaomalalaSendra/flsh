@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import com.flsh.interfaces.ProfessorService;
 import com.flsh.interfaces.TeachingService;
 import com.flsh.model.StudyUnit;
 import com.flsh.model.UniversityYear;
+import com.flsh.model.User;
 import com.flsh.model.Course;
 import com.flsh.model.Level;
 import com.flsh.model.Parcours;
@@ -54,14 +56,16 @@ public class TeachingController {
 	}
 	
 	@RequestMapping(value = "/ue/list", method = RequestMethod.GET)
-	public ModelAndView loadUEList(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView loadUEList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		int idParcours = request.getParameter("idParcours") == null || request.getParameter("idParcours") == "" ? 0 : Integer.parseInt(request.getParameter("idParcours"));
+		User user = (User) session.getAttribute("user");
 		HashSet<StudyUnit> units = teachingService.getUnitsByParcours(idParcours);
-		List<ProfessorStudyUnit> professorsUe = professorService.getAllProfessorUnitStudy();
 		ModelAndView teaching = new ModelAndView("ue/parcours_list");
 		
 		teaching.addObject("units", units);
-		teaching.addObject("professors_ue", professorsUe);
+		if(user != null && user.getType().equals("2")) {
+			teaching.addObject("prof", teachingService.getProfessorByUserId(user.getId()));
+		}
 	    return teaching;
 	}
 	

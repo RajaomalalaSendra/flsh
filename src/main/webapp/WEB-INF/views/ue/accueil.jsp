@@ -25,7 +25,9 @@
 		        	<label for = "choixParcours" >Parcours :</label>
 		        	<select class = "form-control" id = "choixParcours">
 		        	</select>
-					<button class = "btn btn-primary pull-right" id = "add-ue" title = "Ajouter un nouveau unité d'enseignement"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
+		        	<% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) == 1) { %>
+						<button class = "btn btn-primary pull-right" id = "add-ue" title = "Ajouter un nouveau unité d'enseignement"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
+					<% } %>
 				</div>
     			<h1>Unite D'enseignement</h1>  
 			</div>

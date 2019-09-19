@@ -1,4 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import ="com.flsh.model.User" %>
+<% User onlineUser = (User) request.getSession().getAttribute("user"); %>
+
 <c:forEach var="professor" items="${professors}">   
    <tr id="prof-${professor.getProfessor_id()}">  
 	   <td scope="row">${professor.getProfessor_id()}</td>
@@ -11,12 +14,14 @@
 	   <td>
 	   <span class = "btn-group pull-right">
 	   			<a class = "btn btn-sm btn-info detail-professor" href="professor/details?id=${professor.getProfessor_id()}" title="afficher les details concernant le professeur"><i class = "glyphicon glyphicon-eye-open"></i></a>
-	        	<button class = "btn btn-sm btn-primary edit-professor" id-prof = "${professor.getProfessor_id()}" id-prof-for-user = "${professor.getUser_id()}" title = "Edit Professor">
-	        		<i class = "glyphicon glyphicon-pencil"></i>
-	        	</button> 
-	        	<button class = "btn btn-sm btn-danger delete-professor"  id-profd = "${professor.getProfessor_id()}" id-profdelete = "${professor.getUser_id()}" title = "Delete Professor">
-	        		<i class = "glyphicon glyphicon-trash"></i>
-	        	</button>
+	        	<% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) == 1) { %>
+		        	<button class = "btn btn-sm btn-primary edit-professor" id-prof = "${professor.getProfessor_id()}" id-prof-for-user = "${professor.getUser_id()}" title = "Edit Professor">
+		        		<i class = "glyphicon glyphicon-pencil"></i>
+		        	</button> 
+		        	<button class = "btn btn-sm btn-danger delete-professor"  id-profd = "${professor.getProfessor_id()}" id-profdelete = "${professor.getUser_id()}" title = "Delete Professor">
+		        		<i class = "glyphicon glyphicon-trash"></i>
+		        	</button>
+	        	<% } %>
 	        </span>
 	    </td>  
   </tr>  
