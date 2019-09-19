@@ -54,7 +54,7 @@
 			<c:forEach items = "${ dataEvaluationsStudent }" var = "delib">
 				<tr class = "ue-row" id = "tr-ue-${ delib.getStudyunit_id() }">
 					<td>${ delib.getStudyunit_libelle() }</td>
-					<td>-</td>
+					<td class = "valid-credit-ue" val-credit-ue = "${ delib.getValid_credit_ue() }">-</td>
 					<td>${ delib.getStudyunit_type() }</td>
 					<td>-</td><!-- notation -->
 					<td></td><!-- coefficient -->
