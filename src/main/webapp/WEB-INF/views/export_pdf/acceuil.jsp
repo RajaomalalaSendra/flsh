@@ -54,7 +54,7 @@
 			<c:forEach items = "${ dataEvaluationsStudent }" var = "delib">
 				<tr class = "ue-row" id = "tr-ue-${ delib.getStudyunit_id() }">
 					<td>${ delib.getStudyunit_libelle() }</td>
-					<td>-</td>
+					<td class = "valid-credit-ue" val-credit-ue = "${ delib.getValid_credit_ue() }">-</td>
 					<td>${ delib.getStudyunit_type() }</td>
 					<td>-</td><!-- notation -->
 					<td></td><!-- coefficient -->
@@ -105,7 +105,7 @@
 		</tbody>
 	</table>
 	<div id = "result-current-student">
-		<p>Credits valides: </p>
+		<p>Credits valides: <span id = "summ-credit-obtain"></span></p>
 		<p>Resultat: ${delibCurrentUser}</p>
 		<p>Fait à Antananarivo le ${dateNow}</p>
 	</div>
