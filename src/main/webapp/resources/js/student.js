@@ -16,6 +16,23 @@ $(document).ready(function() {
 		$('li a[href="#subscription"]').show()
 		$('li a[href="#primary"]').trigger('click')
 		$('#subsParcours').trigger('change')
+		var $image = $('#image-student');
+
+		$image.cropper({
+			zoomable: true,
+		  crop: function(event) {
+		    console.log(event.detail.x);
+		    console.log(event.detail.y);
+		    console.log(event.detail.width);
+		    console.log(event.detail.height);
+		    console.log(event.detail.rotate);
+		    console.log(event.detail.scaleX);
+		    console.log(event.detail.scaleY);
+		  }
+		});
+
+		// Get the Cropper.js instance after initialized
+		var cropper = $image.data('cropper');
 	})
 	
 	$('#form-save-student').on('submit', function(e) {

@@ -16,6 +16,7 @@
 			  <li class="active"><a data-toggle="tab" href="#primary">Infos primaire</a></li>
 			  <li><a data-toggle="tab" href="#secondary">Infos secondaire</a></li>
 			  <li><a data-toggle="tab" href="#subscription">Inscription</a></li>
+			  <li><a data-toggle="tab" href="#photo">Photo</a></li>
 			</ul>
 			
 	      	<input type="hidden" name = "student_id" id = "idStudent" value = "">
@@ -152,6 +153,43 @@
 			        <div id = "ue-choix-wrapper">
 			        	
 			        </div>
+			   </div>
+			   <div class = "tab-pane fade in" id = "photo">
+				   	<div id = "photo-upload-container" style = "position: relative; padding-left:25%; width: 100%; height: 300px;">
+				   		<img id="image-student" style = "max-width: 100%" src="<c:url value = "/resources/img/student/4.jpg" />">
+				   	</div>
+				   	<div id = "cropper-control">
+				   		<div class="btn-group">
+				          <button type="button" class="btn btn-sm btn-primary" data-method="zoom" data-option="0.1" title="Zoom In">
+				            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.zoom(0.1)">
+				              <span class="fa fa-search-plus"></span>
+				            </span>
+				          </button>
+				          <button type="button" class="btn  btn-sm btn-primary" data-method="zoom" data-option="-0.1" title="Zoom Out">
+				            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.zoom(-0.1)">
+				              <span class="fa fa-search-minus"></span>
+				            </span>
+				          </button>
+				        </div>
+				   		<div class="btn-group">
+				          <button type="button" class="btn btn-sm btn-primary" data-method="rotate" data-option="-45" title="Rotate Left">
+				            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.rotate(-45)">
+				              <span class="fa fa-undo-alt"></span>
+				            </span>
+				          </button>
+				          <button type="button" class="btn btn-sm btn-primary" data-method="rotate" data-option="45" title="Rotate Right">
+				            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.rotate(45)">
+				              <span class="fa fa-redo-alt"></span>
+				            </span>
+				          </button>
+				        </div>
+				        <div class="file-field btn-group">
+						    <div class="btn btn-primary btn-sm float-left" title = "Change picture">
+						      <span class = "fa fa-upload"></span>
+						      <input type="file">
+						    </div>
+						</div>
+				   	</div>
 			   </div>
 			</div>
 	      </div>

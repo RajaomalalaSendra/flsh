@@ -16,7 +16,10 @@
     <link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css" />">
     <!-- Bootstrap CSS
 		============================================ -->
-    <link rel="stylesheet" href="<c:url value="/resources/css/font-awesome.min.css" />">
+    <link rel="stylesheet" href="<c:url value="/resources/css/fontawesome.min.css" />">
+    <link rel="stylesheet" href="<c:url value="/resources/css/all.min.css" />">
+    <link rel="stylesheet" href="<c:url value="/resources/css/svg-with-js.min.css" />">
+    <link rel="stylesheet" href="<c:url value="/resources/css/v4-shims.min.css" />">
     <link rel="stylesheet" href="<c:url value="/resources/css/awesome-bootstrap-checkbox.css" />">
     <!-- owl.carousel CSS
 		============================================ -->

@@ -42,3 +42,27 @@ div.pagination {
 #main-wrapper, .main-wrapper {
 	padding-left: 20px;
 }
+#photo-upload-container {
+	text-align: center;
+	width: 100% !important;
+}
+#photo-upload-container img {
+	width: 100% !important;
+	height: 100% !important;
+}
+#cropper-control {
+	text-align: center;
+    padding: 10px;
+}
+.file-field input[type=file] {
+	position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+}
