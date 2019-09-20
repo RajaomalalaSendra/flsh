@@ -1,6 +1,6 @@
 #level-student{
 	margin-left: 300px;
-	margin-top: -80px;
+	margin-top: -70px;
 }
 
 #result {
@@ -10,8 +10,12 @@
 }
 
 #univ-year-and-cycle {
-	margin-left: 400px;
-	margin-top: -180px;
+	margin-left: 600px;
+	margin-top: -200px;
+}
+
+#university-name {
+	margin-top: -70px;
 }
 
 #university-name, #result-current-student, #jury-member, #jury-president {
@@ -31,32 +35,4 @@ table {
 #jury-president {
 	margin-top: -35px;
 	margin-left: 500px;
-}
-
-@media print {
-	    @page 
-    {
-        size:  auto;   /* auto is the initial value */
-        margin: 0mm;  /* this affects the margin in the printer settings */
-    }
-
-    html
-    {
-        background-color: #FFFFFF; 
-        margin: 0px;  /* this affects the margin on the html before sending to printer */
-    }
-
-    body
-    {
-        margin: 10mm 15mm 10mm 15mm;
-        background-image: none; /* margin you want for the content */
-    }
-    
-    a[href]:after {
-    	content: none !important;
-  	}
-  	title:after {
-  		content: none !important;
-  	}
-  	
 }

@@ -1,10 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<<<<<<< master
 <%@ page import ="com.flsh.model.User" %>
 <% User user = (User) request.getSession().getAttribute("user"); %>
-=======
 <c:set var="req" value="${pageContext.request}" />
->>>>>>> export pdf feature as a web page  for the result of one student
 <c:forEach items="${ students }" var="student" varStatus="status">
 	<tr id = "stud-${ student.getStudent_id() }">
 		<td><img  class = "rounded-image" src="${ student.getCroppedImageURL(sc)}"/></td>
