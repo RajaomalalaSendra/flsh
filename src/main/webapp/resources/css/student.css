@@ -46,10 +46,7 @@ div.pagination {
 	text-align: center;
 	width: 100% !important;
 }
-#photo-upload-container img {
-	width: 100% !important;
-	height: 100% !important;
-}
+
 #cropper-control {
 	text-align: center;
     padding: 10px;

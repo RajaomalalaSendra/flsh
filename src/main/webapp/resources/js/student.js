@@ -19,7 +19,7 @@ $(document).ready(function() {
 		var $image = $('#image-student');
 
 		$image.cropper({
-			zoomable: true,
+		  zoomable: true,
 		  crop: function(event) {
 		    console.log(event.detail.x);
 		    console.log(event.detail.y);
@@ -33,6 +33,22 @@ $(document).ready(function() {
 
 		// Get the Cropper.js instance after initialized
 		var cropper = $image.data('cropper');
+		
+		$("#profile-zoom-in").on("click", function(){
+			cropper.zoom(0.1)
+		})
+		
+		$("#profile-zoom-out").on("click", function(){
+			cropper.zoom(-0.1)
+		})
+		
+		$("#profile-rotate-left").on("click", function(){
+			cropper.rotate(-10)
+		})
+		
+		$("#profile-rotate-right").on("click", function(){
+			cropper.rotate(10)
+		})
 	})
 	
 	$('#form-save-student').on('submit', function(e) {

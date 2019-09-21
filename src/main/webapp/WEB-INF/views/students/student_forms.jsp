@@ -155,29 +155,29 @@
 			        </div>
 			   </div>
 			   <div class = "tab-pane fade in" id = "photo">
-				   	<div id = "photo-upload-container" style = "position: relative; padding-left:25%; width: 100%; height: 300px;">
-				   		<img id="image-student" style = "max-width: 100%" src="<c:url value = "/resources/img/student/4.jpg" />">
-				   	</div>
+				   		<div id = "photo-upload-container" style = "position: relative; padding-left:25%; width: 100%; height: 300px;" >
+			         		 <img id="image-student" style = "max-width: 100%" src="<c:url value = "/resources/img/student/4.jpg" />" alt="Picture" class="cropper-hidden">
+			         	</div>
 				   	<div id = "cropper-control">
 				   		<div class="btn-group">
-				          <button type="button" class="btn btn-sm btn-primary" data-method="zoom" data-option="0.1" title="Zoom In">
+				          <button id = "profile-zoom-in" type="button" class="btn btn-sm btn-primary" data-method="zoom" data-option="0.1" title="Zoom In">
 				            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.zoom(0.1)">
 				              <span class="fa fa-search-plus"></span>
 				            </span>
 				          </button>
-				          <button type="button" class="btn  btn-sm btn-primary" data-method="zoom" data-option="-0.1" title="Zoom Out">
+				          <button id = "profile-zoom-out" type="button" class="btn  btn-sm btn-primary" data-method="zoom" data-option="-0.1" title="Zoom Out">
 				            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.zoom(-0.1)">
 				              <span class="fa fa-search-minus"></span>
 				            </span>
 				          </button>
 				        </div>
 				   		<div class="btn-group">
-				          <button type="button" class="btn btn-sm btn-primary" data-method="rotate" data-option="-45" title="Rotate Left">
+				          <button id = "profile-rotate-left" type="button" class="btn btn-sm btn-primary" data-method="rotate" data-option="-45" title="Rotate Left">
 				            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.rotate(-45)">
 				              <span class="fa fa-undo-alt"></span>
 				            </span>
 				          </button>
-				          <button type="button" class="btn btn-sm btn-primary" data-method="rotate" data-option="45" title="Rotate Right">
+				          <button id = "profile-rotate-right" type="button" class="btn btn-sm btn-primary" data-method="rotate" data-option="45" title="Rotate Right">
 				            <span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.rotate(45)">
 				              <span class="fa fa-redo-alt"></span>
 				            </span>
