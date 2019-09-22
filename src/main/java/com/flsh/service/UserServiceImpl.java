@@ -59,14 +59,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<User> getAllUser() {
-		String sql = "SELECT * FROM Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_type != 2 LIMIT 50";
+		String sql = "SELECT * FROM Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_id NOT IN (select uti_id from Professeur) LIMIT 50";
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users;
 	}
 	
 	@Override
 	public List<User> getUsersByPage(int page) {
-		String sql = "SELECT Utilisateur.*, Role.*, (select count(*) from Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_type != 2) as users_number FROM Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_type != 2 LIMIT 50 OFFSET "+((page - 1)*50);
+		String sql = "SELECT Utilisateur.*, Role.*, (select count(*) from Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_id NOT IN (select uti_id from Professeur)) as users_number FROM Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_id NOT IN (select uti_id from Professeur) LIMIT 50 OFFSET "+((page - 1)*50);
 		List<User> users = jdbcTemplate.query(sql, new UserMapper());
 		return users;
 	}
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
 			}
 			
 		}
-		querySearch += criteria.equals("") ? " WHERE uti_type != 2" : ") AND uti_type != 2";
+		querySearch += criteria.equals("") ? " WHERE uti_id NOT IN (select uti_id from Professeur)" : ") AND uti_id NOT IN (select uti_id from Professeur)";
 		String query = queryIntro +" "+querySearch+") as users_number "+querySearch+" limit 50 offset "+ (50 * (page - 1));
 		List<User> users = jdbcTemplate.query(query, new UserMapper());
 		return users;
@@ -276,7 +276,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int getUsersNumber() {
-		String queryCount = "SELECT COUNT(*) FROM Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_type != 2 ";
+		String queryCount = "SELECT COUNT(*) FROM Utilisateur JOIN Role ON Role.rol_id = Utilisateur.uti_type WHERE uti_id NOT IN (select uti_id from Professeur) ";
 		int usersNumber = jdbcTemplate.queryForObject(queryCount, Integer.class);
 		System.out.print("\nNumber of users : "+usersNumber+"\n");
 		return usersNumber;

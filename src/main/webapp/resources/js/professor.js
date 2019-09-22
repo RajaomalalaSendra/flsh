@@ -77,9 +77,10 @@ $(document).ready(function() {
 				$('#pass-prof').val("")
 				$('#contact-prof').val(data.professor_contact)
 				$('#adresse-prof').val(data.professor_adresse)
-				$('#uti-type').val("2")
+				$('#uti-type').val(data.user_type)
 				$('#prof-for-user-id').val(data.user_id)
 				$('#user-civilite-prof').val(data.user_civilite)
+				$('#profIsAdmin').prop('checked', data.user_type == 1)
 				$("#profAddModal").modal('show')
 			},
 			error: function(err) {
@@ -230,6 +231,14 @@ $(document).ready(function() {
 					alert('Erreur lors du chargement des professeurs')
 				}
 			})
+		}
+	})
+	
+	$(document).on('change','#profIsAdmin', function() {
+		if($(this).is(':checked')) {
+			$('#uti-type').val(1)
+		} else {
+			$('#uti-type').val(2)
 		}
 	})
 })

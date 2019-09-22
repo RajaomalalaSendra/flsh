@@ -21,6 +21,7 @@ import java.util.List;
 
 import com.flsh.model.Professor;
 import com.flsh.model.ProfessorStudyUnit;
+import com.flsh.model.User;
 import com.mysql.jdbc.Statement;
 import com.flsh.interfaces.ProfessorService;
 public class ProfessorServiceImpl implements ProfessorService {
@@ -35,14 +36,14 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 	@Override
 	public List<Professor> getAllProfessor() {
-		String sql_prof = "SELECT * FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id   WHERE Utilisateur.uti_type = 2 LIMIT 50";		
+		String sql_prof = "SELECT * FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id LIMIT 50";		
 		List<Professor> professors = jdbcTemplate.query(sql_prof, new ProfessorMapper());
 		return professors;
 	}
 
 	@Override
 	public List<Professor> getProfessorsByPage(int pageNumber) {
-		String sql_prof = "SELECT * FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id   WHERE Utilisateur.uti_type = 2 LIMIT 50 OFFSET "+((pageNumber - 1) * 100 );		
+		String sql_prof = "SELECT * FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id LIMIT 50 OFFSET "+((pageNumber - 1) * 100 );		
 		List<Professor> professors = jdbcTemplate.query(sql_prof, new ProfessorMapper());
 		return professors;
 	}
@@ -108,7 +109,7 @@ public class ProfessorServiceImpl implements ProfessorService {
 	
 	@Override
 	public int getProfsNumber() {
-		String sql = "SELECT COUNT(*) FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id   WHERE Utilisateur.uti_type = 2 ";
+		String sql = "SELECT COUNT(*) FROM  Professeur JOIN Utilisateur ON Utilisateur.uti_id = Professeur.uti_id ";
 		int profsNumber = jdbcTemplate.queryForObject(sql, Integer.class);
 		return profsNumber;
 	}
@@ -150,6 +151,15 @@ public class ProfessorServiceImpl implements ProfessorService {
 		if (professor.getUser_id() == 0) {
 			sql_user = "INSERT INTO Utilisateur(uti_nom, uti_prenom, uti_login, uti_email, uti_type, civ_id, uti_passwd) VALUES(?, ?, ?, ?, ?, ?, sha1(?))";
 		} else {
+			//Check can update user before 
+			User user = new User();
+			user.setId(professor.getUser_id());
+			user.setType(""+professor.getUser_type());
+			if(!this.checkCanUpdateProfil(user)) {
+				rtn.put("status", 0);
+		  	    rtn.put("message", "On ne peut retirer le droit d'administrateur à ce prof, c'est le(a) seul(e) admin de l'application!!");
+				return rtn;
+			}
 			sql_user = professor.getProfessor_password().equals("") ? "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, civ_id = ? WHERE uti_id = ?" : "UPDATE Utilisateur SET  uti_nom = ?, uti_prenom = ?, uti_login = ?, uti_email = ?, uti_type = ?, civ_id = ?, uti_passwd = sha1(?) WHERE uti_id = ?";
 		}
 		
@@ -197,15 +207,42 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 	@Override
 	public JSONObject deleteProfessor(int id, int user_id) {
+		JSONObject rtn = new JSONObject();
+		if(!this.checkCanDeleteUser(id)) {
+		    rtn.put("status", 0);
+		    rtn.put("message", "On ne peut supprimer ce professeur car c'est le(a) seul(e) administrateur.");
+			return rtn;
+		}
 		// TODO Auto-generated method stub
 		String sql_professor = "DELETE FROM Professeur WHERE Professeur.prof_id = "+ id + " AND Professeur.uti_id = ?";
 		String sql_user = "DELETE FROM Utilisateur WHERE Utilisateur.uti_id = ?";
-		JSONObject rtn = new JSONObject();
 	    jdbcTemplate.update(sql_professor, user_id);
 	    int j = jdbcTemplate.update(sql_user, user_id);
 	    rtn.put("status", j >= 0 ? 1 : 0);
 	    rtn.put("message", j >= 0 ? "Supprimé!" : "Echec de la suppression! Veuillez réessayer.");
 		return rtn;
+	}
+	
+	private boolean checkCanDeleteUser(int id) {
+		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_type = '1' and uti_id != " + id;
+		List<User> users = jdbcTemplate.query(sql, new UserMapper());
+		return users.size() > 0;
+	}
+	
+	public User getUserDetails(int id) {
+		String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_id=" + id ;
+		List<User> users = jdbcTemplate.query(sql, new UserMapper());
+		return users.size() > 0 ? users.get(0) : null;
+	}
+	
+	private boolean checkCanUpdateProfil(User user) {
+		User lastUser = this.getUserDetails(user.getId());
+		if(!lastUser.getType().equals(user.getType()) && lastUser.getType().equals("1")) {
+			String sql = "select * from Utilisateur join Role on Role.rol_id = Utilisateur.uti_type where uti_type = '1' and uti_id != " + user.getId();
+			List<User> users = jdbcTemplate.query(sql, new UserMapper());
+			return users.size() > 0;
+		}
+		return true;
 	}
 
 	@Override
