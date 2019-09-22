@@ -57,6 +57,13 @@
 	      		<input class="form-control" type="text" name = "professor_adresse" id = "adresse-prof">
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
+	      	<div class = "form-group form-inline">
+	      	    <label for = "profIsAdmin" class = "col-sm-3">Administrateur</label>
+	        	<div class="checkbox checkbox-primary">
+                    <input  type = "checkbox" class = "styled" id = "profIsAdmin">
+                    <label></label>
+                </div>
+	      	</div>
 	      	<input type="hidden" name = "user_type" id = "uti-type" value = "2">
         </form>
       </div>
