@@ -184,10 +184,10 @@
 				          </button>
 				        </div>
 				        <div class="file-field btn-group">
-						    <div class="btn btn-primary btn-sm float-left" title = "Change picture">
+					      <label class="btn btn-primary btn-sm float-left" for="inputImage" title="Upload image file">
 						      <span class = "fa fa-upload"></span>
-						      <input type="file">
-						    </div>
+						      <input type="file" class="sr-only" id="inputImage" name="file" accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff"/>
+					      </label>
 						</div>
 				   	</div>
 			   </div>
