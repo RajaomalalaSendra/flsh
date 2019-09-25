@@ -1,5 +1,7 @@
 var infosSubscription
 var inSearch = false
+var cropper
+var changedImage = false
 $(document).ready(function() {
 	
 	$(function() {
@@ -20,20 +22,22 @@ $(document).ready(function() {
 		
 		var options = {
 				  zoomable: true,
+				  autoCrop: true,
 				  crop: function(event) {
-				    console.log(event.detail.x)
-				    console.log(event.detail.y)
-				    console.log(event.detail.width)
-				    console.log(event.detail.height)
-				    console.log(event.detail.rotate)
-				    console.log(event.detail.scaleX)
-				    console.log(event.detail.scaleY)
+				    console.log(event.x)
+				    console.log(event.y)
+				    console.log(event.width)
+				    console.log(event.height)
+				    console.log(event.rotate)
+				    console.log(event.scaleX)
+				    console.log(event.scaleY)
 				  }
 				}
 		
 		$image.cropper(options)
 		// the image cropper
-		var cropper  = $image.data('cropper');
+		cropper  = $image.data('cropper');
+		console.log(cropper)
 		clickZoomAndRotation(cropper)
 		
 		/*Create the upload for the image of the student*/
@@ -67,7 +71,6 @@ $(document).ready(function() {
 			          uploadedImageURL = URL.createObjectURL(file)
 			          $image.cropper('destroy').attr('src', uploadedImageURL).cropper(options)
 			          $inputImage.val('')
-			          console.log("test upload file")
 			          
 			          cropper = $image.data('cropper')
 			          
@@ -81,6 +84,11 @@ $(document).ready(function() {
 			    $inputImage.prop('disabled', true).parent().addClass('disabled')
 			  }
 
+	})
+	
+	$("#save-student").on('click', function(){
+		console.log(cropper)
+		console.log("getCroppedCanvas: ", $('#image-student').cropper("getCroppedCanvas").toDataURL("image/png"))
 	})
 	
 	$('#form-save-student').on('submit', function(e) {
