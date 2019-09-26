@@ -9,6 +9,9 @@
 	margin-bottom: 20px;
 	border: 1px solid;
 }
+.box-starter .btn-group {
+	width: 100% !important;
+}
 .form-group.form-inline label{
 	margin-left: 20px;
 }

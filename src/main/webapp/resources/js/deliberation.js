@@ -75,13 +75,20 @@ $(document).ready(function() {
 				var decision = $("#delibCurrentUser").val()
 				$(".btn.deliberation-decision").attr("class", "btn deliberation-decision")
 				console.log("Dec ", decision)
-				if(decision == "PASSE"){
+				switch(decision) {
+				case "PASSE":
 					$("#passe-deliberation").addClass("btn-success")
-				} else if(decision == "REDOUBLE"){
+					break;
+				case "ASR":
+					$("#asr-deliberation").addClass("btn-info")
+					break;
+				case "REDOUBLE":
 					$("#redouble-deliberation").addClass("btn-warning")
-				} else if(decision == "RENVOI") {
+					break;
+				case "RENVOI":
 					$("#renvoi-deliberation").addClass("btn-danger")
-				} 
+					break;
+				}
 			}, 
 			error: function() {
 				$("#info-evaluation tbody").html("There is an error")
@@ -175,27 +182,36 @@ $(document).ready(function() {
 	
 	$(".deliberation-decision").on('click', function(){
 		var idDecision = $(this).attr("id")
-		var valDecision = $("#delibCurrentUser").val();
-		console.log("ValDecision: " , valDecision)
+		var passage = ""
 		
 		if(idDecision == "renvoi-deliberation"){
 			$("#renvoi-deliberation").addClass("btn-danger")
 			$("#redouble-deliberation").removeClass("btn-warning")
 			$("#passe-deliberation").removeClass("btn-success")
+			$("#asr-deliberation").removeClass("btn-info")
 			
 			passage = "RENVOI"
 		} else if(idDecision == "redouble-deliberation"){
 			$("#renvoi-deliberation").removeClass("btn-danger")
 			$("#redouble-deliberation").addClass("btn-warning")
 			$("#passe-deliberation").removeClass("btn-success")
+			$("#asr-deliberation").removeClass("btn-info")
 			
 			passage = "REDOUBLE"
 		} else if(idDecision == "passe-deliberation") {
 			$("#renvoi-deliberation").removeClass("btn-danger")
 			$("#redouble-deliberation").removeClass("btn-warning")
 			$("#passe-deliberation").addClass("btn-success")
+			$("#asr-deliberation").removeClass("btn-info")
 			
 			passage = "PASSE"
+		} else if(idDecision == "asr-deliberation") {
+			$("#renvoi-deliberation").removeClass("btn-danger")
+			$("#redouble-deliberation").removeClass("btn-warning")
+			$("#passe-deliberation").removeClass("btn-success")
+			$("#asr-deliberation").addClass("btn-info")
+			
+			passage = "ASR"
 		}
 		
 		saveDecisionDeliberation(passage)

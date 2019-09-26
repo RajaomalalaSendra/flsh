@@ -39,11 +39,11 @@ public class NoteServiceImpl implements NoteService {
 
 	@Override
 	public List<Course> getECProfessor(int idProf) {
-		String sql = "SELECT Element_Constitutif.*, niv_libelle, ue_libelle FROM Element_Constitutif "
+		String sql = "SELECT Element_Constitutif.*, niv_libelle, ue_libellecourt, ue_libellelong FROM Element_Constitutif "
 					+ "join Unite_Enseignement on Unite_Enseignement.ue_id = Element_Constitutif.ue_id "
 					+ "join Parcours on Unite_Enseignement.prc_id = Parcours.prc_id "
 					+ "join Niveau on Parcours.niv_id = Niveau.niv_id WHERE prof_id = "+idProf
-					+ " UNION SELECT Element_Constitutif.*, niv_libelle, ue_libelle FROM Element_Constitutif "
+					+ " UNION SELECT Element_Constitutif.*, niv_libelle, ue_libellecourt, ue_libellelong FROM Element_Constitutif "
 					+ "join Unite_Enseignement on Unite_Enseignement.ue_id = Element_Constitutif.ue_id "
 					+ "join Parcours on Unite_Enseignement.prc_id = Parcours.prc_id "
 					+ "join Niveau on Parcours.niv_id = Niveau.niv_id WHERE Element_Constitutif.ue_id in (select Prof_Ue.ue_id FROM Prof_Ue WHERE Prof_Ue.prof_id = "+idProf+") and prof_id != "+idProf;
@@ -101,9 +101,10 @@ public class NoteServiceImpl implements NoteService {
 
 	@Override
 	public List<Course> getECParcours(int idPrc) {
-		String sql = "SELECT Element_Constitutif.*, ue_libelle FROM Element_Constitutif "
+		String sql = "SELECT Element_Constitutif.*, ue_libellecourt, ue_libellelong FROM Element_Constitutif "
 				+ "join Unite_Enseignement on Unite_Enseignement.ue_id = Element_Constitutif.ue_id "
-				+ "WHERE Unite_Enseignement.prc_id = "+idPrc;
+				+ "join Parcours on Unite_Enseignement.prc_id = Parcours.prc_id "
+				+ "join Niveau on Parcours.niv_id = Niveau.niv_id WHERE Unite_Enseignement.prc_id = "+idPrc;
 		List<Course> courses = jdbcTemplate.query(sql, new CourseMapper());
 		return courses;
 	}

@@ -6,7 +6,9 @@ public class Course{
 	private int course_id;
 	private int studyunit_id;
 	private int professor_id;
-	private String course_libelle;
+	private String course_libellecourt;
+	private String course_libellelong;
+	private String course_type;
 	private int course_credit;
 	private int course_notation;
 	private double course_coefficient;
@@ -35,11 +37,23 @@ public class Course{
 	public void setProfessor_id(int professor_id) {
 		this.professor_id = professor_id;
 	}
-	public String getCourse_libelle() {
-		return course_libelle;
+	public String getCourse_libellecourt() {
+		return course_libellecourt;
 	}
-	public void setCourse_libelle(String course_libelle) {
-		this.course_libelle = course_libelle;
+	public void setCourse_libellecourt(String course_libellecourt) {
+		this.course_libellecourt = course_libellecourt;
+	}
+	public String getCourse_libellelong() {
+		return course_libellelong;
+	}
+	public void setCourse_libellelong(String course_libellelong) {
+		this.course_libellelong = course_libellelong;
+	}
+	public String getCourse_type() {
+		return course_type;
+	}
+	public void setCourse_type(String course_type) {
+		this.course_type = course_type;
 	}
 	public int getCourse_credit() {
 		return course_credit;
@@ -80,7 +94,10 @@ public class Course{
 	
 	public String toString() {
 		return " \n ==================================================================\n" +
-				"id ec " + course_id + " id ue " + studyunit_id + " professor id " + professor_id + " libelle " + course_libelle 
+				"id ec " + course_id + " id ue " + studyunit_id + " professor id " + professor_id 
+				+ " libellecourt " + course_libellecourt 
+				+ " libellelong " + course_libellelong
+				+ " type " + course_type 
 				+ " \n ==================================================================\n";
 	}
 	public String getProfName(int id) {

@@ -75,8 +75,8 @@ $(document).ready(function() {
 					}
 				}
 				$('#idParcoursUE').val(data.id_parcours)
-				$('#ueLibelle').val(data.libelle)
-				$('#ueType').val(data.type)
+				$('#ueLibelleLong').val(data.libellelong)
+				$('#ueLibelleCourt').val(data.libellecourt)
 				$("#ueAddModal").modal('show')
 			},
 			error: function(err) {
@@ -162,7 +162,9 @@ $(document).ready(function() {
 				console.log(data)
 				$('#idUeEc').val(data.id_ue)
 				$('#idProfessorEc').val(data.id_prof)
-				$('#ecLibelle').val(data.libelle)
+				$('#ecLibelleCourt').val(data.libellecourt)
+				$('#ecLibelleLong').val(data.libellelong)
+				$('#ecType').val(data.type)
 				$('#ecCredit').val(data.credit)
 				$('#ecNotation').val(data.notation)
 				$('#ecCoefficient').val(data.coefficient)

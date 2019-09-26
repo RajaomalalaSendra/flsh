@@ -26,8 +26,13 @@
 	      	</div>
 	      	<input type="hidden" id="idProfessorEc">
       		<div class = "form-group form-inline">
-	      	    <label class="col-md-4">Libelle:</label>
-	      		<input class="form-control" type="text" name = "libelle" id = "ecLibelle" required>
+	      	    <label class="col-md-4" for="ecLibelleCourt">Libelle court:</label>
+	      		<input class="form-control" type="text" name = "libellecourt" id = "ecLibelleCourt" required>
+	      		<small class="form-text text-muted error"></small>
+	      	</div>
+	      	<div class = "form-group form-inline">
+	      	    <label class="col-md-4" for="ecLibelleLong">Libelle long:</label>
+	      		<input class="form-control" type="text" name = "libellelong" id = "ecLibelleLong" required>
 	      		<small class="form-text text-muted error"></small>
 	      	</div>
 	      	<div class = "form-group form-inline">
@@ -59,6 +64,14 @@
 	      	    <label class="col-md-4">Travail Personnel:</label>
 	      		<input class="form-control" type="number" min = "0" step = ".1" name = "personnel" id = "ecPersonnel" required>
 	      		<small class="form-text text-muted error"></small>
+	      	</div>
+	      	<div class = "form-group form-inline">
+	      	    <label class="col-md-4">Type:</label>
+	      		<select class="form-control" name="type" id="ecType">
+	      	    	<option value="O">Obligatoire</option>
+	      	    	<option value="F">Facultatif</option>
+	      	    	<option value="C">Au choix</option>
+	      		</select>
 	      	</div>
         </form>
       </div>

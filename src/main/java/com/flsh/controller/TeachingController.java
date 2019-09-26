@@ -80,8 +80,8 @@ public class TeachingController {
 	  JSONObject rtn = new JSONObject();
 	  rtn.put("id", teaching_detail.getStudyunit_id());
 	  rtn.put("id_parcours", teaching_detail.getParcours_id());
-	  rtn.put("type", teaching_detail.getStudyunit_type());
-	  rtn.put("libelle", teaching_detail.getStudyunit_libelle());
+	  rtn.put("libellelong", teaching_detail.getStudyunit_libellelong());
+	  rtn.put("libellecourt", teaching_detail.getStudyunit_libellecourt());
 	  rtn.put("prof_id", teaching_detail.getResponsablesId());
 	  return rtn.toString();
 	}
@@ -92,15 +92,16 @@ public class TeachingController {
 		StudyUnit studyunit = new StudyUnit(); 
 		int idUE = request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
 		int idParcoursUE = request.getParameter("id_parcours") == "" ? 0 : Integer.parseInt(request.getParameter("id_parcours"));
-		String type = request.getParameter("type");
-		String libelle = request.getParameter("libelle");
+
+		String libellelong = request.getParameter("libellelong");
+		String libellecourt = request.getParameter("libellecourt");
 		String profResponsable = request.getParameter("profResponsable");
 		
 		// using the setter method
 		studyunit.setStudyunit_id(idUE);
 		studyunit.setParcours_id(idParcoursUE);
-		studyunit.setStudyunit_libelle(libelle);
-		studyunit.setStudyunit_type(type);
+		studyunit.setStudyunit_libellelong(libellelong);
+		studyunit.setStudyunit_libellecourt(libellecourt);
 		System.out.print(studyunit);
 		JSONObject rtn = teachingService.saveStudyUnit(studyunit, profResponsable);
   		return rtn.toString();
@@ -127,7 +128,9 @@ public class TeachingController {
 	  rtn.put("credit", course_detail.getCourse_credit());
 	  rtn.put("personnel", course_detail.getCourse_travailpersonnel());
 	  rtn.put("presenciel", course_detail.getCourse_travailpresenciel());
-	  rtn.put("libelle", course_detail.getCourse_libelle());
+	  rtn.put("libellecourt", course_detail.getCourse_libellecourt());
+	  rtn.put("libellelong", course_detail.getCourse_libellelong());
+	  rtn.put("type", course_detail.getCourse_type());
 	  rtn.put("horaire", course_detail.getCourse_volumehoraire());
 	  return rtn.toString();
 	}
@@ -138,7 +141,9 @@ public class TeachingController {
 		int id = request.getParameter("id") == null || request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
 		int idProf = request.getParameter("id_prof") == null || request.getParameter("id_prof") == "" ? 0 : Integer.parseInt(request.getParameter("id_prof"));
 		int idUe = request.getParameter("id_ue") == null || request.getParameter("id_ue") == "" ? 0 : Integer.parseInt(request.getParameter("id_ue"));
-		String libelle = request.getParameter("libelle");
+		String libelle = request.getParameter("libellelong");
+		String libellecourt = request.getParameter("libellecourt");
+		String type = request.getParameter("type");
 		int credit = Integer.parseInt(request.getParameter("credit"));
 		int notation = Integer.parseInt(request.getParameter("notation"));
 		double coefficient = Double.parseDouble(request.getParameter("coefficient"));
@@ -150,7 +155,9 @@ public class TeachingController {
 		course.setCourse_id(id);
 		course.setProfessor_id(idProf);
 		course.setStudyunit_id(idUe);
-		course.setCourse_libelle(libelle);
+		course.setCourse_libellecourt(libellecourt);
+		course.setCourse_libellelong(libelle);
+		course.setCourse_type(type);
 		course.setCourse_credit(credit);
 		course.setCourse_notation(notation);
 		course.setCourse_coefficient(coefficient);

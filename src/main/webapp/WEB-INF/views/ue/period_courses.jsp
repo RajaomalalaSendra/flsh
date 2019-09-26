@@ -39,7 +39,9 @@
 			<table class="table table-striped" id = "table-period-courses">
 			  <thead>
 			  	<tr>
-			      <th scope="col" >UE (Type)/EC</th>
+			      <th scope="col" >UE/E Libelle long</th>
+			      <th scope="col">Libelle court</th>
+			      <th scope="col">Type</th>
 			      <th scope="col">Professeur</th>
 			      <th scope="col">Crédit</th>
 			      <th scope="col">Notation</th>

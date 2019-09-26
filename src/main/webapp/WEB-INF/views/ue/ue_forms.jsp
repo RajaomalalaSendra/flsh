@@ -21,19 +21,14 @@
 			</ul>
 			 <div class="tab-content">
 		    	<div class = "tab-pane fade in active" id = "infos">
-      		
 		      		<div class = "form-group form-inline ue-margin">
-			      	    <label class="col-sm-3">Libelle:</label>
-			      		<input class="form-control" type="text" name = "libelle" id = "ueLibelle" required>
+			      	    <label class="col-sm-3">Libelle court:</label>
+			      		<input class="form-control" type="text" name = "libellecourt" id = "ueLibelleCourt" required>
 			      		<small class="form-text text-muted error"></small>
 			      	</div>
-			      	<div class = "form-group form-inline">
-			      	    <label class="col-sm-3">Type:</label>
-			      		<select class="form-control" name="type" id="ueType">
-			      	    	<option value="OBLIGATOIRE">Obligatoire</option>
-			      	    	<option value="FACULTATIF">Facultatif</option>
-			      	    	<option value="AU CHOIX">Au choix</option>
-			      		</select>
+			      	<div class = "form-group form-inline ue-margin">
+			      	    <label class="col-sm-3">Libelle long:</label>
+			      		<input class="form-control" type="text" name = "libellelong" id = "ueLibelleLong" required>
 			      		<small class="form-text text-muted error"></small>
 			      	</div>
 	      		</div>

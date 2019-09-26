@@ -119,12 +119,10 @@ public class ProfessorController {
 			int id = request.getParameter("id") == null || request.getParameter("id") == "" ? 0 : Integer.parseInt(request.getParameter("id"));
 			Professor prof = professorService.getProfessorDetails(id);
 			List<ProfessorStudyUnit> stdUnts = teachingService.getStudyUntsByProfId(id);
-			List<ProfessorCourse> courses = teachingService.getProfessorCourses(id);
 			ModelAndView profView = new ModelAndView("users/professor_course_list");
 			
 			profView.addObject("prof", prof);
 			profView.addObject("stdUnts", stdUnts);
-			profView.addObject("courses", courses);
 		    return profView;
 		}
 }

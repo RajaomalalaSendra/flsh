@@ -2,7 +2,7 @@
 <c:forEach items = "${ dataEvaluations }" var = "delib">
 	<tr class = "ue-row" id = "tr-ue-${ delib.getStudyunit_id() }">
 		<td>${ delib.getStudyunit_libelle() }</td>
-		<td>${ delib.getStudyunit_type() }</td>
+		<td>-</td>
 		<td>-</td><!-- notation -->
 		<td></td><!-- coefficient -->
 		<td></td><!-- Crédit -->
@@ -28,7 +28,7 @@
 	<c:forEach items = "${ delib.getCoursesEvaluations() }" var = "ec">
 		<tr class = "ec-row ecue-${ delib.getStudyunit_id() }" id = "tr-ec-${ ec.getCourse_id() }">
 			<td class = "ec-delib">${ ec.getCourse_libelle() }</td>
-			<td>-</td>
+			<td>${ ec.getCourse_type() }</td>
 			<td class = "notation-ec">${ ec.getCourse_notation() }</td><!-- notation -->
 			<td class = "coefficient-ec">${ ec.getCourse_coefficient() }</td><!-- coefficient -->
 			<td>${ ec.getCourse_credit() }</td><!-- Crédit -->
