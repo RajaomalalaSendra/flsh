@@ -263,8 +263,7 @@ class DeliberationMapper implements RowMapper<EvaluationUEECStudent>{
 		// For UE
 		delibs.setStudyunit_id(rs.getInt("ue_id"));
 		delibs.setParcours_id(rs.getInt("prc_id"));
-		delibs.setStudyunit_libelle(rs.getString("ue_libelle"));
-		delibs.setStudyunit_type(rs.getString("ue_type"));
+		delibs.setStudyunit_libelle(rs.getString("ue_libellelong"));
 		delibs.setCredit_ue(rs.getInt("credit_ue"));
 		delibs.setValid_credit_ue(rs.getInt("valid_credit_ue"));
 		// For EC
@@ -289,10 +288,11 @@ class DeliberationMapper implements RowMapper<EvaluationUEECStudent>{
 class EvaluationCourseMapper implements RowMapper<EvaluationCourseStudent>{
 	public EvaluationCourseStudent mapRow(ResultSet rs, int arg1) throws SQLException {
 		EvaluationCourseStudent course = new EvaluationCourseStudent();
-		course.setCourse_libelle(rs.getString("ec_libelle"));
 		course.setStudyunit_id(rs.getInt("ue_id"));
 		course.setProfessor_id(rs.getInt("prof_id"));
-		course.setCourse_libelle(rs.getString("ec_libelle"));
+		//course.setCourse_libelle(rs.getString("ec_libellecourt"));
+		course.setCourse_libelle(rs.getString("ec_libellelong"));
+		course.setCourse_type(rs.getString("ec_type"));
 		course.setCourse_credit(rs.getInt("ec_credit"));
 	    course.setCourse_notation(rs.getInt("ec_notation"));
 	    course.setCourse_coefficient(rs.getInt("ec_coefficient"));

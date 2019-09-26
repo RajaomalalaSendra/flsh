@@ -311,18 +311,18 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public HashSet<StudyUnit> getParcoursChoiceUnits(int idParcours) {
 		HashSet<StudyUnit> listUnits = new HashSet<StudyUnit>();
-		String sql = "SELECT * FROM Unite_Enseignement where ue_type = 'AU CHOIX' and prc_id = "+idParcours;
+		String sql = "SELECT * FROM Unite_Enseignement where ue_id in (select ue_id from Element_Constitutif where ec_type = 'C') and prc_id = "+idParcours;
 		List<StudyUnit> units = jdbcTemplate.query(sql, new UnitsMapper());
 		for(StudyUnit unit : units) {
-			Set<Course> listCourses = new HashSet<Course>(this.getCourseById( unit.getStudyunit_id()));
+			Set<Course> listCourses = new HashSet<Course>(this.getChoiceCourseById( unit.getStudyunit_id()));
 			unit.setCourses((HashSet<Course>) listCourses);
 		    listUnits.add(unit);
 		}
 		return listUnits;
 	}
 	
-	private List<Course> getCourseById(int idUnits) {
-		String sql = "SELECT * FROM  Element_Constitutif WHERE ue_id = "+idUnits;
+	private List<Course> getChoiceCourseById(int idUnits) {
+		String sql = "SELECT * FROM  Element_Constitutif WHERE ec_type = 'C' AND ue_id = "+idUnits;
 		List<Course> courses = jdbcTemplate.query(sql, new CourseMapper());
 		return courses;
 	}

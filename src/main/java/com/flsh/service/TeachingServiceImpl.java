@@ -116,17 +116,17 @@ public class TeachingServiceImpl implements TeachingService {
 		JSONObject rtn = new JSONObject();
 		GeneratedKeyHolder holder = new GeneratedKeyHolder();
 		
-		String  sql = studyUnit.getStudyunit_id() == 0 ? "INSERT INTO  Unite_Enseignement(prc_id, ue_libelle, ue_type)  VALUES(?, ?, ?)" : 
-		"UPDATE Unite_Enseignement SET prc_id = ?, ue_libelle = ?, ue_type = ? WHERE ue_id = ?";
-		
+		String  sql = studyUnit.getStudyunit_id() == 0 ? "INSERT INTO  Unite_Enseignement(prc_id, ue_libellecourt, ue_libellelong)  VALUES(?, ?, ?)" : 
+		"UPDATE Unite_Enseignement SET prc_id = ?, ue_libellecourt = ?, ue_libellelong = ? WHERE ue_id = ?";
+		System.out.print("\n"+sql+"\n"+studyUnit);
 		jdbcTemplate.update(new PreparedStatementCreator() {
 		    
 			@Override
 		    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 		        PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		        statement.setInt(1, studyUnit.getParcours_id());
-		        statement.setString(2, studyUnit.getStudyunit_libelle());
-		        statement.setString(3, studyUnit.getStudyunit_type());
+		        statement.setString(2, studyUnit.getStudyunit_libellecourt());
+		        statement.setString(3, studyUnit.getStudyunit_libellelong());
 				if (studyUnit.getStudyunit_id() != 0) statement.setInt(4, studyUnit.getStudyunit_id());
 		        return statement;
 		    }
@@ -184,10 +184,10 @@ public class TeachingServiceImpl implements TeachingService {
 		JSONObject rtn = new JSONObject();
 		String  sql;
 		if (course.getCourse_id() == 0) {
-			sql = "INSERT INTO  Element_Constitutif(ue_id, prof_id, ec_libelle, ec_credit, ec_notation, "
+			sql = "INSERT INTO  Element_Constitutif(ue_id, prof_id, ec_libellecourt, ec_libellelong, ec_type, ec_credit, ec_notation, "
 					+ "ec_coefficient, ec_volumehoraire, ec_travailpresenciel, ec_travailpersonnel)  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		} else {
-			sql = "UPDATE Element_Constitutif SET ue_id = ?, prof_id = ?, ec_libelle = ?, ec_credit = ?, "
+			sql = "UPDATE Element_Constitutif SET ue_id = ?, prof_id = ?, ec_libellecourt = ?, ec_libellelong = ?, ec_type = ?, ec_credit = ?, "
 					+ "ec_notation = ?, ec_coefficient = ?, ec_volumehoraire = ?, ec_travailpresenciel = ?, "
 					+ "ec_travailpersonnel = ? WHERE ec_id = ?";
 		}
@@ -196,14 +196,16 @@ public class TeachingServiceImpl implements TeachingService {
 			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
 				ps.setInt(1, course.getStudyunit_id());
 				ps.setInt(2, course.getProfessor_id());
-				ps.setString(3, course.getCourse_libelle());
-				ps.setInt(4, course.getCourse_credit());
-				ps.setInt(5, course.getCourse_notation());
-				ps.setDouble(6, course.getCourse_coefficient());
-				ps.setString(7, course.getCourse_volumehoraire());
-				ps.setDouble(8, course.getCourse_travailpresenciel());
-				ps.setDouble(9, course.getCourse_travailpersonnel());
-				if (course.getCourse_id() != 0) ps.setInt(10, course.getCourse_id());
+				ps.setString(3, course.getCourse_libellecourt());
+				ps.setString(4, course.getCourse_libellelong());
+				ps.setString(5, course.getCourse_type());
+				ps.setInt(6, course.getCourse_credit());
+				ps.setInt(7, course.getCourse_notation());
+				ps.setDouble(8, course.getCourse_coefficient());
+				ps.setString(9, course.getCourse_volumehoraire());
+				ps.setDouble(10, course.getCourse_travailpresenciel());
+				ps.setDouble(11, course.getCourse_travailpersonnel());
+				if (course.getCourse_id() != 0) ps.setInt(12, course.getCourse_id());
 				return ps.executeUpdate() > 0 ? true : false;
 			}
 		});
@@ -305,16 +307,16 @@ public class TeachingServiceImpl implements TeachingService {
 	@Override
 	public List<ProfessorStudyUnit> getStudyUntsByProfId(int id) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT *, Unite_Enseignement.ue_libelle, Parcours.prc_libelle, Niveau.niv_libelle, 1 as is_responsable, "
-				+ "(SELECT GROUP_CONCAT(ec_libelle separator '<br/>') FROM Element_Constitutif WHERE Element_Constitutif.ue_id = Unite_Enseignement.ue_id AND Element_Constitutif.prof_id = "+id+") as ecs "
+		String sql = "SELECT *, Unite_Enseignement.ue_libellelong, Parcours.prc_libelle, Niveau.niv_libelle, 1 as is_responsable, "
+				+ "(SELECT GROUP_CONCAT(ec_libellelong separator '<br/>') FROM Element_Constitutif WHERE Element_Constitutif.ue_id = Unite_Enseignement.ue_id AND Element_Constitutif.prof_id = "+id+") as ecs "
 				+ "FROM Prof_Ue "
 				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Prof_Ue.ue_id "
 				+ "JOIN Parcours ON Parcours.prc_id = Unite_Enseignement.prc_id "
 				+ "JOIN Niveau ON Niveau.niv_id = Parcours.niv_id "
 				+ "WHERE prof_id = " + id+" "
 				+ "UNION "
-				+ "SELECT *, Unite_Enseignement.ue_libelle, Parcours.prc_libelle, Niveau.niv_libelle, 0 as is_responsable, "
-				+ "(SELECT GROUP_CONCAT(ec_libelle separator '<br/>') FROM Element_Constitutif WHERE Element_Constitutif.ue_id = Unite_Enseignement.ue_id AND Element_Constitutif.prof_id = "+id+") as ecs "
+				+ "SELECT *, Unite_Enseignement.ue_libellelong, Parcours.prc_libelle, Niveau.niv_libelle, 0 as is_responsable, "
+				+ "(SELECT GROUP_CONCAT(ec_libellelong separator '<br/>') FROM Element_Constitutif WHERE Element_Constitutif.ue_id = Unite_Enseignement.ue_id AND Element_Constitutif.prof_id = "+id+") as ecs "
 				+ "FROM Prof_Ue "
 				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Prof_Ue.ue_id "
 				+ "JOIN Parcours ON Parcours.prc_id = Unite_Enseignement.prc_id "
@@ -327,7 +329,7 @@ public class TeachingServiceImpl implements TeachingService {
 	@Override
 	public List<Course> getEcDetailsByProfId(int id) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT ec_libelle, ue_libelle, niv_libelle, prc_libelle FROM Element_Constitutif "
+		String sql = "SELECT ec_libellelong, ue_libellelong, niv_libelle, prc_libelle FROM Element_Constitutif "
 				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Element_Constitutif.ue_id "
 				+ "JOIN Parcours ON Parcours.prc_id = Unite_Enseignement.prc_id  "
 				+ "JOIN Niveau ON Niveau.niv_id = Parcours.niv_id "
@@ -339,7 +341,7 @@ public class TeachingServiceImpl implements TeachingService {
 	@Override
 	public List<ProfessorCourse> getProfessorCourses(int id) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT ec_libelle, ue_libelle, niv_libelle, prc_libelle FROM Element_Constitutif "
+		String sql = "SELECT ec_libellelong, ue_libellelong, niv_libelle, prc_libelle FROM Element_Constitutif "
 				+ "JOIN Unite_Enseignement ON Unite_Enseignement.ue_id = Element_Constitutif.ue_id "
 				+ "JOIN Parcours ON Parcours.prc_id = Unite_Enseignement.prc_id  "
 				+ "JOIN Niveau ON Niveau.niv_id = Parcours.niv_id "
@@ -362,8 +364,8 @@ class UnitsMapper implements RowMapper<StudyUnit> {
 	    StudyUnit units = new StudyUnit();
 	    units.setStudyunit_id(rs.getInt("ue_id"));
 	    units.setParcours_id(rs.getInt("prc_id"));
-	    units.setStudyunit_libelle(rs.getString("ue_libelle"));
-	    units.setStudyunit_type(rs.getString("ue_type"));
+	    units.setStudyunit_libellecourt(rs.getString("ue_libellecourt"));
+	    units.setStudyunit_libellelong(rs.getString("ue_libellelong"));
 	    return units;
 	}
 }
@@ -374,7 +376,9 @@ class CourseMapper implements RowMapper<Course> {
 	    courses.setCourse_id(rs.getInt("ec_id"));
 	    courses.setStudyunit_id(rs.getInt("ue_id"));
 	    courses.setProfessor_id(rs.getInt("prof_id"));
-	    courses.setCourse_libelle(rs.getString("ec_libelle"));
+	    courses.setCourse_libellecourt(rs.getString("ec_libellecourt"));
+	    courses.setCourse_libellelong(rs.getString("ec_libellelong"));
+	    courses.setCourse_type(rs.getString("ec_type"));
 	    courses.setCourse_credit(rs.getInt("ec_credit"));
 	    courses.setCourse_notation(rs.getInt("ec_notation"));
 	    courses.setCourse_coefficient(rs.getInt("ec_coefficient"));
@@ -394,7 +398,7 @@ class CourseMapper implements RowMapper<Course> {
 	    }
 	    String infosUeLevl = "";
 	    try {
-	    	infosUeLevl = rs.getString("ue_libelle");
+	    	infosUeLevl = rs.getString("ue_libellelong");
 	    	infosUeLevl += " - " + rs.getString("niv_libelle");
 	    } catch(Exception e) {
 	    	System.out.print("No niveau data");
@@ -454,8 +458,8 @@ class ProfessorCourseMapper implements RowMapper<ProfessorCourse> {
 		ProfessorCourse prof_course = new ProfessorCourse();
 		prof_course.setParcours_libelle(rs.getString("prc_libelle"));
 		prof_course.setLevel_libelle(rs.getString("niv_libelle"));
-		prof_course.setStudy_unit_libelle(rs.getString("ue_libelle"));
-		prof_course.setCourse_libelle(rs.getString("ec_libelle"));
+		prof_course.setStudy_unit_libelle(rs.getString("ue_libellelong"));
+		prof_course.setCourse_libelle(rs.getString("ec_libellelong"));
 	    return prof_course;
 	}
 }

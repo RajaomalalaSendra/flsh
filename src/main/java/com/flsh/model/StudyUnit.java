@@ -6,8 +6,8 @@ import java.util.List;
 public class StudyUnit {
 	private int studyunit_id;
 	private int parcours_id;
-	private String studyunit_libelle;
-	private String studyunit_type;
+	private String studyunit_libellecourt;
+	private String studyunit_libellelong;
 	private HashSet<Course> Courses;
 	private List<Professor> Responsables;
 	private List<ProfessorStudyUnit> ResponsablesId;
@@ -24,18 +24,6 @@ public class StudyUnit {
 	public void setParcours_id(int parcours_id) {
 		this.parcours_id = parcours_id;
 	}
-	public String getStudyunit_libelle() {
-		return studyunit_libelle;
-	}
-	public void setStudyunit_libelle(String studyunit_libelle) {
-		this.studyunit_libelle = studyunit_libelle;
-	}
-	public String getStudyunit_type() {
-		return studyunit_type;
-	}
-	public void setStudyunit_type(String studyunit_type) {
-		this.studyunit_type = studyunit_type;
-	}
 	public HashSet<Course> getCourses() {
 		return Courses;
 	}
@@ -43,7 +31,7 @@ public class StudyUnit {
 		Courses = courses;
 	}
 	public String toString() {
-		return " \n==========================\n" + "id parcours: " + parcours_id + " id ue: " + studyunit_id + "type: " + studyunit_type + " libelle: " + studyunit_libelle + " \n==========================\n";
+		return " \n==========================\n" + "id parcours: " + parcours_id + " id ue: " + studyunit_id + "libellecour: " + studyunit_libellecourt + " libelle: " + studyunit_libellelong + " \n==========================\n";
 	}
 	public List<Professor> getResponsables() {
 		return Responsables;
@@ -56,6 +44,18 @@ public class StudyUnit {
 	}
 	public void setResponsablesId(List<ProfessorStudyUnit> responsablesId) {
 		ResponsablesId = responsablesId;
+	}
+	public String getStudyunit_libellecourt() {
+		return studyunit_libellecourt;
+	}
+	public void setStudyunit_libellecourt(String studyunit_libellecourt) {
+		this.studyunit_libellecourt = studyunit_libellecourt;
+	}
+	public String getStudyunit_libellelong() {
+		return studyunit_libellelong;
+	}
+	public void setStudyunit_libellelong(String studyunit_libellelong) {
+		this.studyunit_libellelong = studyunit_libellelong;
 	}
 	public boolean checkProfIsResp(int idProf) {
 		boolean res = false;

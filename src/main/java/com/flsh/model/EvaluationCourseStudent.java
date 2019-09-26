@@ -7,6 +7,7 @@ public class EvaluationCourseStudent {
 	private int studyunit_id;
 	private int professor_id;
 	private String course_libelle;
+	private String course_type;
 	private int course_credit;
 	private int course_credit_obtenu;
 	private int course_notation;
@@ -80,5 +81,11 @@ public class EvaluationCourseStudent {
 	}
 	public void setCourse_credit_obtenu(int course_credit_obtenu) {
 		this.course_credit_obtenu = course_credit_obtenu;
+	}
+	public String getCourse_type() {
+		return course_type;
+	}
+	public void setCourse_type(String course_type) {
+		this.course_type = course_type;
 	}
 }

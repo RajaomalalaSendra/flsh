@@ -27,7 +27,7 @@
     			<label for = "select-ec-saisie">Element constitutif : </label>
     			<select name = "select-ec" id = "select-ec" class = "form-control">
     				<c:forEach items = "${ ecs }" var = "ec" >
-    					<option value = "${ ec.getCourse_id() }">${ ec.getCourse_libelle() } ( ${ ec.getUeNiveau() } )</option>
+    					<option value = "${ ec.getCourse_id() }">${ ec.getCourse_libellelong() } ( ${ ec.getUeNiveau() } )</option>
     				</c:forEach>
     			</select>
     		</div>

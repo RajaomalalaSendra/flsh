@@ -55,6 +55,7 @@
 					<div class = "pull-right-buttom pull-right">
 						<button type="button" class="btn deliberation-decision" id = "renvoi-deliberation">Renvoi</button>
 						<button type="button" class="btn deliberation-decision" id = "redouble-deliberation">Redouble</button>
+						<button type="button" class="btn deliberation-decision" id = "asr-deliberation">A.S.R</button>
 						<button type="button" class="btn deliberation-decision" id = "passe-deliberation">Passe</button>
 					</div>
 				</div>

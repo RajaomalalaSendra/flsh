@@ -3,7 +3,9 @@
 <% User user = (User) request.getSession().getAttribute("user"); %>
  <c:forEach var="unit" items="${units}">   
    <tr id="ue-${unit.getStudyunit_id()}">  
-	   <td scope="row">${unit.getStudyunit_libelle()} (${unit.getStudyunit_type()})</td>  
+	   <td scope="row">${unit.getStudyunit_libellelong()}</td>  
+	   <td scope="row">${unit.getStudyunit_libellecourt()}</td>  
+	   <td></td>
 	   <td >
 	   	<ul>
 		   	<c:forEach var="professor_ue" items="${ unit.getResponsables() }">
@@ -26,7 +28,9 @@
 	   </c:forEach>
 	   <c:forEach var="course" items="${unit.getCourses()}">
 	   		<tr class = "ec" id = "ec-${course.getCourse_id()}">
-	   			<td class = "libelle">${course.getCourse_libelle()}</td>
+	   			<td class = "libelle">${course.getCourse_libellelong()}</td>
+	   			<td>${course.getCourse_libellecourt()}</td>
+	   			<td>${course.getCourse_type()}</td>
 	   			<td>${course.getProfessor()}</td>
 	   			<td>${course.getCourse_credit()}</td>
 	   			<td>${course.getCourse_notation()}</td>
