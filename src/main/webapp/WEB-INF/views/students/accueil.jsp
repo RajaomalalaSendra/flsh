@@ -70,5 +70,5 @@
 
 <%@include file="../common/_script.jsp" %>
 <script src="<c:url value="/resources/js/student.js" />"></script>
-<script src="<c:url value="/resources/js/cropper/cropper.min.js" />"></script>
+<script src="<c:url value="/resources/js/cropper/cropper.js" />"></script>
 </body>

@@ -155,8 +155,8 @@
 			        </div>
 			   </div>
 			   <div class = "tab-pane fade in" id = "photo">
-				   		<div id = "photo-upload-container" style = "position: relative; padding-left:25%; width: 100%; height: 300px;" >
-			         		 <img id="image-student" style = "max-width: 100%" src="<c:url value = "/resources/img/student/4.jpg" />" alt="Picture" class="cropper-hidden">
+				   		<div id = "photo-upload-container" style = "position: relative; width: 100%; height: 300px;" >
+			         		 <img id="image-student" style = "max-width: 100%;  height: 300px;" src="<c:url value = "/resources/img/student/4.jpg" />" alt="Picture" class="cropper-hidden">
 			         	</div>
 				   	<div id = "cropper-control">
 				   		<div class="btn-group">

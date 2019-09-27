@@ -63,3 +63,8 @@ div.pagination {
     cursor: pointer;
     opacity: 0;
 }
+
+/* Limit image width to avoid overflow the container */
+#image-student {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
+}

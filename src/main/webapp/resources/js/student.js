@@ -20,75 +20,71 @@ $(document).ready(function() {
 		$('#subsParcours').trigger('change')
 		var $image = $('#image-student')
 		
-		var options = {
-				  zoomable: true,
-				  autoCrop: true,
-				  crop: function(event) {
-				    console.log(event.x)
-				    console.log(event.y)
-				    console.log(event.width)
-				    console.log(event.height)
-				    console.log(event.rotate)
-				    console.log(event.scaleX)
-				    console.log(event.scaleY)
-				  }
-				}
+		const image = document.getElementById('image-student')
+		const options = {
+				  crop(event) {
+				    console.log(event.detail.x);
+				    console.log(event.detail.y);
+				    console.log(event.detail.width);
+				    console.log(event.detail.height);
+				    console.log(event.detail.rotate);
+				    console.log(event.detail.scaleX);
+				    console.log(event.detail.scaleY);
+				  		}
+					}
+		cropper = new Cropper(image, options);
 		
-		$image.cropper(options)
-		// the image cropper
-		cropper  = $image.data('cropper');
 		console.log(cropper)
 		clickZoomAndRotation(cropper)
 		
 		/*Create the upload for the image of the student*/
 		  var URL = window.URL || window.webkitURL	
-		  var $inputImage = $('#inputImage')
 		  var originalImageURL = $image.attr('src')
 		  var uploadedImageName = 'cropped_image.jpg'
 		  var uploadedImageType = 'image/jpeg'
 		  var uploadedImageURL
 		
-		  if (URL) {
-		    $inputImage.change(function () {
-		      var files = this.files
-		      var file
-		
-		      if (!$image.data('cropper')) {
-		        return
-		      }
-		
-			      if (files && files.length) {
-			        file = files[0]
-			
-			        if (/^image\/\w+$/.test(file.type)) {
-			          uploadedImageName = file.name
-			          uploadedImageType = file.type
-			
-			          if (uploadedImageURL) {
-			            URL.revokeObjectURL(uploadedImageURL)
-			          }
-			
-			          uploadedImageURL = URL.createObjectURL(file)
-			          $image.cropper('destroy').attr('src', uploadedImageURL).cropper(options)
-			          $inputImage.val('')
-			          
-			          cropper = $image.data('cropper')
-			          
-			          clickZoomAndRotation(cropper)
-			        } else {
-			          window.alert('Please choose an image file.')
-			        }
-			      }
-			    });
-			  } else {
-			    $inputImage.prop('disabled', true).parent().addClass('disabled')
-			  }
+		// Import image
+		  var inputImage = document.getElementById('inputImage');
 
-	})
+		  if (URL) {
+		    inputImage.onchange = function () {
+		      var files = this.files;
+		      var file;
+
+		      if (cropper && files && files.length) {
+		        file = files[0];
+
+		        if (/^image\/\w+/.test(file.type)) {
+		          uploadedImageType = file.type;
+		          uploadedImageName = file.name;
+
+		          if (uploadedImageURL) {
+		            URL.revokeObjectURL(uploadedImageURL);
+		          }
+
+		          image.src = uploadedImageURL = URL.createObjectURL(file);
+		          
+		          cropper.destroy();
+		          cropper = new Cropper(image, options);
+		  		  clickZoomAndRotation(cropper);
+		          
+		  		  inputImage.value = null;
+		        } else {
+		          window.alert('Please choose an image file.');
+		        }
+		      }
+		    };
+		  } else {
+		    inputImage.disabled = true;
+		    inputImage.parentNode.className += ' disabled';
+		  }
+		}
+	)
 	
 	$("#save-student").on('click', function(){
 		console.log(cropper)
-		console.log("getCroppedCanvas: ", $('#image-student').cropper("getCroppedCanvas").toDataURL("image/png"))
+		console.log(cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 }))
 	})
 	
 	$('#form-save-student').on('submit', function(e) {
