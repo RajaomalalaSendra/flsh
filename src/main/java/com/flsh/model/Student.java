@@ -1,8 +1,13 @@
 package com.flsh.model;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
+import javax.servlet.ServletContext;
+
 public class Student{
+	
 	private int student_id;
 	private int student_civ;
 	private String student_name;
@@ -23,6 +28,7 @@ public class Student{
 	private String student_jobmother;
 	private HashMap<String, String> evaluations;
 	private int number;
+	private String image_cropped;
 	
 	public int getStudent_id() {
 		return student_id;
@@ -159,5 +165,30 @@ public class Student{
 	public void setNumber(int number) {
 		this.number = number;
 	}
+	public String getImage_cropped() {
+		return image_cropped;
+	}
+	public void setImage_cropped(String image_cropped) {
+		this.image_cropped = image_cropped;
+	}
 	
+	public String getCroppedImageURL(ServletContext servletContext) {
+		String imageURL = "resources/img/student/default.png";
+		System.out.print("Servletcontext: " + servletContext);
+		
+		try {
+			String nameImage = "Student_" + this.student_id + ".jpeg";
+			String fileImageStudent = Paths.get(servletContext.getRealPath("resources/img/student"),nameImage).normalize().toString();
+			File f = new File(fileImageStudent);
+			if(f.exists()) {
+				imageURL = "resources/img/student/" + nameImage;
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return imageURL;
+		
+	}
 }

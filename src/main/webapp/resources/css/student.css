@@ -64,7 +64,19 @@ div.pagination {
     opacity: 0;
 }
 
-/* Limit image width to avoid overflow the container */
+.rounded-image {
+	border-radius: 50%;
+	height: 55px;
+  	width: 55px;
+}
+
 #image-student {
-  max-width: 100%; /* This rule is very important, please do not ignore this! */
+	max-width: 100% !important;
+	height: 300px;
+}
+
+#photo-upload-container {
+	 position: relative;
+	 width: 100%;
+	 height: 300px;
 }

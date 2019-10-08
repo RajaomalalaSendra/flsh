@@ -2,7 +2,11 @@ var infosSubscription
 var inSearch = false
 var cropper
 var changedImage = false
+var defaultImageURL
+
 $(document).ready(function() {
+	
+	defaultImageURL = $("#image-student").attr("src")
 	
 	$(function() {
 		if($('#choixLevel').html()) {
@@ -18,73 +22,12 @@ $(document).ready(function() {
 		$('li a[href="#subscription"]').show()
 		$('li a[href="#primary"]').trigger('click')
 		$('#subsParcours').trigger('change')
-		var $image = $('#image-student')
 		
-		const image = document.getElementById('image-student')
-		const options = {
-				  crop(event) {
-				    console.log(event.detail.x);
-				    console.log(event.detail.y);
-				    console.log(event.detail.width);
-				    console.log(event.detail.height);
-				    console.log(event.detail.rotate);
-				    console.log(event.detail.scaleX);
-				    console.log(event.detail.scaleY);
-				  		}
-					}
-		cropper = new Cropper(image, options);
-		
-		console.log(cropper)
-		clickZoomAndRotation(cropper)
-		
-		/*Create the upload for the image of the student*/
-		  var URL = window.URL || window.webkitURL	
-		  var originalImageURL = $image.attr('src')
-		  var uploadedImageName = 'cropped_image.jpg'
-		  var uploadedImageType = 'image/jpeg'
-		  var uploadedImageURL
-		
-		// Import image
-		  var inputImage = document.getElementById('inputImage');
-
-		  if (URL) {
-		    inputImage.onchange = function () {
-		      var files = this.files;
-		      var file;
-
-		      if (cropper && files && files.length) {
-		        file = files[0];
-
-		        if (/^image\/\w+/.test(file.type)) {
-		          uploadedImageType = file.type;
-		          uploadedImageName = file.name;
-
-		          if (uploadedImageURL) {
-		            URL.revokeObjectURL(uploadedImageURL);
-		          }
-
-		          image.src = uploadedImageURL = URL.createObjectURL(file);
-		          
-		          cropper.destroy();
-		          cropper = new Cropper(image, options);
-		  		  clickZoomAndRotation(cropper);
-		          
-		  		  inputImage.value = null;
-		        } else {
-		          window.alert('Please choose an image file.');
-		        }
-		      }
-		    };
-		  } else {
-		    inputImage.disabled = true;
-		    inputImage.parentNode.className += ' disabled';
-		  }
-		}
-	)
+		initCropper(defaultImageURL)
+	})
 	
-	$("#save-student").on('click', function(){
-		console.log(cropper)
-		console.log(cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 }))
+	$("#save-student").on("click", function(){
+		console.log(cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 }).toDataURL('image/jpeg'))
 	})
 	
 	$('#form-save-student').on('submit', function(e) {
@@ -97,7 +40,9 @@ $(document).ready(function() {
 		if(formValidate('#form-save-student')) {
 			var formData = getFormData($(this))
 			formData.subs_inscription = $('#subsIsPaid').is(':checked') ? 1 : 0
-			$.ajax({
+					// condition manova sary zay vao ampina cropped ny formData
+		    formData.cropped = cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096 }).toDataURL('image/jpeg')
+		    $.ajax({
 				url: getBaseUrl('student/save'),
 				data: formData,
 				type: 'POST',
@@ -429,6 +374,7 @@ $(document).ready(function() {
 			}
 		}
 	})
+	
 })
 
 function addLevelsParcours(idLevel, parcoursSelector) {
@@ -497,6 +443,9 @@ function showDetailsStudent(idStudent, lock = false) {
 				$('#motherNameStudent').val(data.infos.mere);
 				$('#motherJobStudent').val(data.infos.professionmere);
 				$('#idStudent').val(data.infos.id);
+				
+				initCropper(data.infos.imageurl);		
+				
 				$('#editStudentLabel').html(lock ? 'Infos sur l\'&eacute;tudiant' : 'Modifier &eacute;tudiant')
 				$('#editStudentModal').modal('show')
 				$('li a[href="#subscription"]').hide()
@@ -531,4 +480,69 @@ function clickZoomAndRotation(cropper){
 	$("#profile-rotate-right").on("click", function(){
 		cropper.rotate(10)
 	})
+}
+
+function initCropper(imageURL){
+	$("#photo-upload-container").html('<img id="image-student" style = "max-width: 100%;  height: 300px;" src="' + imageURL + '" alt="Picture" class="cropper-hidden">')
+	$("#image-student").attr("src", imageURL)
+	console.log($("#image-student").attr("src", imageURL))
+	const image = document.getElementById('image-student')
+	const options = {
+			  crop(event) {
+			    console.log(event.detail.x);
+			    console.log(event.detail.y);
+			    console.log(event.detail.width);
+			    console.log(event.detail.height);
+			    console.log(event.detail.rotate);
+			    console.log(event.detail.scaleX);
+			    console.log(event.detail.scaleY);
+			  		}
+				}
+	cropper = new Cropper(image, options);
+	
+	console.log(cropper)
+	clickZoomAndRotation(cropper)
+	
+	/*Create the upload for the image of the student*/
+	  var URL = window.URL || window.webkitURL	
+	  var originalImageURL = image.src
+	  var uploadedImageName = 'cropped_image.jpg'
+	  var uploadedImageType = 'image/jpeg'
+	  var uploadedImageURL
+	
+	// Import image
+	  var inputImage = document.getElementById('inputImage');
+
+	  if (URL) {
+	    inputImage.onchange = function () {
+	      var files = this.files;
+	      var file;
+
+	      if (cropper && files && files.length) {
+	        file = files[0];
+
+	        if (/^image\/\w+/.test(file.type)) {
+	          uploadedImageType = file.type;
+	          uploadedImageName = file.name;
+
+	          if (uploadedImageURL) {
+	            URL.revokeObjectURL(uploadedImageURL);
+	          }
+
+	          image.src = uploadedImageURL = URL.createObjectURL(file);
+	          
+	          cropper.destroy();
+	          cropper = new Cropper(image, options);
+	  		  clickZoomAndRotation(cropper);
+	          
+	  		  inputImage.value = null;
+	        } else {
+	          window.alert('Please choose an image file.');
+	        }
+	      }
+	    };
+	  } else {
+	    inputImage.disabled = true;
+	    inputImage.parentNode.className += ' disabled';
+	  }
 }

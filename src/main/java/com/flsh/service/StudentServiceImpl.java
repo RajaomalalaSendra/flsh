@@ -1,14 +1,21 @@
 package com.flsh.service;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 import org.json.JSONObject;
@@ -44,6 +51,9 @@ public class StudentServiceImpl implements StudentService {
 		namedJdbcTemplate = new NamedParameterJdbcTemplate(dsrc);
 		logger.info("Init period service");
 	}
+	
+	@Autowired
+	ServletContext servletContext;
 	
 	@Override
 	public List<Student> getAllStudents() {
@@ -194,11 +204,13 @@ public class StudentServiceImpl implements StudentService {
 		int res = namedJdbcTemplate.update(queryInsert, parameters, holder);
 		if(res <= 0) {
 			rtn.put("status", 0);
-			rtn.put("message", "Echec de l'insertion de la période dans la base!");
+			rtn.put("message", "Echec de l'insertion de l'étudiant dans la base!");
 			return rtn;
 		} else {
 			rtn.put("status", 1);
 			rtn.put("message", "Enregistré avec succès!");
+			int idStudent = student.getStudent_id() != 0 ? student.getStudent_id() : holder.getKey().intValue();
+			rtn.put("idEt", idStudent);
 			return rtn;
 		}
 	}
@@ -240,7 +252,7 @@ public class StudentServiceImpl implements StudentService {
 		int res = namedJdbcTemplate.update(queryInsert, parameters, holder);
 		if(res <= 0) {
 			rtn.put("status", 0);
-			rtn.put("message", "Echec de l'insertion de la période dans la base!");
+			rtn.put("message", "Echec de l'insertion de l'étudiant dans la base!");
 			return rtn;
 		} else {
 			int idStud = holder.getKey().intValue();
@@ -251,6 +263,7 @@ public class StudentServiceImpl implements StudentService {
 			} else {
 				rtn.put("status", 1);
 				rtn.put("message", "Enregistré avec succès!");
+				rtn.put("idEt", idStud);
 			}
 			return rtn;
 		}
@@ -525,6 +538,26 @@ public class StudentServiceImpl implements StudentService {
 		System.out.print(queryStudent);
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
 		return students;
+	}
+	
+	@Override
+	public void getCroppedImageUrl(Student student) {
+		String nameImage = "Student_" + student.getStudent_id() + ".jpeg";
+		
+		if(student.getImage_cropped() != null) {
+			byte[] decodedImg = Base64.getDecoder()
+                    .decode(student.getImage_cropped().replace("data:image/jpeg;base64,", "").getBytes(StandardCharsets.UTF_8));
+			
+			Path destinationFile = Paths.get(servletContext.getRealPath("resources/img/student"), nameImage);
+			try {
+				String path = servletContext.getRealPath("resources/img/student");
+				System.out.println(path);
+				Files.write(destinationFile, decodedImg);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }
 
