@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.flsh.interfaces.EducationService;
 import com.flsh.interfaces.NoteService;
 import com.flsh.interfaces.PeriodService;
 import com.flsh.interfaces.TeachingService;

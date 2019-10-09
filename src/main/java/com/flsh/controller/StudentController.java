@@ -2,7 +2,6 @@ package com.flsh.controller;
 
 
 
-import java.nio.file.Paths;
 import java.util.HashSet;
 
 import javax.servlet.ServletContext;
@@ -53,6 +52,7 @@ public class StudentController {
 		int numPage = !request.getParameter("page").equals("") ? Integer.parseInt(request.getParameter("page")) : 1;
 		ModelAndView mav = new ModelAndView("students/list_students");
 		mav.addObject("students", studentService.getStudentsByPage(numPage));
+		mav.addObject("sc", request.getSession().getServletContext());
 		return mav;
 	}
 	
@@ -62,6 +62,7 @@ public class StudentController {
 		String criteria = request.getParameter("criteria");
 		ModelAndView mav = new ModelAndView("students/list_students");
 		mav.addObject("students", studentService.getStudentsByCriteria(criteria, numPage));
+		mav.addObject("sc", request.getSession().getServletContext());
 		if(numPage == 1) mav.addObject("isSearch", true);
 		return mav;
 	}
@@ -168,6 +169,7 @@ public class StudentController {
 		mav.addObject("submenu", "subscription");
 		mav.addObject("univYears", periodService.getAllUnivYears());
 		mav.addObject("levels", periodService.getAllLevels());
+		mav.addObject("sc", request.getSession().getServletContext());
 		return mav;
 	}
 	
@@ -176,9 +178,11 @@ public class StudentController {
 		int idUY = !request.getParameter("idUY").equals("") ? Integer.parseInt(request.getParameter("idUY")) : 0;
 		int idLevel = !request.getParameter("idLevel").equals("") ? Integer.parseInt(request.getParameter("idLevel")) : 0;
 		int numPage = request.getParameter("page") != null && !request.getParameter("page").equals("") ? Integer.parseInt(request.getParameter("page")) : 1;
+		
 		ModelAndView mav = new ModelAndView("students/level_students");
 		mav.addObject("students", studentService.getStudentsByUnivYearAndLevel(idUY, idLevel, numPage));
 		if(numPage == 1) mav.addObject("showPage", true);
+		mav.addObject("sc", request.getSession().getServletContext());
 		mav.addObject("idLevel", idLevel);
 		return mav;
 	}
@@ -189,9 +193,11 @@ public class StudentController {
 		int idLevel = !request.getParameter("idLevel").equals("") ? Integer.parseInt(request.getParameter("idLevel")) : 0;
 		String searchCriteria = request.getParameter("criteria");
 		int numPage = request.getParameter("page") != null && !request.getParameter("page").equals("") ? Integer.parseInt(request.getParameter("page")) : 1;
+		
 		ModelAndView mav = new ModelAndView("students/level_students");
 		mav.addObject("students", studentService.getStudentsByUnivYearAndLevelAndCriteria(idUY, idLevel, searchCriteria, numPage));
 		if(numPage == 1) mav.addObject("showPage", true);
+		mav.addObject("sc", request.getSession().getServletContext());
 		mav.addObject("idLevel", idLevel);
 		return mav;
 	}

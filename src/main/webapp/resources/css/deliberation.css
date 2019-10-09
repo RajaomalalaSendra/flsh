@@ -116,3 +116,23 @@ table tbody tr td.note, table thead tr th.period-exam, table thead tr th.credit 
 table tbody tr td.credit {
 	text-align: right;
 }
+
+.squared-image {
+	width: 160px;
+	height: 160px;
+	margin-left: 100px;
+}
+.section-etudiant {
+	background-color: white;
+	padding: 30px
+}
+.section-etudiant .section-title, .section-etudiant .image-etudiant {
+	text-align: center;
+}
+
+.col-five-move {
+	margin-left: -30px;
+}
+.info-etudiant {
+	margin-top: 20px;
+}

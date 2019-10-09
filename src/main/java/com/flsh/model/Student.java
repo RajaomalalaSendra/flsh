@@ -173,7 +173,7 @@ public class Student{
 	}
 	
 	public String getCroppedImageURL(ServletContext servletContext) {
-		String imageURL = "resources/img/student/default.png";
+		String imageURL = "/scolarLMD/resources/img/student/default.png";
 		System.out.print("Servletcontext: " + servletContext);
 		
 		try {
@@ -181,7 +181,7 @@ public class Student{
 			String fileImageStudent = Paths.get(servletContext.getRealPath("resources/img/student"),nameImage).normalize().toString();
 			File f = new File(fileImageStudent);
 			if(f.exists()) {
-				imageURL = "resources/img/student/" + nameImage;
+				imageURL = "/scolarLMD/resources/img/student/" + nameImage;
 			}
 			
 		} catch(Exception e) {

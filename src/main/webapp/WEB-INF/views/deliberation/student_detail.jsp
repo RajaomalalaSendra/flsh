@@ -1,24 +1,27 @@
-<div class="courses-inner res-mg-t-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
-    <div class="courses-title">
+<div class="section-etudiant res-mg-t-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
+    <div class="section-title">
 		<h2>Detail Etudiant</h2>
     </div>
-    <div class="course-des">
-        <p><b>Nom:</b> ${ student.getStudent_name() }</p>        	
-        <p><b>Prenom:</b> ${ student.getStudent_lastname() } </p>
-		<p><b>Date de Naissance:</b> ${ student.getStudent_birthdate()}</p>
-		<p><b>Nationalite:</b> ${ student.getStudent_nationality()}</p>
-		<p><b>Passeport:</b> ${ student.getStudent_passport()}</p>
-		<p><b>CIN:</b> ${ student.getStudent_cin()}</p>
-		<p><b>Lieu CIN:</b> ${ student.getStudent_cinlocation()}</p>
-		<p><b>Date CIN: </b>${ student.getStudent_cindate()}</p>
-		<p><b>Adress: </b>${ student.getStudent_adress()}</p>
-		<p><b>Email: </b>${ student.getStudent_email()}</p>
-		<p><b>Etablissement:</b> ${ student.getStudent_lastetab()}</p>
-		<p><b>Conjoint(e): </b>${ student.getStudent_nameconjoint()}</p>
-		<p><b>Pere: </b>${ student.getStudent_namefather()}</p>
-		<p><b>Profession: </b>${ student.getStudent_jobfather()}</p>
-		<p><b>Mere: </b>${ student.getStudent_namemother()}</p>
-		<p><b>Profession: </b>${ student.getStudent_jobmother()}</p>
+    <div class="etudiant-desc">
+    	<div class='img-etudiant'><img class = "squared-image" src = "${ student.getCroppedImageURL(sc) }"/></div>
+    	<div class='info-etudiant'>
+	        <span><label class = 'col-md-6'>Nom:</label> <span class = 'col-md-6'> ${ student.getStudent_name() }</span> </span>        	
+	        <span><label class = 'col-md-7'>Prenom:</label> <span class = 'col-md-5 col-five-move'> ${ student.getStudent_lastname() }</span></span>
+			<span><label class = 'col-md-6'>Date de Naissance:</label><span class = 'col-md-6'> ${ student.getStudent_birthdate()}</span></span>
+			<span><label class = 'col-md-7'>Nationalite:</label><span class = 'col-md-5 col-five-move'> ${ student.getStudent_nationality()}</span></span>
+			<span><label class = 'col-md-7'>Passeport:</label> <span class = 'col-md-5 col-five-move'>${ student.getStudent_passport()  == null || student.getStudent_passport().equals("") ? "Aucun" : student.getStudent_passport()}</span></span>
+			<span><label class = 'col-md-6'>CIN:</label> <span class = 'col-md-6'>${ student.getStudent_cin()}</span></span>
+			<span><label class = 'col-md-7'>Lieu CIN:</label> <span class = 'col-md-5 col-five-move'>${ student.getStudent_cinlocation()}</span></span>
+			<span><label class = 'col-md-7'>Date CIN: </label><span class = 'col-md-5 col-five-move'>${ student.getStudent_cindate()}</span></span>
+			<span><label class = 'col-md-6'>Adress: </label><span class = 'col-md-6'>${ student.getStudent_adress()}</span></span>
+			<span><label class = 'col-md-7'>Email: </label><span class = 'col-md-5 col-five-move'>${ student.getStudent_email()}</span></span>
+			<span><label class = 'col-md-7'>Etablissement:</label><span class = 'col-md-5 col-five-move'> ${ student.getStudent_lastetab() == null || student.getStudent_lastetab().equals("") ? "Aucun" : student.getStudent_lastetab()}</span></span>
+			<span><label class = 'col-md-6'>Conjoint(e): </label><span class = 'col-md-6'>${ student.getStudent_nameconjoint() == null || student.getStudent_nameconjoint().equals("") ? "Aucun" : student.getStudent_nameconjoint()}</span></span>
+			<span><label class = 'col-md-7'>Pere: </label><span class = 'col-md-5 col-five-move'>${ student.getStudent_namefather()}</span></span>
+			<span><label class = 'col-md-7'>Profession: </label><span class = 'col-md-5 col-five-move'>${ student.getStudent_jobfather()}</span></span>
+			<span><label class = 'col-md-6'>Mere: </label><span class = 'col-md-6'>${ student.getStudent_namemother()}</span></span>
+			<span><label class = 'col-md-7'>Profession: </label><span class = 'col-md-5 col-five-move'>${ student.getStudent_jobmother()}</span></span>
+		</div>
     </div>
 </div>
       
