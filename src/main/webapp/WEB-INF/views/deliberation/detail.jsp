@@ -59,7 +59,7 @@
 						<button type="button" class="btn deliberation-decision" id = "passe-deliberation">Passe</button>
 					</div>
 				</div>
-				<div class = "col-md-4">
+				<div class = "col-md-4" style = "background-color: white;">
 					<div id = "student-delib-marg">
 						<div id = "Detail-Student-Deliberation"></div>
 					</div>
