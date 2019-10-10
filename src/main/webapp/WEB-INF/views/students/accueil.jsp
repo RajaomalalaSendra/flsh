@@ -5,6 +5,7 @@
 <head>
 	<%@include file="../common/_header.jsp" %>
 	 <link rel="stylesheet" href="<c:url value="/resources/css/student.css" />">
+	 <link rel="stylesheet" href="<c:url value="/resources/css/cropper/cropper.min.css" />">
 </head>
 <body>
 	
@@ -26,14 +27,13 @@
     			<table class = "table table-bordered" id = "table-students">
 					<thead>
 						<tr>
+							<th></th>
 							<th>Civ.</th>
 							<th>Nom</th>
 							<th>Prénom</th>
-							<th>Date de naissance</th>
+							<th>Naissance</th>
 							<th>Nationalité</th>
 							<th>Adresse</th>
-							<th>Email</th>
-							<th>Dernier Etablissement</th>
 							<th style="width: 140px;">Actions</th>
 						</tr>
 					</thead>
@@ -69,4 +69,5 @@
 
 <%@include file="../common/_script.jsp" %>
 <script src="<c:url value="/resources/js/student.js" />"></script>
+<script src="<c:url value="/resources/js/cropper/cropper.js" />"></script>
 </body>

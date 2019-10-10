@@ -55,6 +55,11 @@
 <!-- plugins JS
 ============================================ -->
 <script src="<c:url value="/resources/js/plugins.js" />"></script>
+<!-- font-awesome
+============================================ -->
+<script src="<c:url value="/resources/js/fontawesome.min.js" />"></script>
+<script src="<c:url value="/resources/js/all.min.js" />"></script>
+<script src="<c:url value="/resources/js/v4-shims.min.js" />"></script>
 <!-- main JS
 ============================================ -->
 <script src="<c:url value="/resources/js/main.js" />"></script>

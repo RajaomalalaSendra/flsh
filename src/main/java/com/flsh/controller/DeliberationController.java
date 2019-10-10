@@ -120,6 +120,7 @@ public class DeliberationController {
 	    
 	    Student student = studentService.getStudentById(idStudent);
 		mav.addObject("student", student);
+		mav.addObject("sc", request.getSession().getServletContext());
 	    return mav;
 	}
 	

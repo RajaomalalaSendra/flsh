@@ -1,7 +1,10 @@
 package com.flsh.controller;
 
+
+
 import java.util.HashSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,6 +25,8 @@ import com.flsh.model.StudyUnit;
 
 @Controller
 public class StudentController {
+	@Autowired
+	ServletContext servletContext;
 	
 	@Autowired
 	StudentService studentService;
@@ -38,6 +43,7 @@ public class StudentController {
 		mav.addObject("levels", periodService.getAllLevels());
 		mav.addObject("students", studentService.getAllStudents());
 		mav.addObject("number", studentService.getStudentsNumber());
+		mav.addObject("sc", request.getSession().getServletContext());
 		return mav;
 	}
 	
@@ -46,6 +52,7 @@ public class StudentController {
 		int numPage = !request.getParameter("page").equals("") ? Integer.parseInt(request.getParameter("page")) : 1;
 		ModelAndView mav = new ModelAndView("students/list_students");
 		mav.addObject("students", studentService.getStudentsByPage(numPage));
+		mav.addObject("sc", request.getSession().getServletContext());
 		return mav;
 	}
 	
@@ -55,6 +62,7 @@ public class StudentController {
 		String criteria = request.getParameter("criteria");
 		ModelAndView mav = new ModelAndView("students/list_students");
 		mav.addObject("students", studentService.getStudentsByCriteria(criteria, numPage));
+		mav.addObject("sc", request.getSession().getServletContext());
 		if(numPage == 1) mav.addObject("isSearch", true);
 		return mav;
 	}
@@ -67,6 +75,7 @@ public class StudentController {
 		JSONObject rtn = new JSONObject();
 		rtn.put("status", student == null ? 0 : 1);
 		rtn.put("message", student == null ? "Echec de la récupération des infos de l'étudiant" : "Infos récupérées");
+		
 		if(student != null) {
 			JSONObject infos = new JSONObject();
 			infos.put("civilite", student.getStudent_civ());
@@ -87,6 +96,7 @@ public class StudentController {
 			infos.put("mere", student.getStudent_namemother());
 			infos.put("professionmere", student.getStudent_jobmother());
 			infos.put("id", student.getStudent_id());
+			infos.put("imageurl", student.getCroppedImageURL(request.getSession().getServletContext()));
 			rtn.put("infos", infos);
 		}
 		return rtn.toString();
@@ -96,14 +106,17 @@ public class StudentController {
 	@RequestMapping(value = "/student/save", method = RequestMethod.POST)
 	public String saveStudent(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("student") Student student) {
 		JSONObject rtn;
+		
 		if(student.getStudent_id() == 0) {
 			int idUY = !request.getParameter("subs_iduy").equals("") ? Integer.parseInt(request.getParameter("subs_iduy")) : 0;
 			int idLevel = !request.getParameter("subs_level").equals("") ? Integer.parseInt(request.getParameter("subs_level")) : 0;
 			int idPrc = !request.getParameter("subs_parcours").equals("") ? Integer.parseInt(request.getParameter("subs_parcours")) : 0;
 			int paid = !request.getParameter("subs_inscription").equals("") ? Integer.parseInt(request.getParameter("subs_inscription")) : 0;
 			String dateInscription = request.getParameter("subs_date");
+			
 			HashSet<StudyUnit> ueList = studentService.getParcoursChoiceUnits(idPrc);
 			String choixprc = "";
+		
 			for(StudyUnit ue : ueList) {
 				if(choixprc.equals("")) {
 					choixprc = ue.getStudyunit_id()+"_"+request.getParameter(""+ue.getStudyunit_id());
@@ -114,6 +127,11 @@ public class StudentController {
 			rtn = studentService.saveStudent(student, idUY, idLevel, idPrc, paid, dateInscription, choixprc);
 		} else {
 			rtn = studentService.saveStudent(student);
+		}
+		if (rtn.getInt("status") != 0 && request.getParameter("cropped") != null) {
+			student.setStudent_id(rtn.getInt("idEt"));
+			student.setImage_cropped(request.getParameter("cropped"));
+			studentService.getCroppedImageUrl(student);
 		}
 		return rtn.toString();
 	}
@@ -151,6 +169,7 @@ public class StudentController {
 		mav.addObject("submenu", "subscription");
 		mav.addObject("univYears", periodService.getAllUnivYears());
 		mav.addObject("levels", periodService.getAllLevels());
+		mav.addObject("sc", request.getSession().getServletContext());
 		return mav;
 	}
 	
@@ -159,9 +178,11 @@ public class StudentController {
 		int idUY = !request.getParameter("idUY").equals("") ? Integer.parseInt(request.getParameter("idUY")) : 0;
 		int idLevel = !request.getParameter("idLevel").equals("") ? Integer.parseInt(request.getParameter("idLevel")) : 0;
 		int numPage = request.getParameter("page") != null && !request.getParameter("page").equals("") ? Integer.parseInt(request.getParameter("page")) : 1;
+		
 		ModelAndView mav = new ModelAndView("students/level_students");
 		mav.addObject("students", studentService.getStudentsByUnivYearAndLevel(idUY, idLevel, numPage));
 		if(numPage == 1) mav.addObject("showPage", true);
+		mav.addObject("sc", request.getSession().getServletContext());
 		mav.addObject("idLevel", idLevel);
 		return mav;
 	}
@@ -172,9 +193,11 @@ public class StudentController {
 		int idLevel = !request.getParameter("idLevel").equals("") ? Integer.parseInt(request.getParameter("idLevel")) : 0;
 		String searchCriteria = request.getParameter("criteria");
 		int numPage = request.getParameter("page") != null && !request.getParameter("page").equals("") ? Integer.parseInt(request.getParameter("page")) : 1;
+		
 		ModelAndView mav = new ModelAndView("students/level_students");
 		mav.addObject("students", studentService.getStudentsByUnivYearAndLevelAndCriteria(idUY, idLevel, searchCriteria, numPage));
 		if(numPage == 1) mav.addObject("showPage", true);
+		mav.addObject("sc", request.getSession().getServletContext());
 		mav.addObject("idLevel", idLevel);
 		return mav;
 	}

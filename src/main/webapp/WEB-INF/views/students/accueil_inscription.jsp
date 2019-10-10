@@ -40,14 +40,13 @@
     			<table class = "table table-bordered" id = "table-subscribed">
 					<thead>
 						<tr>
+							<th></th>
 							<th>Civ.</th>
 							<th>Nom</th>
 							<th>Prénom</th>
-							<th>Date de naissance</th>
+							<th>Naissance</th>
 							<th>Nationalité</th>
 							<th>Adresse</th>
-							<th>Email</th>
-							<th>Dernier Etablissement</th>
 							<th style="width: 140px;">Actions</th>
 						</tr>
 					</thead>
