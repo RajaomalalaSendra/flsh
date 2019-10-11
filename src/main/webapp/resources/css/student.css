@@ -80,3 +80,25 @@ div.pagination {
 	 width: 100%;
 	 height: 300px;
 }
+#add-cumule {
+	position: absolute;
+    right: 10px;
+    top: 25px;
+    display: none;
+}
+#cumule {
+	min-height: 200px;
+}
+#level, #cumule {
+	padding-top: 10px
+}
+#cumule .form-inline {
+	display: none;
+}
+#cumule .form-inline select {
+	margin-right: 10px;
+	max-width: 200px;
+}
+#cumule .form-inline .btn {
+	margin-left: 10px;
+}

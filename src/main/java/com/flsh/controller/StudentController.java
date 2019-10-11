@@ -169,6 +169,7 @@ public class StudentController {
 		mav.addObject("submenu", "subscription");
 		mav.addObject("univYears", periodService.getAllUnivYears());
 		mav.addObject("levels", periodService.getAllLevels());
+		mav.addObject("allParcours", studentService.getAllParcours());
 		mav.addObject("sc", request.getSession().getServletContext());
 		return mav;
 	}
@@ -202,6 +203,23 @@ public class StudentController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/students/getECOptionParcours", method = RequestMethod.GET)
+	public ModelAndView getECOptionParcours(HttpServletRequest request, HttpServletResponse response) {
+		int idParcours = !request.getParameter("idParcours").equals("") ? Integer.parseInt(request.getParameter("idParcours")) : 0;
+		ModelAndView mav = new ModelAndView("students/ec_parcours");
+		mav.addObject("ecs", studentService.getECListByParcours(idParcours));
+		return mav;
+	}
+	
+	@RequestMapping(value = "/student/getECCumuleStudent", method = RequestMethod.POST)
+	public ModelAndView getECCumuleStudent(HttpServletRequest request, HttpServletResponse response) {
+		int idStudent = !request.getParameter("idStudent").equals("") ? Integer.parseInt(request.getParameter("idStudent")) : 0;
+		int idUY = !request.getParameter("idUY").equals("") ? Integer.parseInt(request.getParameter("idUY")) : 0;
+		ModelAndView mav = new ModelAndView("students/ec_cumule");
+		mav.addObject("ecs", studentService.getStudentECCumuleList(idStudent, idUY));
+		return mav;
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "/student/saveSubscription", method = RequestMethod.POST)
 	public String saveSubscriptionStudent(HttpServletRequest request, HttpServletResponse response) {
@@ -212,6 +230,7 @@ public class StudentController {
 		int idPrc = !request.getParameter("subs_parcours").equals("") ? Integer.parseInt(request.getParameter("subs_parcours")) : 0;
 		int paid = !request.getParameter("subs_inscription").equals("") ? Integer.parseInt(request.getParameter("subs_inscription")) : 0;
 		String dateInscription = request.getParameter("subs_date");
+		String cumules = request.getParameter("etd_cumules");
 		HashSet<StudyUnit> ueList = studentService.getParcoursChoiceUnits(idPrc);
 		String choixprc = "";
 		for(StudyUnit ue : ueList) {
@@ -221,7 +240,7 @@ public class StudentController {
 				choixprc += ";"+ue.getStudyunit_id()+"_"+request.getParameter(""+ue.getStudyunit_id());
 			}
 		}
-		rtn = studentService.saveSubscriptionStudent(idStudent, idUY, idLevel, idPrc, paid, dateInscription, choixprc);
+		rtn = studentService.saveSubscriptionStudent(idStudent, idUY, idLevel, idPrc, paid, dateInscription, choixprc, cumules);
 		return rtn.toString();
 	}
 	

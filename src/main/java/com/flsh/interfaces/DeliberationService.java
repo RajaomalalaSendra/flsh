@@ -22,5 +22,7 @@ public interface DeliberationService {
 	JSONObject saveDeliberationDecision(int delibDecision, int idStudent, int idLevel, int idAU, int idParcours, String passage);
 
 	String getDelibDecisionCurrentUser(int univYearId, int idLevel, int idStudent);
+
+	JSONObject saveStudentCumule(int idStudent, int idEC, String type);
 	
 }

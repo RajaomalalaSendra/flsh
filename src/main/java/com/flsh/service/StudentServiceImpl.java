@@ -33,6 +33,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import com.flsh.interfaces.StudentService;
 import com.flsh.model.Course;
+import com.flsh.model.Parcours;
 import com.flsh.model.Student;
 import com.flsh.model.StudyUnit;
 
@@ -256,7 +257,7 @@ public class StudentServiceImpl implements StudentService {
 			return rtn;
 		} else {
 			int idStud = holder.getKey().intValue();
-			res = this.saveDataSubscription(idStud, uy, level, prc, paid, dateInscription, choixprc);
+			res = this.saveDataSubscription(idStud, uy, level, prc, paid, dateInscription, choixprc, null);
 			if(res <= 0) {
 				rtn.put("status", 0);
 				rtn.put("message", "Echec de l'enregistrement de l'inscription!!");
@@ -373,9 +374,9 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public JSONObject saveSubscriptionStudent(int idStudent, int idUY, int idLevel, int idPrc, int paid, String dateInscription, String choixprc) {
+	public JSONObject saveSubscriptionStudent(int idStudent, int idUY, int idLevel, int idPrc, int paid, String dateInscription, String choixprc, String cumules) {
 		JSONObject rtn = new JSONObject();
-		int res = this.saveDataSubscription(idStudent, idUY, idLevel, idPrc, paid, dateInscription, choixprc);
+		int res = this.saveDataSubscription(idStudent, idUY, idLevel, idPrc, paid, dateInscription, choixprc, cumules);
 		if(res <= 0) {
 			rtn.put("status", 0);
 			rtn.put("message", "Echec de l'enregistrement de l'inscription!!");
@@ -386,7 +387,7 @@ public class StudentServiceImpl implements StudentService {
 		return rtn;
 	}
 	
-	private int saveDataSubscription(int idStudent, int idUY, int idLevel, int idPrc, int paid, String dateInscription, String choixprc) {
+	private int saveDataSubscription(int idStudent, int idUY, int idLevel, int idPrc, int paid, String dateInscription, String choixprc, String cumules) {
 		String queryInsert = "INSERT INTO Niveau_Etudiant(au_id, niv_id, etd_id, prc_id, net_inscription, net_dateinscription, net_ecchoisis) values(:uy, :lvl, :id, :prc, :paid, :date, :choix)";
 		String sqlDeleteSubs = "DELETE FROM Niveau_Etudiant WHERE etd_id = ? and au_id = ?";
 		
@@ -398,6 +399,41 @@ public class StudentServiceImpl implements StudentService {
 				return ps.executeUpdate() >= 0 ? true : false;
 			}
 		});
+		
+		System.out.print("\ncumules");
+		System.out.print(cumules);
+		System.out.print("\n<<<<<<\n");
+		
+		if(cumules != null) {
+			String sqlDeleteCumules = "DELETE FROM Etudiant_Cumule WHERE etd_id = ? and au_id = ?";
+			jdbcTemplate.execute (sqlDeleteCumules, new PreparedStatementCallback<Boolean>() {
+				@Override
+				public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+					ps.setInt(1, idStudent);
+					ps.setInt(2, idUY);
+					System.out.print("\ndeleted cumules");
+					return ps.executeUpdate() >= 0 ? true : false;
+				}
+			});
+			if(cumules.contentEquals("")) {
+				String queryCumule = "UPDATE Etudiant_Cumule SET au_id = :uy WHERE au_id IS NULL";
+				SqlParameterSource parameters = new MapSqlParameterSource()
+						.addValue("uy", idUY);
+				System.out.print("\nupdated cumules");
+				namedJdbcTemplate.update(queryCumule, parameters);
+			} else {
+				String[] idECs = cumules.split("_");
+				for(String idEC : idECs) {
+					String queryCumule = "INSERT INTO Etudiant_Cumule(etd_id, ec_id, au_id) VALUES(:std, :ec, :uy)";
+					SqlParameterSource parameters = new MapSqlParameterSource()
+							.addValue("std", idStudent)
+							.addValue("ec", Integer.parseInt(idEC))
+							.addValue("uy", idUY);
+					System.out.print("\nadded cumules for EC "+idEC);
+					namedJdbcTemplate.update(queryCumule, parameters);
+				}
+			}
+		}
 		
 		SqlParameterSource parameters = new MapSqlParameterSource()
 						.addValue("uy", idUY)
@@ -538,6 +574,38 @@ public class StudentServiceImpl implements StudentService {
 		System.out.print(queryStudent);
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
 		return students;
+	}
+
+	@Override
+	public List<Parcours> getAllParcours() {
+		String queryParcours = "SELECT Parcours.*, niv_libelle, 1 as show_niv "
+				+ "FROM Parcours "
+				+ "JOIN Niveau ON Parcours.niv_id = Niveau.niv_id";
+		List<Parcours> parcours = jdbcTemplate.query(queryParcours, new ParcoursMapper());
+		return parcours;
+	}
+
+	@Override
+	public List<Course> getECListByParcours(int idPrc) {
+		String sql = "SELECT Element_Constitutif.*, ue_libellecourt, ue_libellelong FROM Element_Constitutif "
+				+ "join Unite_Enseignement on Unite_Enseignement.ue_id = Element_Constitutif.ue_id "
+				+ "join Parcours on Unite_Enseignement.prc_id = Parcours.prc_id "
+				+ "join Niveau on Parcours.niv_id = Niveau.niv_id "
+				+ "WHERE Unite_Enseignement.prc_id = "+idPrc;
+		List<Course> courses = jdbcTemplate.query(sql, new CourseMapper());
+		return courses;
+	}
+
+	@Override
+	public List<Course> getStudentECCumuleList(int idStudent, int idUY) {
+		String sql = "SELECT Element_Constitutif.*, ue_libellecourt, ue_libellelong, niv_libelle FROM Element_Constitutif "
+				+ "join Unite_Enseignement on Unite_Enseignement.ue_id = Element_Constitutif.ue_id "
+				+ "join Etudiant_Cumule on Etudiant_Cumule.ec_id = Element_Constitutif.ec_id "
+				+ "join Parcours on Unite_Enseignement.prc_id = Parcours.prc_id "
+				+ "join Niveau on Niveau.niv_id = Parcours.niv_id "
+				+ "WHERE Etudiant_Cumule.etd_id = "+idStudent+" AND Etudiant_Cumule.au_id = "+idUY;
+		List<Course> courses = jdbcTemplate.query(sql, new CourseMapper());
+		return courses;
 	}
 	
 	@Override

@@ -246,34 +246,60 @@
 	      	<div class = "alert alert-danger" style = "display:none" id = "err-subscribe-student"></div>
 		    <div class = "alert alert-success" style = "display:none" id = "success-subscribe-student"></div>
 		    <input type = "hidden" id = "id-student-subscribe" name = "subs_idstudent" />
-		    <div class = "form-group form-inline">
-	        	<label for = "studentSubsLevel" class = "col-md-6">Niveau</label>
-	        	<select class = "form-control" id = "studentSubsLevel" name = "subs_level" required>
-	        		<c:forEach items = "${ levels }" var = "level" varStatus = "status">
-	        			<option value = "${ level.getLevelId() }">${ level.getLevelLibelle() }</option>
-	        		</c:forEach>
-	        	</select>
-	        </div>
-	        <div class = "form-group form-inline">
-	        	<label for = "studentSubsParcours" class = "col-md-6">Parcours</label>
-	        	<select class = "form-control" id = "studentSubsParcours" name = "subs_parcours" required>
-	        	</select>
-	        </div>
-	        <div class = "form-group form-inline">
-	        	<label for = "dateStudentSubs" class = "col-md-6">Date d'inscription</label>
-	        	<input type = "date" class = "form-control" name = "subs_date" id = "dateStudentSubs" required/>
-	        	<small class="form-text text-muted error"></small>
-	        </div>
-	        <div class = "from-group form-inline">
-	        	<label for = "studentSubsIsPaid" class = "col-md-6">Frais d'inscription</label>
-	        	<div class="checkbox checkbox-primary">
-                       <input  type = "checkbox" class = "styled" name = "subs_inscription" id = "studentSubsIsPaid">
-                       <label></label>
-                   </div>
-	        </div>
-	        <div id = "subscribe-ue-choix-wrapper">
-	        	
-	        </div>
+		    <a class = "btn btn-sm btn-primary" id = "add-cumule"><i class = "glyphicon glyphicon-plus"></i></a>
+		    <ul class="nav nav-tabs" id = "tab-cumule">
+			  <li class="active"><a data-toggle="tab" href="#level">Niveau/Parcours</a></li>
+			  <li id = "li-cumule"><a data-toggle="tab" href="#cumule">Cumule</a></li>
+			</ul>
+			<div class="tab-content">
+		    	<div class = "tab-pane fade in active" id = "level">
+				    <div class = "form-group form-inline">
+			        	<label for = "studentSubsLevel" class = "col-md-6">Niveau</label>
+			        	<select class = "form-control" id = "studentSubsLevel" name = "subs_level" required>
+			        		<c:forEach items = "${ levels }" var = "level" varStatus = "status">
+			        			<option value = "${ level.getLevelId() }">${ level.getLevelLibelle() }</option>
+			        		</c:forEach>
+			        	</select>
+			        </div>
+			        <div class = "form-group form-inline">
+			        	<label for = "studentSubsParcours" class = "col-md-6">Parcours</label>
+			        	<select class = "form-control" id = "studentSubsParcours" name = "subs_parcours" required>
+			        	</select>
+			        </div>
+			        <div class = "form-group form-inline">
+			        	<label for = "dateStudentSubs" class = "col-md-6">Date d'inscription</label>
+			        	<input type = "date" class = "form-control" name = "subs_date" id = "dateStudentSubs" required/>
+			        	<small class="form-text text-muted error"></small>
+			        </div>
+			        <div class = "from-group form-inline">
+			        	<label for = "studentSubsIsPaid" class = "col-md-6">Frais d'inscription</label>
+			        	<div class="checkbox checkbox-primary">
+		                       <input  type = "checkbox" class = "styled" name = "subs_inscription" id = "studentSubsIsPaid">
+		                       <label></label>
+		                   </div>
+			        </div>
+			        <div id = "subscribe-ue-choix-wrapper">
+			        	
+			        </div>
+			    </div>
+			    <div class = "tab-pane fade in" id = "cumule">
+			    	<div id = "list-cumule-student" class="list-group">
+			    		
+			    	</div>
+			    	<div class = "form-group form-inline">
+			    		<select id = "cumule-parcours" class = "form-control">
+			    			<c:forEach items = "${ allParcours }" var = "prc">
+			    				<option value = "${ prc.getParcoursId() }">${ prc.getParcoursLibelle() }</option>
+			    			</c:forEach>
+			    		</select>
+			    		<select id = "cumule-ec" class = "form-control">
+			    			
+			    		</select>
+			    		<a class = "btn btn-sm btn-danger pull-right" id = "cancel-add-cumule"><i class = "glyphicon glyphicon-remove-sign"></i></a>
+			    		<a class = "btn btn-sm btn-success pull-right" id = "validate-add-cumule"><i class = "glyphicon glyphicon-ok-sign"></i></a>
+			    	</div>
+			    </div>
+			</div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>

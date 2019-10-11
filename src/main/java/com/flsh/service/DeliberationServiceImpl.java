@@ -225,6 +225,24 @@ public class DeliberationServiceImpl implements DeliberationService{
 		System.out.print("\nDelibCurr: " + delibCurrentUser);
 		return delibCurrentUser;
 	}
+
+	@Override
+	public JSONObject saveStudentCumule(int idStudent, int idEC, String type) {
+		String query = type.equals("add") ? "INSERT INTO Etudiant_Cumule(etd_id, ec_id) VALUES(?, ?)" : "DELETE FROM Etudiant_Cumule WHERE etd_id = ? AND ec_id = ?";
+		boolean savingDelibDecision = jdbcTemplate.execute (query, new PreparedStatementCallback<Boolean>() {
+
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				ps.setInt(1, idStudent);
+				ps.setInt(2, idEC);
+				return ps.executeUpdate() > 0 ? true : false;
+			}
+		});
+		JSONObject save = new JSONObject();
+		save.put("status", savingDelibDecision ? 1 : 0);
+		save.put("message", savingDelibDecision ? "EC cumule enregistré avec succès" : "Echec de l'enregistrement du cumule! Veuillez réessayer");
+		return save;
+	}
 }
 
 
@@ -274,7 +292,8 @@ class DeliberationMapper implements RowMapper<EvaluationUEECStudent>{
 	private List<EvaluationCourseStudent> getEvaluationsCourseByUE(int ueId, int univYearId, int idStudent, int idLevel, int idPrc ) {
 		String sql = "SELECT Element_Constitutif.*, ( SELECT GROUP_CONCAT(concat(Evaluation_Etudiant.per_id, \"_\", Examen.exam_sessiontype, \"_\", avale_evaluation) SEPARATOR \";\") FROM `Evaluation_Etudiant` " 
 				+ "JOIN Examen ON Examen.exam_id = Evaluation_Etudiant.exam_id WHERE etd_id = " + idStudent +" AND ec_id = Element_Constitutif.ec_id LIMIT 1) as evaluations, "
-				+ "(SELECT credit_obtenu FROM Credit_Ec WHERE etd_id = "+ idStudent +" AND Credit_Ec.ec_id = Element_Constitutif.ec_id LIMIT 1) as ec_credit_obtenu "
+				+ "(SELECT credit_obtenu FROM Credit_Ec WHERE etd_id = "+ idStudent +" AND Credit_Ec.ec_id = Element_Constitutif.ec_id LIMIT 1) as ec_credit_obtenu, "
+				+ "(SELECT count(ec_id) FROM Etudiant_Cumule WHERE etd_id = "+ idStudent +" AND ec_id = Element_Constitutif.ec_id) as ec_cumule "
 				+ "FROM Element_Constitutif "
 				+ "WHERE ue_id = " + ueId;
 		List<EvaluationCourseStudent> evaluationsCourses = jdbcTemplate.query(sql, new EvaluationCourseMapper());
@@ -298,6 +317,7 @@ class EvaluationCourseMapper implements RowMapper<EvaluationCourseStudent>{
 	    course.setCourse_coefficient(rs.getInt("ec_coefficient"));
 	    course.setCourse_id(rs.getInt("ec_id"));
 	    course.setCourse_credit_obtenu(rs.getInt("ec_credit_obtenu"));
+	    course.setCumule(rs.getInt("ec_cumule") > 0);
 	    String evaluations = rs.getString("evaluations");
 	    String[] tmpEvals = evaluations != null ? evaluations.split(";") : new String[0];
 		HashMap<String, String> listEvaluations = new HashMap<String, String>();

@@ -86,12 +86,12 @@
                                         <% } %>
                                     </ul>
                                 </li>
-                                <li><a data-toggle="collapse" data-target="#demoevent" href="#">Professors <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                                <li><a data-toggle="collapse" data-target="#demoevent" href="#">Teachers <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
                                     <ul id="demoevent" class="collapse dropdown-header-top">
                                     	<% if( onlineUser != null && onlineUser.isEnabled() && Integer.parseInt( onlineUser.getType()) != 2) { %>
-                                        	<li><a href="<c:url value='/professors' />">All Professors</a></li>
+                                        	<li><a href="<c:url value='/professors' />">All Teachers</a></li>
                                         <% } %>
-                                        <li><a href="<c:url value='/professor/courses' />">Professor-Courses</a></li>
+                                        <li><a href="<c:url value='/professor/courses' />">Teacher-Courses</a></li>
                                     </ul>
                                 </li>
                                 <li><a data-toggle="collapse" data-target="#demopro" href="#">Students <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>

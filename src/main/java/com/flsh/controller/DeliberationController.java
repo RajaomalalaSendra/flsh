@@ -176,4 +176,14 @@ public class DeliberationController {
 	    return save.toString();
 	}
 
+	@RequestMapping(value = "deliberation/save_cumule", method = RequestMethod.POST)
+	@ResponseBody
+	public String saveStudentECCumule(HttpServletRequest request, HttpServletResponse response) {
+		int idStudent = request.getParameter("idStudent") == "" ? 0 : Integer.parseInt(request.getParameter("idStudent"));
+		int idEC = request.getParameter("idEC") == "" ? 0 : Integer.parseInt(request.getParameter("idEC"));
+		String type = request.getParameter("type");
+
+		JSONObject save = delibService.saveStudentCumule(idStudent, idEC, type);
+	    return save.toString();
+	}
 }

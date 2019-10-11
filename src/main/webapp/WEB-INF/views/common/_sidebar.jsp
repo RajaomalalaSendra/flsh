@@ -35,12 +35,12 @@
                         </ul>
                     </li>
                     <li  class="${ menu == 'professor'? 'active' : '' }">
-                        <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Professors</span></a>
+                        <a class="has-arrow" href="all-professors.html" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Teachers</span></a>
                         <ul class="submenu-angle" aria-expanded="${ menu == 'professor'? 'true' : 'false' }">
                         	<% if( user != null && user.isEnabled() && Integer.parseInt( user.getType()) != 2) { %>
-                            	<li class = "${ submenu == 'all_professors'? 'active' : '' }"><a title="Tous les professeurs" href="<c:url value='/professors' />"><span class="mini-sub-pro">All Professors</span></a></li>
+                            	<li class = "${ submenu == 'all_professors'? 'active' : '' }"><a title="Tous les professeurs" href="<c:url value='/professors' />"><span class="mini-sub-pro">All teachers</span></a></li>
                             <% } %>
-                            <li class = "${ submenu == 'prof_courses'? 'active' : '' }"><a title="Cours professeurs" href="<c:url value='/professor/courses' />"><span class="mini-sub-pro">Professor-Courses</span></a></li>
+                            <li class = "${ submenu == 'prof_courses'? 'active' : '' }"><a title="Cours professeurs" href="<c:url value='/professor/courses' />"><span class="mini-sub-pro">Teacher-Courses</span></a></li>
                         </ul>
                     </li>
                     <li class = "${ menu == 'student'? 'active' : '' }">

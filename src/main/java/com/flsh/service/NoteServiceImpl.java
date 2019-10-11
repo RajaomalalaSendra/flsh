@@ -59,7 +59,10 @@ public class NoteServiceImpl implements NoteService {
 		List<Exam> periods = jdbcTemplate.query(sql, new ExamMapper());
 		return periods;
 	}
-
+	
+	/**
+	 * Get the list of students in EC to insert notes
+	 */
 	@Override
 	public List<Student> getStudentsandEvalsByECandUY(int idEC, int idUY) {
 		String sql = "SELECT Etudiant.*, "
@@ -68,7 +71,15 @@ public class NoteServiceImpl implements NoteService {
 				+ "JOIN Niveau_Etudiant ON Niveau_Etudiant.etd_id = Etudiant.etd_id "
 				+ "JOIN Unite_Enseignement ON Unite_Enseignement.prc_id = Niveau_Etudiant.prc_id "
 				+ "JOIN Element_Constitutif ON Unite_Enseignement.ue_id = Element_Constitutif.ue_id "
-				+ "WHERE ec_id = "+idEC+" AND au_id = "+idUY;
+				+ "WHERE ec_id = "+idEC+" AND au_id = "+idUY+" "
+				// Add students 
+				+ "UNION "
+				+ "SELECT Etudiant.*, "
+				+ "(SELECT GROUP_CONCAT(concat(exam_id, '_',per_id,'_',avale_evaluation) separator ';') FROM Evaluation_Etudiant WHERE per_id IN (select per_id from Periode where au_id = "+idUY+") and ec_id = "+idEC+" and etd_id = Etudiant.etd_id) as evaluations "
+				+ "FROM Etudiant "
+				+ "JOIN Etudiant_Cumule ON Etudiant_Cumule.etd_id = Etudiant.etd_id "
+				+ "JOIN Element_Constitutif ON Etudiant_Cumule.ec_id = Element_Constitutif.ec_id "
+				+ "WHERE Element_Constitutif.ec_id = "+idEC;
 		List<Student> students = jdbcTemplate.query(sql, new StudentMapper());
 		return students;
 	}

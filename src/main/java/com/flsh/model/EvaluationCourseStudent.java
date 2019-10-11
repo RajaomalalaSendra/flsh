@@ -13,6 +13,7 @@ public class EvaluationCourseStudent {
 	private int course_notation;
 	private double course_coefficient;
 	private String professor;
+	private boolean cumule;
 	private HashMap<String, String> periodicalEvaluations;
 	
 	public HashMap<String, String> getPeriodicalEvaluations() {
@@ -87,5 +88,11 @@ public class EvaluationCourseStudent {
 	}
 	public void setCourse_type(String course_type) {
 		this.course_type = course_type;
+	}
+	public boolean isCumule() {
+		return cumule;
+	}
+	public void setCumule(boolean cumule) {
+		this.cumule = cumule;
 	}
 }
