@@ -79,7 +79,7 @@ public class NoteServiceImpl implements NoteService {
 				+ "FROM Etudiant "
 				+ "JOIN Etudiant_Cumule ON Etudiant_Cumule.etd_id = Etudiant.etd_id "
 				+ "JOIN Element_Constitutif ON Etudiant_Cumule.ec_id = Element_Constitutif.ec_id "
-				+ "WHERE Element_Constitutif.ec_id = "+idEC;
+				+ "WHERE Element_Constitutif.ec_id = "+idEC+" AND Etudiant_Cumule.au_id = "+idUY;
 		List<Student> students = jdbcTemplate.query(sql, new StudentMapper());
 		return students;
 	}
