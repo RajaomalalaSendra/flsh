@@ -1,5 +1,6 @@
 var infosSubscription
 var inSearch = false
+var listCumule = []
 var cropper
 var changedImage = false
 var defaultImageURL
@@ -135,6 +136,9 @@ $(document).ready(function() {
 		var selector = $(this).parent().parent()
 		var idStudent = selector.attr('id').split('-')[1]
 		var nom_prenom = selector.find('td').eq(1).html()+' '+selector.find('td').eq(2).html()
+		listCumule = []
+		$('#li-cumule').hide()
+		$('#tab-cumule li:first-child a').trigger('click')
 		infosSubscription = undefined
 		$('#studentSubsIsPaid').prop('checked', false)
 		$('#studentSubsLevel').trigger('change')
@@ -159,6 +163,7 @@ $(document).ready(function() {
 			var formData = getFormData($(this))
 			formData.subs_inscription = $('#studentSubsIsPaid').is(':checked') ? 1 : 0
 			formData.subs_iduy = $('#choixUY').val()
+			formData.etd_cumules = listCumule.join('_')
 			$.ajax({
 				url: getBaseUrl('student/saveSubscription'),
 				type: 'POST',
@@ -167,7 +172,10 @@ $(document).ready(function() {
 				success: function(data) {
 					if(data.status == 1) {
 						$('#choixLevel').trigger('change')
-						$('#success-subscribe-student').html(data.message).show().delay(3000).fadeOut(600).finally($('#studentSubscribeModal').modal('hide'))
+						$('#success-subscribe-student').html(data.message).show().delay(3000).fadeOut(600)
+						setTimeout(() => {
+							$('#studentSubscribeModal').modal('hide')
+						}, 3000)
 					} else {
 						$('#err-subscribe-student').html(data.message ? data.message : "Echec de l'enregistrement de l'inscription. Veuillez réessayer!").show().delay(3000).fadeOut(600)
 					}
@@ -183,6 +191,8 @@ $(document).ready(function() {
 		var idStudent = $(this).parent().parent().attr('id').split('-')[1]
 		var idUY = $('#choixUY').val();
 		var idLevel = $('#choixLevel').val();
+		$('#li-cumule').show();
+		// Fetch inscription details
 		$.ajax({
 			url: getBaseUrl('student/getSubscriptionDetails'),
 			dataType: 'JSON',
@@ -191,9 +201,9 @@ $(document).ready(function() {
 			success: function(data) {
 				if(data.status == 1) {
 					infosSubscription = data.infos
-					var nom_prenom = $('#stud-'+idStudent).find('td').eq(1)+" "+$('#stud-'+idStudent).find('td').eq(2)
+					var nom_prenom = $('#stud-'+idStudent).find('td').eq(1).html()+" "+$('#stud-'+idStudent).find('td').eq(2).html()
 					$('#studentSubsIsPaid').prop('checked', data.infos.inscrit == 1)
-					$('#studentSubsLevel').trigger('change')
+					$('#studentSubsLevel').val(data.infos.idLevel).trigger('change')
 					$('#dateStudentSubs').val(infosSubscription.date)
 					$('#student-name').html(nom_prenom)
 					$('#id-student-subscribe').val(idStudent)
@@ -206,6 +216,26 @@ $(document).ready(function() {
 				alert("Erreur lors de la récupération des infos. Veuillez actualiser puis réessayer!")
 			}
 		})
+		// Fetch ec cumulated by the student
+		$('#list-cumule-student').html("")
+		$('#cumule .form-inline').hide()
+		listCumule = []
+		$.ajax({
+			url: getBaseUrl('student/getECCumuleStudent'),
+			type: 'POST',
+			data: { idStudent, idUY, idLevel},
+			success: function(data) {
+				$('#list-cumule-student').html(data)
+				$('#list-cumule-student .ec-cumule-etudiant').each(function() {
+					var idEC = $(this).attr('id').split('-')[1]
+					listCumule.push(idEC)
+				})
+			},
+			error: function() {
+				$('#cumule-ec').html("error loading EC cumulated")
+			}
+		})
+			
 	})
 	
 	$(document).on('click', '.delete-subs', function() {
@@ -375,6 +405,56 @@ $(document).ready(function() {
 		}
 	})
 	
+	$(document).on('click', '#tab-cumule a', function() {
+		if($(this).attr('href') == "#cumule" && $(this).parent().hasClass('active')) {
+			$("#add-cumule").show()
+		} else {
+			$("#add-cumule").hide()
+		}
+	})
+	
+	$(document).on('change', '#cumule-parcours', function() {
+		var idPrc = $(this).val()
+		$('#cumule-ec').html('')
+		$.ajax({
+			url: getBaseUrl('students/getECOptionParcours?idParcours='+idPrc),
+			success: function(data) {
+				$('#cumule-ec').html(data)
+			}
+		})
+	})
+	
+	$(document).on('click', '#add-cumule', function(e) {
+		$('#cumule-parcours').trigger('change')
+		$('#cumule .form-inline').show()
+	})
+	
+	$(document).on('click', '#cancel-add-cumule', function() {
+		$('#cumule .form-inline').hide()
+	})
+	
+	$(document).on('click', '#validate-add-cumule', function() {
+		//TODO: add selected to list cumules
+		var idStudent = $('#id-student-subscribe').val()
+		var idEC = $('#cumule-ec').val()
+		var libelle = $('#cumule-parcours option:selected').html() + ': ' + $('#cumule-ec option:selected').html()
+		if(!listCumule.includes(idEC)) {
+			listCumule.push(idEC)
+			$('#list-cumule-student').append('<div class = "list-group-item ec-cumule-etudiant" id = "cumule-'+idEC+'" >'+
+												libelle +
+												'<span class = "remove-cumule pull-right">'+
+													'<i class = "glyphicon glyphicon-remove-sign"></i>'+
+												'</span>'+
+											'</div>')	
+		}
+	})
+	
+	$(document).on('click', '.remove-cumule', function() {
+		var idEC = $(this).parent().attr('id').split('-')[1]
+		$(this).parent().remove()
+		listCumule = arrayRemove(listCumule, idEC)
+	})
+	
 })
 
 function addLevelsParcours(idLevel, parcoursSelector) {
@@ -462,6 +542,11 @@ function showDetailsStudent(idStudent, lock = false) {
 			alert('Une erreur s\'est produite. Veuillez réessayer')
 		}
 	})
+}
+function arrayRemove(arr, value) {
+   return arr.filter(function(ele){
+       return ele != value;
+   });
 }
 
 function clickZoomAndRotation(cropper){	

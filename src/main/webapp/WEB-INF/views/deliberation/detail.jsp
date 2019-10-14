@@ -9,6 +9,10 @@
     <c:set var="req" value="${pageContext.request}" />
     <input type = "hidden" id = "base-url" value = "${req.scheme}://${req.serverName}:${req.serverPort}${req.contextPath}/" />
    	<div id="deliberation-wrapper">
+				    
+		<div class = "alert alert-danger" id = "error-save"></div>
+		<div class = "alert alert-success" id = "success-save"></div>
+		
 		<div class = "header-list" >
 			<input type = "hidden" name = "IdUnivYear" id = "IdUnivYear" value = "${currentUnivYear.getUniversity_year_id()}"/>
 				<div class = "btn-group pull-right form-inline push-notfar">
@@ -33,9 +37,6 @@
 			</div>
 			<div class = "row">
 				<div class = "col-md-8">
-				    
-				    <div class = "alert alert-danger" id = "error-note-ue"></div>
-					<div class = "alert alert-danger" id = "error-save-valid-credit"></div>
 					
 					<table class="table table-striped" id = "info-evaluation">
 						<thead>

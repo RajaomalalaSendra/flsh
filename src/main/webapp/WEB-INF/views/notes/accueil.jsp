@@ -26,7 +26,7 @@
 							</select>
 						</div>
 						<div class = "form-group form-inline">
-							<label for = "select-prof" class = "col-md-5">Professeur :</label>
+							<label for = "select-prof" class = "col-md-5">Enseignant :</label>
 							<select id = "select-prof" class = "form-control">
 								<c:if test="${ !isProf }">
 									<c:forEach items="${ professors }" var="prof" varStatus="status">

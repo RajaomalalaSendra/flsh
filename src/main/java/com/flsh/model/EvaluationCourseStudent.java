@@ -13,12 +13,14 @@ public class EvaluationCourseStudent {
 	private int course_notation;
 	private double course_coefficient;
 	private String professor;
-	private HashMap<String, String> periodicalEvaluations;
+	private boolean cumule;
+	private boolean ok;
+	private HashMap<String, String[]> periodicalEvaluations;
 	
-	public HashMap<String, String> getPeriodicalEvaluations() {
+	public HashMap<String, String[]> getPeriodicalEvaluations() {
 		return periodicalEvaluations;
 	}
-	public void setPeriodicalEvaluations(HashMap<String, String> periodicalEvaluations) {
+	public void setPeriodicalEvaluations(HashMap<String, String[]> periodicalEvaluations) {
 		this.periodicalEvaluations = periodicalEvaluations;
 	}
 	public int getCourse_id() {
@@ -71,9 +73,16 @@ public class EvaluationCourseStudent {
 	}
 	public String getPeriodNoteBySessionTypeAndId(int sessionType, int idPeriod) {
 		try {
-			return periodicalEvaluations.get(idPeriod + "_" + sessionType);
+			return periodicalEvaluations.get(idPeriod + "_" + sessionType)[0];
 		} catch(Exception e) {
 			return "";
+		}
+	}
+	public boolean isNoteOK(int idPeriod) {
+		try {
+			return periodicalEvaluations.get(idPeriod + "_1")[1].contentEquals("1");
+		} catch(Exception e) {
+			return false;
 		}
 	}
 	public int getCourse_credit_obtenu() {
@@ -87,5 +96,17 @@ public class EvaluationCourseStudent {
 	}
 	public void setCourse_type(String course_type) {
 		this.course_type = course_type;
+	}
+	public boolean isCumule() {
+		return cumule;
+	}
+	public void setCumule(boolean cumule) {
+		this.cumule = cumule;
+	}
+	public boolean isOk() {
+		return ok;
+	}
+	public void setOk(boolean ok) {
+		this.ok = ok;
 	}
 }

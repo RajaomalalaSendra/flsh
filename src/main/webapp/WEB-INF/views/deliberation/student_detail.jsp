@@ -1,6 +1,6 @@
 <div class="section-etudiant res-mg-t-30 table-mg-t-pro-n tb-sm-res-d-n dk-res-t-d-n">
     <div class="section-title">
-		<h2>Detail Etudiant</h2>
+		<h2>Detail de ${ student.getStudent_lastname() }</h2>
     </div>
     <div class="etudiant-desc">
     	<div class='img-etudiant'><img class = "squared-image" src = "${ student.getCroppedImageURL(sc) }"/></div>

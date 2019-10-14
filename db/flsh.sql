@@ -321,7 +321,7 @@ CREATE TABLE IF NOT EXISTS `db_anglais`.`Evaluation_Etudiant` (
   `ec_id` INT NOT NULL,
   `exam_id` INT NOT NULL,
   `per_id` INT NOT NULL,
-  `avale_evaluation` DOUBLE NOT NULL,
+  `evale_evaluation` DOUBLE NOT NULL,
   `evale_creditobtenu` TINYINT(4) NULL DEFAULT 0,
   PRIMARY KEY (`evale_id`, `etd_id`, `ec_id`, `exam_id`, `per_id`),
   INDEX `fk_Evaluation_Etudiant_Element_constitutif1_idx` (`ec_id` ASC),

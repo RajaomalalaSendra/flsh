@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import com.flsh.model.Course;
+import com.flsh.model.Parcours;
 import com.flsh.model.Student;
 import com.flsh.model.StudyUnit;
 
@@ -25,7 +27,7 @@ public interface StudentService {
 	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel, int numPage);
 
 	public JSONObject saveSubscriptionStudent(int idStudent, int idUY, int idLevel, int idPrc, int paid,
-			String dateInscription, String choixprc);
+			String dateInscription, String choixprc, String cumules);
 
 	public JSONObject getSubscriptionInfos(int idStudent, int idUY, int idLevel);
 
@@ -42,5 +44,11 @@ public interface StudentService {
 	List<Student> getStudentsByUnivYearAndParcours(int idUY, int idParcours);
 	
 	void getCroppedImageUrl(Student student);
+
+	public List<Parcours> getAllParcours();
+
+	public List<Course> getECListByParcours(int idParcours);
+
+	public List<Course>  getStudentECCumuleList(int idStudent, int idUY);
 
 }

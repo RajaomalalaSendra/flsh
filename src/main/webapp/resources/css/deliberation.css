@@ -90,7 +90,8 @@ input.hasError {
 }
 .input-wrapper .glyphicon {
 	position: absolute;
-    top: 30%;
+    top: 15%;
+    left:15%;
     display: none;
 }
 .input-wrapper .glyphicon-ok-sign {
@@ -100,12 +101,14 @@ input.hasError {
 	color: #b00;
 }
 
-#success-note-ue, #error-note-ue, #error-save-valid-credit, .succ-none, .dang-none {
+#success-save, #error-save, .succ-none, .dang-none {
 	display: none;
 }
-#success-note-ue, #error-note-ue , #error-save-valid-credit{
-	width: 30%;
-	position: absolute;
+#success-save, #error-save{
+	padding: 5px;
+    position: absolute;
+    left: 30%;
+    top: 7%;
 }
 .input-ec-credit:hover {
 	background: #fff;
@@ -116,11 +119,19 @@ table tbody tr td.note, table thead tr th.period-exam, table thead tr th.credit 
 table tbody tr td.credit {
 	text-align: right;
 }
+tr td.cumule {
+	display: none;
+	text-align: center;
+}
+tr th.cumule, th.head-ok {
+	text-align: center;
+}
+
 
 .squared-image {
-	width: 160px;
-	height: 160px;
-	margin-left: 100px;
+	width: 50% !important;
+	height: auto;
+	margin-left: 25%;
 }
 .section-etudiant {
 	background-color: white;

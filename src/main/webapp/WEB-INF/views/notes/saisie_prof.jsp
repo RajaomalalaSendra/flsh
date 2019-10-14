@@ -17,7 +17,7 @@
     			<input type = "hidden" id = "uy-id" value = "${ infos_uy.getUniversity_year_id()  }" />
     			<a class = "btn btn-default" title = "Retour au choix saisie" href = "<c:url value='/educations/notes' />"><i class = "glyphicon glyphicon-arrow-left"></i></a>
     			<c:if test="${ !isProf }">
-    				<label for = "select-prof-saisie">Professeur : </label>
+    				<label for = "select-prof-saisie">Enseignant : </label>
 	    			<select name = "select-prof-saisie" id = "select-prof-saisie" class = "form-control">
 	    				<c:forEach items="${ professors }" var="prof" varStatus="status">
 							<option value = "${ prof.getProfessor_id() }" ${ prof.getProfessor_id() == profSelected ? "selected" : "" }>${ prof.getProfessor_name()} ${ prof.getProfessor_last_name()}</option>

@@ -7,6 +7,7 @@ public class EvaluationUEECStudent {
 	private int parcours_id;
 	private int credit_ue;
 	private int valid_credit_ue;
+	private boolean cumule;
 	private String studyunit_libelle;
 	private String studyunit_type;
 	private List<EvaluationCourseStudent> CoursesEvaluations;
@@ -52,5 +53,11 @@ public class EvaluationUEECStudent {
 	}
 	public void setValid_credit_ue(int valid_credit_ue) {
 		this.valid_credit_ue = valid_credit_ue;
+	}
+	public boolean isCumule() {
+		return cumule;
+	}
+	public void setCumule(boolean cumule) {
+		this.cumule = cumule;
 	}
 }

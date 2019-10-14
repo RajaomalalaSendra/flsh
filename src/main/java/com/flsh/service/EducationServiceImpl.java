@@ -378,7 +378,16 @@ class ParcoursMapper implements RowMapper<Parcours> {
 		Parcours prc = new Parcours();
 		prc.setLevelId(rs.getInt("niv_id"));
 		prc.setParcoursId(rs.getInt("prc_id"));
-		prc.setParcoursLibelle(rs.getString("prc_libelle"));
+		try {
+			int i = rs.getInt("show_niv");
+			if(i == 1) {
+				prc.setParcoursLibelle(rs.getString("prc_libelle") + " (" +rs.getString("niv_libelle")+")");
+			} else {
+				prc.setParcoursLibelle(rs.getString("prc_libelle"));
+			}
+		} catch (Exception e) {
+			prc.setParcoursLibelle(rs.getString("prc_libelle"));
+		}
 		return prc;
 	}
 }

@@ -8,6 +8,7 @@
 		<td></td><!-- Crédit -->
 		<c:forEach items = "${ periodes }" var = "period">
 			<td class = "note note-ue-${ period.getPeriod_id() }-1"></td>
+			<td></td>
 			<c:if test="${ period.isA_ratrappage() }">
 				<td class = "note note-ue-${ period.getPeriod_id() }-2"></td>
 			</c:if>
@@ -16,14 +17,13 @@
        <td><input class = "input-ue-credit credit"  id = "input-ue-${ delib.getStudyunit_id()}" type = "text" value = "${ delib.getCredit_ue()}" disabled></td>
        <td>
            <c:if test="${ delib.getValid_credit_ue() == 0 }">
-               <button class = "btn btn-sm btn-danger" id = "danger-ue-${ delib.getStudyunit_id() }"><i class= "glyphicon glyphicon-remove"></i></button>
-               <button class = "btn btn-sm btn-success succ-none" id = "success-ue-${ delib.getStudyunit_id() }"><i class= "glyphicon glyphicon-ok"></i></button>
+               <button class = "btn btn-sm btn-danger validate-ue" id = "validue-${ delib.getStudyunit_id() }"><i class= "glyphicon glyphicon-remove"></i></button>
            </c:if>
            <c:if test="${ delib.getValid_credit_ue() == 1 }">
-               <button class = "btn btn-sm btn-success" id = "success-ue-${ delib.getStudyunit_id() }"><i class= "glyphicon glyphicon-ok"></i></button>
-               <button class = "btn btn-sm btn-danger dang-none" id = "danger-ue-${ delib.getStudyunit_id() }"><i class= "glyphicon glyphicon-remove"></i></button>
+               <button class = "btn btn-sm btn-success validate-ue" id = "validue-${ delib.getStudyunit_id() }"><i class= "glyphicon glyphicon-ok"></i></button>
            </c:if>
        </td>
+       <td class = "cumule"></td>
 	</tr>	
 	<c:forEach items = "${ delib.getCoursesEvaluations() }" var = "ec">
 		<tr class = "ec-row ecue-${ delib.getStudyunit_id() }" id = "tr-ec-${ ec.getCourse_id() }">
@@ -34,6 +34,18 @@
 			<td>${ ec.getCourse_credit() }</td><!-- Crédit -->
 			<c:forEach items = "${ periodes }" var = "period">
 				<td class = "note note-ec-${ period.getPeriod_id() }-1"> ${ ec.getPeriodNoteBySessionTypeAndId(1, period.getPeriod_id()) }</td>
+				<td class = "note"> 
+					<span class = "note radio radio-primary">
+						<input type="radio" 
+								class = "radio-period-ec" 
+								id="radio-${ period.getPeriod_id() }-${ ec.getCourse_id() }" 
+								value="1" 
+								name="radio-${ period.getPeriod_id() }-${ ec.getCourse_id() }" 
+								aria-label="Single radio Two"
+								${ ec.isNoteOK(period.getPeriod_id()) ? "checked" : "" }>
+                    	<label></label>
+					</span>
+				</td>
 				<c:if test="${ period.isA_ratrappage() }">
 					<td class = "note note-ec-${ period.getPeriod_id() }-2"> ${ ec.getPeriodNoteBySessionTypeAndId(2, period.getPeriod_id()) }</td>
 				</c:if>
@@ -46,6 +58,12 @@
 				<span class = "success-input-ec-credit alert alert-success"></span>
 			</td>
 			<td></td>
+			<td class = "cumule">
+				<div class="checkbox checkbox-info" title = "Ajouter/Retirer des EC cumulés">
+                    <input  type = "checkbox" class = "styled check-ec-cumule" name = "subs_inscription" id = "checkec-${ ec.getCourse_id() }" ${ ec.isCumule() ? "checked" : "" }>
+                    <label></label>
+                </div>
+			</td>
 		</tr>	
 	</c:forEach>
 </c:forEach>
@@ -53,6 +71,7 @@
 	<td colspan = "5">Total</td>
 	<c:forEach items = "${ periodes }" var = "period">
 		<td id = "moy-${ period.getPeriod_id() }-1"></td>
+		<td></td>
 		<c:if test="${ period.isA_ratrappage() }">
 			<td id = "moy-${ period.getPeriod_id() }-2"></td>
 		</c:if>
@@ -62,6 +81,7 @@
 </tr>
 <c:forEach items = "${ periodes }" var = "period">
 		<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-1">${ period.getPeriod_libellecourt() }</th>
+		<th class = "head-period head-ok">OK</th>
 		<c:if test="${ period.isA_ratrappage() }">
 			<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-2">Rattr. ${ period.getPeriod_libellecourt() }</th>
 		</c:if>

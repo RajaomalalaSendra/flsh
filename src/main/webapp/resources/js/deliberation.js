@@ -4,7 +4,6 @@ $(document).ready(function() {
 		$('#choixLevelDelib').trigger('change')
 	})
 	
-	
 	$(document).on('click','#start-deliberation', function() {
 		$(this).attr('href', getBaseUrl('deliberation?univYear='+$('#select-uy').val()))
 	})
@@ -75,19 +74,24 @@ $(document).ready(function() {
 				var decision = $("#delibCurrentUser").val()
 				$(".btn.deliberation-decision").attr("class", "btn deliberation-decision")
 				console.log("Dec ", decision)
+				$('td.cumule').hide();
+				$('th.cumule').remove();
+				
 				switch(decision) {
-				case "PASSE":
-					$("#passe-deliberation").addClass("btn-success")
-					break;
-				case "ASR":
-					$("#asr-deliberation").addClass("btn-info")
-					break;
-				case "REDOUBLE":
-					$("#redouble-deliberation").addClass("btn-warning")
-					break;
-				case "RENVOI":
-					$("#renvoi-deliberation").addClass("btn-danger")
-					break;
+					case "PASSE":
+						$("#passe-deliberation").addClass("btn-success")
+						break;
+					case "ASR":
+						$("#asr-deliberation").addClass("btn-info")
+						$('td.cumule').show();
+						$('thead tr').append('<th class = "cumule">Cumule</th>')
+						break;
+					case "REDOUBLE":
+						$("#redouble-deliberation").addClass("btn-warning")
+						break;
+					case "RENVOI":
+						$("#renvoi-deliberation").addClass("btn-danger")
+						break;
 				}
 			}, 
 			error: function() {
@@ -183,12 +187,15 @@ $(document).ready(function() {
 	$(".deliberation-decision").on('click', function(){
 		var idDecision = $(this).attr("id")
 		var passage = ""
-		
+		$('td.cumule').hide();
+		$('th.cumule').remove();
 		if(idDecision == "renvoi-deliberation"){
 			$("#renvoi-deliberation").addClass("btn-danger")
 			$("#redouble-deliberation").removeClass("btn-warning")
 			$("#passe-deliberation").removeClass("btn-success")
 			$("#asr-deliberation").removeClass("btn-info")
+			
+			deselectCumules()
 			
 			passage = "RENVOI"
 		} else if(idDecision == "redouble-deliberation"){
@@ -196,6 +203,8 @@ $(document).ready(function() {
 			$("#redouble-deliberation").addClass("btn-warning")
 			$("#passe-deliberation").removeClass("btn-success")
 			$("#asr-deliberation").removeClass("btn-info")
+
+			deselectCumules()
 			
 			passage = "REDOUBLE"
 		} else if(idDecision == "passe-deliberation") {
@@ -204,12 +213,16 @@ $(document).ready(function() {
 			$("#passe-deliberation").addClass("btn-success")
 			$("#asr-deliberation").removeClass("btn-info")
 			
+			deselectCumules()
+			
 			passage = "PASSE"
 		} else if(idDecision == "asr-deliberation") {
 			$("#renvoi-deliberation").removeClass("btn-danger")
 			$("#redouble-deliberation").removeClass("btn-warning")
 			$("#passe-deliberation").removeClass("btn-success")
 			$("#asr-deliberation").addClass("btn-info")
+			$('td.cumule').show();
+			$('thead tr').append('<th class = "cumule">Cumule</th>')
 			
 			passage = "ASR"
 		}
@@ -217,6 +230,87 @@ $(document).ready(function() {
 		saveDecisionDeliberation(passage)
 	})
 	
+	$(document).on('click', '.validate-ue', function(){
+		var valValid = $(this).hasClass('btn-success') ? 0 : 1
+		var idStudent = $("#choixElevesDelib").val()
+		var idUE = $(this).attr('id').split('-')[1]
+		
+		$.ajax({
+			url: getBaseUrl("deliberation/save_validCredit"),
+			type: 'POST',
+			data: {idStudent, idUE, valValid},
+			dataType: 'JSON',
+			success: function(data){
+				if(data.status == 1) {
+					$("#success-save").html('Enregistr&eacute;!').show().delay(3000).fadeOut(600)
+					if(valValid == 1) {
+						$('#validue-'+idUE).removeClass('btn-danger').addClass('btn-success')
+						$('#validue-'+idUE).find('.glyphicon').removeClass('glyphicon-remove').addClass('glyphicon-ok')
+					} else {
+						$('#validue-'+idUE).addClass('btn-danger').removeClass('btn-success')
+						$('#validue-'+idUE).find('.glyphicon').addClass('glyphicon-remove').removeClass('glyphicon-ok')
+					}
+				} else {
+					$("#error-save").html(data.message ? data.message : 'Credit non enregistre').show().delay(3000).fadeOut(600)
+				} 
+			},
+			error: function(err) {
+				$("#error-save").html("une erreur s'est produite! veuillez reessayer.").show().delay(1000).fadeOut(300)
+			}
+		})
+	})
+	
+	$(document).on('change', '.check-ec-cumule', function() {
+		var idStudent = $("#choixElevesDelib").val()
+		var idEC = $(this).attr('id').split('-')[1]
+		var idUY = $('#IdUnivYear').val()
+		var type = $(this).is(':checked') ? 'add' : 'remove'
+		$.ajax({
+			url: getBaseUrl('deliberation/save_cumule'),
+			type: 'POST',
+			data: {idStudent, idEC, idUY, type},
+			dataType: 'JSON',
+			success: function(data) {
+				if(data.status == 1) {
+					$("#success-save").html('Enregistr&eacute;!').show().delay(3000).fadeOut(600)
+				} else {
+					$("#error-save").html(data.message ? data.message : "une erreur s'est produite! veuillez reessayer.").show().delay(1000).fadeOut(300)
+				}
+			},
+			error: function() {
+				$("#error-save").html("une erreur s'est produite! veuillez reessayer.").show().delay(1000).fadeOut(300)
+			}
+		})
+	})
+	
+	$(document).on('dblclick', '.radio-period-ec', function() {
+		$(this).prop('checked', false).trigger('change')
+	})
+	
+	$(document).on('change', '.radio-period-ec', function() {
+		var idStudent = $("#choixElevesDelib").val()
+		var idEC = $(this).attr('id').split('-')[2]
+		var idPer = $(this).attr('id').split('-')[1]
+		var ok = $(this).is(':checked') ? 1 : 0
+		$.ajax({
+			url: getBaseUrl('deliberation/save_ec_ok'),
+			type: 'POST',
+			data: {idStudent, idEC, idPer, ok},
+			dataType: 'JSON',
+			success: function(data) {
+				if(data.status == 1) {
+					$("#success-save").html('Enregistr&eacute;!').show().delay(3000).fadeOut(600)
+				} else {
+					$('#radio-'+idPer+'-'+idEC).prop('checked', !ok)
+					$("#error-save").html(data.message ? data.message : "une erreur s'est produite! veuillez reessayer.").show().delay(1000).fadeOut(300)
+				}
+			},
+			error: function() {
+				$('#radio-'+idPer+'-'+idEC).prop('checked', !ok)
+				$("#error-save").html("une erreur s'est produite! veuillez reessayer.").show().delay(1000).fadeOut(300)
+			}
+		})
+	})
 })
 
 function computeSumCredit(idUE){
@@ -277,40 +371,18 @@ function computeMoyenneUE(idUE, idStudent){
 				dataType: 'JSON',
 				success: function(data) {
 			    	if(data.status == 0) {
-						$("#error-note-ue").html(data.message ? data.message : 'Note non enregistre').show().delay(3000).fadeOut(600)
+						$("#error-save").html(data.message ? data.message : 'Note non enregistre').show().delay(3000).fadeOut(600)
 					}
 				}, 
 				error: function(err) {
-					$("#error-note-ue").html(data.message ? data.message : 'Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
+					$("#error-save").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
 				}
 			})
 		}
-		saveValidCredit("#danger-ue-", "#success-ue-", 1, idUE, idStudent)
-		saveValidCredit("#success-ue-", "#danger-ue-", 0, idUE, idStudent)
 	})
+	
+	//Show credit sum on the page
 	computeSumAllCredit()
-}
-
-function saveValidCredit(firstValidCssID, secondValidCssID, valValid, idUE, idStudent){
-	$(firstValidCssID + idUE).on('click', function(){
-		$(this).hide()
-		$(secondValidCssID + idUE).show()
-		
-		$.ajax({
-			url: getBaseUrl("deliberation/save_validCredit"),
-			type: 'POST',
-			data: {idStudent, idUE, valValid},
-			dataType: 'JSON',
-			success: function(data){
-				if(data.status == 0){
-					$("#error-save-valid-credit").html(data.message ? data.message : 'Credit non enregistre').show().delay(3000).fadeOut(600)
-				} 
-			},
-			error: function(err) {
-				$("#error-save-valid-credit").html(err).show().delay(1000).fadeOut(300)
-			}
-		})
-	})
 }
 
 function  saveDecisionDeliberation(passage){
@@ -326,31 +398,22 @@ function  saveDecisionDeliberation(passage){
 		data: {idStudent, idLevel, idUnivYear, idPrc, passage},
 		dataType: "JSON",
 		success: function(data) {
-			console.log(data.status)
+			if(data.status == 1) {
+				$("#success-save").html('Enregistr&eacute;!').show().delay(3000).fadeOut(600)
+			} else {
+				$("#error-save").html(data.message ? data.message : 'Erreur lors de l\'enregistrement!').show().delay(3000).fadeOut(600)
+			}
 		},
 		error: function(err) {
-			console.log(err)
+			$("#error-save").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
 		}
 	})
 }
 
-function  getElevationData(reload){
-	$('#choixElevesDelib').on('change', function(){
-		var idStudent = $('#choixElevesDelib').val()
-		var idLevel = $('#choixLevelDelib').val()
-		var idUnivYear = $("#IdUnivYear").val()
-		var idPrc = $('#choixParcoursDelib').val()
-		
-		$.ajax({
-			url: getBaseUrl("deliberation/getEvaluationData"),
-			type: 'POST',
-			data: {idUnivYear, idLevel, idStudent, idPrc, reload},
-			success: function(data) {
-				console.log(data.status)
-			},
-			error: function(err) {
-				console.log(err)
-			}
-		})
-	})	
+function deselectCumules() {
+	$('.check-ec-cumule').each( function() {
+		if($(this).is(':checked')) {
+			$(this).prop('checked', false).trigger('change')
+		}
+	})
 }

@@ -176,4 +176,27 @@ public class DeliberationController {
 	    return save.toString();
 	}
 
+	@RequestMapping(value = "deliberation/save_cumule", method = RequestMethod.POST)
+	@ResponseBody
+	public String saveStudentECCumule(HttpServletRequest request, HttpServletResponse response) {
+		int idStudent = request.getParameter("idStudent") == "" ? 0 : Integer.parseInt(request.getParameter("idStudent"));
+		int idEC = request.getParameter("idEC") == "" ? 0 : Integer.parseInt(request.getParameter("idEC"));
+		int idUY = request.getParameter("idUY") == "" ? 0 : Integer.parseInt(request.getParameter("idUY"));
+		String type = request.getParameter("type");
+
+		JSONObject save = delibService.saveStudentCumule(idStudent, idEC, idUY, type);
+	    return save.toString();
+	}
+
+	@RequestMapping(value = "deliberation/save_ec_ok", method = RequestMethod.POST)
+	@ResponseBody
+	public String saveStudentECOK(HttpServletRequest request, HttpServletResponse response) {
+		int idStudent = request.getParameter("idStudent") == "" ? 0 : Integer.parseInt(request.getParameter("idStudent"));
+		int idEC = request.getParameter("idEC") == "" ? 0 : Integer.parseInt(request.getParameter("idEC"));
+		int idPer = request.getParameter("idPer") == "" ? 0 : Integer.parseInt(request.getParameter("idPer"));
+		int ok = request.getParameter("ok") == "" ? 0 : Integer.parseInt(request.getParameter("ok"));
+
+		JSONObject save = delibService.saveStudentECOK(idStudent, idEC, idPer, ok);
+	    return save.toString();
+	}
 }
