@@ -195,16 +195,16 @@ $(document).ready(function() {
 			$("#passe-deliberation").removeClass("btn-success")
 			$("#asr-deliberation").removeClass("btn-info")
 			
-			$('.check-ec-cumule').prop('checked', false).trigger('change')
+			deselectCumules()
 			
 			passage = "RENVOI"
 		} else if(idDecision == "redouble-deliberation"){
 			$("#renvoi-deliberation").removeClass("btn-danger")
 			$("#redouble-deliberation").addClass("btn-warning")
 			$("#passe-deliberation").removeClass("btn-success")
-			$("#asr-deliberation").removeClass(
+			$("#asr-deliberation").removeClass("btn-info")
 
-			$('.check-ec-cumule').prop('checked', false)).trigger('change')
+			deselectCumules()
 			
 			passage = "REDOUBLE"
 		} else if(idDecision == "passe-deliberation") {
@@ -213,7 +213,7 @@ $(document).ready(function() {
 			$("#passe-deliberation").addClass("btn-success")
 			$("#asr-deliberation").removeClass("btn-info")
 			
-			$('.check-ec-cumule').prop('checked', false).trigger('change')
+			deselectCumules()
 			
 			passage = "PASSE"
 		} else if(idDecision == "asr-deliberation") {
@@ -263,11 +263,12 @@ $(document).ready(function() {
 	$(document).on('change', '.check-ec-cumule', function() {
 		var idStudent = $("#choixElevesDelib").val()
 		var idEC = $(this).attr('id').split('-')[1]
+		var idUY = $('#IdUnivYear').val()
 		var type = $(this).is(':checked') ? 'add' : 'remove'
 		$.ajax({
 			url: getBaseUrl('deliberation/save_cumule'),
 			type: 'POST',
-			data: {idStudent, idEC, type},
+			data: {idStudent, idEC, idUY, type},
 			dataType: 'JSON',
 			success: function(data) {
 				if(data.status == 1) {
@@ -277,6 +278,35 @@ $(document).ready(function() {
 				}
 			},
 			error: function() {
+				$("#error-save").html("une erreur s'est produite! veuillez reessayer.").show().delay(1000).fadeOut(300)
+			}
+		})
+	})
+	
+	$(document).on('dblclick', '.radio-period-ec', function() {
+		$(this).prop('checked', false).trigger('change')
+	})
+	
+	$(document).on('change', '.radio-period-ec', function() {
+		var idStudent = $("#choixElevesDelib").val()
+		var idEC = $(this).attr('id').split('-')[2]
+		var idPer = $(this).attr('id').split('-')[1]
+		var ok = $(this).is(':checked') ? 1 : 0
+		$.ajax({
+			url: getBaseUrl('deliberation/save_ec_ok'),
+			type: 'POST',
+			data: {idStudent, idEC, idPer, ok},
+			dataType: 'JSON',
+			success: function(data) {
+				if(data.status == 1) {
+					$("#success-save").html('Enregistr&eacute;!').show().delay(3000).fadeOut(600)
+				} else {
+					$('#radio-'+idPer+'-'+idEC).prop('checked', !ok)
+					$("#error-save").html(data.message ? data.message : "une erreur s'est produite! veuillez reessayer.").show().delay(1000).fadeOut(300)
+				}
+			},
+			error: function() {
+				$('#radio-'+idPer+'-'+idEC).prop('checked', !ok)
 				$("#error-save").html("une erreur s'est produite! veuillez reessayer.").show().delay(1000).fadeOut(300)
 			}
 		})
@@ -345,7 +375,7 @@ function computeMoyenneUE(idUE, idStudent){
 					}
 				}, 
 				error: function(err) {
-					$("#error-save").html(data.message ? data.message : 'Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
+					$("#error-save").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
 				}
 			})
 		}
@@ -368,31 +398,22 @@ function  saveDecisionDeliberation(passage){
 		data: {idStudent, idLevel, idUnivYear, idPrc, passage},
 		dataType: "JSON",
 		success: function(data) {
-			console.log(data.status)
+			if(data.status == 1) {
+				$("#success-save").html('Enregistr&eacute;!').show().delay(3000).fadeOut(600)
+			} else {
+				$("#error-save").html(data.message ? data.message : 'Erreur lors de l\'enregistrement!').show().delay(3000).fadeOut(600)
+			}
 		},
 		error: function(err) {
-			console.log(err)
+			$("#error-save").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
 		}
 	})
 }
 
-function  getElevationData(reload){
-	$('#choixElevesDelib').on('change', function(){
-		var idStudent = $('#choixElevesDelib').val()
-		var idLevel = $('#choixLevelDelib').val()
-		var idUnivYear = $("#IdUnivYear").val()
-		var idPrc = $('#choixParcoursDelib').val()
-		
-		$.ajax({
-			url: getBaseUrl("deliberation/getEvaluationData"),
-			type: 'POST',
-			data: {idUnivYear, idLevel, idStudent, idPrc, reload},
-			success: function(data) {
-				console.log(data.status)
-			},
-			error: function(err) {
-				console.log(err)
-			}
-		})
-	})	
+function deselectCumules() {
+	$('.check-ec-cumule').each( function() {
+		if($(this).is(':checked')) {
+			$(this).prop('checked', false).trigger('change')
+		}
+	})
 }

@@ -66,7 +66,7 @@ public class NoteServiceImpl implements NoteService {
 	@Override
 	public List<Student> getStudentsandEvalsByECandUY(int idEC, int idUY) {
 		String sql = "SELECT Etudiant.*, "
-				+ "(SELECT GROUP_CONCAT(concat(exam_id, '_',per_id,'_',avale_evaluation) separator ';') FROM Evaluation_Etudiant WHERE per_id IN (select per_id from Periode where au_id = "+idUY+") and ec_id = "+idEC+" and etd_id = Etudiant.etd_id) as evaluations "
+				+ "(SELECT GROUP_CONCAT(concat(exam_id, '_',per_id,'_',evale_evaluation) separator ';') FROM Evaluation_Etudiant WHERE per_id IN (select per_id from Periode where au_id = "+idUY+") and ec_id = "+idEC+" and etd_id = Etudiant.etd_id) as evaluations "
 				+ "FROM Etudiant "
 				+ "JOIN Niveau_Etudiant ON Niveau_Etudiant.etd_id = Etudiant.etd_id "
 				+ "JOIN Unite_Enseignement ON Unite_Enseignement.prc_id = Niveau_Etudiant.prc_id "
@@ -75,7 +75,7 @@ public class NoteServiceImpl implements NoteService {
 				// Add students 
 				+ "UNION "
 				+ "SELECT Etudiant.*, "
-				+ "(SELECT GROUP_CONCAT(concat(exam_id, '_',per_id,'_',avale_evaluation) separator ';') FROM Evaluation_Etudiant WHERE per_id IN (select per_id from Periode where au_id = "+idUY+") and ec_id = "+idEC+" and etd_id = Etudiant.etd_id) as evaluations "
+				+ "(SELECT GROUP_CONCAT(concat(exam_id, '_',per_id,'_',evale_evaluation) separator ';') FROM Evaluation_Etudiant WHERE per_id IN (select per_id from Periode where au_id = "+idUY+") and ec_id = "+idEC+" and etd_id = Etudiant.etd_id) as evaluations "
 				+ "FROM Etudiant "
 				+ "JOIN Etudiant_Cumule ON Etudiant_Cumule.etd_id = Etudiant.etd_id "
 				+ "JOIN Element_Constitutif ON Etudiant_Cumule.ec_id = Element_Constitutif.ec_id "
@@ -95,9 +95,9 @@ public class NoteServiceImpl implements NoteService {
 			e.printStackTrace();
 		}
 		if(evalId == 0) {
-			sql = "INSERT into Evaluation_Etudiant(etd_id, ec_id, exam_id, per_id, avale_evaluation) values("+idStudent+", "+idEC+", "+idExam+", "+idPer+", '"+noteVal+"')";
+			sql = "INSERT into Evaluation_Etudiant(etd_id, ec_id, exam_id, per_id, evale_evaluation) values("+idStudent+", "+idEC+", "+idExam+", "+idPer+", '"+noteVal+"')";
 		} else {
-			sql = "UPDATE Evaluation_Etudiant set avale_evaluation = '"+noteVal+"' WHERE evale_id = "+evalId;
+			sql = "UPDATE Evaluation_Etudiant set evale_evaluation = '"+noteVal+"' WHERE evale_id = "+evalId;
 		}
 		boolean res = namedJdbcTemplate.execute(sql, new PreparedStatementCallback<Boolean>() {
 			@Override

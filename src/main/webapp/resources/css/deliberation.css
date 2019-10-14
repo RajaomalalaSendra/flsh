@@ -123,15 +123,15 @@ tr td.cumule {
 	display: none;
 	text-align: center;
 }
-tr th.cumule {
+tr th.cumule, th.head-ok {
 	text-align: center;
 }
 
 
 .squared-image {
-	width: 160px;
-	height: 160px;
-	margin-left: 100px;
+	width: 50% !important;
+	height: auto;
+	margin-left: 25%;
 }
 .section-etudiant {
 	background-color: white;

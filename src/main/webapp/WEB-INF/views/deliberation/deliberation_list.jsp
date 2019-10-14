@@ -8,6 +8,7 @@
 		<td></td><!-- Crédit -->
 		<c:forEach items = "${ periodes }" var = "period">
 			<td class = "note note-ue-${ period.getPeriod_id() }-1"></td>
+			<td></td>
 			<c:if test="${ period.isA_ratrappage() }">
 				<td class = "note note-ue-${ period.getPeriod_id() }-2"></td>
 			</c:if>
@@ -33,6 +34,18 @@
 			<td>${ ec.getCourse_credit() }</td><!-- Crédit -->
 			<c:forEach items = "${ periodes }" var = "period">
 				<td class = "note note-ec-${ period.getPeriod_id() }-1"> ${ ec.getPeriodNoteBySessionTypeAndId(1, period.getPeriod_id()) }</td>
+				<td class = "note"> 
+					<span class = "note radio radio-primary">
+						<input type="radio" 
+								class = "radio-period-ec" 
+								id="radio-${ period.getPeriod_id() }-${ ec.getCourse_id() }" 
+								value="1" 
+								name="radio-${ period.getPeriod_id() }-${ ec.getCourse_id() }" 
+								aria-label="Single radio Two"
+								${ ec.isNoteOK(period.getPeriod_id()) ? "checked" : "" }>
+                    	<label></label>
+					</span>
+				</td>
 				<c:if test="${ period.isA_ratrappage() }">
 					<td class = "note note-ec-${ period.getPeriod_id() }-2"> ${ ec.getPeriodNoteBySessionTypeAndId(2, period.getPeriod_id()) }</td>
 				</c:if>
@@ -58,6 +71,7 @@
 	<td colspan = "5">Total</td>
 	<c:forEach items = "${ periodes }" var = "period">
 		<td id = "moy-${ period.getPeriod_id() }-1"></td>
+		<td></td>
 		<c:if test="${ period.isA_ratrappage() }">
 			<td id = "moy-${ period.getPeriod_id() }-2"></td>
 		</c:if>
@@ -67,6 +81,7 @@
 </tr>
 <c:forEach items = "${ periodes }" var = "period">
 		<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-1">${ period.getPeriod_libellecourt() }</th>
+		<th class = "head-period head-ok">OK</th>
 		<c:if test="${ period.isA_ratrappage() }">
 			<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-2">Rattr. ${ period.getPeriod_libellecourt() }</th>
 		</c:if>
