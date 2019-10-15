@@ -110,6 +110,11 @@ $(document).ready(function() {
 	$('#choixLevel, #choixUY').on('change', function() {
 		var idUY = $('#choixUY').val()
 		var idLevel = $('#choixLevel').val()
+		if(idLevel == 0) {
+			$('#show-print-dialog').hide()
+		} else {
+			$('#show-print-dialog').show()
+		}
 		$.ajax({
 			url: getBaseUrl('students/loadStudentsByUnivYearAndLevel'),
 			type: 'POST',
@@ -478,6 +483,22 @@ $(document).ready(function() {
 		listCumule = arrayRemove(listCumule, idEC)
 	})
 	
+	$(document).on('click', '#show-print-dialog', function() {
+		$('#printResultModal').modal('show')
+	})
+	
+	$(document).on('submit', '#form-print-result', function(e) {
+		e.preventDefault()
+		var type = $('#printType').val()
+		var url = ''
+		if(type == 1) {
+			url = getBaseUrl('print_results/partial?level='+$('#choixLevel').val()+'&period='+$('#printPeriod').val())
+		} else {
+			url = getBaseUrl('print_results/final?level='+$('#choixLevel').val()+'&category='+$('#printCategory').val())
+		}
+		var win = window.open(url, '_blank');
+		win.focus();
+	})
 })
 
 function addLevelsParcours(idLevel, parcoursSelector) {

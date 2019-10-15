@@ -113,3 +113,7 @@ div.pagination {
 #cumule .form-inline .btn {
 	margin-left: 10px;
 }
+#show-print-dialog {
+	display: none;
+    margin-left: 10px;
+}

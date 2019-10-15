@@ -16,7 +16,7 @@
     	<div id = "main-wrapper">
     		<div class = "header-list">
     			<div class = "btn-group pull-right form-inline">
-		        	<label for = "choixUY" class =>Annï¿½e universitaire :</label>
+		        	<label for = "choixUY" class =>Année universitaire :</label>
 		        	<select class = "form-control" id = "choixUY" name = "subs_univyear" >
 		        		<c:forEach items = "${ univYears }" var = "uy" varStatus = "status">
 		        			<option value = "${ uy.getUniversity_year_id() }" ${ uy.isActual() ? "selected" : "" }>${ uy.getUniversity_year_libelle() }</option>
@@ -29,11 +29,9 @@
 		        			<option value = "${ level.getLevelId() }">${ level.getLevelLibelle() }</option>
 		        		</c:forEach>
 		        	</select>
-		        	<span>
-		        		<c:if test = "${ total_number_delib == true }">
-		        			<i class="glyphicon glyphicon-print"></i>
-		        		</c:if>
-		        	</span>
+		        	<button class = "btn btn-primary pull-right" id = "show-print-dialog">
+		        		<i class="glyphicon glyphicon-print"></i> Résultats
+		        	</button>
 				</div>
     			<h3>Etudiants</h3>
     			<div class = "form-group" id = "search-container-subscription">
