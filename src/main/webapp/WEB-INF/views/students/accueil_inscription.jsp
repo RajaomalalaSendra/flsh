@@ -29,6 +29,11 @@
 		        			<option value = "${ level.getLevelId() }">${ level.getLevelLibelle() }</option>
 		        		</c:forEach>
 		        	</select>
+		        	<span>
+		        		<c:if test = "${ total_number_delib == true }">
+		        			<i class="glyphicon glyphicon-print"></i>
+		        		</c:if>
+		        	</span>
 				</div>
     			<h3>Etudiants</h3>
     			<div class = "form-group" id = "search-container-subscription">

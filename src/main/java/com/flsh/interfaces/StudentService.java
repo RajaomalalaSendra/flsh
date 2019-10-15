@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import com.flsh.model.Level;
 import com.flsh.model.Course;
 import com.flsh.model.Parcours;
 import com.flsh.model.Student;
@@ -44,6 +45,8 @@ public interface StudentService {
 	List<Student> getStudentsByUnivYearAndParcours(int idUY, int idParcours);
 	
 	void getCroppedImageUrl(Student student);
+
+	public boolean getTotalNumberDelib(List<Student> students, List<Level> levels);
 
 	public List<Parcours> getAllParcours();
 

@@ -113,6 +113,33 @@ input.hasError {
 .input-ec-credit:hover {
 	background: #fff;
 }
+
+
+.squared-image {
+	width: 160px;
+	height: 160px;
+	margin-left: 100px;
+}
+.section-etudiant {
+	background-color: white;
+	padding: 30px
+}
+.section-etudiant .section-title, .section-etudiant .image-etudiant {
+	text-align: center;
+}
+
+.col-five-move {
+	margin-left: -30px;
+}
+.info-etudiant .col-md-6, .info-etudiant .col-md-7, .info-etudiant .col-md-5 {
+	margin-top: 20px;
+	background-color: white;
+}
+
+.col-md-4 div#student-delib-marg {
+	background-color: white;
+}
+
 table tbody tr td.note, table thead tr th.period-exam, table thead tr th.credit {
 	text-align: right;
 }

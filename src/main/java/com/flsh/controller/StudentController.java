@@ -2,6 +2,7 @@ package com.flsh.controller;
 
 
 
+import java.util.List;
 import java.util.HashSet;
 
 import javax.servlet.ServletContext;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.flsh.interfaces.PeriodService;
 import com.flsh.interfaces.StudentService;
+import com.flsh.model.Level;
 import com.flsh.model.Student;
 import com.flsh.model.StudyUnit;
 
@@ -164,11 +166,16 @@ public class StudentController {
 	
 	@RequestMapping(value = "/students/subscriptions", method = RequestMethod.GET)
 	public ModelAndView subscriptionStudent(HttpServletRequest request, HttpServletResponse response) {
+		List<Student> students = studentService.getAllStudents();
+		List<Level> levels = periodService.getAllLevels();
+		System.out.print("\n=====================\nTotal delib: " + studentService.getTotalNumberDelib(students, levels) + "\n=====================");
+		
 		ModelAndView mav = new ModelAndView("students/accueil_inscription");
 		mav.addObject("menu", "student");
 		mav.addObject("submenu", "subscription");
 		mav.addObject("univYears", periodService.getAllUnivYears());
-		mav.addObject("levels", periodService.getAllLevels());
+		mav.addObject("levels", levels);
+		mav.addObject("total_number_delib", studentService.getTotalNumberDelib(students, levels));
 		mav.addObject("allParcours", studentService.getAllParcours());
 		mav.addObject("sc", request.getSession().getServletContext());
 		return mav;

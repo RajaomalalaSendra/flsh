@@ -29,6 +29,7 @@ public class Student{
 	private HashMap<String, String> evaluations;
 	private int number;
 	private String image_cropped;
+	private int netdelib;
 	
 	public int getStudent_id() {
 		return student_id;
@@ -190,5 +191,13 @@ public class Student{
 		
 		return imageURL;
 		
+	}
+	
+	public void setNet_delib(int netdelib) {
+		this.netdelib = netdelib;
+	}
+	
+	public int getNet_delib() {
+		return this.netdelib;
 	}
 }

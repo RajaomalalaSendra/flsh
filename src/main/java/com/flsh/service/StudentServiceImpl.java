@@ -33,6 +33,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import com.flsh.interfaces.StudentService;
 import com.flsh.model.Course;
+import com.flsh.model.Level;
 import com.flsh.model.Parcours;
 import com.flsh.model.Student;
 import com.flsh.model.StudyUnit;
@@ -627,6 +628,23 @@ public class StudentServiceImpl implements StudentService {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public boolean getTotalNumberDelib(List<Student> students, List<Level> levels) {
+		boolean getBooleanTotalDelib = false;
+		int total = 0;
+		
+		for (int i = 0; i < students.size(); i++) {
+			total += students.get(i).getNet_delib();
+		}
+		
+		System.out.print("\n==============================\nTotal: " + total + "\n==============================\n");
+		
+		if(total > 0) {
+			getBooleanTotalDelib = true;
+		}
+		return getBooleanTotalDelib;
 	}
 }
 
