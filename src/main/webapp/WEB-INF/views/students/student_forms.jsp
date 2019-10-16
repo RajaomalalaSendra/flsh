@@ -365,7 +365,7 @@
         			<option value = "2">S2</option>
 	        	</select>
 	      	</div>
-	      	<div class = "form-group" id = "select-category">
+	      	<div class = "form-group" id = "select-category" style = "display:none">
 	      		<label for = "printCategory" class = "col-md-6">Catégorie</label>
 	        	<select class = "form-control" id = "printCategory" name = "printCategory">
         			<option value = "1">Passants</option>

@@ -487,14 +487,24 @@ $(document).ready(function() {
 		$('#printResultModal').modal('show')
 	})
 	
+	$(document).on('change', '#printType', function() {
+		if($(this).val() == 1) {
+			$('#select-periode').show()
+			$('#select-category').hide()
+		} else {
+			$('#select-periode').hide()
+			$('#select-category').show()
+		}
+	})
+	
 	$(document).on('submit', '#form-print-result', function(e) {
 		e.preventDefault()
 		var type = $('#printType').val()
 		var url = ''
 		if(type == 1) {
-			url = getBaseUrl('print_results/partial?level='+$('#choixLevel').val()+'&period='+$('#printPeriod').val())
+			url = getBaseUrl('print_results/partial?uy='+$('#choixUY').val()+'&level='+$('#choixLevel').val()+'&period='+$('#printPeriod').val())
 		} else {
-			url = getBaseUrl('print_results/final?level='+$('#choixLevel').val()+'&category='+$('#printCategory').val())
+			url = getBaseUrl('print_results/final?uy='+$('#choixUY').val()+'&level='+$('#choixLevel').val()+'&category='+$('#printCategory').val())
 		}
 		var win = window.open(url, '_blank');
 		win.focus();
