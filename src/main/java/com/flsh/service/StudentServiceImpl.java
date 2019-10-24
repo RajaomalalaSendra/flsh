@@ -697,6 +697,53 @@ class StudentMapper implements RowMapper<Student> {
 			System.out.print("\nNo Net Deliberation");
 			//e.printStackTrace();
 		}
+		try {
+			String results = rs.getString("ec_results");
+			System.out.print("EC results "+results);
+			String[] tmpResults = results.split(";");
+			HashMap<String, String> listResults = new HashMap<String, String>();
+			for(String res : tmpResults) {
+				String[] tmp = res.split("_");
+				listResults.put(tmp[0], tmp[1]);
+			}
+			student.setEcResults(listResults);
+		} catch (Exception e) {
+			System.out.print("\nNo results data");
+		}
+		try {
+			String ecslist = rs.getString("net_ecchoisis");
+			String[] tmpEcs = ecslist.split("_");
+			int[] ECs = new int[tmpEcs.length];
+			int i = 0;
+			for(String idEC : tmpEcs) {
+				ECs[i] = Integer.parseInt(idEC);
+				i++;
+			}
+			System.out.print("\n ECs choisis "+ECs);
+			student.setEc_choisis(ECs);
+		} catch (Exception e) {
+			System.out.print("\nNo chosen ec");
+		}
+		try {
+			String eccumulesslist = rs.getString("ec_cumules");
+			String[] tmpEcCs = eccumulesslist.split("_");
+			int[] EC2s = new int[tmpEcCs.length];
+			int i = 0;
+			for(String idEC : tmpEcCs) {
+				EC2s[i] = Integer.parseInt(idEC);
+				i++;
+			}
+			System.out.print("\n EC cumules "+EC2s);
+			student.setEc_cumules(EC2s);
+		} catch (Exception e) {
+			System.out.print("\nNo ec cumulated");
+			e.printStackTrace();
+		}
+		try {
+			student.setCumulant(rs.getBoolean("cumulant"));
+		} catch (Exception e) {
+			System.out.print("\nNot cumulant");
+		}
 		return student;
 	}
 	

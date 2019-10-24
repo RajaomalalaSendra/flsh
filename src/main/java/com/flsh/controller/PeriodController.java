@@ -92,6 +92,21 @@ public class PeriodController {
 		return mav;
 	}
 	
+	/**
+	 * Load options wrapping level's periods
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/educations/getOptionsLevelPeriods", method = RequestMethod.POST)
+	public ModelAndView loadLevelPeriods(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView("educations/options_period");
+		int idLevel = request.getParameter("idLevel") == "" ? 0 : Integer.parseInt(request.getParameter("idLevel"));
+		int idUY = request.getParameter("idUY") == "" ? 0 : Integer.parseInt(request.getParameter("idUY"));
+		mav.addObject("periods", periodService.getNiveauPeriodsById(idLevel, idUY)); 
+		return mav;
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "/educations/saveLevelPeriod", method = RequestMethod.POST)
 	public String saveLevelPeriod(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("period") Period period ) {

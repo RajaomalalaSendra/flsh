@@ -484,12 +484,24 @@ $(document).ready(function() {
 	})
 	
 	$(document).on('click', '#show-print-dialog', function() {
+		$('#printType').trigger('change')
 		$('#printResultModal').modal('show')
 	})
 	
 	$(document).on('change', '#printType', function() {
 		if($(this).val() == 1) {
-			$('#select-periode').show()
+			$.ajax({
+				url: getBaseUrl('educations/getOptionsLevelPeriods'),
+				type: 'POST',
+				data: { idUY: $('#choixUY').val(), idLevel: $('#choixLevel').val() },
+				success: function(data) {
+					$('#printPeriod').html(data)
+					$('#select-periode').show()
+				},
+				error: function() {
+					alert('failed to load periods')
+				}
+			})
 			$('#select-category').hide()
 		} else {
 			$('#select-periode').hide()
@@ -509,6 +521,7 @@ $(document).ready(function() {
 		var win = window.open(url, '_blank');
 		win.focus();
 	})
+	
 })
 
 function addLevelsParcours(idLevel, parcoursSelector) {
