@@ -646,6 +646,36 @@ public class StudentServiceImpl implements StudentService {
 		}
 		return getBooleanTotalDelib;
 	}
+
+	@Override
+	public List<Student> getAllStudentsByCategory(int idUnivYear,  int idLevel, int idCategory) {
+		String categoryName = "";
+		
+		switch(idCategory) {
+			case 1:
+				categoryName = "PASSE";
+				break;
+			case 2:
+				categoryName = "ASR";
+				break;
+			case 3:
+				categoryName = "REDOUBLE";
+				break;
+			default:
+				categoryName = "RENVOI";
+				break;
+		}
+		
+		String sql = "SELECT Etudiant.* FROM Etudiant " 
+					+ "JOIN Niveau_Etudiant ON Niveau_Etudiant.etd_id = Etudiant.etd_id "
+					+ "WHERE Niveau_Etudiant.net_passage = \"" + categoryName + "\" AND "
+							+ "Niveau_Etudiant.niv_id = " + idLevel
+							+ " AND Niveau_Etudiant.au_id = " + idUnivYear;
+			
+		List<Student> students = jdbcTemplate.query(sql, new StudentMapper());
+
+		return students;
+	}
 }
 
 class StudentMapper implements RowMapper<Student> {

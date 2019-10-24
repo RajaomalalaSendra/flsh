@@ -13,9 +13,10 @@
 		<td>${ student.getStudent_adress() }</td>
 		<td align = "center">
 			<c:if test = "${ student.getNet_delib() == 1 }">
-				<a class = "btn btn-sm btn-success print-result-exam" href = "${req.scheme}://${req.serverName}:${req.serverPort}${req.contextPath}/students/result?idStudent=${ student.getStudent_id() }&idUY=${idUY}" target = "_blank" title = "Imprimer le resultat de l'examen.">
+				<a class = "btn btn-sm btn-success print-result-exam" title = "Imprimer le resultat de l'examen." id = "student-${ student.getStudent_id() }-${idUY}">
 	        		 <i class="glyphicon glyphicon-print"></i>
 	        	</a>
+	        	<iframe id="iframe-print-final-result-student-${ student.getStudent_id() }-${idUY}" href = "${req.scheme}://${req.serverName}:${req.serverPort}${req.contextPath}" style = "display: none;"></iframe>
 			</c:if>	
          	<button class = "btn btn-sm btn-info show-details-student" title = "Afficher les d�tails sur l'�tudiants">
 				<i class = "glyphicon glyphicon-eye-open"></i>

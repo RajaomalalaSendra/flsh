@@ -13,10 +13,11 @@
     <div class="all-content-wrapper">
     	<%@include file="../common/_menu.jsp" %>
     	<br/><br/><br/><br/>
+		<iframe id="iframe-print-final-result"></iframe>
     	<div id = "main-wrapper">
     		<div class = "header-list">
     			<div class = "btn-group pull-right form-inline">
-		        	<label for = "choixUY" class =>Année universitaire :</label>
+		        	<label for = "choixUY">Année universitaire :</label>
 		        	<select class = "form-control" id = "choixUY" name = "subs_univyear" >
 		        		<c:forEach items = "${ univYears }" var = "uy" varStatus = "status">
 		        			<option value = "${ uy.getUniversity_year_id() }" ${ uy.isActual() ? "selected" : "" }>${ uy.getUniversity_year_libelle() }</option>
@@ -35,7 +36,7 @@
 				</div>
     			<h3>Etudiants</h3>
     			<div class = "form-group" id = "search-container-subscription">
-    				<input type = "text" id = "search-student-subscribe" placeholder = "Rechercher ï¿½tudiant..." class = "form-control" />
+    				<input type = "text" id = "search-student-subscribe" placeholder = "Rechercher étudiant..." class = "form-control" />
     				<label for = "search-student"><i class = "glyphicon glyphicon-search"></i></label>
     			</div>
     		</div>
@@ -46,11 +47,11 @@
 							<th></th>
 							<th>Civ.</th>
 							<th>Nom</th>
-							<th>Prï¿½nom</th>
+							<th>Prénom</th>
 							<th>Naissance</th>
-							<th>Nationalitï¿½</th>
+							<th>Nationalité</th>
 							<th>Adresse</th>
-							<th style="width: 140px;">Actions</th>
+							<th style="width: 160px;">Actions</th>
 						</tr>
 					</thead>
 					<tbody>

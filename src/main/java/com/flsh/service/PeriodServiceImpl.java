@@ -356,6 +356,41 @@ public class PeriodServiceImpl implements PeriodService {
 		
 		return idCycleStudent;
 	}
+
+	@Override
+	public String getCategoryName(int idCategory) {
+		String categoryName = "";
+		switch(idCategory){
+			case 1:
+				categoryName = "PASSANTS";
+				break;
+			case 2:
+				categoryName = "ADMIS SOUS RESERVE";
+				break;
+			case 3:
+				categoryName = "REDOUBLANTS";
+				break;
+			default:
+				categoryName = "RENVOYES";
+				break;
+		}
+		return categoryName;
+	}
+
+	@Override
+	public int getIdCycleByIdLevel(int idLevel) {
+		int idCycleStudent = 0;
+		String sql = "SELECT cyc_id FROM Niveau " +
+				"WHERE  niv_id = "+idLevel;
+		
+		try{
+			idCycleStudent = jdbcTemplate.queryForObject(sql, Integer.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return idCycleStudent;
+	}
 	
 }
 

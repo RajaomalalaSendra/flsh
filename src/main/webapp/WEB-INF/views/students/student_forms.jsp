@@ -371,7 +371,7 @@
         			<option value = "1">Passants</option>
         			<option value = "2">Admis sous réserve</option>
         			<option value = "3">Redoublants</option>
-        			<option value = "4">Refusés/option>
+        			<option value = "4">Refusés</option>
 	        	</select>
 	      	</div>
 	      </div>

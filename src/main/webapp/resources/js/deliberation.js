@@ -187,7 +187,7 @@ $(document).ready(function() {
 	$(window).load(function() {
 		$('.spinner').show().delay(3000).fadeOut(600)
 	})
-	
+
 	$(".deliberation-decision").on('click', function(){
 		var idDecision = $(this).attr("id")
 		var passage = ""
@@ -199,9 +199,8 @@ $(document).ready(function() {
 			$("#passe-deliberation").removeClass("btn-success")
 			$("#asr-deliberation").removeClass("btn-info")
 			
-			
 			deselectCumules()
-			passage = "Refusé(e)"
+			passage = "RENVOI"
 		} else if(idDecision == "redouble-deliberation"){
 			$("#renvoi-deliberation").removeClass("btn-danger")
 			$("#redouble-deliberation").addClass("btn-warning")
@@ -210,7 +209,7 @@ $(document).ready(function() {
 
 			deselectCumules()
 			
-			passage = "Sous réserve"
+			passage = "REDOUBLE"
 		} else if(idDecision == "passe-deliberation") {
 			$("#renvoi-deliberation").removeClass("btn-danger")
 			$("#redouble-deliberation").removeClass("btn-warning")

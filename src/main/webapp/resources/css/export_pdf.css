@@ -6,20 +6,11 @@
 #result {
 	margin-left: 120px;
 	margin-top: 60px;
-	margin-bottom: 60px;
-}
-
-#univ-year-and-cycle {
-	margin-left: 600px;
-	margin-top: -200px;
+	margin-bottom: 120px;
 }
 
 #university-name {
-	margin-top: -70px;
-}
-
-#university-name {
-	margin-top: -70px;
+	margin-top: 20px;
 }
 
 #university-name, #result-current-student, #jury-member, #jury-president {
@@ -28,15 +19,20 @@
 
 #about-student {
 	margin-left: 20px;
-	margin-top: 70px;
+	margin-top: 100px;
 }
 
-table {
-	margin-left: 20px;
-	width: 90%;
-}
 
 #jury-president {
 	margin-top: -35px;
 	margin-left: 500px;
+}
+
+@media print {
+     html, body {
+        border: 1px solid white;
+        height: 99%;
+        page-break-after: avoid;
+        page-break-before: avoid;
+     }
 }

@@ -54,4 +54,6 @@ public interface StudentService {
 
 	public List<Course>  getStudentECCumuleList(int idStudent, int idUY);
 
+	public List<Student> getAllStudentsByCategory(int idUnivYear,  int idLevel, int idCategory);
+
 }

@@ -410,25 +410,28 @@ $(document).ready(function() {
 		}
 	})
 	
-	$(document).on('click', '.btn-primary.print-result-exam', function(){
-		var idStudent = $(this).attr('id')
+	$(document).on('click', '.btn-success.print-result-exam', function(e){
+		e.preventDefault()
+		var idStudent = $(this).attr('id').split("-")[1]
 		var idUY = $('#choixUY').val()
-		var idLevel = $('#choixLevel').val()
-		
+		var url = getBaseUrl("/students/result?idStudent="+idStudent+"&idUY="+idUY)
+		var temporary = document.title
+		var civilite = ""
+			
 		$.ajax({
-			url: getBaseUrl('exportpdf/result_exam'),
-			type: 'POST',
-			data: { idStudent, idUY, idLevel},
+			url: getBaseUrl('student/details?id='+idStudent),
 			dataType: 'JSON',
 			success: function(data) {
-				if(data.status == 1) {
-					console.log("Data status one")					
-				}else{
-					console.log("Data status not one")
-				}
-			},
-			error: function(){
-				console.log("Errorrr")
+				civilite = computeCivilite(data.infos.civilite)
+				name_path_pdf = "Resulat_Examen_final_"+civilite+"_"+data.infos.nom+"_"+data.infos.prenom
+				document.title = name_path_pdf
+				$("#iframe-print-final-result-student-"+idStudent+"-"+idUY).attr("src", url).load(function(){
+					document.getElementById("iframe-print-final-result-student-"+idStudent+"-"+idUY).contentWindow.print()
+				})
+				
+				setTimeout(function(){
+					location.reload()
+				}, 5000)
 			}
 		})
 	})
@@ -517,9 +520,18 @@ $(document).ready(function() {
 			url = getBaseUrl('print_results/partial?uy='+$('#choixUY').val()+'&level='+$('#choixLevel').val()+'&period='+$('#printPeriod').val())
 		} else {
 			url = getBaseUrl('print_results/final?uy='+$('#choixUY').val()+'&level='+$('#choixLevel').val()+'&category='+$('#printCategory').val())
+			document.title = "Resultat_"+$('#choixLevel').children("option:selected").html()+"_"+$('#choixUY').children("option:selected").html()
+			
+			$("#iframe-print-final-result").attr("src", url).load(function(){
+				var ifrm = document.getElementById('iframe-print-final-result')
+			    ifrm = ifrm.contentWindow
+			    ifrm.print()
+			})
+			
+			setTimeout(function(){
+				location.reload()
+			}, 5000)
 		}
-		var win = window.open(url, '_blank');
-		win.focus();
 	})
 	
 })
@@ -697,4 +709,18 @@ function initCropper(imageURL){
 	    inputImage.disabled = true;
 	    inputImage.parentNode.className += ' disabled';
 	  }
+}
+
+function computeCivilite(civilite){
+	var the_civilite = ""
+		
+	if(civilite == 1){
+		the_civilite = "Mr"
+	} else if (civilite == 2){
+		the_civilite = "Mlle"
+	} else {
+		the_civilite = "Mme"
+	}
+	
+	return the_civilite
 }

@@ -117,3 +117,11 @@ div.pagination {
 	display: none;
     margin-left: 10px;
 }
+
+#iframe-print-final-result {
+		display:none;
+}
+
+#iframe-print-final-result:last-child {
+     page-break-after: auto;
+}

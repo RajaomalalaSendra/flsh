@@ -40,4 +40,8 @@ public interface PeriodService {
 	public Cycles getCyclesById(int idCycle);
 
 	int getIdCycleByIdStudentAndIdUY(int idStudent, int idUY);
+
+	public String getCategoryName(int idCategory);
+
+	public int getIdCycleByIdLevel(int idLevel);
 }

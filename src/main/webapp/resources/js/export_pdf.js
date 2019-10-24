@@ -4,7 +4,6 @@ $(document).ready(function() {
 		var idUE = $(this).attr("id").split("-")[2]
 		
 		$(".period-exam").each(function(){
-			console.log("Test .....")
 			var idPeriod = $(this).attr("id").split("-")[1]
 			var typeSession = $(this).attr("id").split("-")[2]
 			

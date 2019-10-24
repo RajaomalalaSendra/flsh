@@ -14,6 +14,7 @@ import com.flsh.interfaces.PrintService;
 import com.flsh.interfaces.StudentService;
 import com.flsh.model.Level;
 import com.flsh.model.Period;
+import com.flsh.model.Cycles;
 
 @Controller
 public class PrintController {
@@ -31,11 +32,15 @@ public class PrintController {
 		int idUY = !request.getParameter("uy").equals("") ? Integer.parseInt(request.getParameter("uy")) : 0;
 		int idLevel = !request.getParameter("level").equals("") ? Integer.parseInt(request.getParameter("level")) : 0;
 		int idCategory = !request.getParameter("category").equals("") ? Integer.parseInt(request.getParameter("category")) : 0;
-		
-		
+		int idCycle = periodService.getIdCycleByIdLevel(idLevel);
+		Cycles cycle = periodService.getCyclesById(idCycle);
+			
 		ModelAndView mav = new ModelAndView("results/final");
 		mav.addObject("UnivYear", periodService.getUnivYearById(idUY));
 		mav.addObject("Level", periodService.getLevelById(idLevel));
+		mav.addObject("Category", periodService.getCategoryName(idCategory));
+		mav.addObject("Students", studentService.getAllStudentsByCategory(idUY, idLevel, idCategory));
+		mav.addObject("Cycle", cycle);
 		
 		return mav;
 	}
