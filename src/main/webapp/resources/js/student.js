@@ -522,16 +522,16 @@ $(document).ready(function() {
 			url = getBaseUrl('print_results/final?uy='+$('#choixUY').val()+'&level='+$('#choixLevel').val()+'&category='+$('#printCategory').val())
 			document.title = "Resultat_"+$('#choixLevel').children("option:selected").html()+"_"+$('#choixUY').children("option:selected").html()
 			
-			$("#iframe-print-final-result").attr("src", url).load(function(){
-				var ifrm = document.getElementById('iframe-print-final-result')
-			    ifrm = ifrm.contentWindow
-			    ifrm.print()
-			})
-			
-			setTimeout(function(){
-				location.reload()
-			}, 5000)
 		}
+		$("#iframe-print-result").attr("src", url).load(function(){
+			var ifrm = document.getElementById('iframe-print-result')
+		    ifrm = ifrm.contentWindow
+		    ifrm.print()
+		})
+		
+		setTimeout(function(){
+			location.reload()
+		}, 5000)
 	})
 	
 })

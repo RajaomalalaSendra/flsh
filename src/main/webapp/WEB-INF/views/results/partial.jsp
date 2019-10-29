@@ -19,10 +19,42 @@
 			h1 {
 				text-align: center;
 			}
+			#university-name {
+				margin-top: 20px;
+			}
+			#university-name, #result-current-student, #jury-member, #jury-president {
+				margin-left: 20px;
+			}
+			#moving-right {
+				margin-left: 20px;
+			}
+			#entete {
+				width: 100% !important;
+			}
+			#entete th, #entete td {
+				border: none;
+			}
+			#right {
+				text-align: right;
+			}
 		</style>
 	</head>
 	<body>
-		<h1>Résultats partiel</h1>
+		<table id = "entete">
+			<tr>
+				<td id= "left" width="65%">
+					<h5>UNIVERSITE D'ANTANANANARIVO</h5>
+					<h5>DOMAINE ARTS,LETTRES</h5>
+					<h5>SCIENCES HUMAINES</h5>
+				</td>
+				<td id= "right"  width="35%">
+					<h5 id = "university-year-libelle">${ UnivYear.getUniversity_year_libelle().toUpperCase() }</h5>
+					<h5>MENTION ETUDE ANGLOPHONE</h5>
+					<h5>CYCLE ${ Cycle.getCycleLibelle().toUpperCase() == "LICENSE"  ? "LICENCE" : Cycle.getCycleLibelle().toUpperCase()}</h5>
+				</td>
+			</tr>
+		</table>
+		<h1>Résultats ${ period } des ${ level }</h1>
 		<table>
 			<thead>
 				<tr>

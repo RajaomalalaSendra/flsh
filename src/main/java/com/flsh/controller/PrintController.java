@@ -50,15 +50,19 @@ public class PrintController {
 		int idUY = !request.getParameter("uy").equals("") ? Integer.parseInt(request.getParameter("uy")) : 0;
 		int idLevel = !request.getParameter("level").equals("") ? Integer.parseInt(request.getParameter("level")) : 0;
 		int idPeriod = !request.getParameter("period").equals("") ? Integer.parseInt(request.getParameter("period")) : 0;
+		int idCycle = periodService.getIdCycleByIdLevel(idLevel);
+		Cycles cycle = periodService.getCyclesById(idCycle);
 		
 		Period period = periodService.getPeriodById(idPeriod);
 		Level level = periodService.getLevelById(idLevel);
 		
 		ModelAndView mav = new ModelAndView("results/partial");
+		mav.addObject("UnivYear", periodService.getUnivYearById(idUY));
 		mav.addObject("studyUnits", printService.getLevelStudyUnitandCourses(idLevel));
 		mav.addObject("Students", printService.getStudentsandPartialResultsByLevelandUYandPer(idLevel, idUY, idPeriod));
 		mav.addObject("period", period.getPeriod_libellelong());
 		mav.addObject("level", level.getLevelLibelle());
+		mav.addObject("Cycle", cycle);
 		
 		return mav;
 	}

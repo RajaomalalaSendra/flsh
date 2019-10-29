@@ -118,10 +118,10 @@ div.pagination {
     margin-left: 10px;
 }
 
-#iframe-print-final-result {
-		display:none;
+#iframe-print-result {
+	display:none;
 }
 
-#iframe-print-final-result:last-child {
+#iframe-print-result:last-child {
      page-break-after: auto;
 }

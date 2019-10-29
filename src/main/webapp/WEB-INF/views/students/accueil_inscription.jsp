@@ -13,7 +13,7 @@
     <div class="all-content-wrapper">
     	<%@include file="../common/_menu.jsp" %>
     	<br/><br/><br/><br/>
-		<iframe id="iframe-print-final-result"></iframe>
+		<iframe id="iframe-print-result"></iframe>
     	<div id = "main-wrapper">
     		<div class = "header-list">
     			<div class = "btn-group pull-right form-inline">
@@ -51,7 +51,7 @@
 							<th>Naissance</th>
 							<th>Nationalité</th>
 							<th>Adresse</th>
-							<th style="width: 160px;">Actions</th>
+							<th style="width: 170px;">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
