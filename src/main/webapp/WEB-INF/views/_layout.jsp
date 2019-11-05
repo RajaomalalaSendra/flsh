@@ -4,6 +4,7 @@
 <html class="no-js" lang="en">
 <head>
 	<%@include file="common/_header.jsp" %>
+	<link rel="stylesheet" href="<c:url value="/resources/css/dashboard.css" />">
 </head>
 <body>
 	
@@ -14,7 +15,8 @@
     	<%@include file="dashboard.jsp" %>
     	<%@include file="common/_footer.jsp" %>
     </div>
-
+    
 <%@include file="common/_script.jsp" %>
+<script src="<c:url value="/resources/js/dashboard.js" />"></script>
 </body>
 </html>
