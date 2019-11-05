@@ -63,7 +63,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form method = "POST" id = "form-delete-ue" action = "<c:url value = '/ue/delete' />">
-	      <div class="modal-header" style="background-color: #D33;">
+	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -79,7 +79,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-	        <button type="submit" class="btn btn-danger" id = "delete-ue">Supprimer</button>
+	        <button type="submit" class="btn btn-primary" id = "delete-ue">Supprimer</button>
 	      </div>
         </form>
       </div>

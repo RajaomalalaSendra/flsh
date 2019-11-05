@@ -5,6 +5,7 @@
 <head>
 	<%@include file="../common/_header.jsp" %>
 	 <link rel="stylesheet" href="<c:url value="/resources/css/student.css" />">
+	 <link rel="stylesheet" href="<c:url value="/resources/css/cropper/cropper.min.css" />">
 </head>
 <body>
 	
@@ -72,4 +73,5 @@
 
 <%@include file="../common/_script.jsp" %>
 <script src="<c:url value="/resources/js/student.js" />"></script>
+<script src="<c:url value="/resources/js/cropper/cropper.js" />"></script>
 </body>

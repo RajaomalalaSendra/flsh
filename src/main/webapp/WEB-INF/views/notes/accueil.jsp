@@ -17,6 +17,7 @@
 			<div class = "row row-fluid" id = "choix-saisie-wrapper">
 				<div id = "saisie-prof" class = "col-lg-5 col-md-12">
 					<div class = "box-starter">
+						<h4>Saisie par Enseignant</h4>
 						<div class = "form-group form-inline">
 							<label for = "select-uy-prof" class = "col-md-5">Année universitaire :</label>
 							<select id = "select-uy-prof" class = "form-control">
@@ -47,6 +48,7 @@
 				<c:if test="${ !isProf }">
 					<div id = "saisie-niveau" class = "col-lg-5 col-md-12">
 						<div class = "box-starter">
+							<h4>Saisie par Niveau</h4>
 							<div class = "form-group form-inline">
 								<label for = "select-uy-level" class = "col-md-5">Année universitaire :</label>
 								<select id = "select-uy-level" class = "form-control col-md-6 col-xs-12">

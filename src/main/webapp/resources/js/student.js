@@ -603,7 +603,18 @@ function showDetailsStudent(idStudent, lock = false) {
 				$('#motherJobStudent').val(data.infos.professionmere);
 				$('#idStudent').val(data.infos.id);
 				
-				initCropper(data.infos.imageurl);		
+				// Hide the photo editing for the modal
+				if(lock == true){
+					$("#profile-zoom-in").hide()
+					$("#profile-zoom-out").hide()
+					$("#profile-rotate-left").hide()
+					$("#profile-rotate-right").hide()
+					$(".btn.btn-primary.btn-sm.float-left").hide()
+					$("#image-student").attr("src", data.infos.imageurl)
+					$('#image-student').removeClass("cropper-hidden")
+				} else {
+					initCropper(data.infos.imageurl)
+				}
 				
 				$('#editStudentLabel').html(lock ? 'Infos sur l\'&eacute;tudiant' : 'Modifier &eacute;tudiant')
 				$('#editStudentModal').modal('show')
@@ -649,7 +660,6 @@ function clickZoomAndRotation(cropper){
 function initCropper(imageURL){
 	$("#photo-upload-container").html('<img id="image-student" style = "max-width: 100%;  height: 300px;" src="' + imageURL + '" alt="Picture" class="cropper-hidden">')
 	$("#image-student").attr("src", imageURL)
-	console.log($("#image-student").attr("src", imageURL))
 	const image = document.getElementById('image-student')
 	const options = {
 			  crop(event) {
@@ -662,9 +672,8 @@ function initCropper(imageURL){
 			    console.log(event.detail.scaleY);
 			  		}
 				}
-	cropper = new Cropper(image, options);
+	cropper = new Cropper(image, options)
 	
-	console.log(cropper)
 	clickZoomAndRotation(cropper)
 	
 	/*Create the upload for the image of the student*/

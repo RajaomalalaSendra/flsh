@@ -16,10 +16,10 @@
     	<br/><br/><br/><br/>
     	<div id = "main-wrapper">
     		<div class = "header-list">
-    			<button class = "btn btn-primary pull-right" id = "add-student" title = "Ajouter un �tudiant"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
+    			<button class = "btn btn-primary pull-right" id = "add-student" title = "Ajouter un &eacute;tudiant"><i class = "glyphicon glyphicon-plus"></i> Ajouter</button>
     			<h3>Etudiants</h3>
     			<div class = "form-group" id = "search-container">
-    				<input type = "text" id = "search-student" placeholder = "Rechercher �tudiant..." class = "form-control" />
+    				<input type = "text" id = "search-student" placeholder = "Rechercher &eacute;tudiant..." class = "form-control" />
     				<label for = "search-student"><i class = "glyphicon glyphicon-search"></i></label>
     			</div>
     		</div>

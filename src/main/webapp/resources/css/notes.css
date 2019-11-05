@@ -12,6 +12,9 @@
 .box-starter .btn-group {
 	width: 100% !important;
 }
+.box-starter h4{
+	text-align: center;
+}
 .form-group.form-inline label{
 	margin-left: 20px;
 }

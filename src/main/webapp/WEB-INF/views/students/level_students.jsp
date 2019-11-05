@@ -18,7 +18,7 @@
 	        	</a>
 	        	<iframe id="iframe-print-final-result-student-${ student.getStudent_id() }-${idUY}" href = "${req.scheme}://${req.serverName}:${req.serverPort}${req.contextPath}" style = "display: none;"></iframe>
 			</c:if>	
-         	<button class = "btn btn-sm btn-info show-details-student" title = "Afficher les dï¿½tails sur l'ï¿½tudiants">
+         	<button class = "btn btn-sm btn-info show-details-student" title = "Afficher les détails sur l'étudiants">
 				<i class = "glyphicon glyphicon-eye-open"></i>
 			</button>
 			<% if( user != null && user.isEnabled() && Integer.parseInt( user.getType()) != 2) { %>

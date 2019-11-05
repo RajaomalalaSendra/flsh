@@ -96,7 +96,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-	        <button type="submit" class="btn btn-danger" id = "delete-prof">Supprimer</button>
+	        <button type="submit" class="btn btn-primary" id = "delete-prof">Supprimer</button>
 	      </div>
         </form>
       </div>

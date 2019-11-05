@@ -54,7 +54,7 @@ $(document).ready(function() {
 				$("#Detail-Student-Deliberation").html(data)
 			}, 
 			error: function() {
-				$("#Detail-Student-Deliberation").html("There is an error")
+				$("#Detail-Student-Deliberation").html("There is no student")
 			}
 		})
 		

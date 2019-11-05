@@ -92,8 +92,8 @@ $(document).ready(function() {
 	$(".delete-cycle").on("click", function() {
 		var idCycle = $(this).parent().parent().parent().parent().attr("id-cycle")
 		$('#cycleDeleteLabel').html('Supprimer cycle ?')
-		$('#question-delete').html(`La suppression du cycle engendrera la suppression des cours, des étudiants, des parcours et des niveaux dans le cycle.<br/>
-		      	Voulez-vous vraiment supprimer ? Cette action est irréversible`);
+		$('#question-delete').html(`La suppression du cycle engendrera la suppression des cours, des &eacute;tudiants, des parcours et des niveaux dans le cycle.<br/>
+		      	Voulez-vous vraiment supprimer ? Cette action est irr&eacute;versible`);
 		$('#idItemDelete').val(idCycle)
 		$('#typeDeletion').val("deleteCycle")
 		$('#cycleDeleteModal').modal('show')
@@ -102,8 +102,8 @@ $(document).ready(function() {
 	$('.delete-level').on('click', function() {
 		var idLevel = $(this).parent().parent().parent().attr('id-level')
 		$('#cycleDeleteLabel').html('Supprimer niveau ?')
-		$('#question-delete').html(`La suppression du niveau engendrera la suppression des cours, des étudiants et des parcours dans le niveau.<br/>
-		      	Voulez-vous vraiment supprimer ? Cette action est irréversible`);
+		$('#question-delete').html(`La suppression du niveau engendrera la suppression des cours, des &eacute;tudiants et des parcours dans le niveau.<br/>
+		      	Voulez-vous vraiment supprimer ? Cette action est irr&eacute;versible`);
 		$('#idItemDelete').val(idLevel)
 		$('#typeDeletion').val("deleteLevel")
 		$('#cycleDeleteModal').modal('show')
@@ -112,8 +112,8 @@ $(document).ready(function() {
 	$('.delete-parcours').on('click', function() {
 		var idParcours = $(this).parent().parent().attr('id').split('-')[1]
 		$('#cycleDeleteLabel').html('Supprimer parcours ?')
-		$('#question-delete').html(`La suppression du parcours engendrera la suppression des cours et des étudiants dans le parcours.<br/>
-		      	Voulez-vous vraiment supprimer ? Cette action est irréversible`);
+		$('#question-delete').html(`La suppression du parcours engendrera la suppression des cours et des &eacute;tudiants dans le parcours.<br/>
+		      	Voulez-vous vraiment supprimer ? Cette action est irr&eacute;versible`);
 		$('#idItemDelete').val(idParcours)
 		$('#typeDeletion').val("deleteParcours")
 		$('#cycleDeleteModal').modal('show')

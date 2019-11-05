@@ -9,10 +9,10 @@
 		<td>${ student.getStudent_nationality() }</td>
 		<td>${ student.getStudent_adress() }</td>
 		<td>
-			<button class = "btn btn-sm btn-primary edit-student">
+			<button class = "btn btn-sm btn-primary edit-student" title = "&eacute;diter un &eacute;tudiant">
 				<i class = "glyphicon glyphicon-pencil"></i>
 			</button>
-			<button class = "btn btn-sm btn-danger delete-student">
+			<button class = "btn btn-sm btn-danger delete-student" title = "supprimer un &eacute;tudiant">
 				<i class = "glyphicon glyphicon-trash"></i>
 			</button>
 		</td>

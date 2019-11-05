@@ -109,6 +109,7 @@ input.hasError {
     position: absolute;
     left: 30%;
     top: 7%;
+    display: none;
 }
 .input-ec-credit:hover {
 	background: #fff;
