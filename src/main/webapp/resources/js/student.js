@@ -612,6 +612,7 @@ function showDetailsStudent(idStudent, lock = false) {
 					$(".btn.btn-primary.btn-sm.float-left").hide()
 					$("#image-student").attr("src", data.infos.imageurl)
 					$('#image-student').removeClass("cropper-hidden")
+					$("#image-student").css({"width": "300px", "height": "300px"});
 				} else {
 					initCropper(data.infos.imageurl)
 				}
