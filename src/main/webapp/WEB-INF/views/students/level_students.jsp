@@ -26,12 +26,12 @@
 					<button class = "btn btn-sm btn-primary edit-subs" title = "Modifier les informations d'inscription">
 						<i class = "glyphicon glyphicon-pencil"></i>
 					</button>
-					<button class = "btn btn-sm btn-danger delete-subs" title = "Retirer l'ï¿½tudiant de cette liste">
+					<button class = "btn btn-sm btn-danger delete-subs" title = "Retirer l'étudiant de cette liste">
 						<i class = "glyphicon glyphicon-remove"></i>
 					</button>
 		      	</c:if>
 		      	<c:if test = "${ idLevel == 0}">
-		         	<button class = "btn btn-sm btn-success subscribe-student" title = "Inscrire l'ï¿½tudiant">
+		         	<button class = "btn btn-sm btn-success subscribe-student" title = "Inscrire l'étudiant">
 						<i class = "glyphicon glyphicon-log-in"></i>
 					</button>
 		      	</c:if>

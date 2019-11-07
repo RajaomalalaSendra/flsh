@@ -23,6 +23,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import com.flsh.interfaces.PeriodService;
 import com.flsh.model.Cycles;
 import com.flsh.model.Level;
+import com.flsh.model.NumberStudent;
 import com.flsh.model.Parcours;
 import com.flsh.model.Period;
 import com.flsh.model.UniversityYear;
@@ -390,6 +391,51 @@ public class PeriodServiceImpl implements PeriodService {
 		}
 		
 		return idCycleStudent;
+	}
+	
+	@Override
+	public int getStudentNumberByUYIdAndByLevel(int univYear, String level) {
+		int studentNumber = 0;
+		String sql = "SELECT COUNT(niv_id) from NiveauEtudiant JOIN Niveau ON Niveau.niv_id = NiveauEtudiant.niv_id "
+				+ "WHERE au_id = "+univYear+" AND NiveauEtudiant.niv_libelle = "+level;
+		try{
+			studentNumber = jdbcTemplate.queryForObject(sql, Integer.class);
+		} catch (Exception e) {
+			System.out.print("\nNo current Deliberation");
+			e.printStackTrace();
+		}
+		return studentNumber;
+	}
+
+	@Override
+	public List<Cycles> getCycleLevelsWithNumber() {
+		// TODO Auto-generated method stub
+		int au_id = 0;
+		String sqlUnivYear = "SELECT au_id FROM Annee_Universitaire WHERE au_debut <= now() AND au_fin >= now() LIMIT 1;";
+		try{
+			au_id = jdbcTemplate.queryForObject(sqlUnivYear, Integer.class);
+			System.out.print("au not max: "+au_id);
+		} catch (Exception e) {
+			System.out.print("\nNo current Deliberation");
+			e.printStackTrace();
+		}
+		if(au_id == 0) {
+			sqlUnivYear = "SELECT MAX(au_id) FROM Annee_Universitaire;";
+			try{
+				au_id = jdbcTemplate.queryForObject(sqlUnivYear, Integer.class);
+				System.out.print("au max: "+au_id);
+			} catch (Exception e) {
+				System.out.print("\nNo current Deliberation");
+				e.printStackTrace();
+			}
+		}
+		System.out.print("au: "+au_id);
+		String sql = "SELECT Cycle.*, (SELECT COUNT(*) FROM Niveau_Etudiant WHERE au_id = "+au_id+") as total_inscrit,"
+				+ "(SELECT GROUP_CONCAT(CONCAT(niv_libelle, '_', (SELECT COUNT(*) FROM Niveau_Etudiant WHERE niv_id = Niveau.niv_id AND au_id = "+au_id+")) separator ';') FROM Niveau WHERE cyc_id = Cycle.cyc_id) as level_stat"
+				+ " FROM Cycle";
+		List<Cycles> cycles = jdbcTemplate.query(sql, new CycleMapper());
+		System.out.print("query:     "+sql);
+		return cycles;
 	}
 	
 }

@@ -12,7 +12,9 @@
     <!-- Start Welcome area -->
     <div class="all-content-wrapper">
     	<%@include file="common/_menu.jsp" %>
-    	<%@include file="dashboard.jsp" %>
+    	<div id = "go-down-dashboard" class = "form-inline">
+	    	<%@include file="dashboard.jsp" %>
+	    </div>
     	<%@include file="common/_footer.jsp" %>
     </div>
     

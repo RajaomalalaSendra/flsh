@@ -1,3 +1,8 @@
 #go-down-dashboard {
-	padding-top: 200px;
+	padding-top: 100px;
+	padding-left: -100px;
+}
+
+#simple-down {
+	padding-top: 20px;
 }

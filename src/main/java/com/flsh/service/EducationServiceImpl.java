@@ -3,6 +3,7 @@ package com.flsh.service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -340,6 +341,20 @@ class CycleMapper implements RowMapper<Cycles> {
 	    Cycles cycle = new Cycles();
 	    cycle.setCycleLibelle(rs.getString("cyc_libelle"));
 	    cycle.setCyclesId(rs.getInt("cyc_id"));
+	    try {
+	    	cycle.setNombreInscrit(rs.getInt("total_inscrit"));
+	    	String levelData = rs.getString("level_stat");
+	    	String[] tmp = levelData.split(";");
+	    	HashMap<String, Integer> listResults = new HashMap<String, Integer>();
+	    	
+	    	for(String level : tmp) {
+	    		String[] tmp_level = level.split("_");
+	    		listResults.put(tmp_level[0],Integer.parseInt(tmp_level[1]));
+			}
+	    	cycle.setLevelsNumber(listResults);
+	    }catch(Exception e) {
+	    	System.out.print(e);
+	    }
 	    return cycle;
 	}
 }
