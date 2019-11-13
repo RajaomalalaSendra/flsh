@@ -1,0 +1,31 @@
+#level-student{
+	margin-left: 300px;
+	margin-top: -70px;
+}
+
+#result {
+	margin-left: 120px;
+	margin-top: 60px;
+	margin-bottom: 60px;
+}
+
+#univ-year-and-cycle {
+	margin-left: 400px;
+	margin-top: -75px;
+}
+
+#university-name {
+	margin-top: 20px;
+}
+
+#university-name, #result-current-student, #jury-member, #jury-president {
+	margin-left: 20px;
+}
+
+#moving-right {
+	margin-left: 20px;
+}
+
+#table-success-student {
+	width: 90%;
+}

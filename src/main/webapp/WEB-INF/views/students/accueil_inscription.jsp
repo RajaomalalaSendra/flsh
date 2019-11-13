@@ -5,6 +5,7 @@
 <head>
 	<%@include file="../common/_header.jsp" %>
 	 <link rel="stylesheet" href="<c:url value="/resources/css/student.css" />">
+	 <link rel="stylesheet" href="<c:url value="/resources/css/cropper/cropper.min.css" />">
 </head>
 <body>
 	
@@ -13,10 +14,11 @@
     <div class="all-content-wrapper">
     	<%@include file="../common/_menu.jsp" %>
     	<br/><br/><br/><br/>
+		<iframe id="iframe-print-result"></iframe>
     	<div id = "main-wrapper">
     		<div class = "header-list">
     			<div class = "btn-group pull-right form-inline">
-		        	<label for = "choixUY" class =>Année universitaire :</label>
+		        	<label for = "choixUY">Année universitaire :</label>
 		        	<select class = "form-control" id = "choixUY" name = "subs_univyear" >
 		        		<c:forEach items = "${ univYears }" var = "uy" varStatus = "status">
 		        			<option value = "${ uy.getUniversity_year_id() }" ${ uy.isActual() ? "selected" : "" }>${ uy.getUniversity_year_libelle() }</option>
@@ -29,6 +31,9 @@
 		        			<option value = "${ level.getLevelId() }">${ level.getLevelLibelle() }</option>
 		        		</c:forEach>
 		        	</select>
+		        	<button class = "btn btn-primary pull-right" id = "show-print-dialog">
+		        		<i class="glyphicon glyphicon-print"></i> Résultats
+		        	</button>
 				</div>
     			<h3>Etudiants</h3>
     			<div class = "form-group" id = "search-container-subscription">
@@ -47,7 +52,7 @@
 							<th>Naissance</th>
 							<th>Nationalité</th>
 							<th>Adresse</th>
-							<th style="width: 140px;">Actions</th>
+							<th style="width: 170px;">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -68,4 +73,5 @@
 
 <%@include file="../common/_script.jsp" %>
 <script src="<c:url value="/resources/js/student.js" />"></script>
+<script src="<c:url value="/resources/js/cropper/cropper.js" />"></script>
 </body>

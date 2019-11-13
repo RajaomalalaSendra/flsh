@@ -54,7 +54,7 @@ $(document).ready(function() {
 				$("#Detail-Student-Deliberation").html(data)
 			}, 
 			error: function() {
-				$("#Detail-Student-Deliberation").html("There is an error")
+				$("#Detail-Student-Deliberation").html("There is no student")
 			}
 		})
 		
@@ -97,7 +97,7 @@ $(document).ready(function() {
 			error: function() {
 				$("#info-evaluation tbody").html("There is an error")
 			}
-		})	
+		})
 	})
 	
 	$("#delib-eleve-suivant").on('click', function(e){
@@ -184,6 +184,10 @@ $(document).ready(function() {
 		$('.ec-row').removeClass('active')
 	})
 	
+	$(window).load(function() {
+		$('.spinner').show().delay(3000).fadeOut(600)
+	})
+
 	$(".deliberation-decision").on('click', function(){
 		var idDecision = $(this).attr("id")
 		var passage = ""
@@ -196,7 +200,6 @@ $(document).ready(function() {
 			$("#asr-deliberation").removeClass("btn-info")
 			
 			deselectCumules()
-			
 			passage = "RENVOI"
 		} else if(idDecision == "redouble-deliberation"){
 			$("#renvoi-deliberation").removeClass("btn-danger")
@@ -226,6 +229,8 @@ $(document).ready(function() {
 			
 			passage = "ASR"
 		}
+		
+		console.log(passage)
 		
 		saveDecisionDeliberation(passage)
 	})
@@ -374,8 +379,8 @@ function computeMoyenneUE(idUE, idStudent){
 						$("#error-save").html(data.message ? data.message : 'Note non enregistre').show().delay(3000).fadeOut(600)
 					}
 				}, 
-				error: function(err) {
-					$("#error-save").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
+				error: function() {
+					$("#error-note-ue").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
 				}
 			})
 		}
@@ -383,6 +388,28 @@ function computeMoyenneUE(idUE, idStudent){
 	
 	//Show credit sum on the page
 	computeSumAllCredit()
+}
+
+function saveValidCredit(firstValidCssID, secondValidCssID, valValid, idUE, idStudent){
+	$(firstValidCssID + idUE).on('click', function(){
+		$(this).hide()
+		$(secondValidCssID + idUE).show()
+		
+		$.ajax({
+			url: getBaseUrl("deliberation/save_validCredit"),
+			type: 'POST',
+			data: {idStudent, idUE, valValid},
+			dataType: 'JSON',
+			success: function(data){
+				if(data.status == 0){
+					$("#error-save-valid-credit").html(data.message ? data.message : 'Credit non enregistre').show().delay(3000).fadeOut(600)
+				} 
+			},
+			error: function(err) {
+				$("#error-save-valid-credit").html('Une erreur interne s\'est produite! Veuillez reessayer...').show().delay(3000).fadeOut(600)
+			}
+		})
+	})
 }
 
 function  saveDecisionDeliberation(passage){

@@ -17,10 +17,12 @@ import com.flsh.interfaces.DeliberationService;
 import com.flsh.interfaces.EducationService;
 import com.flsh.interfaces.NoteService;
 import com.flsh.interfaces.PeriodService;
+import com.flsh.interfaces.PrintService;
 import com.flsh.service.DeliberationServiceImpl;
 import com.flsh.service.EducationServiceImpl;
 import com.flsh.service.NoteServiceImpl;
 import com.flsh.service.PeriodServiceImpl;
+import com.flsh.service.PrintServiceImpl;
 import com.flsh.interfaces.UserService;
 import com.flsh.service.UserServiceImpl;
 import com.flsh.interfaces.ProfessorService;
@@ -110,6 +112,11 @@ public class AppConfig implements WebMvcConfigurer {
 		return stsrv;
 	}
 	
+	@Bean
+	public PrintService printService() {
+		PrintService prtSrv = new PrintServiceImpl(dataSource());
+		return prtSrv;
+	}
 	/**
 	 * DataSource configuration
 	 * @return dataSource

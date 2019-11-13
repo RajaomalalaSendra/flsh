@@ -26,9 +26,14 @@ public class Student{
 	private String student_jobfather;
 	private String student_namemother;
 	private String student_jobmother;
+	private int[] ec_choisis;
+	private int[] ec_cumules;
 	private HashMap<String, String> evaluations;
+	private HashMap<String, String> ec_results;
 	private int number;
 	private String image_cropped;
+	private int netdelib;
+	private boolean cumulant = false;
 	
 	public int getStudent_id() {
 		return student_id;
@@ -189,6 +194,98 @@ public class Student{
 		}
 		
 		return imageURL;
+		
+	}
+	
+	public void setNet_delib(int netdelib) {
+		this.netdelib = netdelib;
+	}
+	
+	public int getNet_delib() {
+		return this.netdelib;
+	}
+	
+	public void setEcResults(HashMap<String, String> results) {
+		this.ec_results = results;
+	}
+	
+	public boolean isEcChoisi(int idEC) {
+		if(ec_choisis != null && ec_choisis.length > 0) {
+			for(int ec : ec_choisis) {
+				if(ec == idEC) return true;
+			}
+		}
+		return false;
+	}
+	
+	public int[] getEc_choisis() {
+		return ec_choisis;
+	}
+	
+	public void setEc_choisis(int[] ec_choisis) {
+		this.ec_choisis = ec_choisis;
+	}
+	
+	public boolean isCumulant() {
+		return cumulant;
+	}
+	
+	public void setCumulant(boolean cumulant) {
+		this.cumulant = cumulant;
+	}
+	
+	public int[] getEc_cumules() {
+		return ec_cumules;
+	}
+	
+	public void setEc_cumules(int[] ec_cumules) {
+		this.ec_cumules = ec_cumules;
+	}
+	
+	public boolean isECCumule(int idEC) {
+		if(ec_cumules != null && ec_cumules.length > 0) {
+			for(int ec : ec_cumules) {
+				System.out.print("\n Checking ec "+idEC+" "+ec);
+				if(ec == idEC) return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Check by the logic the result of EC evaluation of a student
+	 * @param idEC
+	 * @param ecType
+	 * @return
+	 */
+	public String getECOk(int idEC, String ecType) {
+		boolean ok = false;
+		try {
+			ok = ec_results.get(""+idEC).equals("1");
+		} catch (Exception e) {
+			System.out.print("\nNo result for this ec");
+		}
+		if(this.isCumulant()) { 
+			//If the student cumulated the EC, there is no way to check type or anything else
+			System.out.print("\nCumulante "+ec_cumules);
+			if(this.isECCumule(idEC)) {
+				return ok ? "O" : "+";
+			} else {
+				return "";
+			}
+		} else {
+			if(ecType.equals("O")) {
+				return ok ? "O" : "+";
+			} else if(ecType.equals("C")) {
+				if(this.isEcChoisi(idEC)) {
+					return ok ? "O" : "+";
+				} else {
+					return "";
+				}
+			} else {
+				return ok ? "O" : "";
+			}
+		}
 		
 	}
 }

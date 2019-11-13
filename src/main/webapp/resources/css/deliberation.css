@@ -101,7 +101,7 @@ input.hasError {
 	color: #b00;
 }
 
-#success-save, #error-save, .succ-none, .dang-none {
+#success-note-ue, #error-note-ue, #error-save-valid-credit, .succ-none, .dang-none, .spinner {
 	display: none;
 }
 #success-save, #error-save{
@@ -109,29 +109,17 @@ input.hasError {
     position: absolute;
     left: 30%;
     top: 7%;
+    display: none;
 }
 .input-ec-credit:hover {
 	background: #fff;
 }
-table tbody tr td.note, table thead tr th.period-exam, table thead tr th.credit {
-	text-align: right;
-}
-table tbody tr td.credit {
-	text-align: right;
-}
-tr td.cumule {
-	display: none;
-	text-align: center;
-}
-tr th.cumule, th.head-ok {
-	text-align: center;
-}
 
 
 .squared-image {
-	width: 50% !important;
-	height: auto;
-	margin-left: 25%;
+	width: 160px;
+	height: 160px;
+	margin-left: 100px;
 }
 .section-etudiant {
 	background-color: white;
@@ -151,4 +139,124 @@ tr th.cumule, th.head-ok {
 
 .col-md-4 div#student-delib-marg {
 	background-color: white;
+}
+
+table tbody tr td.note, table thead tr th.period-exam, table thead tr th.credit {
+	text-align: right;
+}
+table tbody tr td.credit {
+	text-align: right;
+}
+tr td.cumule {
+	display: none;
+	text-align: center;
+}
+tr th.cumule, th.head-ok {
+	text-align: center;
+}
+
+.spinner {
+  -webkit-animation: rotator 1.4s linear infinite;
+          animation: rotator 1.4s linear infinite;
+
+.squared-image {
+	width: 50% !important;
+	height: auto;
+	margin-left: 25%;
+}
+
+@-webkit-keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+
+@keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+.path {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+          animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+}
+
+@-webkit-keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+
+@keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #4285F4;
+  }
+  50% {
+    stroke: #4285F4;
+  }
+  75% {
+    stroke: #4285F4;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
 }

@@ -6,7 +6,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h5 class="modal-title" id="univYearLabel">Ajouter un period</h5>
+        <h5 class="modal-title" id="univYearLabel">Ajouter un periode</h5>
       </div>
       <div class="modal-body">
       	<form method = "POST" id = "form-save-ua" action = "<c:url value = '/education/saveAU' />">

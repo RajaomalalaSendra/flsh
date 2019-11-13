@@ -110,6 +110,11 @@ $(document).ready(function() {
 	$('#choixLevel, #choixUY').on('change', function() {
 		var idUY = $('#choixUY').val()
 		var idLevel = $('#choixLevel').val()
+		if(idLevel == 0) {
+			$('#show-print-dialog').hide()
+		} else {
+			$('#show-print-dialog').show()
+		}
 		$.ajax({
 			url: getBaseUrl('students/loadStudentsByUnivYearAndLevel'),
 			type: 'POST',
@@ -405,6 +410,32 @@ $(document).ready(function() {
 		}
 	})
 	
+	$(document).on('click', '.btn-success.print-result-exam', function(e){
+		e.preventDefault()
+		var idStudent = $(this).attr('id').split("-")[1]
+		var idUY = $('#choixUY').val()
+		var url = getBaseUrl("/students/result?idStudent="+idStudent+"&idUY="+idUY)
+		var temporary = document.title
+		var civilite = ""
+			
+		$.ajax({
+			url: getBaseUrl('student/details?id='+idStudent),
+			dataType: 'JSON',
+			success: function(data) {
+				civilite = computeCivilite(data.infos.civilite)
+				name_path_pdf = "Resulat_Examen_final_"+civilite+"_"+data.infos.nom+"_"+data.infos.prenom
+				document.title = name_path_pdf
+				$("#iframe-print-final-result-student-"+idStudent+"-"+idUY).attr("src", url).load(function(){
+					document.getElementById("iframe-print-final-result-student-"+idStudent+"-"+idUY).contentWindow.print()
+				})
+				
+				setTimeout(function(){
+					location.reload()
+				}, 5000)
+			}
+		})
+	})
+	
 	$(document).on('click', '#tab-cumule a', function() {
 		if($(this).attr('href') == "#cumule" && $(this).parent().hasClass('active')) {
 			$("#add-cumule").show()
@@ -453,6 +484,54 @@ $(document).ready(function() {
 		var idEC = $(this).parent().attr('id').split('-')[1]
 		$(this).parent().remove()
 		listCumule = arrayRemove(listCumule, idEC)
+	})
+	
+	$(document).on('click', '#show-print-dialog', function() {
+		$('#printType').trigger('change')
+		$('#printResultModal').modal('show')
+	})
+	
+	$(document).on('change', '#printType', function() {
+		if($(this).val() == 1) {
+			$.ajax({
+				url: getBaseUrl('educations/getOptionsLevelPeriods'),
+				type: 'POST',
+				data: { idUY: $('#choixUY').val(), idLevel: $('#choixLevel').val() },
+				success: function(data) {
+					$('#printPeriod').html(data)
+					$('#select-periode').show()
+				},
+				error: function() {
+					alert('failed to load periods')
+				}
+			})
+			$('#select-category').hide()
+		} else {
+			$('#select-periode').hide()
+			$('#select-category').show()
+		}
+	})
+	
+	$(document).on('submit', '#form-print-result', function(e) {
+		e.preventDefault()
+		var type = $('#printType').val()
+		var url = ''
+		if(type == 1) {
+			url = getBaseUrl('print_results/partial?uy='+$('#choixUY').val()+'&level='+$('#choixLevel').val()+'&period='+$('#printPeriod').val())
+		} else {
+			url = getBaseUrl('print_results/final?uy='+$('#choixUY').val()+'&level='+$('#choixLevel').val()+'&category='+$('#printCategory').val())
+			document.title = "Resultat_"+$('#choixLevel').children("option:selected").html()+"_"+$('#choixUY').children("option:selected").html()
+			
+		}
+		$("#iframe-print-result").attr("src", url).load(function(){
+			var ifrm = document.getElementById('iframe-print-result')
+		    ifrm = ifrm.contentWindow
+		    ifrm.print()
+		})
+		
+		setTimeout(function(){
+			location.reload()
+		}, 5000)
 	})
 	
 })
@@ -524,7 +603,19 @@ function showDetailsStudent(idStudent, lock = false) {
 				$('#motherJobStudent').val(data.infos.professionmere);
 				$('#idStudent').val(data.infos.id);
 				
-				initCropper(data.infos.imageurl);		
+				// Hide the photo editing for the modal
+				if(lock == true){
+					$("#profile-zoom-in").hide()
+					$("#profile-zoom-out").hide()
+					$("#profile-rotate-left").hide()
+					$("#profile-rotate-right").hide()
+					$(".btn.btn-primary.btn-sm.float-left").hide()
+					$("#image-student").attr("src", data.infos.imageurl)
+					$('#image-student').removeClass("cropper-hidden")
+					$("#image-student").css({"width": "300px", "height": "300px"});
+				} else {
+					initCropper(data.infos.imageurl)
+				}
 				
 				$('#editStudentLabel').html(lock ? 'Infos sur l\'&eacute;tudiant' : 'Modifier &eacute;tudiant')
 				$('#editStudentModal').modal('show')
@@ -570,7 +661,6 @@ function clickZoomAndRotation(cropper){
 function initCropper(imageURL){
 	$("#photo-upload-container").html('<img id="image-student" style = "max-width: 100%;  height: 300px;" src="' + imageURL + '" alt="Picture" class="cropper-hidden">')
 	$("#image-student").attr("src", imageURL)
-	console.log($("#image-student").attr("src", imageURL))
 	const image = document.getElementById('image-student')
 	const options = {
 			  crop(event) {
@@ -583,9 +673,8 @@ function initCropper(imageURL){
 			    console.log(event.detail.scaleY);
 			  		}
 				}
-	cropper = new Cropper(image, options);
+	cropper = new Cropper(image, options)
 	
-	console.log(cropper)
 	clickZoomAndRotation(cropper)
 	
 	/*Create the upload for the image of the student*/
@@ -630,4 +719,18 @@ function initCropper(imageURL){
 	    inputImage.disabled = true;
 	    inputImage.parentNode.className += ' disabled';
 	  }
+}
+
+function computeCivilite(civilite){
+	var the_civilite = ""
+		
+	if(civilite == 1){
+		the_civilite = "Mr"
+	} else if (civilite == 2){
+		the_civilite = "Mlle"
+	} else {
+		the_civilite = "Mme"
+	}
+	
+	return the_civilite
 }

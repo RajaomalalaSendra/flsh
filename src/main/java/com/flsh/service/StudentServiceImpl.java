@@ -33,6 +33,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import com.flsh.interfaces.StudentService;
 import com.flsh.model.Course;
+import com.flsh.model.Level;
 import com.flsh.model.Parcours;
 import com.flsh.model.Student;
 import com.flsh.model.StudyUnit;
@@ -72,7 +73,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<Student> getStudentsByPage(int numPage) {
-		String queryStudent = "SELECT * FROM Etudiant ORDER BY etd_id limit 100 offset "+ (100 * (numPage - 1));
+		String queryStudent = "SELECT Etudiant.*, (SELECT net_deliberation FROM Niveau_Etudiant  WHERE  Niveau_Etudiant.etd_id = Etudiant.etd_id) as net_delib FROM Etudiant ORDER BY etd_id limit 100 offset "+ (100 * (numPage - 1));
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
 		return students;
 	}
@@ -132,7 +133,8 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<Student> getStudentsByUnivYearAndLevel(int idUY, int idLevel, int numPage) {
 		String queryStudent = idLevel == 0 ? "SELECT Etudiant.*, ( select count(*) FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+") ) as maxnumber FROM Etudiant WHERE etd_id not in (select etd_id from Niveau_Etudiant where au_id = "+idUY+") LIMIT 100 OFFSET "+(100 * (numPage - 1)) 
-								: "SELECT Etudiant.*, (SELECT count(*) FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id where au_id = "+idUY+" and niv_id = "+idLevel+") as maxnumber FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id"
+								: "SELECT Etudiant.*, (SELECT count(*) FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id where au_id = "+idUY+" and niv_id = "+idLevel+") as maxnumber "
+										+ ", (SELECT net_deliberation FROM Niveau_Etudiant  WHERE au_id = "+idUY+" AND niv_id ="+idLevel+" AND Niveau_Etudiant.etd_id = Etudiant.etd_id) as net_delib FROM Etudiant join Niveau_Etudiant on Niveau_Etudiant.etd_id = Etudiant.etd_id"
 								+ " where au_id = "+idUY+" and niv_id = "+idLevel+" LIMIT 100 OFFSET "+(100 * (numPage - 1));
 		System.out.print(queryStudent);
 		List<Student> students = jdbcTemplate.query(queryStudent, new StudentMapper());
@@ -627,6 +629,53 @@ public class StudentServiceImpl implements StudentService {
 			}
 		}
 	}
+
+	@Override
+	public boolean getTotalNumberDelib(List<Student> students, List<Level> levels) {
+		boolean getBooleanTotalDelib = false;
+		int total = 0;
+		
+		for (int i = 0; i < students.size(); i++) {
+			total += students.get(i).getNet_delib();
+		}
+		
+		System.out.print("\n==============================\nTotal: " + total + "\n==============================\n");
+		
+		if(total > 0) {
+			getBooleanTotalDelib = true;
+		}
+		return getBooleanTotalDelib;
+	}
+
+	@Override
+	public List<Student> getAllStudentsByCategory(int idUnivYear,  int idLevel, int idCategory) {
+		String categoryName = "";
+		
+		switch(idCategory) {
+			case 1:
+				categoryName = "PASSE";
+				break;
+			case 2:
+				categoryName = "ASR";
+				break;
+			case 3:
+				categoryName = "REDOUBLE";
+				break;
+			default:
+				categoryName = "RENVOI";
+				break;
+		}
+		
+		String sql = "SELECT Etudiant.* FROM Etudiant " 
+					+ "JOIN Niveau_Etudiant ON Niveau_Etudiant.etd_id = Etudiant.etd_id "
+					+ "WHERE Niveau_Etudiant.net_passage = \"" + categoryName + "\" AND "
+							+ "Niveau_Etudiant.niv_id = " + idLevel
+							+ " AND Niveau_Etudiant.au_id = " + idUnivYear;
+			
+		List<Student> students = jdbcTemplate.query(sql, new StudentMapper());
+
+		return students;
+	}
 }
 
 class StudentMapper implements RowMapper<Student> {
@@ -670,6 +719,60 @@ class StudentMapper implements RowMapper<Student> {
 		} catch (Exception e) {
 			System.out.print("\nNo evaluation data\n");
 			//e.printStackTrace();
+		}
+		try {
+			student.setNet_delib(rs.getInt("net_delib"));
+			System.out.print( "Net Delib: " + rs.getInt("net_delib"));
+		} catch (Exception e) {
+			System.out.print("\nNo Net Deliberation");
+			//e.printStackTrace();
+		}
+		try {
+			String results = rs.getString("ec_results");
+			System.out.print("EC results "+results);
+			String[] tmpResults = results.split(";");
+			HashMap<String, String> listResults = new HashMap<String, String>();
+			for(String res : tmpResults) {
+				String[] tmp = res.split("_");
+				listResults.put(tmp[0], tmp[1]);
+			}
+			student.setEcResults(listResults);
+		} catch (Exception e) {
+			System.out.print("\nNo results data");
+		}
+		try {
+			String ecslist = rs.getString("net_ecchoisis");
+			String[] tmpEcs = ecslist.split("_");
+			int[] ECs = new int[tmpEcs.length];
+			int i = 0;
+			for(String idEC : tmpEcs) {
+				ECs[i] = Integer.parseInt(idEC);
+				i++;
+			}
+			System.out.print("\n ECs choisis "+ECs);
+			student.setEc_choisis(ECs);
+		} catch (Exception e) {
+			System.out.print("\nNo chosen ec");
+		}
+		try {
+			String eccumulesslist = rs.getString("ec_cumules");
+			String[] tmpEcCs = eccumulesslist.split("_");
+			int[] EC2s = new int[tmpEcCs.length];
+			int i = 0;
+			for(String idEC : tmpEcCs) {
+				EC2s[i] = Integer.parseInt(idEC);
+				i++;
+			}
+			System.out.print("\n EC cumules "+EC2s);
+			student.setEc_cumules(EC2s);
+		} catch (Exception e) {
+			System.out.print("\nNo ec cumulated");
+			e.printStackTrace();
+		}
+		try {
+			student.setCumulant(rs.getBoolean("cumulant"));
+		} catch (Exception e) {
+			System.out.print("\nNot cumulant");
 		}
 		return student;
 	}

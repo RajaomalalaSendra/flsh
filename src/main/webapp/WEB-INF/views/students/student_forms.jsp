@@ -338,3 +338,48 @@
     </div>
   </div>
 </div>
+
+<!-- Modal print -->
+<div class="modal fade" id="printResultModal" tabindex="-1" role="dialog" aria-labelledby="printResultModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method = "POST" id = "form-print-result" action = "<c:url value = '/student/saveSubscription' />">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	        <h5 class="modal-title" id="cycleDeleteLabel">Imprimer les résultats</h5>
+	      </div>
+	      <div class="modal-body">
+	      	<div class = "form-group">
+	      		<label for = "printType" class = "col-md-6">Type</label>
+	        	<select class = "form-control" id = "printType" name = "printType">
+        			<option value = "1">Partiel</option>
+        			<option value = "2">Final</option>
+	        	</select>
+	      	</div>
+	      	<div class = "form-group" id = "select-periode">
+	      		<label for = "printPeriod" class = "col-md-6">Période</label>
+	        	<select class = "form-control" id = "printPeriod" name = "printPeriod">
+        			<option value = "1">S1</option>
+        			<option value = "2">S2</option>
+	        	</select>
+	      	</div>
+	      	<div class = "form-group" id = "select-category" style = "display:none">
+	      		<label for = "printCategory" class = "col-md-6">Catégorie</label>
+	        	<select class = "form-control" id = "printCategory" name = "printCategory">
+        			<option value = "1">Passants</option>
+        			<option value = "2">Admis sous réserve</option>
+        			<option value = "3">Redoublants</option>
+        			<option value = "4">Refusés</option>
+	        	</select>
+	      	</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+	        <button type="submit" class="btn btn-primary" id = "print-level-result">Imprimer</button>
+	      </div>
+      </form>
+    </div>
+  </div>
+</div>

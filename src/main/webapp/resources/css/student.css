@@ -80,6 +80,17 @@ div.pagination {
 	 width: 100%;
 	 height: 300px;
 }
+
+@media print {
+  
+  html, body { 
+    padding: 0 !important;
+    overflow: hidden;
+  }
+  @page { margin: 0; }
+  body { margin: 1.6cm; }
+  html {margin: 0 !important;}
+}
 #add-cumule {
 	position: absolute;
     right: 10px;
@@ -101,4 +112,16 @@ div.pagination {
 }
 #cumule .form-inline .btn {
 	margin-left: 10px;
+}
+#show-print-dialog {
+	display: none;
+    margin-left: 10px;
+}
+
+#iframe-print-result {
+	display:none;
+}
+
+#iframe-print-result:last-child {
+     page-break-after: auto;
 }
