@@ -7,7 +7,7 @@ import com.flsh.model.StudyUnit;
 
 public interface PrintService {
 	
-	List<Student> getStudentsandPartialResultsByLevelandUYandPer(int idLevel, int idUY, int idPer);
+	List<Student> getStudentsandPartialResultsByLevelandUYandPer(int idParcours, int idUY, int idPer);
 	
 	List<StudyUnit> getLevelStudyUnitandCourses(int idLevel);
 }

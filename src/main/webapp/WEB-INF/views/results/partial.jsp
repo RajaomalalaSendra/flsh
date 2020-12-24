@@ -54,7 +54,7 @@
 				</td>
 			</tr>
 		</table>
-		<h1>Résultats ${ period } des ${ level }</h1>
+		<h2 style = "text-align:center">Résultats ${ period } des ${ level } - ${ parcours }</h2>
 		<table>
 			<thead>
 				<tr>

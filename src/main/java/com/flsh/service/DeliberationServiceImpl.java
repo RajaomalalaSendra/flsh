@@ -19,6 +19,7 @@ import com.flsh.interfaces.DeliberationService;
 import com.flsh.model.EvaluationCourseStudent;
 import com.flsh.model.EvaluationUEECStudent;
 import com.flsh.model.UniversityYear;
+import com.flsh.model.User;
 
 
 public class DeliberationServiceImpl implements DeliberationService{
@@ -44,16 +45,16 @@ public class DeliberationServiceImpl implements DeliberationService{
 	public List<EvaluationUEECStudent> getInfosEvaluationsByStudentLevelUnivYearAndParcours(int univYearId, int idStudent, int idLevel, int idPrc) {
 		// TODO Auto-generated method stub
 		String sql = "SELECT Unite_Enseignement.*, 0 as cumule, "
-				+ "(SELECT ac_credit FROM Acquisition_Ue WHERE etd_id = "+ idStudent 
-				+ " AND ue_id = Unite_Enseignement.ue_id LIMIT 1) as credit_ue, "
+				+ "(SELECT GROUP_CONCAT( concat(per_id, '_', (select exam_sessiontype from Examen where exam_id = Moyenne_Ue.exam_id limit 1), '_',  moyue_credit) separator ';') FROM Moyenne_Ue WHERE etd_id = "+ idStudent 
+				+ " AND ue_id = Unite_Enseignement.ue_id AND exam_id in (select exam_id from Examen where exam_sessiontype = 1)) as credits_ue, "
 				+ "(SELECT ac_acquis FROM Acquisition_Ue WHERE etd_id = "+ idStudent 
 				+ " AND ue_id = Unite_Enseignement.ue_id LIMIT 1) as valid_credit_ue "
 				+ "FROM Unite_Enseignement " 
 				+ "WHERE prc_id = " + idPrc+ " "
 				+ "UNION "
 				+ "SELECT DISTINCT Unite_Enseignement.*, 1 as cumule, "
-				+ "(SELECT ac_credit FROM Acquisition_Ue WHERE etd_id = "+ idStudent 
-				+ " AND ue_id = Unite_Enseignement.ue_id LIMIT 1) as credit_ue, "
+				+ "(SELECT GROUP_CONCAT( concat(per_id, '_', (select exam_sessiontype from Examen where exam_id = Moyenne_Ue.exam_id limit 1), '_', moyue_credit) separator ';') FROM Moyenne_Ue WHERE etd_id = "+ idStudent 
+				+ " AND ue_id = Unite_Enseignement.ue_id AND exam_id in (select exam_id from Examen where exam_sessiontype = 1)) as credits_ue, "
 				+ "(SELECT ac_acquis FROM Acquisition_Ue WHERE etd_id = "+ idStudent 
 				+ " AND ue_id = Unite_Enseignement.ue_id LIMIT 1) as valid_credit_ue "
 				+ "FROM Unite_Enseignement "
@@ -69,34 +70,36 @@ public class DeliberationServiceImpl implements DeliberationService{
 	public JSONObject saveMoyenneUE(int idStudent, int idUE, int idPeriod, float moyenneUE, int typeSession) {
 		// TODO Auto-generated method stub
 		JSONObject save = new JSONObject();
-		String deleteMoyenneUE = "DELETE FROM Moyenne_Ue WHERE etd_id = ? AND ue_id = ? "
-								 + "AND exam_id =  (SELECT exam_id FROM Examen WHERE per_id = "
+		String selectMoyenneUE = "SELECT count(*) FROM Moyenne_Ue WHERE etd_id = "+idStudent+" AND ue_id = "+idUE
+								 + " AND exam_id = (SELECT exam_id FROM Examen WHERE per_id = "
 								 + idPeriod + " AND exam_sessiontype = " + typeSession + " LIMIT 1) "
-								 + "AND per_id = ?"; 
-		jdbcTemplate.execute (deleteMoyenneUE, new PreparedStatementCallback<Boolean>() {
-
-			@Override
-			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				ps.setInt(1, idStudent);
-				ps.setInt(2, idUE);
-				ps.setInt(3, idPeriod);
-				return ps.executeUpdate() > 0 ? true : false;
-			}
-		});
+								 + "AND per_id = "+idPeriod; 
+		boolean moyExist = false;
+		try{
+			moyExist = jdbcTemplate.queryForObject(selectMoyenneUE, Integer.class) > 0;
+		} catch (Exception e) {
+			System.out.print("\nNo current Deliberation");
+			e.printStackTrace();
+		}
 
 		
-		String saveMoyenneUE = "INSERT INTO Moyenne_Ue(etd_id, ue_id, per_id, exam_id, moyue_val)"
-				+ " VALUES(?, ?, ?, (SELECT exam_id FROM Examen WHERE per_id = "
-				+ idPeriod + " AND exam_sessiontype = " + typeSession + " LIMIT 1), ?)";
+		String saveMoyenneUE = moyExist ?
+				"UPDATE Moyenne_Ue SET moyue_val = ? WHERE etd_id = ? AND ue_id = ? AND per_id = ? AND "
+				+ "exam_id = (SELECT exam_id FROM Examen WHERE per_id = " 
+				+ idPeriod + " AND exam_sessiontype = " + typeSession + " LIMIT 1)"
+				:
+				"INSERT INTO Moyenne_Ue(moyue_val, etd_id, ue_id, per_id, exam_id)"
+				+ " VALUES(?, ?, ?, ?, (SELECT exam_id FROM Examen WHERE per_id = "
+				+ idPeriod + " AND exam_sessiontype = " + typeSession + " LIMIT 1))";
 		
 		boolean savingMoyenne = jdbcTemplate.execute (saveMoyenneUE, new PreparedStatementCallback<Boolean>() {
 
 			@Override
 			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				ps.setInt(1, idStudent);
-				ps.setInt(2, idUE);
-				ps.setInt(3, idPeriod);
-				ps.setFloat(4, moyenneUE);
+				ps.setFloat(1, moyenneUE);
+				ps.setInt(2, idStudent);
+				ps.setInt(3, idUE);
+				ps.setInt(4, idPeriod);
 				return ps.executeUpdate() > 0 ? true : false;
 			}
 		});
@@ -130,60 +133,36 @@ public class DeliberationServiceImpl implements DeliberationService{
 	}
 	
 	@Override
-	public JSONObject saveCreditECAndUE(int idEC, int idUE, int creditEC, int creditUE, int idStudent) {
-		// TODO Auto-generated method stub
+	public JSONObject saveCreditECAndUE(int idEC, int idUE, int idPer, int idExam, int creditEC, int creditUE, int idStudent) {
 		JSONObject save = new JSONObject();
 		
-		// Delete creditEC and creditUE
-		String deleteCreditEC = "DELETE FROM Credit_Ec WHERE ec_id = ? AND  etd_id = ?";
-		
-		jdbcTemplate.execute (deleteCreditEC, new PreparedStatementCallback<Boolean>() {
-
-			@Override
-			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				ps.setInt(1, idEC);
-				ps.setInt(2, idStudent);
-				return ps.executeUpdate() > 0 ? true : false;
-			}
-		});
-		
-		String deleteCreditUE = "DELETE FROM Acquisition_Ue WHERE ue_id = ? AND  etd_id = ?";
-		
-		jdbcTemplate.execute (deleteCreditUE, new PreparedStatementCallback<Boolean>() {
-
-			@Override
-			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				ps.setInt(1, idUE);
-				ps.setInt(2, idStudent);
-				return ps.executeUpdate() > 0 ? true : false;
-			}
-		});
-		
 		// Save Credit UE and Credit EC
-		String saveCreditEC = "INSERT INTO Credit_Ec(ec_id, etd_id, credit_obtenu)"
-				+ " VALUES(?, ?, ?)";
+		String saveCreditEC = "UPDATE Evaluation_Etudiant SET evale_creditobtenu = ? WHERE ec_id = ? AND etd_id = ? AND per_id = ? AND exam_id = ?";
 		
 		jdbcTemplate.execute (saveCreditEC, new PreparedStatementCallback<Boolean>() {
 
 			@Override
 			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				ps.setInt(1, idEC);
-				ps.setInt(2, idStudent);
-				ps.setInt(3, creditEC);
+				ps.setInt(1, creditEC);
+				ps.setInt(2, idEC);
+				ps.setInt(3, idStudent);
+				ps.setInt(4, idPer);
+				ps.setInt(5, idExam);
 				return ps.executeUpdate() > 0 ? true : false;
 			}
 		});
 		
-		String saveCreditUE = "INSERT INTO Acquisition_Ue(ue_id, etd_id, ac_credit)"
-				+ " VALUES(?, ?, ?)";
+		String saveCreditUE = "UPDATE Moyenne_Ue SET moyue_credit = ? WHERE ue_id = ? AND etd_id = ? AND per_id = ? AND exam_id = ?";
 		
 		boolean savingCredit = jdbcTemplate.execute (saveCreditUE, new PreparedStatementCallback<Boolean>() {
 
 			@Override
 			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				ps.setInt(1, idUE);
-				ps.setInt(2, idStudent);
-				ps.setInt(3, creditUE);
+				ps.setInt(1, creditUE);
+				ps.setInt(2, idUE);
+				ps.setInt(3, idStudent);
+				ps.setInt(4, idPer);
+				ps.setInt(5,  idExam);
 				return ps.executeUpdate() > 0 ? true : false;
 			}
 		});
@@ -315,9 +294,19 @@ class DeliberationMapper implements RowMapper<EvaluationUEECStudent>{
 		delibs.setStudyunit_id(rs.getInt("ue_id"));
 		delibs.setParcours_id(rs.getInt("prc_id"));
 		delibs.setStudyunit_libelle(rs.getString("ue_libellelong"));
-		delibs.setCredit_ue(rs.getInt("credit_ue"));
 		delibs.setValid_credit_ue(rs.getInt("valid_credit_ue"));
 		delibs.setCumule(rs.getInt("cumule") == 1);
+		String res = rs.getString("credits_ue");
+		if(res != null && res != "") {
+			String[] credits = res.split(";");
+			HashMap <String, String> ueCredits = new HashMap<String, String>();
+			for(String dataCredit : credits) {
+				String[] tmp = dataCredit.split("_");
+				ueCredits.put(tmp[0]+"_"+tmp[1], tmp[2]);
+			}
+			delibs.setPeriod_credits(ueCredits);
+		}
+		
 		// For EC
 		delibs.setCoursesEvaluations(this.getEvaluationsCourseByUE(rs.getInt("ue_id"), rs.getInt("cumule"), univYearId, idStudent, idLevel, idPrc));
 		return delibs;
@@ -325,16 +314,14 @@ class DeliberationMapper implements RowMapper<EvaluationUEECStudent>{
 	
 	private List<EvaluationCourseStudent> getEvaluationsCourseByUE(int ueId, int cumule, int univYearId, int idStudent, int idLevel, int idPrc ) {
 		String sql = cumule == 0 ?
-				"SELECT Element_Constitutif.*, ( SELECT GROUP_CONCAT(concat(Evaluation_Etudiant.per_id, \"_\", Examen.exam_sessiontype, \"_\", evale_evaluation, \"_\", evale_ok) SEPARATOR \";\") FROM `Evaluation_Etudiant` " 
+				"SELECT Element_Constitutif.*, ( SELECT GROUP_CONCAT(concat(Evaluation_Etudiant.per_id, \"_\", Examen.exam_sessiontype, \"_\", evale_evaluation, \"_\", evale_ok, \"_\", evale_creditobtenu) SEPARATOR \";\") FROM `Evaluation_Etudiant` " 
 				+ "JOIN Examen ON Examen.exam_id = Evaluation_Etudiant.exam_id WHERE etd_id = " + idStudent +" AND ec_id = Element_Constitutif.ec_id LIMIT 1) as evaluations, "
-				+ "(SELECT credit_obtenu FROM Credit_Ec WHERE etd_id = "+ idStudent +" AND Credit_Ec.ec_id = Element_Constitutif.ec_id LIMIT 1) as ec_credit_obtenu, "
 				+ "(SELECT count(ec_id) FROM Etudiant_Cumule WHERE etd_id = "+ idStudent +" AND ec_id = Element_Constitutif.ec_id AND au_enregistrement = "+ univYearId +") as ec_cumule "
 				+ "FROM Element_Constitutif "
 				+ "WHERE ue_id = " + ueId 
 				:
-				"SELECT Element_Constitutif.*, ( SELECT GROUP_CONCAT(concat(Evaluation_Etudiant.per_id, \"_\", Examen.exam_sessiontype, \"_\", evale_evaluation, \"_\", evale_ok) SEPARATOR \";\") FROM `Evaluation_Etudiant` " 
+				"SELECT Element_Constitutif.*, ( SELECT GROUP_CONCAT(concat(Evaluation_Etudiant.per_id, \"_\", Examen.exam_sessiontype, \"_\", evale_evaluation, \"_\", evale_ok, \"_\", evale_creditobtenu) SEPARATOR \";\") FROM `Evaluation_Etudiant` " 
 				+ "JOIN Examen ON Examen.exam_id = Evaluation_Etudiant.exam_id WHERE etd_id = " + idStudent +" AND ec_id = Element_Constitutif.ec_id LIMIT 1) as evaluations, "
-				+ "(SELECT credit_obtenu FROM Credit_Ec WHERE etd_id = "+ idStudent +" AND Credit_Ec.ec_id = Element_Constitutif.ec_id LIMIT 1) as ec_credit_obtenu, "
 				+ "(SELECT count(ec_id) FROM Etudiant_Cumule WHERE etd_id = "+ idStudent +" AND ec_id = Element_Constitutif.ec_id AND au_enregistrement = "+ univYearId +") as ec_cumule "
 				+ "FROM Element_Constitutif "
 				+ "JOIN Etudiant_Cumule ON Element_Constitutif.ec_id = Etudiant_Cumule.ec_id "
@@ -359,7 +346,6 @@ class EvaluationCourseMapper implements RowMapper<EvaluationCourseStudent>{
 	    course.setCourse_notation(rs.getInt("ec_notation"));
 	    course.setCourse_coefficient(rs.getInt("ec_coefficient"));
 	    course.setCourse_id(rs.getInt("ec_id"));
-	    course.setCourse_credit_obtenu(rs.getInt("ec_credit_obtenu"));
 	    course.setCourse_volumehoraire(rs.getString("ec_volumehoraire"));
 	    course.setCumule(rs.getInt("ec_cumule") > 0);
 	    String evaluations = rs.getString("evaluations");
@@ -367,7 +353,7 @@ class EvaluationCourseMapper implements RowMapper<EvaluationCourseStudent>{
 		HashMap<String, String[]> listEvaluations = new HashMap<String, String[]>();
 		for(String eval : tmpEvals) {
 			String[] tmp = eval.split("_");
-			String[] dataEval = {tmp[2], tmp[3]};
+			String[] dataEval = {tmp[2], tmp[3], tmp[4]};
 			listEvaluations.put(tmp[0] +"_"+ tmp[1], dataEval);
 		}
 		course.setPeriodicalEvaluations(listEvaluations);

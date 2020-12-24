@@ -15,9 +15,11 @@ public class Period {
 	private String period_debut;
 	private String period_fin;
 	private boolean a_ratrappage;
+	private int exam_id;
 	private String exam_libelle;
 	private String exam_debut;
 	private String exam_fin;
+	private int rattr_id;
 	private String rattr_libelle;
 	private String rattr_debut;
 	private String rattr_fin;
@@ -131,5 +133,17 @@ public class Period {
 	}
 	public void setRattr_fin(String rattr_fin) {
 		this.rattr_fin = rattr_fin;
+	}
+	public int getExam_id() {
+		return exam_id;
+	}
+	public void setExam_id(int exam_id) {
+		this.exam_id = exam_id;
+	}
+	public int getRattr_id() {
+		return rattr_id;
+	}
+	public void setRattr_id(int rattr_id) {
+		this.rattr_id = rattr_id;
 	}
 }

@@ -131,12 +131,14 @@ public class DeliberationController {
 	@ResponseBody
 	public String saveCreditECAndUE(HttpServletRequest request, HttpServletResponse response) {
 		int idEC = request.getParameter("idEC") == "" ? 0 : Integer.parseInt(request.getParameter("idEC"));
+		int idPeriod = request.getParameter("idPer") == "" ? 0 : Integer.parseInt(request.getParameter("idPer"));
 		int idUE = request.getParameter("idUE") == "" ? 0 : Integer.parseInt(request.getParameter("idUE"));
 		int creditEC = request.getParameter("creditEC") == "" ? 0 : Integer.parseInt(request.getParameter("creditEC"));
 		int creditUE = request.getParameter("creditUE") == "" ? 0 : Integer.parseInt(request.getParameter("creditUE"));
 		int idStudent = request.getParameter("idStudent") == "" ? 0 : Integer.parseInt(request.getParameter("idStudent"));
+		int idExam = request.getParameter("idExam") == "" ? 0 : Integer.parseInt(request.getParameter("idExam"));
 
-		JSONObject save = delibService.saveCreditECAndUE(idEC, idUE, creditEC, creditUE, idStudent);
+		JSONObject save = delibService.saveCreditECAndUE(idEC, idUE, idPeriod, idExam, creditEC, creditUE, idStudent);
 	    return save.toString();
 	}
 	

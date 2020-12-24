@@ -7,27 +7,29 @@
 	 <link rel="stylesheet" href="<c:url value="/resources/css/export_pdf.css" />">
 </head>
 <body>
-	 <div id = "university-name">
-	 	<h5>UNIVERSITE D'ANTANANANARIVO</h5>
-	 	<h5>DOMAINE ARTS,LETTRES</h5>
-	 	<h5>SCIENCES HUMAINES</h5>
-     </div>
+	<table style = "border:none; width: 100%">
+		<tr>
+			<td style="width: 35%">
+				<h5>UNIVERSITE D'ANTANANANARIVO</h5>
+			 	<h5>DOMAINE ARTS,LETTRES</h5>
+			 	<h5>SCIENCES HUMAINES</h5>
+			</td>
+			<td style="width: 30%; text-align: center;">
+				<h2>${ levelStudent.getLevelLibelle() }</h2>
+			</td>
+			<td style="width: 35%">
+				<h5>${ universityYearStudent.getUniversity_year_libelle().toUpperCase() }</h5>
+			 	<h5>${ cycleStudent.getCycleLibelle().toUpperCase() == "LICENSE" ? "LICENCE" : cycleStudent.getCycleLibelle().toUpperCase() } MENTION ETUDE ANGLOPHONE</h5>
+			 	<h5>PARCOURS ${ parcoursStudent.getParcoursLibelle().toUpperCase()  }</h5>
+			</td>
+		</tr>
+	</table>
      
-     <div id = "level-student">
-	 	<h2>${ levelStudent.getLevelLibelle() }</h2>
-     </div>
-     
-     <div id = "result">
+     <div style = "width: 100%; text-align: center;">
 	 	<h2>FICHE INDIVIDUELLE DE RESULTATS</h2>
      </div>
      
-     <div style = "margin-left: 500px; margin-top: -250px; ">
-	 	<h5>${ universityYearStudent.getUniversity_year_libelle().toUpperCase() }</h5>
-	 	<h5>${ cycleStudent.getCycleLibelle().toUpperCase() == "LICENSE" ? "LICENCE" : cycleStudent.getCycleLibelle().toUpperCase() } MENTION ETUDE ANGLOPHONE</h5>
-	 	<h5>PARCOURS ${ parcoursStudent.getParcoursLibelle().toUpperCase()  }</h5>
-     </div>
-     
-     <div id="about-student">
+     <div id="">
         <p><b>NOM:</b> ${ student.getStudent_name().toUpperCase()  }</p>        	
         <p><b>PRENOM:</b> ${ student.getStudent_lastname().toUpperCase() } </p>
     </div>
@@ -41,29 +43,31 @@
 				<th>Coef</th>
 				<th>Crédit (max)</th>				
 				<c:forEach items = "${ periodesStudent }" var = "period">
-						<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-1">${ period.getPeriod_libellecourt() }</th>
-						<c:if test="${ period.isA_ratrappage() }">
-							<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-2">Rattr. ${ period.getPeriod_libellecourt() }</th>
-						</c:if>
+					<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-1">${ period.getPeriod_libellecourt() }</th>
+					<th>Crédit ${ period.getPeriod_libellecourt() }</th>
+					<c:if test="${ period.isA_ratrappage() }">
+						<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-2">Rattr. ${ period.getPeriod_libellecourt() }</th>
+						<th>Crédit Rattr. ${ period.getPeriod_libellecourt() }</th>
+					</c:if>
 				</c:forEach>
-				<th>Crédit Obtenu</th>
 			</tr>
 		</thead>
 		<tbody class = "row-delib">
 			<c:forEach items = "${ dataEvaluationsStudent }" var = "delib">
 				<tr class = "ue-row" id = "tr-ue-${ delib.getStudyunit_id() }">
-					<td>${ delib.getStudyunit_libelle() }</td>
-					<td class = "valid-credit-ue" val-credit-ue = "${ delib.getValid_credit_ue() }">-</td>
+					<td class = "ue-libelle">${ delib.getStudyunit_libelle() }</td>
+					<td class = "valid-credit-ue">-</td>
 					<td>-</td><!-- notation -->
 					<td></td><!-- coefficient -->
 					<td></td><!-- Crï¿½dit -->
 					<c:forEach items = "${ periodesStudent }" var = "period">
 						<td class = "note-ue-${ period.getPeriod_id() }-1"></td>
+			       		<td class = "input-ue-credit credit-${ period.getPeriod_id() }-1">${delib.getCredit_ue(period.getPeriod_id(), 1)}</td>
 						<c:if test="${ period.isA_ratrappage() }">
 							<td class = "note-ue-${ period.getPeriod_id() }-2"></td>
+			       			<td class = "input-ue-credit credit-${ period.getPeriod_id() }-2">${delib.getCredit_ue(period.getPeriod_id(), 2)}</td>
 						</c:if>
 					</c:forEach>
-			       <td class = "input-ue-credit">${delib.getCredit_ue()}</td>
 				</tr>	
 				<c:forEach items = "${ delib.getCoursesEvaluations() }" var = "ec">
 					<tr class = "ec-row ecue-${ delib.getStudyunit_id() }" id = "tr-ec-${ ec.getCourse_id() }">
@@ -74,18 +78,26 @@
 						<td>${ ec.getCourse_credit() }</td><!-- Crï¿½dit -->
 						<c:forEach items = "${ periodesStudent }" var = "period">
 							<td class = "note-ec-${ period.getPeriod_id() }-1"> ${ ec.getPeriodNoteBySessionTypeAndId(1, period.getPeriod_id()) }</td>
+							<td class = "inputCreditEC input-wrapper">
+							    <c:if test="${ ec.getCourse_credit_obtenu(period.getPeriod_id(), 1) == 0 }">
+									-
+								</c:if>
+								<c:if test="${ ec.getCourse_credit_obtenu(period.getPeriod_id(), 1) != 0 }">
+									${ec.getCourse_credit_obtenu(period.getPeriod_id(), 1)}
+								</c:if>
+							</td>
 							<c:if test="${ period.isA_ratrappage() }">
 								<td class = "note-ec-${ period.getPeriod_id() }-2"> ${ ec.getPeriodNoteBySessionTypeAndId(2, period.getPeriod_id()) }</td>
-							</c:if>
-						</c:forEach>	
-						<td class = "inputCreditEC input-wrapper">
-						    <c:if test="${ ec.getCourse_credit_obtenu() == 0 }">
-								-
-							</c:if>
-							<c:if test="${ ec.getCourse_credit_obtenu() != 0 }">
-								${ec.getCourse_credit_obtenu()}
-							</c:if>
-						</td>
+								<td class = "inputCreditEC input-wrapper">
+								    <c:if test="${ ec.getCourse_credit_obtenu(period.getPeriod_id(), 2) == 0 }">
+										-
+									</c:if>
+									<c:if test="${ ec.getCourse_credit_obtenu(period.getPeriod_id(), 2) != 0 }">
+										${ec.getCourse_credit_obtenu(period.getPeriod_id(), 2)}
+									</c:if>
+								</td>
+							</c:if>	
+						</c:forEach>
 					</tr>
 				</c:forEach>
 			</c:forEach>
@@ -93,11 +105,12 @@
 					<td colspan = "5">Total</td>
 					<c:forEach items = "${ periodesStudent }" var = "period">
 						<td id = "moy-${ period.getPeriod_id() }-1"></td>
+						<td id = "total-credit-${ period.getPeriod_id() }-1" class = "total-credit">0</td>
 						<c:if test="${ period.isA_ratrappage() }">
 							<td id = "moy-${ period.getPeriod_id() }-2"></td>
+							<td id = "total-credit-${ period.getPeriod_id() }-2" class = "total-credit">0</td>
 						</c:if>
 					</c:forEach>
-					<td id = "total-credit" class = "total-credit">0</td>
 				</tr>
 		</tbody>
 	</table>
@@ -108,6 +121,6 @@
 	</div>
 	<div id = "jury-member" ><p>Les membres de Jury,</p></div>
 	<div id = "jury-president" ><p>Le president de Jury,</p></div>
-<%@include file="../common/_script.jsp" %>
+<script src="<c:url value="/resources/js/vendor/jquery-1.12.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/export_pdf.js" />"></script>
 </body>

@@ -122,7 +122,6 @@ $(document).ready(function() {
 			success: function(data) {
 				$('tbody').html(data)
 				var paginationContent = data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") > -1 ? data.substring(data.indexOf("<div id = \"pagination-search\" style = \"display:none;\">") + 55, data.length - 7) : undefined
-				console.log('html pagination', paginationContent)
 				$('div.pagination ul').html(paginationContent)
 			},
 			error: function() {
@@ -273,13 +272,11 @@ $(document).ready(function() {
 		var parent = $(this).parent()
 		if($(this).attr('id') == "previous-page") {
 			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) - 1
-			console.log('next page ', pageNext)
 			if(!$('li.page-item.active a').attr('page-target') != "1") {
 				$('a[page-target='+pageNext+']').trigger('click')
 			}
 		} else if($(this).attr('id') == "next-page") {
 			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) + 1
-			console.log('next page ', pageNext)
 			if($('a[page-target='+pageNext+']').html()) {
 				$('a[page-target='+pageNext+']').trigger('click')
 			}
@@ -319,7 +316,6 @@ $(document).ready(function() {
 	$(document).on('keyup', '#search-student', function(e) {
 		if(e.keyCode == 13 || e.which == 13) {
 			inSearch = true
-			console.log('Start search')
 			var criteria = $(this).val()
 			$.ajax({
 				url: getBaseUrl('students/search?criteria='+criteria),
@@ -340,7 +336,6 @@ $(document).ready(function() {
 	$(document).on('keyup', '#search-student-subscribe', function(e) {
 		if(e.keyCode == 13 || e.which == 13) {
 			inSearch = true
-			console.log('Search subscribed student')
 			var criteria = $(this).val()
 			$.ajax({
 				url: getBaseUrl('students/searchSubscribed?criteria='+criteria+'&idUY='+$('#choixUY').val()+'&idLevel='+$('#choixLevel').val()),
@@ -363,13 +358,11 @@ $(document).ready(function() {
 		var parent = $(this).parent()
 		if($(this).attr('id') == "previous-page") {
 			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) - 1
-			console.log('next page ', pageNext)
 			if(!$('li.page-item.active a').attr('page-target') != "1") {
 				$('a[page-target='+pageNext+']').trigger('click')
 			}
 		} else if($(this).attr('id') == "next-page") {
 			var pageNext = parseInt($('li.page-item.active a').attr('page-target')) + 1
-			console.log('next page ', pageNext)
 			if($('a[page-target='+pageNext+']').html()) {
 				$('a[page-target='+pageNext+']').trigger('click')
 			}
@@ -417,7 +410,6 @@ $(document).ready(function() {
 		var url = getBaseUrl("/students/result?idStudent="+idStudent+"&idUY="+idUY)
 		var temporary = document.title
 		var civilite = ""
-			
 		$.ajax({
 			url: getBaseUrl('student/details?id='+idStudent),
 			dataType: 'JSON',
@@ -494,6 +486,16 @@ $(document).ready(function() {
 	$(document).on('change', '#printType', function() {
 		if($(this).val() == 1) {
 			$.ajax({
+				url: getBaseUrl('student/loadParcoursByLevel?id='+$('#choixLevel').val()),
+				success: function(data) {
+					$('#printParcours').html(data)
+					$('#select-parcours').show()
+				},
+				error: function() {
+					alert('failed to load parcours')
+				}
+			})
+			$.ajax({
 				url: getBaseUrl('educations/getOptionsLevelPeriods'),
 				type: 'POST',
 				data: { idUY: $('#choixUY').val(), idLevel: $('#choixLevel').val() },
@@ -507,7 +509,7 @@ $(document).ready(function() {
 			})
 			$('#select-category').hide()
 		} else {
-			$('#select-periode').hide()
+			$('#select-periode, #select-parcours').hide()
 			$('#select-category').show()
 		}
 	})
@@ -517,12 +519,13 @@ $(document).ready(function() {
 		var type = $('#printType').val()
 		var url = ''
 		if(type == 1) {
-			url = getBaseUrl('print_results/partial?uy='+$('#choixUY').val()+'&level='+$('#choixLevel').val()+'&period='+$('#printPeriod').val())
+			url = getBaseUrl('print_results/partial?uy='+$('#choixUY').val()+'&level='+$('#choixLevel').val()+'&period='+$('#printPeriod').val()+'&prc='+$('#printParcours').val())
 		} else {
 			url = getBaseUrl('print_results/final?uy='+$('#choixUY').val()+'&level='+$('#choixLevel').val()+'&category='+$('#printCategory').val())
 			document.title = "Resultat_"+$('#choixLevel').children("option:selected").html()+"_"+$('#choixUY').children("option:selected").html()
 			
 		}
+		console.log('Print url ', url)
 		$("#iframe-print-result").attr("src", url).load(function(){
 			var ifrm = document.getElementById('iframe-print-result')
 		    ifrm = ifrm.contentWindow
@@ -565,7 +568,6 @@ function addUEChoiceData(idParcours, wrapperSelector, infosChoix) {
 						var tmpInfos = infosSubscription.choix.split(';')
 						for(var i = 0; i < tmpInfos.length; i++) {
 							var tmp = tmpInfos[i].split('_')
-							console.log(tmp)
 							$('input[name='+tmp[0]+'][value='+tmp[1]+']').prop('checked', true).trigger('change')
 						}
 					}
@@ -664,13 +666,14 @@ function initCropper(imageURL){
 	const image = document.getElementById('image-student')
 	const options = {
 			  crop(event) {
-			    console.log(event.detail.x);
+			    /* Log when needed
+			     * console.log(event.detail.x);
 			    console.log(event.detail.y);
 			    console.log(event.detail.width);
 			    console.log(event.detail.height);
 			    console.log(event.detail.rotate);
 			    console.log(event.detail.scaleX);
-			    console.log(event.detail.scaleY);
+			    console.log(event.detail.scaleY); */
 			  		}
 				}
 	cropper = new Cropper(image, options)

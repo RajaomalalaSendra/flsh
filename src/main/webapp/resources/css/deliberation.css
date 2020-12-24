@@ -34,8 +34,12 @@
 	color: #000;
 }
 
-.input-ue-credit, .input-ec-credit, #total-credit {
+.input-ue-credit, .input-ec-credit{
 	width: 60px;
+	text-align: right;
+}
+.total-credit {
+	width: 40px;
 	text-align: right;
 }
 
@@ -143,6 +147,7 @@ input.hasError {
 
 table tbody tr td.note, table thead tr th.period-exam, table thead tr th.credit {
 	text-align: right;
+	width: 40px;
 }
 table tbody tr td.credit {
 	text-align: right;

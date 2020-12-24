@@ -185,7 +185,7 @@ public class TeachingServiceImpl implements TeachingService {
 		String  sql;
 		if (course.getCourse_id() == 0) {
 			sql = "INSERT INTO  Element_Constitutif(ue_id, prof_id, ec_libellecourt, ec_libellelong, ec_type, ec_credit, ec_notation, "
-					+ "ec_coefficient, ec_volumehoraire, ec_travailpresenciel, ec_travailpersonnel)  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ "ec_coefficient, ec_volumehoraire, ec_travailpresenciel, ec_travailpersonnel)  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		} else {
 			sql = "UPDATE Element_Constitutif SET ue_id = ?, prof_id = ?, ec_libellecourt = ?, ec_libellelong = ?, ec_type = ?, ec_credit = ?, "
 					+ "ec_notation = ?, ec_coefficient = ?, ec_volumehoraire = ?, ec_travailpresenciel = ?, "

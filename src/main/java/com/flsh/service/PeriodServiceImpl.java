@@ -23,7 +23,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import com.flsh.interfaces.PeriodService;
 import com.flsh.model.Cycles;
 import com.flsh.model.Level;
-import com.flsh.model.NumberStudent;
 import com.flsh.model.Parcours;
 import com.flsh.model.Period;
 import com.flsh.model.UniversityYear;
@@ -154,8 +153,10 @@ public class PeriodServiceImpl implements PeriodService {
 	public List<Period> getNiveauPeriodsById(int id, int au) {
 		String sql = "SELECT Periode.*, "
 						+ "(select exam_libelle from Examen where per_id = Periode.per_id and exam_sessiontype = 1) as exam_libelle, "
+						+ "(select exam_id from Examen where per_id = Periode.per_id and exam_sessiontype = 1) as exam_id, "
 						+ "(select exam_datedebut from Examen where per_id = Periode.per_id and exam_sessiontype = 1) as exam_debut, "
 						+ "(select exam_datefin from Examen where per_id = Periode.per_id and exam_sessiontype = 1) as exam_fin, "
+						+ "(select exam_id from Examen where per_id = Periode.per_id and exam_sessiontype = 2) as rattr_id, "
 						+ "(select exam_libelle from Examen where per_id = Periode.per_id and exam_sessiontype = 2) as rattr_libelle, "
 						+ "(select exam_datedebut from Examen where per_id = Periode.per_id and exam_sessiontype = 2) as rattr_debut, "
 						+ "(select exam_datefin from Examen where per_id = Periode.per_id and exam_sessiontype = 2) as rattr_fin "
@@ -286,9 +287,11 @@ public class PeriodServiceImpl implements PeriodService {
 	@Override
 	public Period getPeriodById(int idPeriod) {
 		String sql = "SELECT Periode.*, "
+				+ "(select exam_id from Examen where per_id = Periode.per_id and exam_sessiontype = 1) as exam_id, "
 				+ "(select exam_libelle from Examen where per_id = Periode.per_id and exam_sessiontype = 1) as exam_libelle, "
 				+ "(select exam_datedebut from Examen where per_id = Periode.per_id and exam_sessiontype = 1) as exam_debut, "
 				+ "(select exam_datefin from Examen where per_id = Periode.per_id and exam_sessiontype = 1) as exam_fin, "
+				+ "(select exam_id from Examen where per_id = Periode.per_id and exam_sessiontype = 2) as rattr_id, "
 				+ "(select exam_libelle from Examen where per_id = Periode.per_id and exam_sessiontype = 2) as rattr_libelle, "
 				+ "(select exam_datedebut from Examen where per_id = Periode.per_id and exam_sessiontype = 2) as rattr_debut, "
 				+ "(select exam_datefin from Examen where per_id = Periode.per_id and exam_sessiontype = 2) as rattr_fin "
@@ -437,6 +440,13 @@ public class PeriodServiceImpl implements PeriodService {
 		System.out.print("query:     "+sql);
 		return cycles;
 	}
+
+	@Override
+	public Parcours getParcoursById(int idParcours) {
+		String sql = "SELECT * from Parcours WHERE prc_id = "+idParcours;
+		List<Parcours> parcours = jdbcTemplate.query(sql, new ParcoursMapper());
+		return parcours.size() > 0 ? parcours.get(0) : null;
+	}
 	
 }
 
@@ -465,6 +475,8 @@ class PeriodMapper implements RowMapper<Period> {
 	public Period mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Period period = new Period();
 		period.setPeriod_id(rs.getInt("per_id"));
+		period.setRattr_id(rs.getInt("rattr_id"));
+		period.setExam_id(rs.getInt("exam_id"));
 		period.setPeriod_libellecourt(rs.getString("per_libellecourt"));
 		period.setPeriod_libellelong(rs.getString("per_libellelong"));
 		period.setPeriod_debut(rs.getString("per_debut"));

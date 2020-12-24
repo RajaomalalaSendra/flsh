@@ -9,12 +9,13 @@
 		<c:forEach items = "${ periodes }" var = "period">
 			<td class = "note note-ue-${ period.getPeriod_id() }-1"></td>
 			<td></td>
+       		<td><input class = "input-ue-credit ue-${ period.getPeriod_id() }-1 credit"  id = "input-ue-${ period.getPeriod_id() }-${ delib.getStudyunit_id()}-${ period.getExam_id() }" type = "text" value = "${ delib.getCredit_ue(period.getPeriod_id(), 1)}" disabled></td>
 			<c:if test="${ period.isA_ratrappage() }">
 				<td class = "note note-ue-${ period.getPeriod_id() }-2"></td>
+       		<td><input class = "input-ue-credit ue-${ period.getPeriod_id() }-2 credit"  id = "input-ue-${ period.getPeriod_id() }-${ delib.getStudyunit_id()}-${ period.getRattr_id() }" type = "text" value = "${ delib.getCredit_ue(period.getPeriod_id(), 2)}" disabled></td>
 			</c:if>
 		</c:forEach>
 
-       <td><input class = "input-ue-credit credit"  id = "input-ue-${ delib.getStudyunit_id()}" type = "text" value = "${ delib.getCredit_ue()}" disabled></td>
        <td>
            <c:if test="${ delib.getValid_credit_ue() == 0 }">
                <button class = "btn btn-sm btn-danger validate-ue" id = "validue-${ delib.getStudyunit_id() }"><i class= "glyphicon glyphicon-remove"></i></button>
@@ -46,17 +47,24 @@
                     	<label></label>
 					</span>
 				</td>
+				<td class = "inputCreditEC input-wrapper">
+				    <i class="glyphicon glyphicon-ok-sign"></i>
+					<i class="glyphicon glyphicon-warning-sign"></i>
+					<input class = "input-ec-credit credit ec-${ period.getPeriod_id() }-1" id = "input-ec-${ period.getPeriod_id() }-${ delib.getStudyunit_id()}-${ ec.getCourse_id() }-${ period.getExam_id() }" max-credit = "${ec.getCourse_credit()}" type = "text" value = "${ec.getCourse_credit_obtenu(period.getPeriod_id(), 1) == 0  ? '' : ec.getCourse_credit_obtenu(period.getPeriod_id(), 1)}" />
+					<span class = "error-input-ec-credit alert alert-danger"></span>
+					<span class = "success-input-ec-credit alert alert-success"></span>
+				</td>
 				<c:if test="${ period.isA_ratrappage() }">
 					<td class = "note note-ec-${ period.getPeriod_id() }-2"> ${ ec.getPeriodNoteBySessionTypeAndId(2, period.getPeriod_id()) }</td>
-				</c:if>
-			</c:forEach>	
-			<td class = "inputCreditEC input-wrapper">
-			    <i class="glyphicon glyphicon-ok-sign"></i>
-				<i class="glyphicon glyphicon-warning-sign"></i>
-				<input class = "input-ec-credit credit" id = "input-ec-${ delib.getStudyunit_id()}-${ ec.getCourse_id() }" max-credit = "${ec.getCourse_credit()}" type = "text" value = "${ec.getCourse_credit_obtenu() == 0  ? '' : ec.getCourse_credit_obtenu()}" />
-				<span class = "error-input-ec-credit alert alert-danger"></span>
-				<span class = "success-input-ec-credit alert alert-success"></span>
-			</td>
+					<td class = "inputCreditEC input-wrapper">
+					    <i class="glyphicon glyphicon-ok-sign"></i>
+						<i class="glyphicon glyphicon-warning-sign"></i>
+						<input class = "input-ec-credit credit ec-${ period.getPeriod_id() }-2" id = "input-ec-${ period.getPeriod_id() }-${ delib.getStudyunit_id()}-${ ec.getCourse_id() }-${ period.getRattr_id() }" max-credit = "${ec.getCourse_credit()}" type = "text" value = "${ec.getCourse_credit_obtenu(period.getPeriod_id(), 2) == 0  ? '' : ec.getCourse_credit_obtenu(period.getPeriod_id(), 2)}" />
+						<span class = "error-input-ec-credit alert alert-danger"></span>
+						<span class = "success-input-ec-credit alert alert-success"></span>
+					</td>
+				</c:if>	
+			</c:forEach>
 			<td></td>
 			<td class = "cumule">
 				<div class="checkbox checkbox-info" title = "Ajouter/Retirer des EC cumulés">
@@ -72,19 +80,22 @@
 	<c:forEach items = "${ periodes }" var = "period">
 		<td id = "moy-${ period.getPeriod_id() }-1"></td>
 		<td></td>
+		<td id = "total-credit-${ period.getPeriod_id() }-1" class = "total-credit">0</td>
 		<c:if test="${ period.isA_ratrappage() }">
 			<td id = "moy-${ period.getPeriod_id() }-2"></td>
+			<td id = "total-credit-${ period.getPeriod_id() }-2" class = "total-credit">0</td>
 		</c:if>
 	</c:forEach>
-	<td id = "total-credit" class = "total-credit">0</td>
 	<td><input type = "hidden" name = "delibCurrentUser" id = "delibCurrentUser" value = "${delibCurrentUser}"/></td>
 </tr>
 <c:forEach items = "${ periodes }" var = "period">
-		<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-1">${ period.getPeriod_libellecourt() }</th>
+		<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-1-${ period.getExam_id() }">${ period.getPeriod_libellecourt() }</th>
 		<th class = "head-period head-ok">OK</th>
+		<th class = "head-period credit">Crédit ${ period.getPeriod_libellecourt() }</th>
 		<c:if test="${ period.isA_ratrappage() }">
-			<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-2">Rattr. ${ period.getPeriod_libellecourt() }</th>
+			<th class = "head-period period-exam" id = "period-${ period.getPeriod_id() }-2-${ period.getRattr_id() }">Rattr. ${ period.getPeriod_libellecourt() }</th>
+			<th class = "head-period credit">Crédit Rattr. ${ period.getPeriod_libellecourt() }</th>
 		</c:if>
 </c:forEach>
-<th class = "head-period credit">Créd. obtenu</th>
+
 <th class = "head-period" width = "5%">Validé</th>

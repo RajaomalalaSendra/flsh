@@ -70,6 +70,7 @@ $(document).ready(function() {
 					var idUE = $(this).attr("id").split("-")[2]
 					computeMoyenneUE(idUE, idStudent)
 				})
+				checkOkAuto();
 				
 				var decision = $("#delibCurrentUser").val()
 				$(".btn.deliberation-decision").attr("class", "btn deliberation-decision")
@@ -134,7 +135,7 @@ $(document).ready(function() {
 				$(this).parent().find('.error-input-ec-credit').html('Credit ne devrait pas etre un alphabet.').show()
 				$(this).addClass("hasError")
 			} else {
-				var idUE = $(this).attr("id").split("-")[2]
+				var idUE = $(this).attr("id").split("-")[3]
 				computeSumCredit(idUE)
 				
 				$(this).parent().find('.error-input-ec-credit').hide()
@@ -148,17 +149,19 @@ $(document).ready(function() {
 	
 	$(document).on('blur', '.row-delib .input-ec-credit', function() {
 		var creditEC = $(this).val()
-		var idUE = $(this).attr("id").split("-")[2]
-		var creditUE = $("#input-ue-" + idUE).val()
-		var idEC = $(this).attr("id").split("-")[3]
+		var idUE = $(this).attr("id").split("-")[3]
+		var idEC = $(this).attr("id").split("-")[4]
+		var idPer = $(this).attr("id").split("-")[2]
+		var idExam = $(this).attr("id").split("-")[5]
 		var idStudent = $("#choixElevesDelib").val()
+		var creditUE = $("#input-ue-"+idPer+"-" + idUE+"-"+idExam).val()
 		console.log(" Credit UE: ", creditUE)
 		
 		$.when(
 				$.ajax({
 					url: getBaseUrl("deliberation/save_credit"),
 					type: 'POST',
-					data: {idEC, idUE, creditEC, creditUE, idStudent},
+					data: {idEC, idUE, creditEC, creditUE, idExam, idPer, idStudent},
 					dataType: "JSON"
 				})
 			).then(function(data) {
@@ -318,21 +321,45 @@ $(document).ready(function() {
 	})
 })
 
+function checkOkAuto() {
+	$(".period-exam").each(function(){
+		var idPeriod = $(this).attr("id").split("-")[1]
+		$('.ec-row').each(function() {
+			var notation = parseFloat($.trim($(this).find('.notation-ec').html()))
+			var note = $.trim($(this).find('.note-ec-'+idPeriod+'-1').html())
+			if(note && (parseFloat(note)/notation) >= 0.5) {
+				var idEC = $(this).attr('id').split('-')[2]
+				$('#radio-'+idPeriod+'-'+idEC).prop('checked', true).trigger('change')
+			}
+		})
+	})
+}
+
 function computeSumCredit(idUE){
-	var sumCredit = 0
-	$(".ecue-" + idUE).each(function(){
-		sumCredit += +$(this).find(".input-ec-credit").val()
-	 });
-	$("#input-ue-" + idUE).val(sumCredit)
-	computeSumAllCredit()
+	$(".period-exam").each(function(){
+		var idPeriod = $(this).attr("id").split("-")[1]
+		var index = $(this).attr("id").split("-")[2]
+		var idExam = $(this).attr("id").split("-")[3]
+		var sumCredit = 0
+		$(".ecue-" + idUE).each(function(){
+			sumCredit += +$(this).find(".ec-"+idPeriod+"-"+index).val()
+		 });
+		$("#input-ue-"+idPeriod+"-" + idUE+"-"+idExam).val(sumCredit)
+		computeSumAllCredit()
+	})
 }
 
 function computeSumAllCredit(){
-	var sumAllCredit = 0
-	$(".input-ue-credit").each(function(){
-		sumAllCredit += +$(this).val()
+	$(".period-exam").each(function(){
+		var idPeriod = $(this).attr("id").split("-")[1]
+		var index = $(this).attr("id").split("-")[2]
+		var sumAllCredit = 0
+		$(".input-ue-credit.ue-"+idPeriod+"-"+index).each(function(){
+			console.log('sum up', $(this).val())
+			sumAllCredit += +$(this).val()
+		})
+		$("#total-credit-"+idPeriod+"-"+index).html(sumAllCredit)
 	})
-	$("#total-credit").html(sumAllCredit)
 }
 
 function computeMoyenneUE(idUE, idStudent){
@@ -417,7 +444,6 @@ function  saveDecisionDeliberation(passage){
 	var idLevel = $('#choixLevelDelib').val()
 	var idUnivYear = $("#IdUnivYear").val()
 	var idPrc = $('#choixParcoursDelib').val()
-	
 	
 	$.ajax({
 		url: getBaseUrl("deliberation/save_delib_decision"),

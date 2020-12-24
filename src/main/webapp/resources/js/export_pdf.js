@@ -43,17 +43,16 @@ $(document).ready(function() {
 })
 
 function computeSumAllCredit(){
-	var sumAllCredit = 0
-	$("tr td.input-ue-credit").each(function(){
-		sumAllCredit += +$(this).html()
+	var sumAllCredit = 0;
+	$(".period-exam").each(function(){
+		var idPeriod = $(this).attr("id").split("-")[1]
+		var index = $(this).attr("id").split("-")[2]
+		var sumAllCreditPeriod = 0
+		$("tr td.input-ue-credit.credit-"+idPeriod+"-"+index).each(function(){
+			sumAllCreditPeriod += +$(this).html()
+		})
+		$("#total-credit-"+idPeriod+"-"+index).html(sumAllCreditPeriod)
+		sumAllCredit += sumAllCreditPeriod
 	})
-	$("#total-credit").html(sumAllCredit)
-}
-
-function computeSumAllCreditObtain(){
-	var sumAllCreditObtain = 0
-	$("tr td.valid-credit-ue").each(function(){
-		sumAllCreditObtain += +$(this).attr("val-credit-ue")
-	})
-	$("#summ-credit-obtain").html(sumAllCreditObtain)
+	$("#summ-credit-obtain").html(sumAllCredit)
 }

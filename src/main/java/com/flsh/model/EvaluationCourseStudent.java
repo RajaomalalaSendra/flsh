@@ -9,7 +9,6 @@ public class EvaluationCourseStudent {
 	private String course_libelle;
 	private String course_type;
 	private int course_credit;
-	private int course_credit_obtenu;
 	private int course_notation;
 	private double course_coefficient;
 	private String professor;
@@ -86,11 +85,12 @@ public class EvaluationCourseStudent {
 			return false;
 		}
 	}
-	public int getCourse_credit_obtenu() {
-		return course_credit_obtenu;
-	}
-	public void setCourse_credit_obtenu(int course_credit_obtenu) {
-		this.course_credit_obtenu = course_credit_obtenu;
+	public String getCourse_credit_obtenu(int idPeriod, int index) {
+		try {
+			return periodicalEvaluations.get(idPeriod + "_"+index)[2];
+		} catch(Exception e) {
+			return "";
+		}
 	}
 	public String getCourse_volumehoraire() {
 		return course_volumehoraire;

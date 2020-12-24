@@ -21,7 +21,7 @@
 						   <span class="mini-click-non">Education</span>
 						</a>
                         <ul class="submenu-angle" aria-expanded="${ menu == 'education' || menu == null ? 'true' : 'false' }">
-                            <li class = "${ submenu == 'dashboard'? 'active' : '' }"><a title="Dashboard" href="<c:url value='/' />"><span class="mini-sub-pro">Dashboard ${ user.getUsername() } ${ user.isEnabled() }</span></a></li>
+                            <li class = "${ submenu == 'dashboard'? 'active' : '' }"><a title="Dashboard" href="<c:url value='/' />"><span class="mini-sub-pro">Dashboard</span></a></li>
                             <% if(user != null && user.isEnabled() && Integer.parseInt( user.getType()) == 1 ) { %>
                             	<li class = "${ submenu == 'cycle_level_parcours'? 'active' : '' }"><a title="Cycle&&Level" href="<c:url value='/educations/cyclesandlevel/' />"><span class="mini-sub-pro">Cycle & Level</span></a></li>
                             	<li class = "${ submenu == 'periods'? 'active' : '' }"><a title="Period" href="<c:url value='/educations/periods/' />"><span class="mini-sub-pro">Periods</span></a></li>

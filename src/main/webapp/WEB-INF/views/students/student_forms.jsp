@@ -358,6 +358,11 @@
         			<option value = "2">Final</option>
 	        	</select>
 	      	</div>
+	      	<div class = "form-group" id = "select-parcours">
+	      		<label for = "printParcours" class = "col-md-6">Parcours</label>
+	        	<select class = "form-control" id = "printParcours" name = "printParcours">
+	        	</select>
+	      	</div>
 	      	<div class = "form-group" id = "select-periode">
 	      		<label for = "printPeriod" class = "col-md-6">Période</label>
 	        	<select class = "form-control" id = "printPeriod" name = "printPeriod">

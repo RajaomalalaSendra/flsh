@@ -6,7 +6,6 @@ import org.json.JSONObject;
 
 import com.flsh.model.Cycles;
 import com.flsh.model.Level;
-import com.flsh.model.NumberStudent;
 import com.flsh.model.Parcours;
 import com.flsh.model.Period;
 import com.flsh.model.UniversityYear;
@@ -29,6 +28,8 @@ public interface PeriodService {
 	public JSONObject deletePeriod(int id);
 	
 	public Period getPeriodById(int idPeriod);
+	
+	public Parcours getParcoursById(int idParcours);
 	
 	public List<Parcours> getParcoursByLevelId(int idLevel);
 

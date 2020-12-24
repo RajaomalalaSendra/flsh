@@ -27,6 +27,12 @@
 	margin-top: -35px;
 	margin-left: 500px;
 }
+td.ec-delib {
+	padding-left: 20px !important;
+}
+td.ue-libelle {
+	font-weight: bold;
+}
 
 @media print {
      html, body {

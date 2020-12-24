@@ -1,5 +1,6 @@
 package com.flsh.model;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class EvaluationUEECStudent {
@@ -11,6 +12,7 @@ public class EvaluationUEECStudent {
 	private String studyunit_libelle;
 	private String studyunit_type;
 	private List<EvaluationCourseStudent> CoursesEvaluations;
+	private HashMap<String, String> period_credits;
 	
 	public int getStudyunit_id() {
 		return studyunit_id;
@@ -59,5 +61,18 @@ public class EvaluationUEECStudent {
 	}
 	public void setCumule(boolean cumule) {
 		this.cumule = cumule;
+	}
+	public HashMap<String, String> getPeriod_credits() {
+		return period_credits;
+	}
+	public void setPeriod_credits(HashMap<String, String> period_credits) {
+		this.period_credits = period_credits;
+	}
+	public String getCredit_ue(int periode, int index) {
+		try {
+			return this.period_credits.get(periode+"_"+index);
+		} catch(Exception e) {
+			return "";
+		}
 	}
 }
