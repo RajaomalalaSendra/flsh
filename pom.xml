@@ -10,7 +10,7 @@
 	
 	<properties>
        	<failOnMissingWebXml>false</failOnMissingWebXml>
-       	<org.springframework-version>5.1.0.RELEASE</org.springframework-version>
+       	<org.springframework-version>5.2.10.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 		<itext.version>RELEASE</itext.version>
